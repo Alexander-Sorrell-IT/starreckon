@@ -37,6 +37,7 @@ import {
 } from "node:fs";
 import { randomUUID } from "node:crypto";
 import { homedir } from "node:os";
+import { evidenceMatches, mergeSources, normalizeSources } from "./evidence.mjs";
 import { join } from "node:path";
 
 export const LEDGER_FILE = "token_ledger.jsonl";
@@ -140,26 +141,53 @@ export function lifetime(home) {
     order.set(v, i);
   });
 
-  // best: (cli, sid) -> { rank, fields... }
-  const best = new Map();
-
+  // Group every observation of a session, then decide per session — a
+  // streaming max cannot express the rule below, which needs the OLD rows
+  // still in hand when it judges the new ones.
+  const grouped = new Map(); // (cli, sid) -> [{ rank, row }]
   for (const r of allRows) {
     const cli = r.cli;
     const sid = r.session_id;
     if (!cli || !sid) continue;
     const key = `${cli}\0${sid}`;
     const rank = order.get(r.scanner ?? "pre-versioning") ?? -1;
-    const cur = best.get(key);
+    if (!grouped.has(key)) grouped.set(key, []);
+    grouped.get(key).push({ rank, row: r });
+  }
 
-    if (!cur || rank > cur.rank) {
-      best.set(key, { rank, cli, total: intOr0(r.total), ...fieldPick(r) });
-    } else if (rank === cur.rank) {
-      // Same scanner saw this session twice — take field-wise max.
-      cur.total = Math.max(cur.total, intOr0(r.total));
-      for (const f of FIELDS) {
-        cur[f] = Math.max(intOr0(cur[f]), intOr0(r[f]));
-      }
+  // best: (cli, sid) -> { rank, cli, total, fields... }
+  const best = new Map();
+
+  for (const [key, observed] of grouped) {
+    const cli = observed[0].row.cli;
+    const newest = Math.max(...observed.map((o) => o.rank));
+    const current = observed.filter((o) => o.rank === newest).map((o) => o.row);
+    const older = observed.filter((o) => o.rank < newest).map((o) => o.row);
+    const historic = maxRow(older);
+    const historicTotal = intOr0(historic.total);
+
+    // A HIGHER total is always additive — a newer scanner that found more is
+    // simply believed. A LOWER one is the ambiguous case: it means either the
+    // scanner was fixed, or the transcript was deleted. Source evidence is
+    // what separates them, and one SINGLE current observation must account for
+    // every old contributing file. Separate partial observations are
+    // deliberately not unioned here: A-only plus B-only must never masquerade
+    // as one scan that read A and B together.
+    let allowed = current;
+    const priorSources = mergeSources(...older.map((r) => r.sources));
+    if (older.length && intOr0(maxRow(current).total) < historicTotal && priorSources.length) {
+      allowed = current.filter(
+        (row) =>
+          intOr0(row.total) >= historicTotal ||
+          evidenceMatches(row.sources, priorSources),
+      );
     }
+
+    // No current observation could prove the earlier files survived, so the
+    // lower number is unsafe: keep the historic high-water value. The rejected
+    // rows stay in the append-only file for a later scanner to inspect.
+    const chosen = allowed.length ? maxRow(allowed) : historic;
+    best.set(key, { rank: newest, cli, total: intOr0(chosen.total), ...fieldPick(chosen) });
   }
 
   const byCli = {};
@@ -324,6 +352,12 @@ export function record(sessions, scannerVersion, home) {
       model: s.model ?? "unknown",
       recorded_at: new Date().toISOString(),
     };
+    // The files this observation was counted from. Without them a lower
+    // recount is indistinguishable from a deleted transcript, and lifetime()
+    // has nothing to check the drop against. Omitted entirely when the reader
+    // supplied none, so a row never carries an empty claim.
+    const src = normalizeSources(s.sources);
+    if (src.length) row.sources = src;
     lines.push(JSON.stringify(row));
     appended += 1;
   }
@@ -370,6 +404,20 @@ export function compare(sessions, home) {
 function intOr0(v) {
   const n = Number(v);
   return Number.isInteger(n) ? n : 0;
+}
+
+// Field-wise maximum across rows, including `total`. Two observations of ONE
+// session merge to the larger of each field — never a sum (that double-counts
+// a copy) and never winner-takes-all on the total (that discards a field the
+// loser held alone).
+function maxRow(rows) {
+  const out = { total: 0 };
+  for (const f of FIELDS) out[f] = 0;
+  for (const r of rows ?? []) {
+    out.total = Math.max(out.total, intOr0(r.total));
+    for (const f of FIELDS) out[f] = Math.max(out[f], intOr0(r[f]));
+  }
+  return out;
 }
 
 function fieldPick(r) {

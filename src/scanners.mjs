@@ -85,6 +85,11 @@ export function providerOf(model) {
 // from this list, changes the answer too.
 const COUNTING_SOURCES = [
   "accounts.mjs", "readers.mjs", "scan.mjs", "scanners.mjs", "sources.mjs",
+  // fleet.mjs does not merely re-present numbers: it computes the published
+  // machine floor (max of counter+after against measured sessions, plus the
+  // non-claude totals). A change to that arithmetic changes a reported total,
+  // so it is counting code and belongs in the fingerprint.
+  "fleet.mjs",
 ];
 
 // The declared paths are DATA, and data that determines a number is hashed like

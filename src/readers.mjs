@@ -30,6 +30,7 @@ import { freemem } from "node:os";
 import { constants as BUFFER_CONSTANTS } from "node:buffer";
 import { vscodeRoots } from "./scanners.mjs";
 import { probe, stateOf, loadSources } from "./sources.mjs";
+import { addSourceEvidence } from "./evidence.mjs";
 
 // Node cannot hold a string longer than this, so readFileSync throws rather
 // than returning a short read. Checked before opening anything, because the
@@ -202,8 +203,11 @@ export function readClaudeOrphans(home, known, pr) {
       };
       const held = best.get(sid);
       if (!held) {
-        best.set(sid, { sid, project: cwd, tokens: t });
+        best.set(sid, { sid, project: cwd, tokens: t, files: [p] });
       } else {
+        // Every config that contributed to this session, so the ledger can
+        // later tell a scanner correction from a vanished transcript.
+        if (!held.files.includes(p)) held.files.push(p);
         // PER-FIELD MAXIMUM, NOT A SUM. Two copies of one session are one
         // session; the fuller copy wins each field.
         for (const k of ["input", "cacheWrite", "cacheRead", "output"]) {
@@ -223,8 +227,10 @@ export function readClaudeOrphans(home, known, pr) {
     // turn to take a date from. That is a property of the thing, not a gap in
     // the reader, and inventing one would move real tokens into a month that
     // did not earn them.
-    sessions.push({ id: sid, cli: "claude", project: rec.project,
-                    tokens: rec.tokens, start: null, end: null, transcript: false });
+    const out = { id: sid, cli: "claude", project: rec.project,
+                  tokens: rec.tokens, start: null, end: null, transcript: false };
+    addSourceEvidence(out, home, ...(rec.files ?? []));
+    sessions.push(out);
   }
 
   return result(stateOf(pr, sessions.length), sessions,

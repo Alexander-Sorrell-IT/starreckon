@@ -223,6 +223,7 @@ import { tick as protectTick, needsProtection } from "./protect.mjs";
 import { record as ledgerRecord, lifetime as ledgerLifetime } from "./ledger.mjs";
 import { effectiveRoots } from "./config.mjs";
 import { startServe, sanitizeFolderName } from "./serve.mjs";
+import { modelLayers, installLayer, layerState, modelsStatus } from "./models.mjs";
 import { fleetAggregates, FLEET_MEASURES, FLEET_MEASURES_MONTH } from "./fleetstar.mjs";
 import { ARMS, MAX_LEVEL } from "./starsvg.mjs";
 const ARMS_TOTAL = ARMS * MAX_LEVEL;
@@ -439,7 +440,7 @@ function printHelp() {
   console.log(`  starreckon              scan + live star + before-you-go menu`);
   console.log(`  starreckon --yes        skip prompts (exclude nothing)`);
   console.log(`  -h / --help                this help`);
-  console.log(`  --full                     full mode: download Cisco SecureBERT models`);
+  console.log(`  --full                     full mode: download all 4 Cisco models`);
   console.log(`                             if needed, then index sessions after scan`);
   console.log(`\n${B}DISPLAY${R}`);
   console.log(`  --star         print ONLY the lifetime star`);
@@ -1105,7 +1106,7 @@ function optionalLayersNotice() {
   if (st.models === "installed") {
     rows.push(`  ${DIM}models   on${RESET}  ${DIM}semantic search over your own transcripts${RESET}`);
   } else {
-    rows.push(`  ${BOLD}models${RESET}   ${DIM}semantic search over your own transcripts${RESET}  ${CYAN}--with-models${RESET} ${DIM}(~600 MB, one-time)${RESET}`);
+    rows.push(`  ${BOLD}models${RESET}   ${DIM}4 Cisco models: search, forecast witness, vuln scan${RESET}  ${CYAN}--with-models${RESET} ${DIM}(one-time download)${RESET}`);
   }
   if (st.daemon === "installed") {
     rows.push(`  ${DIM}daemon   on${RESET}  ${DIM}monthly re-scan + 6h protect tick${RESET}`);
@@ -1168,6 +1169,32 @@ async function installModelsLayer() {
   }
   console.log(`\n  downloading Cisco SecureBERT models (~600 MB) — this takes a few minutes…\n`);
   const code = await runSearch(["setup"], { python: py });
+
+  // THE OTHER TWO CISCO LAYERS.
+  //
+  // Four models, three environments, because their dependencies genuinely
+  // conflict (see models.mjs). search.py owns its own setup — it builds the
+  // index as well as pulling the weights — so it stays where it is and the
+  // registry marks it `delegated`. These two are installed here.
+  //
+  // Each is independent: one failing says so and the next still runs. A layer
+  // that cannot install must not cost the user the ones that can.
+  for (const layer of modelLayers().filter((l) => l.installer !== "search-setup")) {
+    if (layerState(layer) === "installed") {
+      console.log(`  ${DIM}${layer.title} already installed${RESET}`);
+      continue;
+    }
+    console.log(`\n  ${BOLD}${layer.title}${RESET} ${DIM}— ${layer.purpose}${RESET}`);
+    const res = await installLayer(layer, {
+      python: py,
+      onStep: (msg) => console.log(`    ${DIM}${msg}…${RESET}`),
+    });
+    console.log(
+      res.ok
+        ? `    ${DIM}${res.state === "already" ? "already installed" : "installed"}${RESET}`
+        : `    ${DIM}not installed: ${maskText(res.why)}${RESET}`,
+    );
+  }
   if (code === 0) {
     console.log(`\n  ${DIM}models installed. run: starreckon search "your query"${RESET}`);
   } else {
@@ -2741,7 +2768,7 @@ async function main() {
       console.log(`  ${BOLD}[E]${RESET} exclusions   ${DIM}add or remove paths never scanned${RESET}`);
       console.log(`  ${BOLD}[R]${RESET} reach out    ${DIM}set contact info shown in the QR (github, email, phone…)${RESET}`);
       console.log(`  ${BOLD}[X]${RESET} copy link    ${DIM}copy share URL to clipboard (paste on any social platform)${RESET}`);
-      console.log(`  ${BOLD}[I]${RESET} install models ${DIM}download Cisco SecureBERT for semantic search (one-time ~600 MB)${RESET}`);
+      console.log(`  ${BOLD}[I]${RESET} install models ${DIM}4 Cisco models: SecureBERT 2.0 search, forecaster, Antares vuln scan${RESET}`);
       if (offered.both)
         console.log(`  ${BOLD}[A]${RESET} all extras   ${DIM}models AND daemon in ONE press — one screen, one answer${RESET}`);
       console.log(`  ${BOLD}[B]${RESET} beacon       ${DIM}broadcast on LAN · collect peer stars (8s)${RESET}`);

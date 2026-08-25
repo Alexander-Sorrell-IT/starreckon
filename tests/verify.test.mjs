@@ -154,6 +154,16 @@ const CLI_FIXTURE = [
   "",
 ].join("\n");
 
+// models.mjs spawns python3/pip to build the model venvs — a real
+// child_process hit, so the allowlist entry has something to authorise.
+const MODELS_FIXTURE = [
+  'import { spawnSync } from "node:child_process";',
+  "export function installLayer(venv, python) {",
+  '  return spawnSync(python, ["-m", "venv", venv], { encoding: "utf8" });',
+  "}",
+  "",
+].join("\n");
+
 // Writes all allowlisted files AND the pin manifest that authorises them,
 // exactly as the real tree does.
 function writeAllowlisted(dir, { pins = true, pkg = { name: "fixture", version: "0.0.0" } } = {}) {
@@ -163,6 +173,7 @@ function writeAllowlisted(dir, { pins = true, pkg = { name: "fixture", version: 
   writeFileSync(join(dir, "search.mjs"), SEARCH_FIXTURE);
   writeFileSync(join(dir, "beacon.mjs"), BEACON_FIXTURE);
   writeFileSync(join(dir, "mdns.mjs"), MDNS_FIXTURE);
+  writeFileSync(join(dir, "models.mjs"), MODELS_FIXTURE);
   writeFileSync(join(dir, "cli.mjs"), CLI_FIXTURE);
   if (pkg) writeFileSync(join(dir, "package.json"), JSON.stringify(pkg, null, 2));
   if (pins) updatePins(dir);

@@ -1,0 +1,56 @@
+{
+  "note": [
+    "The Cisco model layers starreckon can install, as DATA.",
+    "",
+    "This file exists because src/models.mjs is on verify.mjs's static allowlist,",
+    "and an allowlisted file may not name an egress destination — the only one",
+    "permitted there is the positive-control probe. That rule is right: a URL",
+    "literal inside allowlisted code is exactly how egress gets smuggled past a",
+    "reviewer. So the package index lives here, where it is declared, diffable,",
+    "and cannot hide.",
+    "",
+    "Same reasoning as spec/sources.json: what the program looks for is data.",
+    "",
+    "One venv per layer because their dependency sets genuinely conflict —",
+    "the forecaster wants torch from the CPU wheel index plus cisco-tsm, search",
+    "wants sentence-transformers, Antares wants transformers + torch. One",
+    "environment holding all three is a resolver fight where the last install wins."
+  ],
+  "pytorch_cpu_index": "https://download.pytorch.org/whl/cpu",
+  "layers": [
+    {
+      "name": "search",
+      "title": "SecureBERT 2.0 (search)",
+      "venv": ".venv-search",
+      "installer": "search-setup",
+      "pip": ["sentence-transformers", "huggingface_hub"],
+      "repos": [
+        "cisco-ai/SecureBERT2.0-biencoder",
+        "cisco-ai/SecureBERT2.0-cross_encoder"
+      ],
+      "purpose": "semantic search over your own transcripts"
+    },
+    {
+      "name": "forecast",
+      "title": "cisco-tsm (forecaster)",
+      "venv": null,
+      "venvFrom": "series.WITNESS_VENV_BASENAME",
+      "installer": "venv",
+      "pipTorch": true,
+      "pip": ["cisco-tsm", "huggingface_hub"],
+      "repos": ["cisco-ai/cisco-time-series-model-1.0"],
+      "purpose": "the forecast witness — a band committed to before the outcome"
+    },
+    {
+      "name": "antares",
+      "title": "Antares-350M (vuln scan)",
+      "venv": ".venv-antares",
+      "installer": "venv",
+      "pipTorch": false,
+      "pip": ["transformers", "torch", "huggingface_hub"],
+      "pipIndexFrom": "pytorch_cpu_index",
+      "repos": ["fdtn-ai/antares-350m"],
+      "purpose": "scan this tool's own code for vulnerability patterns (SARIF)"
+    }
+  ]
+}

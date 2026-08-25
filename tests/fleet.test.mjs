@@ -388,8 +388,15 @@ test("Python check_consistency.py passes on a starreckon-written fleet", (t) => 
     return;
   }
   const root = makeFixtureFleet();
-  for (const f of needed) {
-    writeFileSync(join(root, f), readFileSync(join(pySrc, f)));
+  // EVERY top-level module, not a hand-listed three. check_consistency.py has
+  // grown imports since this test was written — it now pulls in sessions, which
+  // pulls in stores, which pulls in platform_detect — and a hand-maintained
+  // list silently became a ModuleNotFoundError that reads like a starreckon
+  // failure. Top-level only: the checkout has subdirectories holding stale
+  // copies of the same modules, and importing one of those would be worse than
+  // not running at all.
+  for (const f of readdirSync(pySrc)) {
+    if (f.endsWith(".py")) writeFileSync(join(root, f), readFileSync(join(pySrc, f)));
   }
   let out;
   try {

@@ -3,11 +3,13 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import { execFileSync } from "node:child_process";
-import { createCipheriv, randomBytes } from "node:crypto";
-import { mkdirSync, mkdtempSync, writeFileSync } from "node:fs";
+import { createCipheriv, createHash, randomBytes } from "node:crypto";
+import { existsSync, mkdirSync, mkdtempSync, readFileSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { dirname, join } from "node:path";
+import { fileURLToPath } from "node:url";
 import {
+  COUNTING_SOURCES,
   PROVIDERS,
   providerOf,
   scanAllProviders,
@@ -362,5 +364,49 @@ test("scanAllProviders live run tolerates whatever this machine has", () => {
   for (const s of res.perSession) {
     assert.ok(PROVIDERS.includes(s.provider));
     assert.ok(Number.isFinite(s.input) && s.input >= 0);
+  }
+});
+
+// scannerVersion covers scan.mjs and accounts.mjs, not just scanners.mjs.
+//
+// It used to hash only its own file. But claude and codex are counted in
+// scan.mjs, and the claude account totals in accounts.mjs — the two biggest
+// numbers in the report. Editing either left the version string identical,
+// which quietly disarms ledger.mjs: it takes the max per field within the
+// NEWEST scanner_version that ever saw a session, so if a scanner fix does not
+// move the version, the older inflated number keeps winning and the fix can
+// never land.
+//
+// Recomputed rather than mutated: `node --test` runs test files in parallel,
+// so editing src/ to observe the hash move would race any suite reading it.
+test("scannerVersion is the digest of every counting source", () => {
+  const dir = join(dirname(fileURLToPath(import.meta.url)), "..", "src");
+  const h = createHash("sha256");
+  for (const name of [...COUNTING_SOURCES].sort()) {
+    const src = readFileSync(join(dir, name));
+    h.update(`${name}:${src.length}:`).update(src);
+  }
+  assert.equal(
+    scannerVersion(),
+    h.digest("hex").slice(0, 12),
+    "scannerVersion() does not hash exactly the files COUNTING_SOURCES names",
+  );
+});
+
+test("COUNTING_SOURCES names every file that can change a token number", () => {
+  // The regression this locks down: scan.mjs and accounts.mjs were counting
+  // sources that the version string did not cover. If a future reader lands in
+  // a new module, add it here and to COUNTING_SOURCES together.
+  for (const name of ["scanners.mjs", "scan.mjs", "accounts.mjs", "fleet.mjs"]) {
+    assert.ok(
+      COUNTING_SOURCES.includes(name),
+      `src/${name} counts tokens but is missing from COUNTING_SOURCES, so ` +
+        `edits to it cannot move scannerVersion() and ledger corrections to ` +
+        `it can never win`,
+    );
+  }
+  const dir = join(dirname(fileURLToPath(import.meta.url)), "..", "src");
+  for (const name of COUNTING_SOURCES) {
+    assert.ok(existsSync(join(dir, name)), `COUNTING_SOURCES names a missing file: ${name}`);
   }
 });

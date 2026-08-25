@@ -286,3 +286,135 @@ test("compare disk_total sums current on-disk sessions", () => {
   assert.equal(c.disk_total, 1500);
   rmSync(home, { recursive: true, force: true });
 });
+
+// ── source-evidence guard ─────────────────────────────────────────────────────
+//
+// A newer scanner reporting LESS is ambiguous: either it was fixed, or the
+// transcript was deleted underneath it. Before evidence, lifetime() believed
+// the newer number unconditionally, so transcript loss silently rewrote history
+// as a correction. These tests pin the three outcomes.
+
+const SHA_A = "a".repeat(64);
+const SHA_B = "b".repeat(64);
+
+function writeLedger(home, lines) {
+  writeFileSync(
+    ledgerPath(home),
+    lines.map((l) => JSON.stringify(l)).join("\n") + "\n",
+  );
+}
+
+function row(scanner, total, sources, extra = {}) {
+  return {
+    cli: "claude",
+    session_id: "sess-evidence",
+    scanner,
+    total,
+    input_tokens: total,
+    cache_creation_input_tokens: 0,
+    cache_read_input_tokens: 0,
+    output_tokens: 0,
+    sources,
+    ...extra,
+  };
+}
+
+test("lower recount is accepted when evidence proves the file survived", () => {
+  const home = tmp();
+  try {
+    writeLedger(home, [
+      row("v1", 1000, [{ path: "~/a.jsonl", bytes: 500, sha256: SHA_A }]),
+      // Same file, byte-identical: nothing was lost, so the scanner was fixed.
+      row("v2", 400, [{ path: "~/a.jsonl", bytes: 500, sha256: SHA_A }]),
+    ]);
+    assert.equal(lifetime(home).total, 400, "a proven correction must be believed");
+  } finally {
+    rmSync(home, { recursive: true, force: true });
+  }
+});
+
+test("lower recount is REJECTED when the contributing file shrank", () => {
+  const home = tmp();
+  try {
+    writeLedger(home, [
+      row("v1", 1000, [{ path: "~/a.jsonl", bytes: 500, sha256: SHA_A }]),
+      // The transcript was truncated. This is loss, not a correction.
+      row("v2", 400, [{ path: "~/a.jsonl", bytes: 120, sha256: SHA_B }]),
+    ]);
+    assert.equal(
+      lifetime(home).total,
+      1000,
+      "transcript loss must not be able to lower the lifetime total",
+    );
+  } finally {
+    rmSync(home, { recursive: true, force: true });
+  }
+});
+
+test("lower recount is REJECTED when a contributing file vanished entirely", () => {
+  const home = tmp();
+  try {
+    writeLedger(home, [
+      row("v1", 1000, [
+        { path: "~/a.jsonl", bytes: 500, sha256: SHA_A },
+        { path: "~/b.jsonl", bytes: 500, sha256: SHA_B },
+      ]),
+      // Only a.jsonl is accounted for; b.jsonl is simply gone.
+      row("v2", 400, [{ path: "~/a.jsonl", bytes: 500, sha256: SHA_A }]),
+    ]);
+    assert.equal(lifetime(home).total, 1000);
+  } finally {
+    rmSync(home, { recursive: true, force: true });
+  }
+});
+
+test("two partial observations do not union into one qualifying scan", () => {
+  const home = tmp();
+  try {
+    writeLedger(home, [
+      row("v1", 1000, [
+        { path: "~/a.jsonl", bytes: 500, sha256: SHA_A },
+        { path: "~/b.jsonl", bytes: 500, sha256: SHA_B },
+      ]),
+      // Same new scanner, two rows: one saw only a, the other only b. Neither
+      // is a scan that read BOTH, so neither may lower the total.
+      row("v2", 400, [{ path: "~/a.jsonl", bytes: 500, sha256: SHA_A }]),
+      row("v2", 300, [{ path: "~/b.jsonl", bytes: 500, sha256: SHA_B }]),
+    ]);
+    assert.equal(
+      lifetime(home).total,
+      1000,
+      "A-only plus B-only must not masquerade as one scan that read A and B",
+    );
+  } finally {
+    rmSync(home, { recursive: true, force: true });
+  }
+});
+
+test("a HIGHER recount is always believed, evidence or not", () => {
+  const home = tmp();
+  try {
+    writeLedger(home, [
+      row("v1", 1000, [{ path: "~/a.jsonl", bytes: 500, sha256: SHA_A }]),
+      row("v2", 2500, []),
+    ]);
+    assert.equal(lifetime(home).total, 2500);
+  } finally {
+    rmSync(home, { recursive: true, force: true });
+  }
+});
+
+test("rows with no prior evidence stay correctable", () => {
+  const home = tmp();
+  try {
+    writeLedger(home, [
+      // Written before evidence existed: it must not become an unfalsifiable
+      // high-water mark that no later scanner can ever bring down.
+      row("v1", 1000, undefined),
+      row("v2", 400, undefined),
+    ]);
+    assert.equal(lifetime(home).total, 400);
+  } finally {
+    rmSync(home, { recursive: true, force: true });
+  }
+});

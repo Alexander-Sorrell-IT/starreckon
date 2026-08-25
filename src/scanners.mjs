@@ -57,13 +57,41 @@ export function providerOf(model) {
   return m === "<synthetic>" || m === "unknown" || m === "" ? "synthetic" : "other";
 }
 
+// Every file that can change a token number. Hashing only this one was a bug:
+// claude and codex are counted in scan.mjs and the claude account/orphan
+// totals in accounts.mjs, so edits to the two biggest readers left the version
+// string untouched. ledger.mjs resolves each session by taking the max per
+// field WITHIN the newest scanner_version that ever saw it, so a version that
+// does not move makes a correction unreachable — the older, wrong number keeps
+// winning forever. Adding a counting source here is part of adding a reader.
+//
+// fleet.mjs is here because it does not merely re-present numbers: it computes
+// the published machine floor (max of counter+after vs measured sessions, plus
+// non-claude totals). A change to that arithmetic changes a reported total.
+export const COUNTING_SOURCES = [
+  "scanners.mjs",
+  "scan.mjs",
+  "accounts.mjs",
+  "fleet.mjs",
+];
+
 export function scannerVersion() {
-  // Content hash of this scanner's source: any edit to counting logic changes
+  // Content hash of every counting source: any edit to counting logic changes
   // it automatically, so cross-machine consistency checks can spot skew.
   try {
-    const src = readFileSync(fileURLToPath(import.meta.url));
-    return createHash("sha256").update(src).digest("hex").slice(0, 12);
+    const dir = dirname(fileURLToPath(import.meta.url));
+    const h = createHash("sha256");
+    // Sorted, and each file's bytes prefixed by its name and length, so the
+    // digest cannot be reproduced by different content that happens to
+    // concatenate the same way.
+    for (const name of [...COUNTING_SOURCES].sort()) {
+      const src = readFileSync(join(dir, name));
+      h.update(`${name}:${src.length}:`).update(src);
+    }
+    return h.digest("hex").slice(0, 12);
   } catch {
+    // A counting source that cannot be read makes the version meaningless,
+    // not merely incomplete: "unknown" never compares equal to a real one.
     return "unknown";
   }
 }
@@ -94,7 +122,7 @@ function activeMinutes(stamps, threshold = MAX_ACTIVE_GAP_MIN) {
   return Math.round(mins * 10) / 10;
 }
 
-function mkRec(cli, sessionId, account, project) {
+export function mkRec(cli, sessionId, account, project) {
   return {
     cli,
     session_id: sessionId,
@@ -115,7 +143,7 @@ function noteTs(rec, ts) {
   if (rec.end === null || ts > rec.end) rec.end = ts;
 }
 
-function vote(rec, model, n) {
+export function vote(rec, model, n) {
   rec._models.set(model, (rec._models.get(model) ?? 0) + n);
 }
 

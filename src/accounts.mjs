@@ -25,6 +25,8 @@
 //     lastComputedDate, measured on disk). Concatenation is exact; subtraction
 //     is meaningless. dailyModelTokens is never used (input+output only).
 import { sanitizeModel } from "./scan.mjs";
+import { FIELDS, finish, mkRec, vote } from "./scanners.mjs";
+import { addSourceEvidence } from "./evidence.mjs";
 import {
   lstatSync,
   readdirSync,
@@ -35,7 +37,7 @@ import {
 } from "node:fs";
 import { createInterface } from "node:readline";
 import { homedir } from "node:os";
-import { basename, join, resolve } from "node:path";
+import { basename, dirname, join, resolve } from "node:path";
 import { maskPath, redactSecrets, accountPseudonym } from "./redact.mjs";
 
 // The four billed usage counters: JSONL key -> output key. usage.iterations
@@ -660,4 +662,210 @@ export function floorTotals(accounts) {
   const floor = zeroTok();
   for (const g of byAcct.values()) addTok(floor, g.floor ?? g.tok);
   return { onDisk, floor };
+}
+
+// ---- claude-orphans (sessions.read_claude_orphans) --------------------------
+//
+// THE TOKENS THIS TOOL WAS SUPPRESSING BY CONSTRUCTION.
+//
+// Claude Code deletes transcripts on a timer, and does NOT clear the per-project
+// counters it keeps in .claude.json. Every reader here works from transcripts,
+// so a session whose transcript expired is invisible — its tokens were spent,
+// and nothing on this machine reports them. Measured on the author's box:
+// 2,324,208,273 tokens across 48 such sessions, against 2,231,223,590 across
+// 16,555 sessions that still have transcripts. More than half the total.
+//
+// It is tempting to write .claude.json off as scratch state, and there is a
+// true observation behind that: `lastModelUsage` and `lastTotalCacheRead...`
+// describe the MOST RECENT session, whose tokens are already in its transcript.
+// True for that one live session. False for every older one. The measurement
+// was right; the generalisation from it was wrong.
+//
+// FOUR ways to double-count here, all of them live in this one file:
+//
+//   REPEATED    every backup snapshot restates the same project entry, so a
+//               per-file sum multiplies by however many snapshots exist. Keyed
+//               on lastSessionId with a per-field MAXIMUM, never a sum.
+//   SUBSET      lastModelUsage.<model>.{inputTokens,...} restates lastTotal*
+//               field for field. Reading both is exactly 2x. Only lastTotal* is
+//               read; the model NAME is kept, its counters never are.
+//   CUMULATIVE  ruled out upstream: projects exist whose lastTotal is a tenth
+//               of the sessions still living in that project directory, and an
+//               accumulator cannot be smaller than what it accumulates.
+//   DOUBLE      a session whose transcript still exists is already emitted by
+//               the transcript scan, so counting it here too doubles it. Every
+//               such id is excluded — which is why this must run AFTER it.
+
+// Per-field MAXIMUM, in place. Two snapshots of ONE session are one session
+// observed twice: never a sum (that double-counts the copy), and never
+// winner-takes-all on the total, which would discard a field the loser held
+// alone — {output:100, cache_read:0} against {output:0, cache_read:150} must
+// keep both, not hand the whole record to whichever summed higher.
+function canonicalZero() {
+  const o = {};
+  for (const f of FIELDS) o[f] = 0;
+  return o;
+}
+
+function maxInto(dst, src) {
+  for (const k of Object.keys(dst)) {
+    const v = Number.isInteger(src[k]) && src[k] > 0 ? src[k] : 0;
+    if (v > dst[k]) dst[k] = v;
+  }
+  return dst;
+}
+
+// Which PROFILE a config file belongs to — the last-resort account label.
+//
+// The parent directory name is NOT it. ~/.claude.json is the default profile's
+// state, kept beside ~/.claude rather than inside it, so its parent is $HOME:
+// a config with no email and no userID would be booked to an account named
+// after the user's login, while the transcript scan calls that same profile
+// ".claude" — one config document, two account names, and nothing downstream
+// able to tell they are one profile. `backups/` is worse: EVERY profile has
+// one, so two nameless profiles would both label as "unknown (backups)" and
+// their usage would sum into an account that does not exist.
+function orphanProfileName(file, home) {
+  let d = dirname(file);
+  if (basename(d) === "backups") d = dirname(d);
+  return resolve(d) === resolve(home) ? ".claude" : basename(d);
+}
+
+// Every config document that can carry expired counters, live or archived.
+//
+// Deliberately NOT claudeGlobNames(): that function excludes .ai-logs-archive,
+// which is correct for "find live profiles" and wrong here. An archived config
+// is exactly where an expired counter survives, so this includes it. The two
+// rules disagree on purpose.
+function orphanConfigFiles(home) {
+  const out = [];
+  const push = (p) => { if (isFile(p)) out.push(p); };
+  const kids = (dir) => { try { return readdirSync(dir); } catch { return []; } };
+
+  push(join(home, ".claude.json"));
+  push(join(home, ".claude.json.backup"));
+
+  for (const name of kids(home)) {
+    if (!name.startsWith(".") || !name.slice(1).includes("claude")) continue;
+    const dir = join(home, name);
+    if (!isDir(dir)) continue;
+    push(join(dir, ".claude.json"));
+    for (const f of kids(dir)) {
+      if (f.startsWith(".claude.json.bak")) push(join(dir, f));
+    }
+    const backups = join(dir, "backups");
+    for (const f of kids(backups)) {
+      if (f.startsWith(".claude.json.backup.")) push(join(backups, f));
+    }
+  }
+
+  // ~/.ai-logs-archive/claude/<profile>/backups/.claude.json.backup.*
+  const archive = join(home, ".ai-logs-archive", "claude");
+  for (const profile of kids(archive)) {
+    const backups = join(archive, profile, "backups");
+    for (const f of kids(backups)) {
+      if (f.startsWith(".claude.json.backup.")) push(join(backups, f));
+    }
+  }
+  return out.sort();
+}
+
+/**
+ * Claude sessions whose transcripts are gone, recovered from .claude.json.
+ *
+ * @param {string}          home     home directory to read
+ * @param {Set<string>}     emitted  session ids the transcript scan already
+ *   produced. Passed in rather than held in module state: deadreckon keeps this
+ *   in a module-level set, which is safe in a one-shot CLI but would leak ids
+ *   between runs in a long-lived process.
+ * @returns {Array<object>} finished session records, cli "claude"
+ */
+export function readClaudeOrphans(home, emitted = new Set()) {
+  home = home ?? homedir();
+  const seenInode = new Set();
+  const best = new Map();    // sid -> per-field maximum
+  const where = new Map();   // sid -> { v, account, project, models }
+  const sources = new Map(); // sid -> [file, ...]
+
+  for (const file of orphanConfigFiles(home)) {
+    // A backup is frequently a hard link to the file it backed up. Counting it
+    // twice is the REPEATED trap arriving through the filesystem instead of
+    // through the JSON.
+    let st;
+    try {
+      st = statSync(file);
+    } catch {
+      continue;
+    }
+    const inode = `${st.dev}:${st.ino}`;
+    if (st.ino !== 0) {
+      if (seenInode.has(inode)) continue;
+      seenInode.add(inode);
+    }
+
+    let doc;
+    try {
+      doc = JSON.parse(readFileSync(file, "utf8"));
+    } catch {
+      continue; // a corrupt snapshot costs one file, not the scan
+    }
+
+    // accountFor's rule, not a third copy of it: email, then userID, then the
+    // profile name. The fallback names the PROFILE so that this reader and the
+    // transcript scan answer the same for the same config document.
+    const account =
+      doc?.oauthAccount?.emailAddress ||
+      (doc?.userID ? `user:${String(doc.userID).slice(0, 12)}` : null) ||
+      `unknown (${orphanProfileName(file, home)})`;
+
+    for (const [project, pr] of Object.entries(doc?.projects ?? {})) {
+      if (!pr || typeof pr !== "object" || Array.isArray(pr)) continue;
+      const sid = pr.lastSessionId;
+      if (!sid || emitted.has(sid)) continue;
+
+      const tk = {
+        input_tokens: intOrZero(pr.lastTotalInputTokens),
+        cache_creation_input_tokens: intOrZero(pr.lastTotalCacheCreationInputTokens),
+        cache_read_input_tokens: intOrZero(pr.lastTotalCacheReadInputTokens),
+        output_tokens: intOrZero(pr.lastTotalOutputTokens),
+      };
+      const v = tk.input_tokens + tk.cache_creation_input_tokens +
+        tk.cache_read_input_tokens + tk.output_tokens;
+      if (!v) continue;
+
+      // NOT zeroTok(): that is this file's own shorthand
+      // ({input,output,cacheRead,cacheWrite}). These records use the canonical
+      // FIELDS names, and mixing the two vocabularies silently copies nothing.
+      if (!best.has(sid)) best.set(sid, canonicalZero());
+      maxInto(best.get(sid), tk);
+
+      if (!sources.has(sid)) sources.set(sid, []);
+      if (!sources.get(sid).includes(file)) sources.get(sid).push(file);
+
+      // Counters merge field by field; metadata cannot. An account and a
+      // project path come from ONE snapshot — the one that saw the most.
+      if (v > (where.get(sid)?.v ?? 0)) {
+        where.set(sid, { v, account, project, models: pr.lastModelUsage ?? {} });
+      }
+    }
+  }
+
+  const out = [];
+  for (const [sid, tk] of best) {
+    const { account, project, models } = where.get(sid);
+    const rec = mkRec("claude", sid, account, project);
+    rec.transcript = false;
+    for (const k of Object.keys(tk)) rec.tokens[k] = tk[k];
+    // The model is recorded even though its usage is NOT read from here:
+    // lastModelUsage restates lastTotal* and adding it would be exactly 2x.
+    for (const model of Object.keys(models)) vote(rec, model, 1);
+    addSourceEvidence(rec, home, ...(sources.get(sid) ?? []));
+    out.push(finish(rec));
+  }
+  return out;
+}
+
+function intOrZero(v) {
+  const n = Number(v);
+  return Number.isInteger(n) && n > 0 ? n : 0;
 }

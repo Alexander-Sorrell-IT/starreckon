@@ -760,3 +760,54 @@ test("clipboardCmds — failure message names the commands that were tried", () 
     }
   }
 });
+
+// ── the optional layers are named at the START, not only at the end ──────────
+//
+// They used to be discoverable in two places only: `--help`, which a first run
+// does not read, and the before-you-go menu, which prints after the scan. Both
+// answer "what could this have done" too late to act on it.
+
+const layersLine = /optional layers/;
+
+test("a first run names the models and daemon layers before the scan output", () => {
+  const home = fakeHome();
+  const r = runCli(home, ["--yes", "--no-pace", "--no-providers"]);
+  assert.match(r.stdout, layersLine, "a first run must say the layers exist");
+  assert.match(r.stdout, /--with-models/);
+  assert.match(r.stdout, /--with-daemon/);
+  // "up front" is the whole point: it must precede the scan's own output.
+  assert.ok(
+    r.stdout.indexOf("optional layers") < r.stdout.indexOf("Found:"),
+    "the notice must come before the scan results, not after",
+  );
+});
+
+test("it offers a way to defer, so the notice is not a demand", () => {
+  const home = fakeHome();
+  const r = runCli(home, ["--yes", "--no-pace", "--no-providers"]);
+  assert.match(r.stdout, /decide at the end/);
+});
+
+test("a scheduled daemon run prints nothing about layers — no one is reading it", () => {
+  const home = fakeHome();
+  const r = runCli(home, ["--yes", "--no-pace", "--no-providers"], {
+    STARRECKON_LAYER_RUN: "daemon:scan",
+  });
+  assert.doesNotMatch(r.stdout, layersLine);
+});
+
+test("an installed layer is reported as on, never advertised again", () => {
+  const home = fakeHome();
+  // Make the models venv look installed, the same way layerStates() detects it.
+  const venvBin = join(home, ".starreckon", ".venv-search", "bin");
+  mkdirSync(venvBin, { recursive: true });
+  writeFileSync(join(venvBin, "python"), "");
+  const r = runCli(home, ["--yes", "--no-pace", "--no-providers"]);
+  assert.doesNotMatch(r.stdout, /--with-models/, "an installed layer must not be sold again");
+});
+
+test("star-only mode stays silent: the star IS the output", () => {
+  const home = fakeHome();
+  const r = runCli(home, ["--yes", "--no-pace", "--no-providers", "--star-only"]);
+  assert.doesNotMatch(r.stdout, layersLine);
+});

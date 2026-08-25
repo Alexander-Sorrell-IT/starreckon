@@ -1087,6 +1087,45 @@ function layerStates() {
   };
 }
 
+// SAID AT THE START, NOT ONLY AT THE END.
+//
+// The optional layers were discoverable in two places: `--help`, which a first
+// run does not read, and the before-you-go menu, which prints after the scan.
+// Both are too late to answer "what is this about to do, and what could it do
+// instead" — the question a reader has while the scan is running, not after.
+//
+// State comes from layerStates(), the same source the menu's doors use, so this
+// cannot drift into advertising a layer that is already on. A layer that is
+// installed is reported as installed rather than offered again, and a daemon
+// run prints nothing at all: no one is reading it.
+function optionalLayersNotice() {
+  if (process.env[TRIGGER_ENV]) return null;   // a scheduled run has no reader
+  const st = layerStates();
+  const rows = [];
+  if (st.models === "installed") {
+    rows.push(`  ${DIM}models   on${RESET}  ${DIM}semantic search over your own transcripts${RESET}`);
+  } else {
+    rows.push(`  ${BOLD}models${RESET}   ${DIM}semantic search over your own transcripts${RESET}  ${CYAN}--with-models${RESET} ${DIM}(~600 MB, one-time)${RESET}`);
+  }
+  if (st.daemon === "installed") {
+    rows.push(`  ${DIM}daemon   on${RESET}  ${DIM}monthly re-scan + 6h protect tick${RESET}`);
+  } else if (st.daemon === "ready") {
+    rows.push(`  ${BOLD}daemon${RESET}   ${DIM}monthly re-scan so history outlives the logs${RESET}  ${CYAN}--with-daemon${RESET}`);
+  }
+  // Nothing left to offer: say nothing rather than print a heading over a
+  // list of things that are already true.
+  if (st.models === "installed" && st.daemon !== "ready") return null;
+
+  const both = st.models !== "installed" && st.daemon === "ready"
+    ? `${CYAN}--with-both${RESET}${DIM} does both. ${RESET}`
+    : "";
+  return (
+    `${BOLD}optional layers${RESET} ${DIM}— off by default; this scan does not need either.${RESET}\n` +
+    rows.join("\n") + "\n" +
+    `  ${DIM}${both}or decide at the end — the menu asks again, and the choice sticks for future runs.${RESET}\n`
+  );
+}
+
 // The daemon half. This is the body the [D] button has always run, lifted into
 // a function so the [A] button and --with-both can reach it without a second
 // copy. Its last line — "this tool does not load it for you" — is the sentence
@@ -1201,6 +1240,12 @@ async function main() {
         `${DIM}  the scan path makes no network calls — but no process can prove that about itself.${RESET}\n` +
         `${DIM}  run \`starreckon prove\` (or \`sh bin/starreckon-proof.sh\`) and let the kernel answer.${RESET}\n`
     );
+
+  // Named up front, so a first run knows these exist before the scan, not after.
+  if (!starOnly) {
+    const layers = optionalLayersNotice();
+    if (layers) console.log(layers);
+  }
 
   // ---- --reset-audit: the supported way out of a poisoned history ----------
   // A log written by an older version can fail today's leak scan, and deleting

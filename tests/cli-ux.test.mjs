@@ -811,3 +811,64 @@ test("star-only mode stays silent: the star IS the output", () => {
   const r = runCli(home, ["--yes", "--no-pace", "--no-providers", "--star-only"]);
   assert.doesNotMatch(r.stdout, layersLine);
 });
+
+// ── this machine writes its own folder, in the fleet layout ──────────────────
+//
+// The fleet path always produced a machine folder: `serve --collect` calls
+// writeMachineFolder for every peer that submits. A machine scanning ITSELF got
+// nothing — its numbers lived in a snapshot and an HTML page, so the one layout
+// that is diffable, greppable and readable by another program existed only for
+// machines that had joined a fleet.
+
+test("a local scan writes ~/.starreckon/<machine>/ in the fleet layout", () => {
+  const home = fakeHome();
+  const r = runCli(home, ["--yes", "--no-pace", "--no-providers"]);
+  assert.match(r.stdout, /machine folder:/, "the run must say where it wrote");
+  const dirs = readdirSync(join(home, ".starreckon"), { withFileTypes: true })
+    .filter((d) => d.isDirectory())
+    .map((d) => d.name);
+  const machine = dirs.find((d) =>
+    existsSync(join(home, ".starreckon", d, "machine-readable")));
+  assert.ok(machine, `no machine folder among: ${dirs.join(", ")}`);
+  for (const f of ["totals.json", "sessions.json", "hardware.json"]) {
+    assert.ok(
+      existsSync(join(home, ".starreckon", machine, "machine-readable", f)),
+      `missing machine-readable/${f}`,
+    );
+  }
+  assert.ok(
+    existsSync(join(home, ".starreckon", machine, "human-readable", "REPORT.md")),
+    "missing human-readable/REPORT.md",
+  );
+});
+
+test("fleet/ is created only by fleet work, never by a local scan", () => {
+  // A purely local user must not grow a directory named after a feature they
+  // have never used.
+  const home = fakeHome();
+  runCli(home, ["--yes", "--no-pace", "--no-providers"]);
+  assert.ok(
+    !existsSync(join(home, ".starreckon", "fleet")),
+    "a local-only scan created a fleet/ directory",
+  );
+});
+
+test("re-scanning replaces this machine's own folder instead of refusing", () => {
+  // writeMachineFolder refuses to clobber by default — that guard exists to
+  // stop one fleet member overwriting another's published figures. A machine
+  // rewriting its OWN folder is the case the guard was never about, and
+  // refusing would freeze the folder at whatever the first run wrote.
+  const home = fakeHome();
+  runCli(home, ["--yes", "--no-pace", "--no-providers"]);
+  const second = runCli(home, ["--yes", "--no-pace", "--no-providers"]);
+  assert.doesNotMatch(second.stdout + second.stderr, /refusing to overwrite/);
+  assert.match(second.stdout, /machine folder:/);
+});
+
+test("the printed machine-folder path is masked, not the raw home", () => {
+  const home = fakeHome();
+  const r = runCli(home, ["--yes", "--no-pace", "--no-providers"]);
+  const line = r.stdout.split("\n").find((l) => l.includes("machine folder:"));
+  assert.ok(line, "no machine folder line");
+  assert.ok(!line.includes(home), "the raw home path was printed verbatim");
+});

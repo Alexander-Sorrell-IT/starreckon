@@ -222,7 +222,7 @@ import { loadOrCreateFleetKey } from "./fleetkey.mjs";
 import { tick as protectTick, needsProtection } from "./protect.mjs";
 import { record as ledgerRecord, lifetime as ledgerLifetime } from "./ledger.mjs";
 import { effectiveRoots } from "./config.mjs";
-import { startServe } from "./serve.mjs";
+import { startServe, sanitizeFolderName } from "./serve.mjs";
 import { fleetAggregates, FLEET_MEASURES, FLEET_MEASURES_MONTH } from "./fleetstar.mjs";
 import { ARMS, MAX_LEVEL } from "./starsvg.mjs";
 const ARMS_TOTAL = ARMS * MAX_LEVEL;
@@ -2389,6 +2389,7 @@ async function main() {
 
     // --report: also write to ~/.starreckon/reports/ without prompting.
     if (flag("--report")) saveFullReport();
+
   }
 
   // ---- beacon: LAN peer discovery (Mode 1 async, Mode 2 live) ---------------
@@ -2484,6 +2485,51 @@ async function main() {
       // Silent
     }
   };
+
+  // ---- this machine's own folder, written locally every run ----------------
+  //
+  // The fleet path has always produced a machine folder — `serve --collect`
+  // calls writeMachineFolder for every peer that submits. A machine scanning
+  // ITSELF got nothing: its numbers lived in a snapshot and an HTML report, so
+  // the one layout that is diffable, greppable and readable by another program
+  // existed only for machines that had joined a fleet.
+  //
+  // Same layout, same writer, no network:
+  //
+  //   ~/.starreckon/<machine>/machine-readable/{totals,sessions,hardware}.json
+  //   ~/.starreckon/<machine>/human-readable/REPORT.md
+  //
+  // `replace: true` is correct HERE and nowhere else. The guard exists to stop
+  // one fleet member overwriting another's published figures; this machine
+  // rewriting its own folder on its own disk is the case the guard was never
+  // about, and refusing would mean the folder is only ever as fresh as the
+  // first run that created it.
+  //
+  // fleet/ is NOT created here. It appears only if fleet work happens, so a
+  // purely local user never grows a directory named after a feature they have
+  // not used.
+  const writeLocalMachineFolder = () => {
+    try {
+      const machineName = sanitizeFolderName(opt("machine") ?? hostname());
+      if (!machineName) return null;
+      const base = join(homedir(), ".starreckon");
+      writeMachineFolder(base, machineName, buildBeaconPayload(), { replace: true });
+      return join(base, machineName);
+    } catch (e) {
+      // A folder that cannot be written must not take the scan down with it:
+      // the numbers were already computed and printed.
+      console.error(`${DIM}machine folder not written: ${maskText(e.message)}${RESET}`);
+      return null;
+    }
+  };
+
+  // Called here rather than beside the other output writes: buildBeaconPayload
+  // is a `const` defined just above, so calling this any earlier is a temporal
+  // dead zone error, not merely bad ordering.
+  {
+    const mf = writeLocalMachineFolder();
+    if (mf) console.log(`${DIM}machine folder: ${maskPath(mf)}${RESET}`);
+  }
 
   // runBeacon: spawn beacon.mjs, collect peers, render combined fleet star.
   const runBeacon = async (listenMs = 8000) => {

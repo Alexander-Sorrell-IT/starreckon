@@ -17,6 +17,10 @@ import { redactSecrets, maskPath, projectLabel, projectPseudonym } from "./redac
 // in both load orders because neither module CALLS the other at module scope —
 // only function declarations cross the edge.
 import { findConfigDirs } from "./accounts.mjs";
+// Lazily used inside discoverSources (see SPEC_GET) — sources.mjs pulls
+// vscodeRoots from scanners.mjs, which imports this file, so the SPEC is read
+// at call time rather than at module load.
+import { probe, loadSources } from "./sources.mjs";
 
 // "Which day was that?" and "what hour was that?" have to be answered on the
 // SAME clock. They were not: hours came from getHours() (local) while day keys
@@ -92,11 +96,34 @@ export function byCountThenKey(a, b) {
  * Returns the deltas to add. `seen` is a Map the caller owns.
  */
 export function creditUsage(seen, id, usage) {
-  // Finite numbers only. `?? 0` accepts a STRING, and "500" + 0 concatenates
-  // rather than adds, so one malformed row could turn a total into "0500…" or
-  // NaN and poison every downstream number silently. accounts.mjs already
-  // guards this way; this did not.
-  const num = (v) => (Number.isFinite(v) ? v : Number.isFinite(Number(v)) ? Number(v) : 0);
+  // A TOKEN COUNT IS A COUNT: a non-negative INTEGER, or it is not data.
+  //
+  // This accepted any finite number and coerced strings, which was itself a
+  // repair — `?? 0` had accepted a string outright and `"500" + 0` concatenates
+  // rather than adds, so one malformed row could turn a total into "0500…".
+  // But coercion goes one step too far in the other direction: it turns `1.5`
+  // into one and a half tokens and `"9"` into nine, and a counter that accepts
+  // 1.5 of something will accept "1e9" and " 9 " on the same reasoning.
+  //
+  // accounts.mjs required an integer and this did not, which is how folding the
+  // two together surfaced it. Checked before choosing: 73,209 real usage rows
+  // across four live profiles contain ZERO non-integer values, so the strict
+  // rule costs nothing that exists and cannot invent anything that does not.
+  // A malformed field contributes nothing and leaves the running maximum for
+  // that field where it was — it is not evidence that the field is now zero.
+  //
+  // TWO TESTS ENCODED OPPOSITE RULES and folding accounts.mjs onto this
+  // function is what surfaced it: hardening.test.mjs asserts `"500"` coerces to
+  // 500, accounts.test.mjs asserted `"9"` is skipped. Resolved toward COERCING
+  // AN INTEGER WRITTEN AS A STRING, because a serialiser emitting "9" is a real
+  // thing and dropping it loses nine tokens silently — and silent loss is the
+  // failure this whole system is built against. A value that is not a whole
+  // number is still refused: 1.5 tokens is not a count, and a rule that accepts
+  // it would accept "1e9" and " 9 " on the same reasoning.
+  const num = (v) => {
+    const n = typeof v === "string" || typeof v === "number" ? Number(v) : NaN;
+    return Number.isInteger(n) && n >= 0 ? n : 0;
+  };
   const cur = {
     in: num(usage?.input_tokens),
     out: num(usage?.output_tokens),
@@ -143,6 +170,11 @@ export function emptyStats() {
     // directories into 104. A project is a place work happened, not a property
     // of a session id.
     projectsSeen: new Map(), // encoded dir name -> that directory's project label
+    // Session ids seen on a row that had to be DROPPED for an unusable
+    // timestamp. A row that declares an identity and cannot be dated is not a
+    // row this scanner may pretend it never read; finalize() reports the ones
+    // that never turned up on a dated row as undated_sessions.
+    undatedSessions: new Set(),
   };
 }
 
@@ -184,7 +216,41 @@ function claudeProfileDirs(root, outside) {
   return dirs;
 }
 
+// THE SCAN DEGRADES; IT DOES NOT DIE. `sources` refuses to run without the
+// spec because a source list it cannot read is the whole answer to that
+// question. A SCAN is different: Claude discovery does not need the spec at
+// all, so a missing or unreadable spec must not take the count with it. It
+// falls back to the paths that were hardcoded here before, says so once on
+// stderr, and counts what it can — a broken install that reports fewer sources
+// out loud beats one that reports nothing with a stack trace.
+let _SPEC = null;
+let _SPEC_WARNED = false;
+function SPEC_GET() {
+  if (_SPEC !== null) return _SPEC;
+  try {
+    _SPEC = loadSources();
+  } catch (e) {
+    if (!_SPEC_WARNED) {
+      _SPEC_WARNED = true;
+      process.stderr.write(
+        `note: spec/sources.json could not be read (${e.message.split(":")[0]}) — `
+        + `falling back to built-in paths for Cowork and Codex. Claude Code is `
+        + `unaffected. A complete install ships spec/.\n`);
+    }
+    _SPEC = { sources: [] };
+  }
+  return _SPEC;
+}
+
+// The paths this file used to type, kept ONLY as that fallback.
+const BUILTIN = {
+  cowork: [["Library", "Application Support", "Claude", "local-agent-mode-sessions"],
+           [".config", "Claude", "local-agent-mode-sessions"]],
+  codex: [[".codex", "sessions"]],
+};
+
 export function discoverSources(roots) {
+  const SPEC = SPEC_GET();
   const found = [];
   const outside = new Set();
   for (const root of roots) {
@@ -200,21 +266,27 @@ export function discoverSources(roots) {
       for (const f of listJsonl(join(dir, "projects"), 6))
         found.push({ source: "claude_code", root, path: f });
     }
-    const coworkBase = join(
-      root,
-      "Library",
-      "Application Support",
-      "Claude",
-      "local-agent-mode-sessions"
-    );
-    if (existsSync(coworkBase)) {
-      for (const f of listJsonl(coworkBase, 7))
-        found.push({ source: "cowork", root, path: f });
-    }
-    const codexBase = join(root, ".codex", "sessions");
-    if (existsSync(codexBase)) {
-      for (const f of listJsonl(codexBase, 5))
-        found.push({ source: "codex", root, path: f });
+    // COWORK AND CODEX COME FROM THE SPEC, NOT FROM A PATH TYPED HERE.
+    //
+    // The cowork base was `<root>/Library/Application Support/...` and nothing
+    // else, so on Linux and Windows this scan could never see it — while
+    // `starreckon sources`, guessing from `kind`, reported it as installed.
+    // Two files with two ideas of where one tool lives, and the user is told
+    // the one that is wrong. spec/sources.json declares the bases per platform
+    // and `probe()` walks them; both callers now read the same list.
+    //
+    // The depth stays here: how deep to walk is behaviour, and Cowork nests a
+    // whole Claude profile seven levels down while Codex is a date tree five
+    // deep. The spec says where to start.
+    for (const [name, depth] of [["cowork", 7], ["codex", 5]]) {
+      const src = SPEC.sources.find((x) => x.name === name);
+      const bases = src
+        ? probe(src, root, SPEC).found
+        : BUILTIN[name].map((segs) => join(root, ...segs)).filter(existsSync);
+      for (const base of bases) {
+        for (const f of listJsonl(base, depth))
+          found.push({ source: name, root, path: f });
+      }
     }
   }
   // Skipped by ONE root may still be covered by another, so the report is made
@@ -288,7 +360,7 @@ function dedupeByRealpath(files) {
 
 // ---- streaming parse -------------------------------------------------------
 
-async function streamLines(filePath, onLine) {
+export async function streamLines(filePath, onLine) {
   const rl = createInterface({
     input: createReadStream(filePath, { encoding: "utf-8" }),
     crlfDelay: Infinity,
@@ -317,6 +389,14 @@ function session(stats, id, ts) {
       exts: new Map(),
       hours: new Array(24).fill(0),
       days: new Set(),
+      // Which store this session's rows came out of, and whether its ID is an
+      // identity a row DECLARED or one this scanner INVENTED from the file
+      // path. Both exist for sessionRecords() — see the comment there. A SET
+      // rather than a single value because a session id can legitimately appear
+      // in files from two stores, and picking whichever was read first would
+      // make the answer depend on directory order.
+      sources: new Set(),
+      idFromRow: false,
     };
     stats.sessions.set(id, s);
   }
@@ -444,6 +524,14 @@ export async function parseClaudeFile(filePath, stats, opts = {}) {
   // is set once and the first directory seen wins.
   const parts = filePath.split(/[/\\]/).filter(Boolean);
   let sessionId = parts.slice(-2).join("/").replace(/\.jsonl$/, "");
+  // Cowork stores Claude-format transcripts, so it is parsed by this function
+  // and is still a different tool. The caller names the store; "claude" is the
+  // default because that is what every caller that does not care is reading.
+  const cli = opts.cli ?? "claude";
+  // Sticky, exactly as `sessionId` above is sticky: once a row has declared the
+  // id, every later row of this file belongs to that declared session even if
+  // the row itself carries no sessionId.
+  let idFromRow = false;
   await streamLines(filePath, (line) => {
     let d;
     try {
@@ -461,10 +549,25 @@ export async function parseClaudeFile(filePath, stats, opts = {}) {
     // all give undefined on property access and fall out at the isNaN below.
     if (d === null || typeof d !== "object" || Array.isArray(d)) return;
     const ts = typeof d.timestamp === "string" ? Date.parse(d.timestamp) : NaN;
-    if (isNaN(ts)) return;
-    if (typeof d.sessionId === "string") sessionId = d.sessionId;
+    if (isNaN(ts)) {
+      // DROPPED, BUT NOT UNSEEN. Every temporal figure this scanner produces is
+      // keyed on a parsed timestamp, so a row without one cannot be credited to
+      // a day, a month or a star — that part is right and is not changed here.
+      // What was wrong is that the row left no trace at all: a half-written
+      // final line from a killed process, or a clock that came back wrong, took
+      // its usage block with it and total_sessions never knew. Keep the
+      // identity; finalize() reports it only if no dated row ever carried it.
+      if (typeof d.sessionId === "string") stats.undatedSessions?.add(d.sessionId);
+      return;
+    }
+    if (typeof d.sessionId === "string") {
+      sessionId = d.sessionId;
+      idFromRow = true;
+    }
     temporal(stats, ts);
     const s = session(stats, sessionId, ts);
+    s.sources.add(cli);
+    if (idFromRow) s.idFromRow = true;
     if (typeof d.cwd === "string" && !s.project) {
       const label = projectLabel(d.cwd);
       if (opts.excluded?.(d.cwd)) s.project = "[excluded]";
@@ -510,7 +613,33 @@ export async function parseClaudeFile(filePath, stats, opts = {}) {
           : null;
       if (model) s.models.set(model, (s.models.get(model) ?? 0) + 1);
       const u = msg.usage;
-      const id = typeof msg.id === "string" ? msg.id : null;
+      // THE ROW UUID IS AN IDENTITY, AND WITHOUT IT A COPY COUNTS TWICE.
+      //
+      // This read message.id and stopped, so a row without one was credited
+      // in full every time it was seen — and creditUsage says so out loud:
+      // "No id means nothing to correlate it with, so it is its own message."
+      // A row IS its own message; the mistake was concluding it therefore has
+      // no identity. It has one: the row uuid, which is stable across copies
+      // of the same transcript, and a duplicated profile is the case this
+      // whole scan exists to survive.
+      //
+      // Found by the differential fuzzer: 20 of 60 generated corpora
+      // disagreed, starreckon exactly DOUBLE on every session whose rows
+      // carry no message.id, against both deadreckon and the corpus's own
+      // constructed truth (43,669 true, 71,263 counted).
+      //
+      // Two other implementations already did this and this one did not —
+      // accounts.mjs:468 credits `msg.id ?? rec.uuid`, and deadreckon's
+      // MessageMax.key falls back to ("uuid", row_uuid). So this line also
+      // settles starreckon's own internal disagreement, where the two
+      // counters reported 50 and 100 for the same record.
+      //
+      // Order matters: message.id FIRST, because it is what ties the many
+      // rewrites of one streaming message together. The uuid is per ROW, so
+      // using it first would make every rewrite its own message.
+      const id = typeof msg.id === "string" && msg.id
+        ? msg.id
+        : (typeof d.uuid === "string" && d.uuid ? `uuid:${d.uuid}` : null);
       if (u) {
         const d = creditUsage(stats.seenMessageIds, id, u);
         s.tok.in += d.in;
@@ -577,7 +706,17 @@ export async function parseClaudeFile(filePath, stats, opts = {}) {
 
 export async function parseCodexFile(filePath, stats, opts = {}) {
   let sessionId = filePath.split("/").pop();
+  const cli = opts.cli ?? "codex";
+  // See parseClaudeFile: sticky, and false until session_meta declares an id.
+  let idFromRow = false;
   let model = null;
+  // Per FILE, not per session: the inherited prefix belongs to this rollout.
+  // [input, cached_input, output] throughout. See the comment at the
+  // total_token_usage branch below for what each one is holding back.
+  let base = null;          // what this file's total already held on arrival
+  let carry = [0, 0, 0];    // segments completed before a mid-stream reset
+  let prevRaw = null;       // previous absolute total, to see a reset happen
+  let applied = [0, 0, 0];  // what THIS file has already handed to the session
   await streamLines(filePath, (line) => {
     let d;
     try {
@@ -595,23 +734,88 @@ export async function parseCodexFile(filePath, stats, opts = {}) {
     // all give undefined on property access and fall out at the isNaN below.
     if (d === null || typeof d !== "object" || Array.isArray(d)) return;
     const ts = typeof d.timestamp === "string" ? Date.parse(d.timestamp) : NaN;
-    if (isNaN(ts)) return;
+    if (isNaN(ts)) {
+      // Same rule as the Claude parser above; here the identity lives on the
+      // session_meta row's payload.
+      if (d?.type === "session_meta" && typeof d?.payload?.id === "string")
+        stats.undatedSessions?.add(d.payload.id);
+      return;
+    }
     const payload = d.payload;
     if (d.type === "session_meta" && payload) {
-      if (typeof payload.id === "string") sessionId = payload.id;
+      if (typeof payload.id === "string") {
+        sessionId = payload.id;
+        idFromRow = true;
+      }
       if (typeof payload.model === "string") model = sanitizeModel(payload.model);
     }
     temporal(stats, ts);
     const s = session(stats, sessionId, ts);
+    s.sources.add(cli);
+    if (idFromRow) s.idFromRow = true;
     if (d.type === "session_meta" && typeof payload?.cwd === "string" && !s.project) {
       s.project = opts.excluded?.(payload.cwd) ? "[excluded]" : projectLabel(payload.cwd);
     }
     if (d.type === "event_msg" && payload?.info?.total_token_usage) {
       const t = payload.info.total_token_usage;
-      const cached = t.cached_input_tokens ?? 0;
-      s.tok.in = Math.max(0, (t.input_tokens ?? 0) - cached);
-      s.tok.out = t.output_tokens ?? s.tok.out;
-      s.tok.cr = cached;
+      // total_token_usage IS CUMULATIVE OVER THE LINEAGE, NOT OVER THE FILE.
+      //
+      // Assigning it whole counted a resumed or forked session's INHERITED
+      // prefix again in every child file. Measured against deadreckon over the
+      // 156 Codex files on this fleet: 3,340,774,041 here against 2,319,394,230
+      // there, and the 1,021,379,811 gap closes exactly — 17 files open with an
+      // inherited running total summing to 1,021,393,809, one file resets
+      // mid-stream and loses 13,998, and 1,021,393,809 - 13,998 is the gap to
+      // the token. Ten sibling forks share one identical 69,322,178 base, so
+      // that prefix alone was counted ten times: 623,899,602 tokens.
+      //
+      // The field is not wrong and neither is deadreckon's read of
+      // last_token_usage: on the live store (~/.codex/sessions, 4 files) both
+      // programs return 1,453,618, bucket-for-bucket. total[n] equals the sum
+      // of the DEDUPED last[0..n] exactly, 0 mismatches over 117 records. So
+      // the prefix is recoverable from the file's own first record: whatever
+      // its total already held BEYOND that record's own last was inherited.
+      //
+      // The two failure modes are opposite-signed, which is why the reset half
+      // is here too. A session that resets restarts its total from zero, and
+      // subtracting a base alone would silently drop the segment before it —
+      // that is the -13,998 above, and no single-direction assertion catches
+      // both. Completed segments accumulate into `carry`.
+      // AND IT ACCUMULATES ACROSS FILES, because `=` lost whole files. Six
+      // session ids on this fleet appear in more than one rollout, and a plain
+      // assign meant the last file parsed replaced the others rather than
+      // adding to them. That was survivable while each file carried the whole
+      // lineage total; once a file contributes only its own segment it is not.
+      // `applied` is what THIS file has already handed over, so re-reading a
+      // record adds nothing and the running total stays idempotent.
+      const last = payload.info.last_token_usage;
+      const bucket = (x) => [x?.input_tokens ?? 0, x?.cached_input_tokens ?? 0,
+                             x?.output_tokens ?? 0];
+      const inherited = () =>
+        // No last_token_usage means the inherited prefix cannot be recovered
+        // from this record, so claim none — that is the pre-fix behaviour, kept
+        // deliberately rather than guessed at.
+        last ? raw.map((v, i) => Math.max(0, v - bucket(last)[i])) : [0, 0, 0];
+      const raw = bucket(t);
+      const sum = (a) => a[0] + a[1] + a[2];
+      if (base === null) {
+        base = inherited();
+      } else if (prevRaw && sum(raw) < sum(prevRaw)) {
+        // The total restarted. Bank the segment that just ended — subtracting a
+        // base alone would drop it, and that is the under-count half of the
+        // pair. Measured: one file on this fleet, -13,998.
+        carry = carry.map((v, i) => v + Math.max(0, prevRaw[i] - base[i]));
+        base = inherited();
+      }
+      prevRaw = raw;
+      const want = raw.map((v, i) => carry[i] + Math.max(0, v - base[i]));
+      const net = (a) => [Math.max(0, a[0] - a[1]), a[1], a[2]];
+      const [wIn, wCr, wOut] = net(want);
+      const [aIn, aCr, aOut] = net(applied);
+      s.tok.in += wIn - aIn;
+      s.tok.cr += wCr - aCr;
+      s.tok.out += wOut - aOut;
+      applied = want;
       if (model) s.models.set(model, (s.models.get(model) ?? 0) + 1);
     } else if (d.type === "response_item" && payload) {
       if (payload.type === "function_call" || payload.type === "local_shell_call") {
@@ -637,7 +841,7 @@ export function activeDurationMs(minutes) {
   if (sorted.length === 0) return 0;
   if (sorted.length === 1) return 60000;
   const maxGap = MAX_ACTIVE_GAP_MIN * 60000;
-  let total = 0;
+  let total = 60000; // base: the first minute always contributes 60 s
   for (let i = 1; i < sorted.length; i++) {
     const gap = sorted[i] - sorted[i - 1];
     if (gap > 0) total += Math.min(gap, maxGap);
@@ -658,7 +862,14 @@ function ensureMonth(monthly, key) {
       tools: 0,
       exts: new Map(),
       models: new Map(),
-      projects: new Set(),
+      // A MAP, COUNTING. This was a Set, and Set.entries() yields [value,
+      // value] pairs — so top_projects published {name: "x", sessions: "x"},
+      // the project's NAME in the session-count field, and the sort
+      // `y[1] - x[1]` subtracted two strings, gave NaN, and left the list in
+      // INSERTION ORDER. Insertion order came off the filesystem, which is the
+      // exact defect byCountThenKey exists in this file to prevent: two
+      // machines with the same corpus disagreeing about which project is busiest.
+      projects: new Map(),
       hours: new Array(24).fill(0),
       days: new Set(),
     };
@@ -674,6 +885,11 @@ export function finalize(stats) {
   const projects = new Map();
   const models = new Map();
   const monthly = new Map();
+  // Sessions that reached NO monthly bucket, counted rather than dropped. See
+  // undated_sessions below.
+  let undated = 0;
+  // ...and the tokens those sessions carry: in the grand totals, in no month.
+  let undatedTok = 0;
   for (const [, s] of sessions) {
     const dur = activeDurationMs(s.minutes);
     durationMs += dur;
@@ -701,7 +917,8 @@ export function finalize(stats) {
       b.tools += s.tools;
       for (const [e, n] of s.exts) b.exts.set(e, (b.exts.get(e) ?? 0) + n);
       for (const [m, n] of s.models) b.models.set(m, (b.models.get(m) ?? 0) + n);
-      if (s.project && s.project !== "[excluded]") b.projects.add(s.project);
+      if (s.project && s.project !== "[excluded]")
+        b.projects.set(s.project, (b.projects.get(s.project) ?? 0) + 1);
       for (let h = 0; h < 24; h++) b.hours[h] += s.hours[h];
       // Calendar facts are NOT attributed to the start month the way volume is.
       // A session that runs 31 Jan into 1 Feb really did happen on a February
@@ -719,11 +936,70 @@ export function finalize(stats) {
         }
       }
       monthly.set(key, b);
+    } else {
+      // Both counters, one concept. The count feeds the reconciliation
+      // invariant below; the token sum is what makes the warning line mean
+      // something — "98 undated" reads very differently at 4 tokens than at
+      // 4 billion.
+      undated += 1;
+      undatedTok += s.tok.in + s.tok.out + s.tok.cr + s.tok.cw;
     }
   }
+  // COUNTED SEPARATELY FROM `undated`, BECAUSE IT IS A DIFFERENT FACT.
+  //
+  // `undated` above is a session that IS in total_sessions and reached no
+  // month, so it is the term that makes total_sessions reconcile against the
+  // monthly buckets. These never reached total_sessions at all — every row
+  // carrying the identity was dropped for an unusable timestamp, so the session
+  // is not in stats.sessions and not in any total on this object. Adding the
+  // two together would destroy the reconciliation the first one exists for.
+  //
+  // A session with even ONE dated row is NOT counted here: it is in
+  // stats.sessions, it has a month, and counting it would make the number read
+  // non-zero for boring reasons. Measured on 246 real transcripts (132,614
+  // rows, 131 sessions): 22,281 rows declare an id with no usable timestamp and
+  // every one of those sessions also has dated rows, so this filter leaves 0 —
+  // while a transcript whose clock is broken throughout still gets counted.
+  let dropped = 0;
+  for (const id of stats.undatedSessions ?? [])
+    if (!stats.sessions.has(id)) dropped += 1;
   const streaks = computeStreaks(stats.activeDays);
   return {
     total_sessions: stats.sessions.size,
+
+    // A SESSION IN ONE FIGURE AND INVISIBLE IN ANOTHER.
+    //
+    // The loop above files a session into the month it STARTED in, and only if
+    // that start is a finite timestamp. A session without one still counts in
+    // total_sessions and its tokens are still in the grand totals above — but
+    // it reaches no monthly bucket, so it is in no month's star, no snapshot,
+    // and no lifetime figure derived from the timeline. Before this the gap had
+    // no name and read as an arithmetic fault in the tool.
+    //
+    // The invariant this field exists to make checkable, from the report alone:
+    //
+    //   total_sessions === sum(monthly_buckets[].sessions) + undated_sessions
+    //
+    // ZERO IS A MEASUREMENT. Both transcript parsers drop a row whose timestamp
+    // will not parse before a session is ever built, so on a healthy corpus
+    // this is 0 — and that is worth printing, because "nothing is undated" and
+    // "this build never looked" are the same blank line otherwise. The undated
+    // sessions that actually carry tokens on a real machine come from the
+    // ported readers, which emit `start: null` on purpose for a session whose
+    // transcript is gone; cli.mjs counts those, and dropped_sessions below,
+    // alongside this number.
+    undated_sessions: undated,
+    // Sessions this scan dropped ENTIRELY: every row that named them had a
+    // timestamp that would not parse, so they are in no figure on this object —
+    // not total_sessions, not the token totals, not a month. Outside the
+    // reconciliation above on purpose; a fabricated broken-clock row took
+    // 999,999 input tokens and a whole session out of a scan with nothing
+    // anywhere saying so, which is what this counts.
+    dropped_sessions: dropped,
+    // The author's addition, renamed to sit beside undated_sessions rather
+    // than beside nothing: the tokens those undated sessions carry. They are
+    // IN the grand totals above and in no month — this is how much.
+    undated_tokens: undatedTok,
     active_days: stats.activeDays.size,
     total_duration_hours: +(durationMs / 3.6e6).toFixed(1),
     total_input_tokens: totIn,
@@ -792,6 +1068,15 @@ export function finalize(stats) {
         tool_calls: b.tools,
         languages: langsFromExts(b.exts),
         projects_count: b.projects.size,
+        // Top 5 project labels for this month — stored so cardProjects can render
+        // from a lifetime view after logs age off. Same two-segment masking as the
+        // top-level agg.projects; --no-projects is applied at write time in cli.mjs
+        // via forFiles(), which already masks this field. The count is the star axis
+        // input (projects_count above, uncapped); these names are display only.
+        top_projects: [...b.projects.entries()]
+          .sort(byCountThenKey)
+          .slice(0, 5)
+          .map(([name, sessions]) => ({ name, sessions })),
         models: Object.fromEntries([...b.models.entries()].sort((x, y) => y[1] - x[1])),
         hour_buckets: b.hours,
         // Real hours, from the same distinct-minute set and the same 00:00-05:59
@@ -803,6 +1088,98 @@ export function finalize(stats) {
         longest_streak_days: computeStreaks(b.days).longest,
       })),
   };
+}
+
+// ---- per-session export ----------------------------------------------------
+//
+// finalize() SUMS stats.sessions and then drops the Map, so every figure that
+// leaves this process is a grand total. Five sum-preserving corruptions have
+// already passed a differential built on grand totals — swap two sessions'
+// tokens, move a session's tokens into its neighbour, move input into output,
+// and every total still reconciles. A differential against the sibling program
+// (deadreckon, which exports per-session records of its own) can only catch
+// those if BOTH sides can be joined session by session, so this hands over the
+// Map before it is thrown away.
+//
+// PER FIELD, NOT PER TOTAL. A single `total` per session hides a swap between
+// two of the four counters — which is the one corruption class a token counter
+// is most likely to actually have. The four field names are ledger.mjs's FIELDS,
+// which were ported from deadreckon, so the two programs' records already agree
+// on spelling and the join needs no translation table.
+//
+// MASKING. Every other file this program writes goes out masked, so this one
+// does too, and the two fields that carry anything readable are handled here
+// rather than left to the caller:
+//
+//   project — already reduced to a two-segment projectLabel() at scan time, and
+//     the caller's forFiles()/maskProjects() swaps it for proj-<hash> under
+//     --no-projects. Nothing more to do here; the key is literally `project`,
+//     which is one of the shapes collectProjectLabels() looks for.
+//
+//   session_id — maskProjects CANNOT see this one, and it is not always a UUID.
+//     When no row declared an id, parseClaudeFile falls back to
+//     <parent-dir>/<file-stem>, and a Claude project directory name is the
+//     user's working path with the slashes rewritten to dashes: the home dir,
+//     the username and every project name, in one string. Writing that raw
+//     would put into a NEW file exactly what maskPath() strips from every old
+//     one, and under --no-projects it would leak the project names the flag
+//     promises to hash — a privacy flag failing open, which is the defect class
+//     cli-ux.test.mjs exists for. So:
+//       * an id a ROW declared is emitted byte for byte. It is the join key,
+//         the counting path uses it, and it is a vendor UUID, not a path.
+//       * an id this scanner INVENTED from a path is masked (redactSecrets +
+//         maskPath), and pseudonymised outright under --no-projects.
+//     `id_source` says which of the two every record is, so the other side can
+//     tell a joinable identity from this program's local fallback instead of
+//     guessing from whether it sees a slash.
+//
+// The identity itself is NOT recomputed here: the key of stats.sessions is
+// whatever parseClaudeFile last read out of d.sessionId (or the path fallback),
+// which is the same identity every token in the record was credited under.
+export function sessionRecords(stats, opts = {}) {
+  const out = [];
+  for (const [id, s] of stats.sessions) {
+    const fromRow = s.idFromRow === true;
+    let sid = id;
+    if (!fromRow) {
+      sid = opts.noProjects
+        ? projectPseudonym(id)
+        : maskPath(redactSecrets(id));
+    }
+    const iso = (ts) => (isFinite(ts) ? new Date(ts).toISOString() : null);
+    out.push({
+      // "claude", "codex", "cowork" — or "claude+codex" when one id really did
+      // appear in two stores. Joined rather than reduced to one value: a hybrid
+      // is a fact about the corpus, and hiding it behind whichever file was read
+      // first is how a directory-order dependency gets into a comparison.
+      cli: [...(s.sources ?? [])].sort().join("+") || "unknown",
+      session_id: sid,
+      id_source: fromRow ? "row" : "path",
+      project: s.project ?? null,
+      start: iso(s.firstTs),
+      end: iso(s.lastTs),
+      tokens: {
+        input_tokens: s.tok.in,
+        cache_creation_input_tokens: s.tok.cw,
+        cache_read_input_tokens: s.tok.cr,
+        output_tokens: s.tok.out,
+      },
+      total: s.tok.in + s.tok.cw + s.tok.cr + s.tok.out,
+    });
+  }
+  // Sorted, for the same reason listJsonl() sorts: two machines holding the same
+  // corpus must produce the same bytes, and Map order is insertion order, which
+  // is filesystem order one layer up. Two DIFFERENT fallback ids can mask to one
+  // string, so the id alone is not a total order — `start` breaks the tie rather
+  // than leaving those rows in whatever order the directory walk produced.
+  const cmp = (x, y) => (x < y ? -1 : x > y ? 1 : 0);
+  out.sort(
+    (a, b) =>
+      cmp(a.session_id, b.session_id) ||
+      cmp(a.start ?? "", b.start ?? "") ||
+      cmp(a.cli, b.cli)
+  );
+  return out;
 }
 
 // __proto__: null because these lookups are keyed by an attacker-influenced
@@ -860,38 +1237,61 @@ function inferLanguages(filePaths) {
   return Object.fromEntries(langs);
 }
 
-function computeStreaks(activeDays) {
-  if (activeDays.size === 0) return { longest: 0, current: 0 };
-  const sorted = [...activeDays].sort();
+// ONE STREAK RULE, AND IT WAS ALREADY WRITTEN DOWN.
+//
+// This file had its own computeStreaks and it was LENIENT: it counted the run
+// ending at the last active day and only zeroed it if that day was more than
+// one ago. profile.mjs had a second one implementing zY9 — walk back from
+// TODAY, any gap zeroes it — under a comment saying it "deliberately overrides
+// scan.mjs computeStreaks' leniency". Overriding by writing a second copy is
+// not overriding; it is two answers.
+//
+//   worked today and yesterday      both 2
+//   worked YESTERDAY, not today     lenient 2, zY9 0
+//   three days ending yesterday     lenient 3, zY9 0
+//
+// zY9 is the rule: deadreckon's stats.py mirrors it, profile.test.mjs asserts
+// it, and statspage.mjs renders it to the reader — "current streak walks back
+// from today (zY9); a gap zeroes it". The lenient copy published a different
+// number from current_streak_days and nothing compared them, because mutation
+// scored it 0.0% across 36 mutants: the tests import the OTHER one.
+//
+// Moved HERE rather than imported FROM profile.mjs because profile.mjs already
+// imports from this file — the other direction is a cycle.
+export function computeStreaks(activeDays, todayIso = null) {
+  const days = [...new Set(activeDays ?? [])].sort();
+  if (days.length === 0) return { current: 0, longest: 0 };
+  const have = new Set(days);
+  const today = todayIso ?? localDayKey(new Date());
   const dayMs = 864e5;
+  let cur = 0;
+  // LOCAL midnight, not Date.parse(). `Date.parse("2026-07-15")` returns UTC
+  // midnight, and localDayKey then reads that instant back on the local clock —
+  // which west of Greenwich is the PREVIOUS day. The walk started one day early
+  // and never matched, so in every Americas timezone a user who was active
+  // today scored current_streak 0, and a three-day run scored 2. UTC, Tokyo and
+  // Auckland were all correct, which is exactly why it survived: the machine
+  // that shows the bug is the machine most users are on, and not the one CI
+  // runs in.
+  //
+  // This is the same mixed-clock mistake the comment on activeDays describes,
+  // reintroduced two hundred lines away while fixing it — the parse stayed UTC
+  // while the read became local. Both ends have to move together.
+  const [ty, tm, td] = today.split("-").map(Number);
+  let probe = new Date(ty, tm - 1, td).getTime();
+  while (have.has(localDayKey(new Date(probe)))) {
+    cur += 1;
+    probe -= dayMs;
+  }
   let longest = 1, run = 1;
-  for (let i = 1; i < sorted.length; i++) {
-    const diff = Math.round(
-      (Date.parse(sorted[i]) - Date.parse(sorted[i - 1])) / dayMs
-    );
+  for (let i = 1; i < days.length; i++) {
+    const diff = Math.round((Date.parse(days[i]) - Date.parse(days[i - 1])) / dayMs);
     if (diff === 1) {
       run += 1;
       if (run > longest) longest = run;
     } else if (diff > 1) run = 1;
   }
-  let current = 1;
-  for (let i = sorted.length - 1; i > 0; i--) {
-    const diff = Math.round(
-      (Date.parse(sorted[i]) - Date.parse(sorted[i - 1])) / dayMs
-    );
-    if (diff === 1) current += 1;
-    else break;
-  }
-  // localDayKey for "today", because every entry in `sorted` is a LOCAL day key.
-  // Reading today in UTC compared two different calendars: west of Greenwich the
-  // UTC date rolls over in the evening, so the SAME history scored a live streak
-  // at 10:00 and a broken one at 20:00 on the same day. Both sides are now the
-  // local calendar date, parsed identically.
-  const daysSinceLast = Math.round(
-    (Date.parse(localDayKey(new Date())) - Date.parse(sorted[sorted.length - 1])) / dayMs
-  );
-  if (daysSinceLast > 1) current = 0;
-  return { longest, current };
+  return { current: cur, longest };
 }
 
 export function defaultRoots() {

@@ -227,10 +227,34 @@ export function normaliseProviders(providers) {
         (p?.input ?? 0) + (p?.output ?? 0) + (p?.cacheRead ?? 0) + (p?.cacheWrite ?? 0) ||
         (p?.total_tokens ?? 0),
       sessions: p?.sessions ?? 0,
+      // Carried so a caller can tell "this tool has no tokens" from "this
+      // tool's store could not be read". The wrapped cards rank by tokens and
+      // a floor is still a rank, but the flag has to survive the mapping or
+      // the distinction dies here, one step before it is shown.
+      unreadable: p?.state === "unreadable",
     }))
     .filter((p) => p.tokens > 0)
     .sort((a, b) => b.tokens - a.tokens)
     .slice(0, 5);
+}
+
+/**
+ * Providers that are installed and could NOT be read.
+ *
+ * `normaliseProviders` ranks by tokens and drops everything at zero, which is
+ * right for a leaderboard and wrong as the only view: a store that refused to
+ * open contributes 0 and is dropped by the same test that drops a tool nobody
+ * uses. Anything that presents a total built from these providers has to be
+ * able to say the total is a floor.
+ */
+export function unreadableProviders(providers) {
+  if (!providers) return [];
+  const rows = Array.isArray(providers)
+    ? providers.map((p) => [p.name ?? p.provider ?? "?", p])
+    : Object.entries(providers);
+  return rows
+    .filter(([, p]) => p?.state === "unreadable")
+    .map(([name, p]) => ({ name: String(name), why: p.unreadable ?? [] }));
 }
 
 
@@ -371,13 +395,24 @@ export function cardShapeOverTime(rawTimeline) {
   return lines;
 }
 
-export function cardRhythm(profile) {
+export function cardRhythm(profile, rawAgg) {
   const rhy = profile?.rhythm;
-  if (!rhy?.hour_buckets) return null;
-  const weekend = Math.round((rhy.weekend_ratio ?? 0) * 100);
+  // Fall back to the lifetime agg's hour_buckets when profile is absent
+  // (e.g. logs have aged off). The agg carries the accumulated histogram from
+  // snapshots, so the sparkline and peak hour still render from stored history.
+  const hbRaw = rhy?.hour_buckets ?? obj(rawAgg).hour_buckets ?? null;
+  const hb = Array.isArray(hbRaw) ? hbRaw : null;
+  if (!hb) return null;
+  const peakFromBuckets = (buckets) => {
+    if (!Array.isArray(buckets) || !buckets.some(Boolean)) return null;
+    return buckets.indexOf(Math.max(...buckets));
+  };
+  const weekend = Math.round((rhy?.weekend_ratio ?? obj(rawAgg).weekend_ratio ?? 0) * 100);
   const weekday = 100 - weekend;
-  const peak = rhy.peak_hour;
-  const owl = rhy.night_owl;
+  const peak = rhy?.peak_hour ?? peakFromBuckets(hb);
+  const nightShare = rhy?.night_share ??
+    (hb ? hb.slice(0, 6).reduce((a, b) => a + b, 0) / Math.max(1, hb.reduce((a, b) => a + b, 0)) : 0);
+  const owl = rhy?.night_owl ?? (nightShare > 0.15);
   const subhead = owl
     ? "while the 9-5 sleeps, you ship."
     : peak != null && peak >= 18 ? "you do your best work after the day job ends."
@@ -386,10 +421,10 @@ export function cardRhythm(profile) {
   return [
     head("WHEN YOU CODE"),
     "",
-    `  ${CY}${sparkline(rhy.hour_buckets)}${R}`,
+    `  ${CY}${sparkline(hb)}${R}`,
     `  ${D}00    06    12    18  23${R}`,
     "",
-    peak != null ? `  ${WH}peak at ${String(peak).padStart(2, "0")}:00${R}${D} · ${Math.round((rhy.night_share ?? 0) * 100)}% of events 00:00–05:59${R}` : "",
+    peak != null ? `  ${WH}peak at ${String(peak).padStart(2, "0")}:00${R}${D} · ${Math.round(nightShare * 100)}% of events 00:00–05:59${R}` : "",
     "",
     `  ${WH}weekdays${R}  ${bar(weekday, 100, 20)} ${D}${weekday}%${R}`,
     `  ${WH}weekends${R}  ${bar(weekend, 100, 20)} ${D}${weekend}%${R}`,
@@ -472,7 +507,15 @@ export function cardStack(rawAgg, profile) {
 }
 
 export function cardProjects(rawAgg) {
-  const projects = arr(obj(rawAgg).projects).filter((p) => p && typeof p.name === "string").slice(0, 5);
+  const agg = obj(rawAgg);
+  // Prefer live scan projects (full names, current sessions). Fall back to
+  // top_projects stored in the snapshot/lifetime aggregate when logs have
+  // aged off — those were written at scan time so they carry real names.
+  const projects = (
+    arr(agg.projects).filter((p) => p && typeof p.name === "string").length
+      ? arr(agg.projects)
+      : arr(agg.top_projects)
+  ).filter((p) => p && typeof p.name === "string").slice(0, 5);
   if (!projects.length) return null;
   const max = Math.max(...projects.map((p) => p.sessions));
   return [
@@ -548,7 +591,21 @@ export function sharePayload(rawLevels, agg, url, contact) {
   const budget = 260 - new TextEncoder().encode(base + "\n").length;
   const cLines = contactLines(contact ?? {}, budget);
   let text = cLines.length ? base + "\n" + cLines.join("\n") : base;
-  if (text.length > 260) text = text.slice(0, 257) + "...";
+  // BYTES, not .length. This compared UTF-16 code units against a BYTE cap:
+  // a 32-character CJK name is 96 bytes and .length 32, so the guard never
+  // fired and the payload sailed past the QR limit. contact.mjs:121 already
+  // measures with TextEncoder; this is the same cap and must count the same way.
+  const enc = new TextEncoder();
+  if (enc.encode(text).length > 260) {
+    // Cut by BYTES and never mid-codepoint: slicing a UTF-8 sequence in half
+    // produces a replacement char, which is a corrupt payload, not a short one.
+    let out = "";
+    for (const ch of text) {
+      if (enc.encode(out + ch).length > 257) break;
+      out += ch;
+    }
+    text = out + "...";
+  }
   return text;
 }
 
@@ -591,12 +648,58 @@ export function shareQrLines(rawLevels, agg, url, contact) {
   // Prefer encoding the GitHub Pages URL (short, clickable, renders the star
   // in a browser) over the raw-text payload. Fall back to raw text if the
   // URL can't be built (e.g. levels missing).
-  const shareUrl = buildShareUrl(lv5(rawLevels), agg, null);
+  // THE CONTACT GOES IN. It used to be passed as `null` here and could only
+  // reach the QR through `sharePayload` on the right of the `??` — which is
+  // unreachable: buildShareUrl returns null only for an empty levels array, and
+  // lv5() always returns ARMS entries. So every field typed into the [R] screen,
+  // whose heading reads "reach out (shown in QR)", was written to disk and
+  // encoded nowhere.
+  //
+  // It stays a URL rather than becoming a raw vCard so a phone that scans it can
+  // still just open the page. buildShareUrl drops whole fields, lowest priority
+  // first, if the contact would push it past the QR byte cap.
+  const shareUrl = buildShareUrl(lv5(rawLevels), agg, contact);
   const payload = shareUrl ?? sharePayload(lv5(rawLevels), agg, url ?? PAGES_BASE, contact);
   try {
-    return qrToTerminal(payload, { color: !plain() }).split("\n").map((r) => "  " + r);
+    const qr = qrToTerminal(payload, { color: !plain() }).split("\n").map((r) => "  " + r);
+    // PRINT THE RESULTS URL UNDER THE QR.
+    //
+    // The card carries two links and only ever showed one. `npx starreckon` and
+    // the project repo answer "what is this and where do I get it" — they are
+    // the same on every user's card, and they belong there. The OTHER link, the
+    // one this QR actually encodes and the only one that is YOURS, was never
+    // printed anywhere: the sole route to it was [X] copy link, which shells out
+    // to a clipboard binary. clipboard.mjs defaults to xclip on Linux/X11, which
+    // is frequently absent — and on a headless box, a container, or an SSH
+    // session there is then no way to obtain your own link at all. You cannot
+    // even select it off the screen, because it is not on the screen.
+    //
+    // It goes BELOW the frame, next to the QR, for the same reason the QR does:
+    // a version-10 symbol needs 61 columns and the card is 60, and this URL is
+    // ~190-250 characters. Inside the frame it would be clipped, and a clipped
+    // URL is worse than none — it looks copyable and is not.
+    //
+    // serve.mjs:255 already prints its URL this way ("or open <url> in a
+    // browser"), so this is an established pattern here, not a new one. Most
+    // terminals linkify a bare https:// , which is also the tappable answer to
+    // "I do not want to scan it with a second device".
+    if (!shareUrl) return qr;
+    return [
+      ...qr,
+      "",
+      // plain() gated, matching the frame drawing above (:61, :87, :89).
+      // NO_COLOR means NOT ONE escape sequence, and the suite asserts it.
+      plain()
+        ? "  your results — the same page the QR opens:"
+        : `  ${D}your results — the same page the QR opens:${R}`,
+      `  ${shareUrl}`,
+    ];
   } catch (e) {
-    return [`  ${D}(could not encode the QR: ${String(e?.message ?? e).slice(0, 60)})${R}`];
+    // plain() gated like the success path above. Bob caught this: I fixed the
+    // line I added and left the error line beside it emitting escapes
+    // unconditionally, so NO_COLOR held only while the QR encoded successfully.
+    const msg = `(could not encode the QR: ${String(e?.message ?? e).slice(0, 60)})`;
+    return [plain() ? `  ${msg}` : `  ${D}${msg}${R}`];
   }
 }
 
@@ -744,7 +847,7 @@ export function buildCards(input) {
     [cardHistory(timeline), CY],
     [cardTokens(agg, providers), "\x1b[38;5;213m"],
     [cardShapeOverTime(timeline), CY],
-    [cardRhythm(profile), "\x1b[38;5;213m"],
+    [cardRhythm(profile, agg), "\x1b[38;5;213m"],
     [cardHowYouDrive(profile), GOLD],
     [cardAgents(profile), CY],
     [cardStack(agg, profile), "\x1b[38;5;120m"],
@@ -784,7 +887,7 @@ export function buildCardsSafe(input) {
       ["THE RECORD", () => cardHistory(input.timeline)],
       ["THE WEIGHT OF IT", () => cardTokens(input.agg, input.providers)],
       ["THE SHAPE OVER TIME", () => cardShapeOverTime(input.timeline)],
-      ["WHEN YOU CODE", () => cardRhythm(input.profile)],
+      ["WHEN YOU CODE", () => cardRhythm(input.profile, input.agg)],
       ["YOUR HAND ON IT", () => cardHowYouDrive(input.profile)],
       ["HOW MANY AGENTS YOU JUGGLE", () => cardAgents(input.profile)],
       ["YOUR TOOLS & MODELS", () => cardStack(input.agg, input.profile)],

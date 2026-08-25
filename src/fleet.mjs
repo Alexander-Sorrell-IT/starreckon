@@ -17,6 +17,8 @@ import { createHash } from "node:crypto";
 import { basename, join } from "node:path";
 import os from "node:os";
 import { maskPath, maskText } from "./redact.mjs";
+import { providerOf as _providerOf } from "./scanners.mjs";
+export const providerOf = _providerOf;
 
 // The four usage counters, in the order they are reported everywhere.
 export const FIELDS = [
@@ -40,34 +42,6 @@ const NON_MACHINE_DIRS = new Set([
   HUMAN, MACHINE, "archive", "corpus", "merged",
   "digests", "dist", "docker", "__pycache__", "testing-archive",
 ]);
-
-// model-id prefix -> vendor (analyze_tokens.PROVIDER_PREFIXES, same order —
-// first match wins, so "claude" must be tried before nothing else claims it).
-const PROVIDER_PREFIXES = [
-  ["claude", "anthropic"],
-  ["deepseek", "deepseek"],
-  ["gemini", "google"],
-  ["gemma", "google"],
-  ["antigravity", "antigravity"],
-  ["copilot", "copilot"],
-  ["gpt", "openai"],
-  ["o1", "openai"], ["o3", "openai"], ["o4", "openai"], ["codex", "openai"],
-  ["grok", "xai"],
-  ["llama", "meta"],
-  ["mistral", "mistral"], ["mixtral", "mistral"],
-  ["qwen", "qwen"],
-  ["kimi", "moonshot"],
-  ["glm", "zhipu"],
-];
-
-export function providerOf(model) {
-  const m = (model || "").toLowerCase();
-  for (const [prefix, vendor] of PROVIDER_PREFIXES) {
-    if (m.startsWith(prefix)) return vendor;
-  }
-  if (m === "<synthetic>" || m === "unknown" || m === "") return "synthetic";
-  return "other";
-}
 
 // ---- layout (paths.py) -----------------------------------------------------
 
@@ -625,7 +599,34 @@ function writeJson(file, obj) {
 // folder root, totals.json / sessions.json / hardware.json under
 // machine-readable/, and a human-readable/REPORT.md stub so combine's link
 // resolves. Throws on any arithmetic the check_consistency.py gate would fail.
-export function writeMachineFolder(tokenUsageDir, folderName, data = {}) {
+export function writeMachineFolder(tokenUsageDir, folderName, data = {}, opts = {}) {
+  // REFUSING TO CLOBBER IS THE DEFAULT; REPLACING IS A DECISION.
+  //
+  // This guarded exactly one file — human-readable/REPORT.md, with an
+  // existsSync check and a comment saying "so a real report is never
+  // clobbered" — and wrote machine-readable/{totals,sessions,hardware}.json
+  // beside it with no guard at all. Measured by calling it twice:
+  //
+  //     first  submission: 14,000,000,000 tokens | real.person@example.com
+  //     second submission:             1 token   | attacker@example.com
+  //
+  // The prose was protected and the numbers were not. Under `--serve-collect`
+  // this writer is reachable over the LAN with no authentication, so a peer
+  // who names an existing folder replaces that machine's published figures and
+  // the fleet rollup then publishes theirs.
+  //
+  // A fleet member re-submitting is a real case, so the capability stays —
+  // behind `{ replace: true }`, which a caller has to mean.
+  {
+    const existing = join(tokenUsageDir, folderName);
+    if (!opts.replace && existsSync(existing)) {
+      throw new Error(
+        `${folderName} already exists in ${tokenUsageDir} — refusing to ` +
+        "overwrite a machine's published figures. Pass { replace: true } to " +
+        "replace it deliberately, or submit under a different folder name."
+      );
+    }
+  }
   if (!folderName || /[/\\]/.test(folderName) || folderName.startsWith(".")) {
     throw new Error(`invalid machine folder name: ${folderName}`);
   }

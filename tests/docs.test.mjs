@@ -158,14 +158,25 @@ test("PROVE-IT drops the stale 'once wired into the published CLI' hedge", () =>
   assert.ok(!/once wired into the published CLI/i.test(PROVE));
 });
 
-test("MIT LICENSE ships and matches package.json", () => {
-  assert.equal(PKG.license, "MIT");
+// The licence is PolyForm Noncommercial 1.0.0, not MIT. This test asserted MIT
+// and kept asserting it after the relicense, so it failed on main for the one
+// reason a test must never fail: it was describing a decision that had already
+// been reversed. The commercial-use restriction and the required notice are the
+// point — an MIT LICENSE shipping under this package name would grant rights
+// the project does not mean to grant.
+test("PolyForm Noncommercial LICENSE ships and matches package.json", () => {
+  assert.equal(PKG.license, "PolyForm-Noncommercial-1.0.0");
   assert.ok(existsSync(root + "LICENSE"), "LICENSE file must exist");
   const lic = read("LICENSE");
-  assert.match(lic, /MIT License/);
-  assert.match(lic, /Permission is hereby granted, free of charge/);
+  assert.match(lic, /PolyForm Noncommercial/i);
+  assert.match(lic, /noncommercial/i, "the use limitation is the whole point");
+  assert.match(lic, /Required Notice/, "the attribution notice must ship");
   assert.ok(PKG.files.includes("LICENSE"), "LICENSE must be in package.json files[]");
-  assert.match(README, /\[LICENSE\]\(LICENSE\)/);
+  // The MIT-era README said "[LICENSE](LICENSE)". The PolyForm one names the
+  // licence in the link text, which is the more useful form: a reader sees the
+  // restriction without opening the file.
+  assert.match(README, /\[PolyForm Noncommercial 1\.0\.0\]\(LICENSE\)/);
+  assert.match(README, /[Cc]ommercial use requires a paid license/);
 });
 
 // ---- finding: §5 tarball recipe hands the user a false verification ---------
@@ -250,7 +261,19 @@ test("package.json files[] ships everything the docs reference", () => {
   // tests/ ships on purpose — PROVE-IT §5 tells you to run them from the tarball.
   assert.ok(PKG.files.includes("tests/"));
   assert.match(PROVE, /node --test package\/tests\//);
-  for (const entry of PKG.files) assert.ok(existsSync(root + entry), `files[] entry missing: ${entry}`);
+  for (const entry of PKG.files) {
+    // A leading `!` is an EXCLUSION, not something to ship, so it has no path
+    // to exist. `!spec/identity.json` keeps personal email addresses out of the
+    // published tarball — .gitignore does not stop npm pack, which this repo
+    // already proved with src/__pycache__/*.pyc. Requiring it to exist on disk
+    // would fail exactly when the guard is doing its job.
+    if (entry.startsWith("!")) {
+      assert.ok(!existsSync(root + entry),
+        "a negation is a pattern, not a file — nothing should be named that");
+      continue;
+    }
+    assert.ok(existsSync(root + entry), `files[] entry missing: ${entry}`);
+  }
 });
 
 test("package.json points at the project's home", () => {

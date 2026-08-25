@@ -117,6 +117,22 @@ const BEACON_FIXTURE = [
   "",
 ].join("\n");
 
+const MDNS_FIXTURE = [
+  '// THIS FILE RUNS AS A CHILD PROCESS — spawned by cli.mjs for broadcast/discover.',
+  'import dgram from "node:dgram";',
+  'import { createServer } from "node:http";',
+  'export const MULTICAST_ADDR = "239.255.255.250";',
+  'export async function runBroadcast(payload, port, timeoutMs) {',
+  '  const server = createServer((req, res) => res.end("ok"));',
+  '  server.listen(port, "0.0.0.0");',
+  '  const sock = dgram.createSocket({ type: "udp4" });',
+  '  sock.setMulticastTTL(1);',
+  '  await new Promise(r => setTimeout(r, timeoutMs));',
+  '  sock.close(); server.close();',
+  '}',
+  "",
+].join("\n");
+
 const CLI_FIXTURE = [
   '// node:child_process, which the tripwire patches at module load in scan runs.',
   '// xdotool is excluded — it types into the focused window, not the clipboard.',
@@ -138,6 +154,16 @@ const CLI_FIXTURE = [
   "",
 ].join("\n");
 
+// models.mjs spawns python3/pip to build the model venvs — a real
+// child_process hit, so the allowlist entry has something to authorise.
+const MODELS_FIXTURE = [
+  'import { spawnSync } from "node:child_process";',
+  "export function installLayer(venv, python) {",
+  '  return spawnSync(python, ["-m", "venv", venv], { encoding: "utf8" });',
+  "}",
+  "",
+].join("\n");
+
 // Writes all allowlisted files AND the pin manifest that authorises them,
 // exactly as the real tree does.
 function writeAllowlisted(dir, { pins = true, pkg = { name: "fixture", version: "0.0.0" } } = {}) {
@@ -146,6 +172,8 @@ function writeAllowlisted(dir, { pins = true, pkg = { name: "fixture", version: 
   writeFileSync(join(dir, "serve.mjs"), SERVE_FIXTURE);
   writeFileSync(join(dir, "search.mjs"), SEARCH_FIXTURE);
   writeFileSync(join(dir, "beacon.mjs"), BEACON_FIXTURE);
+  writeFileSync(join(dir, "mdns.mjs"), MDNS_FIXTURE);
+  writeFileSync(join(dir, "models.mjs"), MODELS_FIXTURE);
   writeFileSync(join(dir, "cli.mjs"), CLI_FIXTURE);
   if (pkg) writeFileSync(join(dir, "package.json"), JSON.stringify(pkg, null, 2));
   if (pins) updatePins(dir);
@@ -167,12 +195,14 @@ test("staticScan passes on a clean tree with intact, pinned allowlisted files", 
   assert.ok(res.allowlist["serve.mjs"].hits > 0);
   assert.ok(res.allowlist["search.mjs"].hits > 0);
   assert.ok(res.allowlist["beacon.mjs"].hits > 0);
+  assert.ok(res.allowlist["mdns.mjs"].hits > 0);
   assert.ok(res.allowlist["cli.mjs"].hits > 0);
   assert.strictEqual(res.allowlist["tripwire.mjs"].pin, "ok");
   assert.strictEqual(res.allowlist["confine.mjs"].pin, "ok");
   assert.strictEqual(res.allowlist["serve.mjs"].pin, "ok");
   assert.strictEqual(res.allowlist["search.mjs"].pin, "ok");
   assert.strictEqual(res.allowlist["beacon.mjs"].pin, "ok");
+  assert.strictEqual(res.allowlist["mdns.mjs"].pin, "ok");
   assert.strictEqual(res.allowlist["cli.mjs"].pin, "ok");
   assert.ok(res.limits.length >= 3);
   assert.ok(res.inspected > 0, "a scan that read files must report what it read");
@@ -957,4 +987,42 @@ test("the test-file limit states the consequence, not just the policy", () => {
     limits.includes("WOULD still pass"),
     "the limit must say what gets through, not only what is caught"
   );
+});
+
+// ── the scrub reads JSONL as data, not as prose ───────────────────────────────
+//
+// collapse() turns every whitespace run into one space, so an N-line file
+// arrives at the prose test as one string carrying N-1 "spaces". The real
+// token_ledger.jsonl — 358 rows and ZERO space characters in the whole file —
+// was reported as a "108858-char prose-like string (357 spaces)". 357 is 358
+// minus one: it was counting line breaks and calling them conversation text.
+//
+// It went unseen because the check reads only what exists, and no ledger file
+// had ever been written on the machine the warden runs on. The first `--ledger`
+// run made every scan fail its own self-check, and it would have done that for
+// any user whose ledger passed 41 rows.
+test("outputScrub: a many-line JSONL of short values is not prose", () => {
+  const dataDir = tmp();
+  const rows = [];
+  for (let i = 0; i < 200; i += 1)
+    rows.push(JSON.stringify({ cli: "claude", session_id: `s${i}`, total: i }));
+  writeFileSync(join(dataDir, "token_ledger.jsonl"), rows.join("\n") + "\n");
+
+  const res = outputScrub(dataDir);
+  assert.strictEqual(res.pass, true,
+    "200 short data rows must not read as transcript text: "
+    + JSON.stringify(res.findings));
+});
+
+// And it must still catch what it is FOR: real conversation text in a value,
+// however many lines the file has.
+test("outputScrub: transcript text inside a JSONL value is still caught", () => {
+  const dataDir = tmp();
+  const prose = "the user asked me to explain the plan and I said ".repeat(40);
+  writeFileSync(join(dataDir, "leak.jsonl"),
+    JSON.stringify({ cli: "claude", note: prose }) + "\n");
+
+  const res = outputScrub(dataDir);
+  assert.strictEqual(res.pass, false, "a long prose string in a value must fail");
+  assert.ok(res.findings.some((f) => f.includes("prose-like")), JSON.stringify(res.findings));
 });

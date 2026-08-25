@@ -3,16 +3,20 @@ import assert from "node:assert/strict";
 import { mkdtempSync, writeFileSync, rmSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
+// computeStreaks now lives in scan.mjs — profile.mjs had a SECOND copy under a
+// comment saying it "deliberately overrides scan.mjs computeStreaks' leniency",
+// and overriding by writing a second implementation is two answers, not one.
+import { computeStreaks } from "../src/scan.mjs";
 import {
   CORRECTION_RE,
   classifyProvider,
-  computeStreaks,
   sweepConcurrency,
   computeToolRelationship,
   collectProfileSignals,
   computeProfile,
 } from "../src/profile.mjs";
 import { renderStatsPage, human } from "../src/statspage.mjs";
+import { qrToSvg } from "../src/qr.mjs";
 
 // ---- fixtures --------------------------------------------------------------
 
@@ -159,6 +163,52 @@ test("computeToolRelationship: loyalist and switch", () => {
   assert.equal(computeToolRelationship([]).kind, "insufficient");
 });
 
+// The third branch. computeToolRelationship has three outcomes and the test
+// above pinned two of them; `polyglot` was reached by no test in the suite, and
+// statspage.mjs:407 publishes its `share` as a percentage on the stats page.
+// Doubling the denominator in that branch changed the rendered figures from
+// 56%/44% to 28%/22% and all 813 tests stayed green.
+test("computeToolRelationship: polyglot shares are the fraction of ALL sessions", () => {
+  const mk = (month, source) => ({ start_ts: Date.parse(`${month}-05T10:00:00Z`), source });
+  // Dominant flips codex -> claude_code -> codex, so it is neither a loyalist
+  // nor a clean switch (first and last dominant agree): the polyglot fallback.
+  const rel = computeToolRelationship([
+    mk("2026-05", "codex"), mk("2026-05", "codex"), mk("2026-05", "claude_code"),
+    mk("2026-06", "claude_code"), mk("2026-06", "claude_code"), mk("2026-06", "codex"),
+    mk("2026-07", "codex"), mk("2026-07", "codex"), mk("2026-07", "claude_code"),
+  ]);
+  assert.equal(rel.kind, "polyglot");
+  assert.deepEqual(rel.tools, [
+    { tool: "Codex", share: 0.56 },      // 5 of 9
+    { tool: "Claude Code", share: 0.44 },// 4 of 9
+  ]);
+  // Ordered by session count, and the shares are a partition of the whole.
+  assert.ok(rel.tools.every((t, i, a) => i === 0 || a[i - 1].share >= t.share));
+  assert.ok(Math.abs(rel.tools.reduce((a, t) => a + t.share, 0) - 1) < 0.02);
+});
+
+// Two machines with the same sessions must publish the same tool_relationship.
+// Both tool sorts ranked on count alone, so a tie was broken by whatever order
+// the sessions arrived in — and session order comes from directory enumeration,
+// which differs between machines. scan.mjs exports byCountThenKey for exactly
+// this and uses it in four places; these two were ranking on count alone.
+test("computeToolRelationship: ties break by name, not by arrival order", () => {
+  const mk = (month, source) => ({ start_ts: Date.parse(`${month}-05T10:00:00Z`), source });
+  // The same multiset of sessions — three codex, three claude_code, tied in
+  // every month — presented in two different orders.
+  const a = computeToolRelationship([
+    mk("2026-05", "codex"), mk("2026-05", "claude_code"),
+    mk("2026-06", "claude_code"), mk("2026-06", "codex"),
+    mk("2026-07", "codex"), mk("2026-07", "claude_code"),
+  ]);
+  const b = computeToolRelationship([
+    mk("2026-05", "claude_code"), mk("2026-05", "codex"),
+    mk("2026-06", "codex"), mk("2026-06", "claude_code"),
+    mk("2026-07", "claude_code"), mk("2026-07", "codex"),
+  ]);
+  assert.deepEqual(a, b, "the published verdict must not depend on arrival order");
+});
+
 // ---- collectProfileSignals on temp fixtures --------------------------------
 
 test("collectProfileSignals: counts prompts, filters low-signal, dedups usage, no text stored", async () => {
@@ -195,7 +245,7 @@ test("collectProfileSignals: counts prompts, filters low-signal, dedups usage, n
     assert.ok(!JSON.stringify(sig).includes("/Users/someone"));
 
     const codexSess = sig.sessions.find((s) => s.source === "codex");
-    // cumulative counters overwritten, not summed; no cache-write counter
+    // cumulative counters: lineage-aware arithmetic subtracts base prefix; no cache-write counter
     assert.equal(codexSess.tok.in, 4000);
     assert.equal(codexSess.tok.cr, 1000);
     assert.equal(codexSess.tok.out, 400);
@@ -208,6 +258,90 @@ test("collectProfileSignals: counts prompts, filters low-signal, dedups usage, n
     assert.ok(!blob.includes("build pipeline"));
     assert.deepEqual(sig.active_days, ["2026-08-01"]);
   } finally {
+    rmSync(dir, { recursive: true, force: true });
+  }
+});
+
+// A killed process leaves a half-written final line, and rotation can leave one
+// mid-file. Nothing in the suite fed collectProfileSignals a line that fails
+// JSON.parse, so the catch that skips it was never executed: rethrowing there
+// instead of returning dropped this fixture from 650 tokens to 230 and from 5
+// events to 2, with all 813 tests green.
+test("collectProfileSignals: an unparseable line is skipped, not the rest of the file", async () => {
+  const dir = mkdtempSync(join(tmpdir(), "starreckon-profile-"));
+  try {
+    const p = join(dir, "sess-truncated.jsonl");
+    const row = (i, out) => claudeLine({
+      type: "assistant", timestamp: `2026-07-1${i}T10:00:00Z`, sessionId: "trunc-1",
+      message: { id: `m${i}`, model: "claude-sonnet-4-5",
+                 usage: { input_tokens: 100, output_tokens: out } },
+    });
+    // The bad line sits in the MIDDLE: a reader that aborts on it keeps what it
+    // already read, so the loss is silent and partial rather than an empty file.
+    writeFileSync(p, [
+      row(1, 10), row(2, 20), '{"type":"assistant","timesta', row(3, 30), row(4, 40), row(5, 50),
+    ].join("\n") + "\n");
+    // collectCodexFile carries its own copy of this try/catch, and a fix that
+    // lands in one reader and not the other is how this class of bug survives.
+    const cx = join(dir, "rollout-truncated.jsonl");
+    writeFileSync(cx, [
+      claudeLine({ type: "session_meta", timestamp: "2026-07-11T10:00:00Z",
+                   payload: { id: "trunc-codex", model: "gpt-5-codex" } }),
+      '{"type":"event_msg","timesta',
+      claudeLine({ type: "event_msg", timestamp: "2026-07-12T10:00:00Z",
+                   payload: { info: { total_token_usage: {
+                     input_tokens: 5000, cached_input_tokens: 1000, output_tokens: 400 } } } }),
+    ].join("\n") + "\n");
+
+    const sig = await collectProfileSignals([
+      { source: "claude_code", path: p },
+      { source: "codex", path: cx },
+    ]);
+    assert.equal(sig.total_events, 7, "seven well-formed rows across both files, two skipped");
+    const s = sig.sessions.find((x) => x.id.startsWith("trunc-1"));
+    assert.equal(s.tok.in, 500);
+    assert.equal(s.tok.out, 150);
+    // The codex counters are cumulative, so the row AFTER the bad line is the
+    // only one that carries the answer: lose it and the session reads as zero.
+    const c = sig.sessions.find((x) => x.source === "codex");
+    assert.equal(c.tok.in, 4000);
+    assert.equal(c.tok.out, 400);
+    assert.equal(c.tok.cr, 1000);
+  } finally {
+    rmSync(dir, { recursive: true, force: true });
+  }
+});
+
+// computeToolRelationship is only ever handed hand-built session objects, so
+// nothing enforces that collectProfileSignals emits the shape it reads. Swapping
+// start_ts and end_ts at the producer left every one of the 813 tests green
+// while filing a session that began 20:00 on 31 Jul under August instead.
+test("collectProfileSignals: sessions carry a start that precedes their end", async () => {
+  const dir = mkdtempSync(join(tmpdir(), "starreckon-profile-"));
+  const tz = process.env.TZ;
+  try {
+    process.env.TZ = "UTC";
+    const p = join(dir, "sess-boundary.jsonl");
+    const at = (ts) => claudeLine({
+      type: "assistant", timestamp: ts, sessionId: "boundary-1",
+      message: { id: ts, model: "claude-sonnet-4-5",
+                 usage: { input_tokens: 10, output_tokens: 1 } },
+    });
+    // One session across a month boundary — the case where start-vs-end decides
+    // which month the session is filed under.
+    writeFileSync(p, [at("2026-07-31T20:00:00Z"), at("2026-08-01T02:00:00Z")].join("\n") + "\n");
+    const sig = await collectProfileSignals([{ source: "claude_code", path: p }]);
+    for (const s of sig.sessions) assert.ok(s.start_ts <= s.end_ts, "start_ts must not follow end_ts");
+    // Fed straight from the producer, not from a fixture: the month is the
+    // month the session STARTED in.
+    const rel = computeToolRelationship([
+      ...sig.sessions,
+      { start_ts: Date.parse("2026-09-05T10:00:00Z"), source: "codex" },
+    ]);
+    assert.equal(rel.kind, "switch");
+    assert.equal(rel.timeline[0].month, "2026-07");
+  } finally {
+    process.env.TZ = tz;
     rmSync(dir, { recursive: true, force: true });
   }
 });
@@ -255,6 +389,18 @@ test("computeProfile: tokens split, records, streak override", () => {
   assert.equal(p.tokens.cache_write, 1e6);
   assert.equal(p.tokens.new_content, 1.6e6 + 1e6 + 1.6e6);
   assert.equal(p.tokens.work_tokens, 3.2e6);
+  // The four buckets above were asserted individually, but nothing asserted the
+  // total they roll up into or the percentages derived from it. Dropping
+  // cache_read from tokTotal left every one of the 813 tests green while
+  // publishing shares_pct.cache_read as 228.6% — a share over 100.
+  assert.equal(p.tokens.total, 1.6e6 + 1.6e6 + 4e6 + 1e6);
+  assert.equal(
+    p.tokens.total,
+    p.tokens.fresh_input + p.tokens.output + p.tokens.cache_read + p.tokens.cache_write
+  );
+  const shares = Object.values(p.tokens.shares_pct);
+  assert.ok(shares.every((v) => v >= 0 && v <= 100), "a share is a fraction of the whole");
+  assert.ok(Math.abs(shares.reduce((a, b) => a + b, 0) - 100) < 0.5, "the shares partition the total");
   // month 2026-08 dominant model = sonnet (2 sessions vs 1 opus):
   // (1.6M*3 + 1.6M*15 + 4M*0.3 + 1M*3.75)/1M = 4.8+24+1.2+3.75 = 33.75
   // records: longest session by DURATION
@@ -330,6 +476,63 @@ test("renderStatsPage: all-null input renders dashes, never crashes", () => {
   assert.ok(typeof html2 === "string" && html2.length > 500);
 });
 
+// ---- the tappable share QR --------------------------------------------------
+// A QR you cannot tap is useless to the person already holding the screen: come
+// across this page on your own phone and there is no second device to scan it
+// with. So the code IS the link — <a> may wrap <svg> in HTML5.
+//
+// That href is the one and only http(s) string the page is allowed to contain,
+// and this test pins the distinction it rests on. "No external resource" means
+// nothing the browser FETCHES to render the page — src=, <link>, @import,
+// url(http…), <script>. A destination the reader chooses to follow is none of
+// those. Anything that widens that hole should fail here.
+test("renderStatsPage: the share QR is an <a> wrapping an <svg>, and nothing is fetched", () => {
+  const url =
+    // RFC 2606 documentation host, not the live one. verify.mjs staticScan
+    // refuses a shipped test that names a routable host, so that a fixture can
+    // never become a live destination.
+    "https://starreckon.example/#s=23.1&g=MASTERWORK&a=DEEP_BUILDER&v=4.8,4.6,4.5,4.7,4.4&ss=142&h=318&d=89&n=ALEX";
+  const html = renderStatsPage({ agg: { total_sessions: 3 }, name: "ALEX", shareUrl: url });
+
+  const anchor = html.match(/<a href="[^"]*"><svg\b[\s\S]*?<\/svg><\/a>/);
+  assert.ok(anchor, "the page has no <a> wrapping an <svg>");
+
+  // The href and the QR payload must be the SAME destination. A code that goes
+  // somewhere the link does not is the worst possible way for the two halves of
+  // one control to disagree, and nothing else in the page would notice.
+  assert.ok(
+    anchor[0].startsWith(`<a href="${url.replace(/&/g, "&amp;")}">`),
+    "the anchor does not point at the share URL"
+  );
+  assert.ok(anchor[0].includes(qrToSvg(url, { size: 200 })), "the QR encodes something other than the href");
+
+  // Nothing the browser would fetch on load.
+  assert.doesNotMatch(html, /<script/i, "page must have zero JS");
+  assert.doesNotMatch(html, /<link\b/i, "no stylesheet or preload links");
+  assert.doesNotMatch(html, /\ssrc\s*=/i, "no src= anywhere");
+  assert.doesNotMatch(html, /@import/i, "no CSS @import");
+  assert.doesNotMatch(html, /url\(\s*['"]?\s*https?:/i, "no remote url() in CSS");
+
+  // ...and the only remote-looking strings left are the anchor's href and the
+  // SVG xmlns. Blank both out and no scheme may survive.
+  const rest = html
+    .replace(/<a href="[^"]*"/g, "<a")
+    .replace(/https?:\/\/www\.w3\.org[^"']*/g, "");
+  assert.doesNotMatch(rest, /https?:\/\//, "an http(s) reference that is not the share link");
+});
+
+test("renderStatsPage: no share URL means no QR section, not a broken one", () => {
+  // buildShareUrl returns null when there are no levels (cli.mjs passes its
+  // result straight through), and encodeQR THROWS past ~271 bytes. Both must
+  // cost the section and nothing else — same rule as every other panel here.
+  for (const shareUrl of [undefined, null, "", "   ", 42, "x".repeat(400)]) {
+    const html = renderStatsPage({ agg: { total_sessions: 3 }, shareUrl });
+    assert.ok(html.startsWith("<!doctype html>"), `crashed on shareUrl=${String(shareUrl).slice(0, 12)}`);
+    assert.doesNotMatch(html, /<a href=/, `emitted an anchor for shareUrl=${String(shareUrl).slice(0, 12)}`);
+    assert.ok(!html.includes("SHARE<"), "empty SHARE panel rendered");
+  }
+});
+
 test("human formatter: K/M/B/T", () => {
   assert.equal(human(950), "950");
   assert.equal(human(1500), "1.5K");
@@ -337,4 +540,49 @@ test("human formatter: K/M/B/T", () => {
   assert.equal(human(3.1e9), "3.1B");
   assert.equal(human(1.2e12), "1.2T");
   assert.equal(human(null), null);
+});
+
+// ---- collectCodexFile: lineage-aware token arithmetic ----------------------
+// The old code did `s.tok.in = Math.max(0, total - cached)` which overwrote
+// on every event_msg. total_token_usage is CUMULATIVE OVER THE LINEAGE, so a
+// resumed/forked session carried the inherited prefix of its parent on every
+// record. With last_token_usage present the base can be peeled off precisely.
+//
+// Red test for the old code: a file whose first event_msg has a 500-token base
+// (inherited from a parent session — total=600, last=100 → base=500). The old
+// overwrite would emit 100 (600-500 cached? no — it ignored last_token_usage
+// entirely and returned 600), so the red assertion is tok.in === 50 (the net
+// of the 50-token event that actually happened, not the full cumulative total).
+
+test("collectCodexFile: strips inherited lineage base via last_token_usage", async () => {
+  const dir = mkdtempSync(join(tmpdir(), "starreckon-profile-lineage-"));
+  try {
+    const p = join(dir, "rollout-lineage.jsonl");
+    // Parent session accumulated 500 in + 50 cached + 20 out before this file.
+    // This file's first event adds another 50 in + 0 cached + 10 out.
+    // total = 550 in, 50 cached, 30 out.  last = 50 in, 0 cached, 10 out.
+    // Expected net for this file: 500 in, 50 cached, 20 out.
+    const lines = [
+      JSON.stringify({ type: "session_meta", timestamp: "2026-08-01T08:00:00Z", payload: { id: "lineage-sess", model: "codex-mini", cwd: "/home/user/proj" } }),
+      JSON.stringify({ type: "event_msg",    timestamp: "2026-08-01T08:01:00Z", payload: { info: {
+        total_token_usage: { input_tokens: 550, cached_input_tokens: 50, output_tokens: 30 },
+        last_token_usage:  { input_tokens:  50, cached_input_tokens:  0, output_tokens: 10 },
+      } } }),
+    ];
+    writeFileSync(p, lines.join("\n") + "\n");
+    const sig = await collectProfileSignals([{ source: "codex", path: p }]);
+    const s = sig.sessions.find((x) => x.source === "codex");
+    // net in = total_in(550) - base_in(550-50=500) - cached(50) = 0; but net via
+    // the net() helper: [in-cr, cr, out] of want=[500,50,20] → in=450, cr=50, out=20
+    // want = raw - base = [550,50,30] - [500,50,20] = [50,0,10]  (raw=bucket(t)=[550,50,30], base=inherited=[500,50,20])
+    // net([50,0,10]) → [50-0,0,10] = [50,0,10]
+    // So tok.in=50, tok.cr=0, tok.out=10
+    assert.equal(s.tok.in,  50,  "net input tokens after stripping inherited base");
+    assert.equal(s.tok.cr,   0,  "net cached tokens after stripping inherited base");
+    assert.equal(s.tok.out, 10,  "net output tokens after stripping inherited base");
+    // The old overwrite code: s.tok.in = max(0, total_in - cached_in) = max(0, 550-50) = 500 — WRONG.
+    // So the check above (50 ≠ 500) is the red gate.
+  } finally {
+    rmSync(dir, { recursive: true, force: true });
+  }
 });

@@ -34,9 +34,49 @@ import { existsSync, mkdirSync, readFileSync, writeFileSync, unlinkSync } from "
 import { homedir, platform } from "node:os";
 import { join, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
+import { TRIGGER_ENV } from "./layerlog.mjs";
 
 export const LABEL         = "work.starreckon.scan";
 export const PROTECT_LABEL = "work.starreckon.protect";
+
+// HOW A SCHEDULED RUN KNOWS IT IS ONE.
+//
+// The consent screen promises a log for every run of the daemon layer, and the
+// daemon layer IS these two jobs. But a scheduled run reaches cli.mjs by the
+// same argv a person can type, so the process cannot tell the two apart by
+// looking at itself. The schedule file — the artifact this module writes and
+// the user reads before loading it — is the one place that knows, so it says
+// so, in an environment variable the job carries.
+//
+// Consequences, both of them honest and neither of them hidden:
+//   · a SCHEDULE WRITTEN BEFORE THIS EXISTED carries no marker, so its runs are
+//     indistinguishable from typed ones and write no log. `starreckon daemon on`
+//     rewrites both files and fixes it; `daemon status` says which is installed.
+//   · the marker is a CLAIM. Anyone can export it and get a run recorded as
+//     scheduled, so the record names the variable it believed rather than
+//     presenting "scheduled" as something it measured (layerlog.mjs).
+// WHAT THE SCHEDULED SCAN DELIBERATELY DOES NOT DO.
+//
+// The argv below is `--yes --no-wrapped --no-pace --ledger`. It is NOT --full,
+// and that is a decision rather than an omission: --full runs the model layer's
+// auto-index, and the model layer is SEPARATELY CONSENTED. runSearch() exists
+// so every model invocation passes through one door and writes one log, because
+// the consent screen promises a log for every run of the layer. A daemon
+// spawning a Python embedding job on a timer runs a consented-separately layer
+// without its consent, on a schedule nobody is watching.
+//
+// The consequence is real and is named where it can be seen rather than papered
+// over: nothing re-indexes on its own, so sessions recorded after the last
+// manual `search --search-index` are counted, snapshotted and NOT SEARCHABLE.
+// `search --search-status` now reports "N indexed · M on disk" for exactly that
+// reason — it used to print only N, so a stale index and a complete one looked
+// identical.
+//
+// The scan is what must run unattended: AI-coding logs age off disk in about
+// thirty days and the snapshots are what outlive them. An index can be rebuilt
+// from data that is still there; a transcript that aged out cannot.
+export const SCAN_TRIGGER    = "daemon:scan";
+export const PROTECT_TRIGGER = "daemon:protect";
 
 const HOME = () => homedir();
 
@@ -83,6 +123,10 @@ export function launchdPlist({ node = process.execPath, entry = cliEntry(), day 
     <string>--no-pace</string>
     <string>--ledger</string>
   </array>
+  <key>EnvironmentVariables</key>
+  <dict>
+    <key>${esc(TRIGGER_ENV)}</key><string>${SCAN_TRIGGER}</string>
+  </dict>
   <key>StartCalendarInterval</key>
   <dict>
     <key>Day</key><integer>${day}</integer>
@@ -114,6 +158,10 @@ export function launchdProtectPlist({ node = process.execPath, entry = cliEntry(
     <string>${esc(entry)}</string>
     <string>protect</string>
   </array>
+  <key>EnvironmentVariables</key>
+  <dict>
+    <key>${esc(TRIGGER_ENV)}</key><string>${PROTECT_TRIGGER}</string>
+  </dict>
   <key>StartInterval</key><integer>21600</integer>
   <key>RunAtLoad</key><false/>
   <key>StandardOutPath</key><string>${esc(join(logDir, "protect.log"))}</string>
@@ -130,6 +178,7 @@ Description=starreckon monthly local scan (no network)
 
 [Service]
 Type=oneshot
+Environment=${TRIGGER_ENV}=${SCAN_TRIGGER}
 ExecStart=${node} ${entry} --yes --no-wrapped --no-pace --ledger
 `,
     timer: `[Unit]
@@ -159,6 +208,7 @@ Description=starreckon 6-hour transcript protection + ledger tick (no network)
 
 [Service]
 Type=oneshot
+Environment=${TRIGGER_ENV}=${PROTECT_TRIGGER}
 ExecStart=${node} ${entry} protect
 `,
     timer: `[Unit]
@@ -174,6 +224,17 @@ WantedBy=timers.target
   };
 }
 
+// Does the schedule file ON DISK carry the marker that makes its runs
+// identifiable? A schedule written before the marker existed still works — it
+// scans, it protects — but its runs are indistinguishable from a typed command
+// and so write no log, and the consent screen promised one. Silence there would
+// be the exact failure this project keeps hitting: nothing written looks the
+// same as nothing happened. So it is measured off the file and reported.
+function marked(file) {
+  if (!file || !existsSync(file)) return null; // null = no file, not "no marker"
+  try { return readFileSync(file, "utf8").includes(TRIGGER_ENV); } catch { return null; }
+}
+
 export function daemonStatus() {
   const p = platform();
   if (p === "darwin") {
@@ -186,9 +247,12 @@ export function daemonStatus() {
       file,
       protectInstalled: existsSync(protectFile),
       protectFile,
+      logged:        marked(file),
+      protectLogged: marked(protectFile),
     };
   }
   if (p === "linux") {
+    // The marker lives in the .service (what runs), not the .timer (when).
     return {
       platform:  p,
       supported: true,
@@ -196,9 +260,14 @@ export function daemonStatus() {
       file:      timerPath(),
       protectInstalled: existsSync(protectTimerPath()) && existsSync(protectServicePath()),
       protectFile:      protectTimerPath(),
+      logged:        marked(servicePath()),
+      protectLogged: marked(protectServicePath()),
     };
   }
-  return { platform: p, supported: false, installed: false, file: null, protectInstalled: false, protectFile: null };
+  return {
+    platform: p, supported: false, installed: false, file: null,
+    protectInstalled: false, protectFile: null, logged: null, protectLogged: null,
+  };
 }
 
 /**

@@ -6,6 +6,7 @@ import { existsSync, mkdirSync, readdirSync, readFileSync, writeFileSync } from 
 import { homedir, hostname, userInfo } from "node:os";
 import { join, resolve } from "node:path";
 import { auditWrite } from "./audit.mjs";
+import { scannerVersion } from "./scanners.mjs";
 import { computeLevels } from "./star.mjs";
 import { renderStarSvg } from "./starsvg.mjs";
 
@@ -65,36 +66,100 @@ export function writeSnapshots(monthlyBuckets, meta = {}, { audit = null } = {})
     // its logs aged off went 18,000,000 -> 3,600,000 input tokens, permanently.
     // Merge instead, field-wise max.
     const held = [];
+    const superseded = [];
     snap.machines[host] = mergeMonth(
       snap.machines[host],
-      { ...bucket, updated_at: new Date().toISOString(), ...meta },
-      held
+      {
+        ...bucket,
+        updated_at: new Date().toISOString(),
+        scanner_version: scannerVersion(),
+        ...meta,
+      },
+      held,
+      superseded
     );
-    // The case the merge exists for is also the one case it cannot decide: a
-    // month that came back smaller is log rotation, but a scanner fix that
-    // corrects an over-count looks identical from here. ledger.mjs can tell
-    // them apart because its rows carry a scanner_version; a snapshot record
-    // does not. So the stored value wins and the run SAYS it won — otherwise
-    // the file silently disagrees with the scan printed above it.
+    // The case the merge exists for used to be the one case it could not
+    // decide: a month that came back smaller is log rotation, but a scanner fix
+    // that corrects an over-count looked identical from here. It is decidable
+    // now, by the rule ledger.mjs has always used one level down — the record
+    // carries the fingerprint of the code that produced it, so "same code, so a
+    // smaller number is rotation" and "different code, so this is a restatement"
+    // are different questions with different answers. Either way the run SAYS
+    // what it did, rather than the file quietly disagreeing with the scan
+    // printed above it.
     if (held.length)
       console.warn(
         `starreckon: ${bucket.month} — this scan is smaller than the stored snapshot ` +
-        `(${held.join(", ")}); kept the stored value. Logs age off after ~30 days; ` +
-        `the snapshot is a floor and does not shrink.`
+        `(${held.join(", ")}); kept the stored value. Same scanner, so a smaller ` +
+        `number is logs ageing off after ~30 days; the snapshot is a floor and does not shrink.`
+      );
+    if (superseded.length)
+      console.warn(
+        `starreckon: ${bucket.month} — the stored snapshot was written by ${superseded.join(", ")}, ` +
+        `so its numbers are a different scanner's statement, not a floor under this one. ` +
+        `Took this scan and kept the old record under "superseded" — nothing is deleted.`
       );
     writeFileSync(file, auditWrite(audit, file, JSON.stringify(snap, null, 2)));
   }
 }
 
-// ledger.mjs:118 takes the field-wise max of two observations of one session so
+// ledger.mjs:160 takes the field-wise max of two observations of one session so
 // that "a partial write cannot shrink a session". This is the same rule one
 // level up: a partial SCAN cannot shrink a month. Numbers take the max — per
 // numeric field, per language/model key, per hour bucket — and anything else
 // (month, updated_at, meta) takes the incoming value, because a re-run is the
-// newer statement about those. Top-level numeric fields the stored month won
-// are pushed onto `held` so the caller can report them.
-function mergeMonth(stored, incoming, held) {
+// newer statement about those. Numeric fields the stored month won are pushed
+// onto `held` so the caller can report them — every branch, see below.
+//
+// THE FLOOR ONLY APPLIES BETWEEN TWO RUNS OF THE SAME CODE.
+//
+// Math.max answers "which observation saw more of the same thing", and that is
+// only the question when both observations were produced by the same scanner.
+// Across a scanner change it is the wrong question, and answering it anyway is
+// how a corrected over-count becomes permanent: the correction is smaller by
+// construction, so it loses the max, forever, in every future run. Measured on
+// this machine — the stored 2026-07 record claimed 16,636 sessions against a
+// true 132, and no scanner fix could ever have dislodged it.
+//
+// So versions decide first, exactly as ledger.mjs:132-163 does one level down
+// (with the caveat ledger.mjs now spells out: rows whose version could not be
+// determined share a bucket with nothing, so they supersede instead of maxing):
+//
+//   same version        -> floor. A smaller number is logs ageing off.
+//   different version   -> restatement. The newer scanner's number wins.
+//   either absent       -> NOT COMPARABLE, which is not the same as matching
+//                          (scanners.mjs:82-89 states that rule for this exact
+//                          field). An unversioned record cannot outrank one
+//                          that names its producer, so the scan wins.
+//
+// Nothing is discarded when a record is superseded: the whole old record is
+// kept under `superseded` so any number that was ever published stays on disk
+// and can be read back or rolled back.
+function sameScanner(stored, incoming) {
+  const s = stored?.scanner_version;
+  const i = incoming?.scanner_version;
+  // Two nulls are two unknowns, not a match.
+  if (typeof s !== "string" || typeof i !== "string" || !s || !i) return false;
+  return s === i;
+}
+
+function mergeMonth(stored, incoming, held, superseded = []) {
   if (!stored || typeof stored !== "object") return { ...incoming };
+
+  if (!sameScanner(stored, incoming)) {
+    superseded.push(
+      typeof stored.scanner_version === "string" && stored.scanner_version
+        ? `scanner ${stored.scanner_version}`
+        : "a scanner that recorded no version"
+    );
+    // Stored-only keys still survive, for the same reason they do below.
+    // `superseded` is one level deep on purpose: keeping the previous record
+    // preserves what was published, keeping a chain of them grows without
+    // bound in a file that is written on every default run.
+    const { superseded: _prior, ...priorRecord } = stored;
+    return { ...priorRecord, ...incoming, superseded: priorRecord };
+  }
+
   // Stored-only keys survive: a field this scan did not produce at all is not
   // evidence that the field is now zero.
   const out = { ...stored, ...incoming };
@@ -105,15 +170,32 @@ function mergeMonth(stored, incoming, held) {
       out[k] = Math.max(s, v);
     } else if (Array.isArray(v)) {
       const n = Math.max(v.length, Array.isArray(s) ? s.length : 0);
-      out[k] = Array.from({ length: n }, (_, i) => Math.max(numOr0(v[i]), numOr0(s?.[i])));
+      // Held silently until 2026-08-16: `held` was pushed only in the number
+      // branch above, so hour_buckets (array) and languages/models (object)
+      // kept the stored value with no report at all. A held value and an
+      // agreed value rendered identically, which is the four-states defect
+      // inside the snapshot writer itself.
+      let anyHeld = false;
+      out[k] = Array.from({ length: n }, (_, i) => {
+        const sv = numOr0(s?.[i]), iv = numOr0(v[i]);
+        if (sv > iv) anyHeld = true;
+        return Math.max(sv, iv);
+      });
+      if (anyHeld) held.push(k);
     } else if (v && typeof v === "object" && s && typeof s === "object" && !Array.isArray(s)) {
       const keys = new Set([...Object.keys(s), ...Object.keys(v)]);
+      let anyHeld = false;
       // fromEntries, not assignment: these keys come from file extensions and
       // model names, and `out[k]["__proto__"] = 3` is a no-op that would drop
       // the count silently — the same footgun scan.mjs guards EXT_TO_LANG from.
       out[k] = Object.fromEntries(
-        [...keys].map((kk) => [kk, Math.max(numOr0(s[kk]), numOr0(v[kk]))])
+        [...keys].map((kk) => {
+          const sv = numOr0(s[kk]), iv = numOr0(v[kk]);
+          if (sv > iv) anyHeld = true;
+          return [kk, Math.max(sv, iv)];
+        })
       );
+      if (anyHeld) held.push(k);
     }
   }
   return out;
@@ -168,6 +250,7 @@ export function loadTimeline() {
         languages: {},
         models: {},
         projects_count: 0,
+        top_projects: {},   // name -> max sessions seen across machines, collapsed to array below
         hour_buckets: new Array(24).fill(0),
         active_days: 0,
         longest_streak_days: 0,
@@ -190,6 +273,16 @@ export function loadTimeline() {
         // snapshots deliberately do not carry names — so this takes the largest
         // single machine's count, a floor rather than an invented total.
         merged.projects_count = Math.max(merged.projects_count, m.projects_count ?? 0);
+        // top_projects: union across machines, keeping the highest session count
+        // per name. Same reason as projects_count — the same repo on two machines
+        // is one project, so we merge by name, not sum.
+        for (const p of (m.top_projects ?? [])) {
+          if (p?.name) {
+            merged.top_projects[p.name] = Math.max(
+              merged.top_projects[p.name] ?? 0, p.sessions ?? 0
+            );
+          }
+        }
         for (const [k, v] of Object.entries(m.languages ?? {}))
           merged.languages[k] = (merged.languages[k] ?? 0) + v;
         for (const [k, v] of Object.entries(m.models ?? {}))
@@ -223,6 +316,11 @@ export function loadTimeline() {
         .filter((v) => typeof v === "number" && Number.isFinite(v));
       if (nights.length) merged.night_hours = +Math.max(...nights).toFixed(1);
       else unmeasuredNights.push(merged.month);
+      // Collapse the temp object back to a sorted array before publishing.
+      merged.top_projects = Object.entries(merged.top_projects)
+        .sort((a, b) => b[1] - a[1])
+        .slice(0, 5)
+        .map(([name, sessions]) => ({ name, sessions }));
       merged.duration_hours = +merged.duration_hours.toFixed(1);
       merged.levels = computeLevels(merged);
       months.push(merged);
@@ -277,6 +375,11 @@ export function lifetimeFromTimeline(timeline) {
     languages: {},
     models: {},
     projects_count: 0,
+    // Temp object for accumulation — collapsed to array at the end.
+    // top_projects across months: a project that appeared in any month is
+    // kept; session count is the max seen in any one month (not a sum,
+    // because the same project across 12 months is still one project).
+    _topProjectsMap: {},
     hour_buckets: new Array(24).fill(0),
     active_days: 0,
     longest_streak_days: 0,
@@ -302,7 +405,19 @@ export function lifetimeFromTimeline(timeline) {
     for (let h = 0; h < 24; h++) life.hour_buckets[h] += hb[h] ?? 0;
     if (typeof m.night_hours === "number" && Number.isFinite(m.night_hours))
       life.night_hours = (life.night_hours ?? 0) + m.night_hours;
+    for (const p of (m.top_projects ?? [])) {
+      if (p?.name)
+        life._topProjectsMap[p.name] = Math.max(
+          life._topProjectsMap[p.name] ?? 0, p.sessions ?? 0
+        );
+    }
   }
+  // Collapse temp accumulator and remove it from the public object.
+  life.top_projects = Object.entries(life._topProjectsMap)
+    .sort((a, b) => b[1] - a[1])
+    .slice(0, 5)
+    .map(([name, sessions]) => ({ name, sessions }));
+  delete life._topProjectsMap;
   if (life.night_hours != null) life.night_hours = +life.night_hours.toFixed(1);
   life.duration_hours = +life.duration_hours.toFixed(1);
   life.levels = computeLevels(life);

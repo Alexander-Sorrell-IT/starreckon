@@ -372,6 +372,11 @@ starreckon --dual           # ONLY two stars: this month, then lifetime
 starreckon --card           # write the Porter-Grade SVG card
 starreckon --page           # write the full HTML stats page (runs the deeper profile pass)
 starreckon --json           # write both a compact baseline and the full expanded JSON report
+starreckon --sessions       # write the per-session export: one record per session, its four
+                               # token counters kept apart, plus start/end, CLI and project.
+                               # For comparing against another counter session by session —
+                               # a grand-total check survives a swap between two sessions.
+                               # Obeys --no-projects; project names are readable without it.
 starreckon --profile        # run the deeper profile pass without writing the HTML page
                                # (it lands in the expanded JSON report)
 starreckon --accounts       # per-account split + floor (files get acct-<hash>, not addresses)
@@ -379,7 +384,10 @@ starreckon --no-projects    # write proj-<hash> into the files instead of projec
 starreckon --show-accounts  # opt in: write the RAW account email addresses into the files
 starreckon --no-providers   # skip the multi-CLI scan (Gemini/Copilot/…)
 starreckon --no-snapshot    # don't touch ~/.starreckon/snapshots or ~/.starreckon/stars
-starreckon --name=NAME      # title printed on the card and the stats page
+starreckon --name=NAME      # OVERRIDE the display name for this run only.
+                               # Your name normally lives in ~/.starreckon/contact.json
+                               # with the rest of your details — press [R] in the menu to
+                               # set it, see what is shared, and clear any field.
 starreckon --roots=/Volumes/other-mac/Users/me   # merge another machine's logs
 starreckon --join-fleet=DIR [--machine=NAME] [--label=LABEL]   # write this machine's folder into a
                                # fleet dir (--machine/--label default to this machine's hostname)
@@ -388,11 +396,51 @@ starreckon --reset-audit[=WHY]   # retire the run-log history: deletes the logs 
                                # deletion in the new chain's genesis (PROVE-IT.md §4). Scans nothing
 starreckon verify           # the adversarial self-check, with each check's limits printed
 starreckon prove            # print (don't run) the OS-confinement proof command for this machine
+starreckon addons           # companion tools: what this machine is licensed for, what is installed
+starreckon receipt          # every field starreckon kept, read from disk (--json for machine-readable)
+starreckon serve            # LAN HTTP server — share your stats page over WiFi; prints a QR
+starreckon serve --serve-discover          # pull fleet folders from broadcast peers on the LAN first
+starreckon broadcast        # scan + serve your machine folder over LAN HTTP; peers find you automatically
+starreckon search QUERY     # semantic search over sessions (SecureBERT — needs --search-setup first)
+starreckon scoreboard       # sign your skill summary and show the leaderboard submission URL
 ```
 
 An unknown flag exits 2 and reads nothing: `--no-project` (singular) used to be
 ignored in silence while the run wrote every real project name, so flags now
 fail closed rather than open. Same for an unknown subcommand.
+
+### Companion tools — `starreckon addons`
+
+Four pip tools (`cli-wikia`, `cli-enforcement`, `cli-fleet`, `cli-collective`)
+and two MCP servers (`filelens-mcp`, `sitemap-mcp`) are optional companions,
+unlocked by a licence file at `~/.starreckon/licence.json`.
+
+**The licence is checked offline.** It is an Ed25519 signature verified against
+a public key compiled into `src/addons.mjs` — there is no activation call, no
+licence server, and no request of any kind when a licence is missing, expired
+or forged. That was the requirement rather than a convenience: the no-egress
+proof is the most valuable thing this program has, and an entitlement check is
+not worth spending it on. `starreckon addons` adds nothing to the write list in
+[PROVE-IT.md](PROVE-IT.md) §6 either — it reads, and never writes.
+
+`addons` reports five states, and they are deliberately not collapsed:
+
+| | |
+|---|---|
+| `locked` | not covered by this licence. **Nothing was looked for** — an unlicensed install does not inventory your machine |
+| `absent` | covered, and no such executable is on PATH |
+| `unreachable` | covered, on PATH, and what PATH points at cannot be read — an editable install whose drive is unplugged looks exactly like this, and calling it `absent` would tell you to reinstall a tool you already own |
+| `ready` | covered, installed, runnable |
+| `external` | covered and installed, and starreckon will not run it |
+
+`external` is a boundary, not a lesser tier. `sitemap-mcp` fetches live sites by
+design, and both MCP servers are meant to be spawned over stdio by an MCP
+client. starreckon lists them and never executes them, so the tools stay yours
+and this program stays provably silent.
+
+Because the pip tools live in a virtualenv, they are only on PATH when that
+environment is active — so `addons` prints how many PATH entries it searched
+rather than leaving `absent` looking definitive.
 
 `--join-fleet` is the one flag that deliberately writes outside
 `~/.starreckon`: it exists to merge several machines' totals, and if you point
@@ -526,6 +574,35 @@ Also true, and worth knowing:
 - Syncing **is** the one way starreckon output leaves your machine, and
   pointing `--join-fleet` at a synced or network-mounted folder ships those
   files by design. No socket check can see that; PROVE-IT.md §6 spells it out.
+
+## How the counting itself is tested
+
+The privacy proofs above cover what leaves the machine. The counting is proven
+separately, and more harshly than a test suite alone can:
+
+- **1,000+ tests**, every one of which follows the house rule that a test is
+  only believed after its fault has been planted and the failure watched.
+- **A second, independent implementation.** The same counting rules exist in
+  Python (`deadreckon`), and the two are run against each other. On the machine
+  this was written on, the two programs scanned the same home and agreed **to
+  the token** on every CLI — the one delta was the live session writing between
+  the two scans.
+- **A claims census** (`claims_probe.mjs`): every absolute sentence in the
+  source — NEVER, ALWAYS, CANNOT, MUST — is falsified in a throwaway copy and
+  must make a suite go red. A baseline runs before every mutation so a broken
+  sandbox cannot report a false pass.
+- **Mutation testing on every counting file** (`scan.mjs`, `scanners.mjs`,
+  `readers.mjs`, `accounts.mjs`), with the bar set where it means something:
+  every surviving mutation that can change a *number* is killed or written
+  down as equivalent. A changed string in a display path is noise; a flipped
+  `+=` in an accumulator is the product breaking.
+- **Coverage-guided fuzzing of the readers** (jazzer.js): the contract fuzzed
+  is that a reader never throws and never returns a shape its callers cannot
+  use — calibrated by planting a known fault and watching it found in seconds.
+- **The package, not just the source**: `npm pack` + install into an empty
+  directory + run, because a test suite runs the source tree and a user
+  installs the tarball — which are not the same thing, and were once broken
+  apart for a full day while every test stayed green.
 
 ## Prove it (the long version)
 

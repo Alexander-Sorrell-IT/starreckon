@@ -30,6 +30,7 @@ import {
 } from "node:fs";
 import { homedir, platform } from "node:os";
 import { basename, dirname, join, sep } from "node:path";
+import { findConfigDirs } from "./accounts.mjs";
 
 const TARGET_DAYS = 36500; // 100 years — cleanup runs, never matches
 
@@ -91,8 +92,30 @@ function readJsonSafe(p) {
 
 // ---- credential guard ------------------------------------------------------
 
+// A CREDENTIAL IS RECOGNISED BY SHAPE, NOT BY BEING ON A LIST OF TEN NAMES.
+//
+// SECRET_NAMES held `oauth_creds.json` and this let `oauth-keys.json` — one
+// character different — through with its .json extension into
+// ~/.ai-logs-archive/aider/, on every tick, under a header that says "NEVER
+// archives credential files". An exact-name denylist cannot keep a promise
+// about files it has not seen; the next tool's `api-key.json` or
+// `refresh_token.json` would sail through the same way. So the exact list stays
+// (it is cheap and it names the known offenders) and a pattern test sits beside
+// it: any name carrying a credential-shaped word is refused, whatever the
+// extension.
+//
+// It is NOT a bare-word match on "token". The first draft was, and it refused
+// `token_ledger.jsonl` and `token-usage.json` — this program's own record and
+// deadreckon's — which are exactly the files the archive exists to keep. A
+// credential file says what KIND of secret it is: `oauth-keys`, `api_key`,
+// `refresh_token`, `access_token`, `id_rsa`. A record file uses the word as a
+// unit of measure. The pattern names the credential compounds, and leaves the
+// bare word alone.
+const SECRET_SHAPE = /(?:^|[._-])(?:oauth(?:[._-]?(?:keys?|creds?|tokens?))?|secrets?|credentials?|creds|api[._-]?keys?|apikeys?|auth(?:[._-]?tokens?)?|passwords?|passwd|private[._-]?keys?|id_rsa|id_ed25519|id_ecdsa|refresh[._-]?tokens?|access[._-]?tokens?|bearer|session[._-]?keys?|cookies?[._-]?(?:jar|store|txt))(?:$|[._-])/i;
+
 function isSecretName(name) {
-  return SECRET_NAMES.has(name.toLowerCase());
+  const n = name.toLowerCase();
+  return SECRET_NAMES.has(n) || SECRET_SHAPE.test(n);
 }
 function hasSecretAncestor(rel) {
   // rel is relative to the store root — check each component.
@@ -118,78 +141,21 @@ function isArchivable(fullPath, relToStore) {
 }
 
 // ---- Claude profile discovery (by SHAPE, not by name) ----------------------
-// Port of analyze_tokens.find_config_dirs + retention_guard.find_profiles.
-// A Claude profile is any directory containing projects/ with at least one
-// .jsonl beneath it. Walked to depth 4 from home.
-
-function looksLikeClaudeProfile(p) {
-  const proj = join(p, "projects");
-  if (!isDir(proj)) return false;
-  // At least one .jsonl anywhere beneath projects/
-  const check = (dir, depth) => {
-    if (depth < 0) return false;
-    let entries;
-    try { entries = readdirSync(dir); } catch { return false; }
-    for (const e of entries) {
-      if (e.endsWith(".jsonl")) return true;
-      const full = join(dir, e);
-      if (isDir(full) && check(full, depth - 1)) return true;
-    }
-    return false;
-  };
-  return check(proj, 4);
-}
-
-export function findClaudeProfiles(home) {
+// Thin wrapper kept for the test suite. Internal callers use findConfigDirs
+// (accounts.mjs) which uses the dotdir_contains rule and finds ~/.my-claude,
+// ~/.claude-alt and any future alias that this function missed.
+// configDir is forwarded explicitly: findConfigDirs only honours
+// $CLAUDE_CONFIG_DIR on the real home (hermetic), so an injected configDir
+// pointing outside a temp home must be added here.
+export function findClaudeProfiles(home, { configDir } = {}) {
   home = home ?? homedir();
-  const seen = new Set();
-  const out = [];
-
-  const add = (p) => {
-    let key;
-    try {
-      const s = statSync(p);
-      key = s.ino !== 0 ? `${s.dev}:${s.ino}` : p;
-    } catch { return; }
-    if (seen.has(key)) return;
-    if (!looksLikeClaudeProfile(p)) return;
-    seen.add(key);
-    out.push(p);
-  };
-
-  // Fast path: ~/.claude* (common case)
-  let top;
-  try { top = readdirSync(home); } catch { return out; }
-  for (const e of top) {
-    if (e.startsWith(".claude")) {
-      const full = join(home, e);
-      if (isDir(full)) add(full);
-    }
+  const archiveRoot = join(home, ".ai-logs-archive");
+  const dirs = findConfigDirs(home).filter(d => !d.startsWith(archiveRoot + sep) && d !== archiveRoot);
+  if (configDir && !dirs.includes(configDir)) {
+    const proj = join(configDir, "projects");
+    if (isDir(proj)) dirs.push(configDir);
   }
-
-  // $CLAUDE_CONFIG_DIR may point anywhere
-  const env = process.env.CLAUDE_CONFIG_DIR;
-  if (env) add(env);
-
-  // Deep walk for copies/alternate profiles
-  const walk = (dir, depth) => {
-    if (depth < 0) return;
-    let entries;
-    try { entries = readdirSync(dir); } catch { return; }
-    for (const e of entries) {
-      if (SKIP_WALK.has(e)) continue;
-      const full = join(dir, e);
-      let isD;
-      try { isD = statSync(full).isDirectory(); } catch { continue; }
-      if (!isD) continue;
-      // Skip the archive itself — it holds copies, not live profiles
-      if (full === join(home, ".ai-logs-archive")) continue;
-      if (isDir(join(full, "projects"))) add(full);
-      walk(full, depth - 1);
-    }
-  };
-  walk(home, 4);
-  return out;
+  return dirs;
 }
 
 // ---- Layer 1: raise cleanupPeriodDays --------------------------------------
@@ -429,7 +395,12 @@ export function allStores(home) {
   add("grok-archived", ".grok/archived_sessions");
   add("deepseek", ".deepseek/sessions");
   add("cursor", ".cursor/chats");
-  add("aider", ".aider");
+  // aider's SESSION history, not the whole dotdir. `.aider` was added whole,
+  // and whole includes oauth-keys.json, which the archive then hard-linked —
+  // credential material duplicated into a tree that is meant to be safe to
+  // sync. The chat history is the record; nothing else in that directory is.
+  add("aider", ".aider/.aider.chat.history.md");
+  add("aider-input", ".aider/.aider.input.history");
   add("continue", ".continue/sessions");
   add("opencode", ".opencode/sessions");
   add("goose", ".config/goose/sessions");
@@ -458,9 +429,11 @@ export function allStores(home) {
  * tick()  — apply + return a one-line summary string (for daemon log).
  */
 
-export function check(home) {
+// Profile discovery delegates to findConfigDirs (accounts.mjs) which uses
+// the dotdir_contains rule and honours $CLAUDE_CONFIG_DIR hermetically.
+export function check(home, opts = {}) {
   home = home ?? homedir();
-  const profiles = findClaudeProfiles(home);
+  const profiles = findConfigDirs(home);
   const stores = allStores(home);
 
   const profileResults = profiles.map(p => ({
@@ -479,9 +452,9 @@ export function check(home) {
   return { profiles: profileResults, stores: storeResults, dry: true };
 }
 
-export function apply(home) {
+export function apply(home, opts = {}) {
   home = home ?? homedir();
-  const profiles = findClaudeProfiles(home);
+  const profiles = findConfigDirs(home);
   const stores = allStores(home);
 
   const profileResults = profiles.map(p => ({
@@ -540,8 +513,8 @@ export function tick(home) {
  * Whether any Claude profile still has cleanupPeriodDays below TARGET_DAYS
  * and the 6h daemon is not installed. Used by cli.mjs to print the warning.
  */
-export function needsProtection(home) {
+export function needsProtection(home, opts = {}) {
   home = home ?? homedir();
-  const profiles = findClaudeProfiles(home);
+  const profiles = findConfigDirs(home);
   return profiles.some(p => currentPeriod(p) < TARGET_DAYS);
 }

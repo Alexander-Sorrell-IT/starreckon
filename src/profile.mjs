@@ -25,7 +25,8 @@ import { redactSecrets, maskPath, projectLabel } from "./redact.mjs";
 // scan.mjs next to `"model_sessions": {"/home/<person>/private/models": 6}`
 // from here, and the raw path went on to the HTML page. A second copy of a
 // redaction rule is a rule that will be fixed once.
-import { sanitizeModel, localDayKey, creditUsage } from "./scan.mjs";
+import { sanitizeModel, localDayKey, creditUsage, streamLines,
+         byCountThenKey, computeStreaks } from "./scan.mjs";
 
 const MAX_ACTIVE_GAP_MIN = 15;
 const MIN_PROMPT_CHARS = 16; // Standout's low-signal floor
@@ -187,17 +188,6 @@ function countLangPath(src, p, excluded) {
   if (src.langPaths.size < MAX_LANG_PATHS) src.langPaths.add(masked);
 }
 
-async function streamLines(filePath, onLine) {
-  const rl = createInterface({
-    input: createReadStream(filePath, { encoding: "utf-8" }),
-    crlfDelay: Infinity,
-  });
-  let n = 0;
-  for await (const line of rl) {
-    if (line) onLine(line);
-    if ((++n & 2047) === 0) await new Promise((r) => setImmediate(r));
-  }
-}
 
 async function collectClaudeFile(filePath, source, col, opts) {
   const src = sourceBucket(col, source);
@@ -276,6 +266,14 @@ async function collectCodexFile(filePath, col, opts) {
   src.files += 1;
   let sessionId = filePath.split("/").pop();
   let model = null;
+  // Lineage-aware token arithmetic: mirrors scan.mjs:parseCodexFile exactly.
+  // total_token_usage is cumulative over the LINEAGE (base + this segment),
+  // not over the file alone. Overwriting with the raw value counted the
+  // inherited prefix on every read; `base/carry/applied` peel it off.
+  let base = null;
+  let carry = [0, 0, 0];
+  let prevRaw = null;
+  let applied = [0, 0, 0];
   await streamLines(filePath, (line) => {
     let d;
     try {
@@ -309,12 +307,29 @@ async function collectCodexFile(filePath, col, opts) {
       s.project = opts.excluded?.(payload.cwd) ? "[excluded]" : projectLabel(payload.cwd);
     }
     if (d.type === "event_msg" && payload?.info?.total_token_usage) {
-      // Codex counters are cumulative per event: overwrite, never sum.
       const t = payload.info.total_token_usage;
-      const cached = t.cached_input_tokens ?? 0;
-      s.tok.in = Math.max(0, (t.input_tokens ?? 0) - cached);
-      s.tok.out = t.output_tokens ?? s.tok.out;
-      s.tok.cr = cached; // codex has no cache-write counter; cw stays 0
+      const last = payload.info.last_token_usage;
+      const bucket = (x) => [x?.input_tokens ?? 0, x?.cached_input_tokens ?? 0,
+                             x?.output_tokens ?? 0];
+      const inherited = () =>
+        last ? raw.map((v, i) => Math.max(0, v - bucket(last)[i])) : [0, 0, 0];
+      const raw = bucket(t);
+      const sum = (a) => a[0] + a[1] + a[2];
+      if (base === null) {
+        base = inherited();
+      } else if (prevRaw && sum(raw) < sum(prevRaw)) {
+        carry = carry.map((v, i) => v + Math.max(0, prevRaw[i] - base[i]));
+        base = inherited();
+      }
+      prevRaw = raw;
+      const want = raw.map((v, i) => carry[i] + Math.max(0, v - base[i]));
+      const net = (a) => [Math.max(0, a[0] - a[1]), a[1], a[2]];
+      const [wIn, wCr, wOut] = net(want);
+      const [aIn, aCr, aOut] = net(applied);
+      s.tok.in += wIn - aIn;
+      s.tok.cr += wCr - aCr;
+      s.tok.out += wOut - aOut;
+      applied = want;
       if (model) s.models.set(model, (s.models.get(model) ?? 0) + 1);
     } else if (d.type === "response_item" && payload) {
       if (payload.type === "function_call" || payload.type === "local_shell_call") {
@@ -340,7 +355,7 @@ export function activeDurationMs(minutes) {
   if (sorted.length === 0) return 0;
   if (sorted.length === 1) return 60000;
   const maxGap = MAX_ACTIVE_GAP_MIN * 60000;
-  let total = 0;
+  let total = 60000; // base: the first minute always contributes 60 s
   for (let i = 1; i < sorted.length; i++) {
     const gap = sorted[i] - sorted[i - 1];
     if (gap > 0) total += Math.min(gap, maxGap);
@@ -417,41 +432,7 @@ export async function collectProfileSignals(files, opts = {}) {
 // Python zY9 semantics (stats.py streaks): current streak walks back from
 // TODAY; any gap — including "was active yesterday but not today" — zeroes it.
 // This deliberately overrides scan.mjs computeStreaks' leniency.
-export function computeStreaks(activeDays, todayIso = null) {
-  const days = [...new Set(activeDays ?? [])].sort();
-  if (days.length === 0) return { current: 0, longest: 0 };
-  const have = new Set(days);
-  const today = todayIso ?? localDayKey(new Date());
-  const dayMs = 864e5;
-  let cur = 0;
-  // LOCAL midnight, not Date.parse(). `Date.parse("2026-07-15")` returns UTC
-  // midnight, and localDayKey then reads that instant back on the local clock —
-  // which west of Greenwich is the PREVIOUS day. The walk started one day early
-  // and never matched, so in every Americas timezone a user who was active
-  // today scored current_streak 0, and a three-day run scored 2. UTC, Tokyo and
-  // Auckland were all correct, which is exactly why it survived: the machine
-  // that shows the bug is the machine most users are on, and not the one CI
-  // runs in.
-  //
-  // This is the same mixed-clock mistake the comment on activeDays describes,
-  // reintroduced two hundred lines away while fixing it — the parse stayed UTC
-  // while the read became local. Both ends have to move together.
-  const [ty, tm, td] = today.split("-").map(Number);
-  let probe = new Date(ty, tm - 1, td).getTime();
-  while (have.has(localDayKey(new Date(probe)))) {
-    cur += 1;
-    probe -= dayMs;
-  }
-  let longest = 1, run = 1;
-  for (let i = 1; i < days.length; i++) {
-    const diff = Math.round((Date.parse(days[i]) - Date.parse(days[i - 1])) / dayMs);
-    if (diff === 1) {
-      run += 1;
-      if (run > longest) longest = run;
-    } else if (diff > 1) run = 1;
-  }
-  return { current: cur, longest };
-}
+
 
 // Sweep-line over session intervals. juggle_pct = share of covered wall-clock
 // with >=2 concurrent sessions; open_avg is time-weighted over covered time.
@@ -522,7 +503,7 @@ export function computeToolRelationship(sessions) {
     const row = monthMap.get(month);
     const total = [...row.values()].reduce((a, b) => a + b, 0);
     if (total === 0) continue;
-    const sorted = [...row.entries()].sort(([, a], [, b]) => b - a);
+    const sorted = [...row.entries()].sort(byCountThenKey);
     const [topTool, topCount] = sorted[0];
     timeline.push({ month, dominant: topTool, share: topCount / total });
   }
@@ -566,7 +547,7 @@ export function computeToolRelationship(sessions) {
     for (const [tool, n] of row) totalsByTool.set(tool, (totalsByTool.get(tool) ?? 0) + n);
   const grandTotal = [...totalsByTool.values()].reduce((a, b) => a + b, 0);
   const tools = [...totalsByTool.entries()]
-    .sort(([, a], [, b]) => b - a)
+    .sort(byCountThenKey)
     .map(([tool, n]) => ({
       tool: SOURCE_LABELS[tool] ?? tool,
       share: grandTotal > 0 ? +(n / grandTotal).toFixed(2) : 0,

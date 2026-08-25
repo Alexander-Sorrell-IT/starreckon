@@ -52,6 +52,7 @@ import {
 import { verifyAuditChain, AUDIT_DIR, AUDIT_LIMITS } from "./audit.mjs";
 import { TRIPWIRE_LIMITS } from "./tripwire.mjs";
 import { detectConfinement, buildProofCommand } from "./confine.mjs";
+import { KEY_FILENAME } from "./fleetkey.mjs";
 
 const SRC_DIR = dirname(fileURLToPath(import.meta.url));
 const PKG_ROOT = dirname(SRC_DIR);
@@ -81,8 +82,12 @@ export const STATIC_ALLOWLIST = Object.freeze({
     "spawns src/search.py (bundled Python script) to run SecureBERT semantic search locally — no network calls from JS, Python side uses HF_HUB_OFFLINE=1 at inference time",
   "beacon.mjs":
     "LAN peer discovery — runs ONLY as a child process spawned by cli.mjs after the scan finishes. Opens a UDP multicast socket on 239.255.255.250:4141 (link-local, never leaves the subnet). The main process's tripwire patches dgram.createSocket to throw; this file runs in a fresh child process where the tripwire is not armed. No outbound TCP/HTTP connections.",
+  "mdns.mjs":
+    "Fleet LAN sync — runs ONLY as a child process spawned by cli.mjs (broadcast subcommand and --serve-discover flag). Serves a machine-folder JSON blob over LAN HTTP (inbound-only, 0.0.0.0 bind) and announces its URL via UDP multicast 239.255.255.250:4141 (link-local, never leaves the subnet). Runs in a fresh child process; the main process tripwire is not armed here.",
+  "models.mjs":
+    "spawns python3/pip to build the three model venvs and pre-pull weights. THIS ONE REALLY DOES REACH THE NETWORK, and saying otherwise would be the lie the rest of this list exists to avoid: `pip install` and huggingface_hub snapshot_download both download. It is reached ONLY from the models door the user opens (--with-models / --with-both / [I]), never from the scan path, and never at module load — importing this file spawns nothing. The consumers set HF_HUB_OFFLINE=1 at inference time, so the download happens once at install and never again.",
   "cli.mjs":
-    "uses node:child_process in three places, all lazy (dynamic import, never at module load): (1) the [X] menu action spawns a clipboard binary; (2) the search subcommand delegates to search.mjs; (3) the --beacon/--live flags spawn src/beacon.mjs as a child process for LAN peer discovery after the scan completes.",
+    "uses node:child_process in five places, all lazy (dynamic import, never at module load): (1) the [X] menu action spawns a clipboard binary; (2) the search subcommand delegates to search.mjs; (3) the --beacon/--live flags spawn src/beacon.mjs; (4) the broadcast subcommand spawns src/mdns.mjs in broadcast mode; (5) the --serve-discover flag spawns src/mdns.mjs in discover mode to find broadcast peers on the LAN.",
 });
 
 // SHA-256 manifest for the allowlisted files, committed next to them.
@@ -266,6 +271,15 @@ export const ALLOWLIST_REQUIREMENTS = Object.freeze({
     markers: [
       { label: "spawns only the bundled search.py", re: /SEARCH_PY/ },
       { label: "spawn call (the single child_process use)", re: /\bspawn\s*\(/ },
+      // This matches a COMMENT in search.mjs. The guarantee it stands for is one
+      // assignment in src/search.py, a file this scan never opens — so renaming
+      // the variable, popping it after setting it, or deleting the line leaves
+      // this marker matching while every query resolves models over the network.
+      // Kept because it still catches the comment being removed wholesale; it is
+      // not evidence about behaviour. tests/offline-inference.test.mjs supplies
+      // that: it runs inference under `docker --network none`, shows the same
+      // code reaching the network once the flag is renamed, and shows this very
+      // marker passing on the sabotaged tree.
       { label: "HF_HUB_OFFLINE comment (offline-at-inference guarantee)", re: /HF_HUB_OFFLINE/ },
     ],
     allowedApis: [API_NODE_BUILTIN],
@@ -278,6 +292,18 @@ export const ALLOWLIST_REQUIREMENTS = Object.freeze({
       { label: "dgram — the single network API used in beacon.mjs", re: new RegExp(`["'\`]node:` + `dgram["'\`]`) },
       { label: "child-process guard comment (explains why this is a child process)", re: /CHILD PROCESS/ },
       { label: "setMulticastTTL(1) — prevents packets leaving the subnet", re: /setMulticastTTL/ },
+    ],
+    allowedApis: [API_NODE_BUILTIN],
+  },
+  "mdns.mjs": {
+    minPatchCalls: 0,
+    markers: [
+      { label: "multicast address constant (link-local, LAN-only)", re: /MULTICAST_ADDR/ },
+      // Split so this file's own scanner does not see the node:dgram literal it hunts.
+      { label: "dgram — UDP announce API", re: new RegExp(`["'\`]node:` + `dgram["'\`]`) },
+      { label: "child-process guard comment (explains why this is a child process)", re: /CHILD PROCESS/ },
+      { label: "setMulticastTTL(1) — prevents packets leaving the subnet", re: /setMulticastTTL/ },
+      { label: "inbound-only HTTP bind (0.0.0.0, no outbound connects)", re: /0\.0\.0\.0/ },
     ],
     allowedApis: [API_NODE_BUILTIN],
   },
@@ -956,9 +982,17 @@ export function markupStrings(text) {
   const out = [];
   // Replace, not delete, so offsets stay close to the original.
   const blank = (m) => " ".repeat(m.length);
+  // `</script\s*>` DOES NOT CLOSE A SCRIPT THE WAY A BROWSER DOES. HTML ends
+  // the element on `</script bar>` and `</script\t\n foo>` too, so with
+  // `</script bar>` this non-greedy match ran on to the NEXT real close tag and
+  // blanked everything between — reader-visible text the verifier then never
+  // examined. Proven: a document with `</script bar>` hid a paragraph from
+  // markupStrings that the identical document with `</script>` showed.
+  // `[^>]*` matches the attributes HTML tolerates; \b keeps `</scriptfoo>`
+  // from counting as a close tag.
   const stripped = text
-    .replace(/<script\b[\s\S]*?<\/script\s*>/gi, blank)
-    .replace(/<style\b[\s\S]*?<\/style\s*>/gi, blank);
+    .replace(/<script\b[\s\S]*?<\/script\b[^>]*>/gi, blank)
+    .replace(/<style\b[\s\S]*?<\/style\b[^>]*>/gi, blank);
 
   const tagRe = /<[a-zA-Z!/?][^>]*>/g;
   const attrRe =
@@ -1038,6 +1072,10 @@ export function outputScrub(dataDir = join(homedir(), ".starreckon"), opts = {})
 
   for (const file of files) {
     const rel = relative(dataDir, file);
+
+    // fleet.key is intentionally secret-shaped — it IS the private key.
+    // Scrubbing it would produce a false positive on every run.
+    if (basename(file) === KEY_FILENAME) continue;
 
     // Too big to read into memory, and said so out loud. A leak parked past
     // this cap is outside the check — that is in the limits below, because a
@@ -1130,6 +1168,37 @@ export function outputScrub(dataDir = join(homedir(), ".starreckon"), opts = {})
     } else if (MARKUP_EXTS.some((x) => lower.endsWith(x))) {
       for (const { where, s, index } of markupStrings(text))
         prose(s, `${where} at line ${lineOfIndex(text, index)}`);
+    } else if (lower.endsWith(".jsonl")) {
+      // JSONL IS DATA, AND collapse() TURNED ITS LINE BREAKS INTO PROSE.
+      //
+      // The plain-text branch below collapses every whitespace run to one
+      // space, so an N-line file arrives as one string carrying N-1 "spaces".
+      // token_ledger.jsonl — 358 rows, and ZERO space characters anywhere in
+      // it — was reported as a "108858-char prose-like string (357 spaces),
+      // possible transcript text". 357 is 358 minus one. It was counting line
+      // breaks.
+      //
+      // Nothing caught it because no ledger file had ever been written on the
+      // machine this warden runs on: the check only reads what exists, and
+      // `--ledger` had never been run. The moment one existed, every scan
+      // failed its own self-check — and it would have fired for any user whose
+      // ledger passed 41 rows, which is to say all of them.
+      //
+      // Each line is parsed and its STRINGS are walked, which is what the check
+      // was always trying to ask: is there conversation text in here. A line
+      // that is not JSON is reported rather than skipped, because an output
+      // file this program wrote should be readable, and one that is not could
+      // be hiding anything.
+      const lines = text.split("\n");
+      for (let i = 0; i < lines.length; i += 1) {
+        const line = lines[i].trim();
+        if (!line) continue;
+        try {
+          walkStrings(JSON.parse(line), `$ line ${i + 1}`, prose);
+        } catch {
+          findings.push(`${rel}:${i + 1}: not valid JSON — cannot rule out embedded transcript text`);
+        }
+      }
     } else {
       prose(collapse(text), "as plain text");
     }

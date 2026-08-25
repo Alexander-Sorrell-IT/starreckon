@@ -41,6 +41,10 @@ const cy = (s) => PLAIN ? s : CYAN + s + RESET;
 // Find the best LAN IPv4 address. Priority: non-loopback, non-link-local,
 // internal=false. Falls back to 127.0.0.1 if nothing external is found
 // (e.g. the machine is offline — the server still works for localhost).
+// Generous for a real machine folder (the largest observed is a few hundred KB)
+// and far below anything that threatens the process.
+const MAX_SUBMIT_BYTES = 8 * 1024 * 1024;
+
 export function lanIp() {
   const ifaces = networkInterfaces();
   const candidates = [];
@@ -116,9 +120,41 @@ export function makeHandler(html, maxVisits, collectDir = null) {
         res.end("collection not enabled on this server");
         return;
       }
+      // A CAP, BECAUSE THE OTHER END IS NOT TRUSTED.
+      //
+      // This endpoint is reachable by anything on the same WiFi and requires no
+      // authentication. `body += chunk` with no limit lets one device hold the
+      // process open and grow a string until it dies — no exploit needed, just
+      // a POST that never stops. Stop reading at the cap, answer 413, and hang
+      // up: a submission that large is not a machine folder either way.
       let body = "";
-      req.on("data", (chunk) => { body += chunk; });
+      let bytes = 0;
+      let refused = false;
+      req.on("data", (chunk) => {
+        if (refused) return;
+        bytes += Buffer.byteLength(chunk);
+        if (bytes > MAX_SUBMIT_BYTES) {
+          refused = true;
+          body = "";                     // release what was buffered
+          res.writeHead(413, {
+            "Content-Type": "application/json",
+            "Connection": "close",
+          });
+          // Hang up only AFTER the 413 has flushed. Destroying the socket
+          // first is memory-safe but tells a legitimate client nothing: the
+          // response never arrives and they see a transport error instead of
+          // the reason. Nothing further is appended either way, so the flood
+          // costs bandwidth, never memory.
+          res.end(
+            JSON.stringify({ ok: false, error: "submission too large" }),
+            () => req.destroy(),
+          );
+          return;
+        }
+        body += chunk;
+      });
       req.on("end", () => {
+        if (refused) return; // already answered 413
         let data;
         try { data = JSON.parse(body); } catch {
           res.writeHead(400, { "Content-Type": "application/json" });

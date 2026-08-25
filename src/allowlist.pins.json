@@ -4,7 +4,7 @@
   "files": {
     "tripwire.mjs": "8d3ef1c6d85450eff8a818c45ee0a0871d5dab1da858fddbe0fc64efb478d7d9",
     "confine.mjs": "d87b7c2524b972d5e8e47828ad98eb59fc23c8def5bb8a26f6902df9b3659efb",
-    "serve.mjs": "a2377a6c6f9bde67330f1dbc32ee0a9728af5a06d505aac2bd1e29701b4a2327",
+    "serve.mjs": "b3da6026f79d6cc43ee2bbc486fd17603e7b72dee03a679e90d225f8e5921a43",
     "search.mjs": "eaa6122f011ece99bd3908df829bfa2062deaaf657f23d2b672fb0685bef090a",
     "beacon.mjs": "954d430a80775bd6b4d92a93bfd2827973de26245ee62f412d4aa9bcce1a22f8",
     "cli.mjs": "7403b7f39bbbc096e477ce769a504e5d716597247371cc78970157ef6bf8860f"

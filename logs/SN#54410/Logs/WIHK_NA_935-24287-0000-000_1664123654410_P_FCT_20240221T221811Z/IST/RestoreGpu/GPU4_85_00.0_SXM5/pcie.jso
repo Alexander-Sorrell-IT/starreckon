@@ -1,0 +1,267 @@
+[
+[
+ { "__tag__" : "MODS_Start"
+  ,"timestamp" : "Wed Feb 21 23:50:17 2024 "
+ }
+,{ "__tag__" : "sw"
+  ,"mods" : "525.165"
+  ,"command_line" : "gputest.js -notest -reset_device -fsp_prc_write PRC_KNOB_ID_IST 0x0 -ignore_nvswitch -json_append pcie.jso -pex_verbose 0x100 -nvlink_force_disable -bg_nvswitch_temp 1000 -corr_error_tol 10 +BEGINDEV 0 -perlink_corr_error 1 0xFFFFFFFF 0xFFFFFFFF +ENDDEV 0 +BEGINDEV 1 -perlink_corr_error 1 0xFFFFFFFF 0xFFFFFFFF +ENDDEV 1 +BEGINDEV 2 -perlink_corr_error 1 0xFFFFFFFF 0xFFFFFFFF +ENDDEV 2 +BEGINDEV 3 -perlink_corr_error 1 0xFFFFFFFF 0xFFFFFFFF +ENDDEV 3 +BEGINDEV 4 -perlink_corr_error 1 0xFFFFFFFF 0xFFFFFFFF +ENDDEV 4 +BEGINDEV 5 -perlink_corr_error 1 0xFFFFFFFF 0xFFFFFFFF +ENDDEV 5 +BEGINDEV 6 -perlink_corr_error 1 0xFFFFFFFF 0xFFFFFFFF +ENDDEV 6 +BEGINDEV 7 -perlink_corr_error 1 0xFFFFFFFF 0xFFFFFFFF +ENDDEV 7 +BEGINDEV 0 -perlink_pex_corr_error_rate_tol 1 4 16 3.40282347E+38 +ENDDEV 0 +BEGINDEV 1 -perlink_pex_corr_error_rate_tol 1 4 16 3.40282347E+38 +ENDDEV 1 +BEGINDEV 2 -perlink_pex_corr_error_rate_tol 1 4 16 3.40282347E+38 +ENDDEV 2 +BEGINDEV 3 -perlink_pex_corr_error_rate_tol 1 4 16 3.40282347E+38 +ENDDEV 3 +BEGINDEV 4 -perlink_pex_corr_error_rate_tol 1 4 16 3.40282347E+38 +ENDDEV 4 +BEGINDEV 5 -perlink_pex_corr_error_rate_tol 1 4 16 3.40282347E+38 +ENDDEV 5 +BEGINDEV 6 -perlink_pex_corr_error_rate_tol 1 4 16 3.40282347E+38 +ENDDEV 6 +BEGINDEV 7 -perlink_pex_corr_error_rate_tol 1 4 16 3.40282347E+38 +ENDDEV 7 -perlink_corr_error 2 0xFFFFFFFF 0xFFFFFFFF -perlink_pex_corr_error_rate_tol 2 4 16 3.40282347E+38 -perlink_corr_error 3 0xFFFFFFFF 0xFFFFFFFF -perlink_pex_corr_error_rate_tol 3 4 16 3.40282347E+38 -ignore_hwfs_event EXT_POWER -nvlink_pre_fec_tol gpu 0 0.0000001 -nvlink_pre_fec_tol gpu 1 0.0000001 -nvlink_pre_fec_tol gpu 2 0.0000001 -nvlink_pre_fec_tol gpu 3 0.0000001 -nvlink_pre_fec_tol gpu 4 0.0000001 -nvlink_pre_fec_tol gpu 5 0.0000001 -nvlink_pre_fec_tol gpu 6 0.0000001 -nvlink_pre_fec_tol gpu 7 0.0000001 -nvlink_pre_fec_tol nvswitch 0 0.0000001 -nvlink_pre_fec_tol nvswitch 1 0.0000001 -nvlink_pre_fec_tol nvswitch 2 0.0000001 -nvlink_pre_fec_tol nvswitch 3 0.0000001 -nvlink_topology_disable_auto_map -nvlink_verbose 0x1 -pex_verbose 0xa0 -power_cap_tgp_mw 700000 -unlimit_power_policies -rmkey RmGpuFabricProbe 0 -row_remap_on_error -max_per_bank_remapped_rows 2 -max_total_remapped_rows 32 -skip_inta_intr_check +BEGINDEV 0 -testarg 248 Pam4YFailThreshold 39 +ENDDEV 0 +BEGINDEV 1 -testarg 248 Pam4YFailThreshold 39 +ENDDEV 1 +BEGINDEV 2 -testarg 248 Pam4YFailThreshold 39 +ENDDEV 2 +BEGINDEV 3 -testarg 248 Pam4YFailThreshold 39 +ENDDEV 3 +BEGINDEV 4 -testarg 248 Pam4YFailThreshold 39 +ENDDEV 4 +BEGINDEV 5 -testarg 248 Pam4YFailThreshold 39 +ENDDEV 5 +BEGINDEV 6 -testarg 248 Pam4YFailThreshold 39 +ENDDEV 6 +BEGINDEV 7 -testarg 248 Pam4YFailThreshold 39 +ENDDEV 7 +BEGINDEV 8 -testarg 248 Pam4YFailThreshold 44 +ENDDEV 8 +BEGINDEV 9 -testarg 248 Pam4YFailThreshold 44 +ENDDEV 9 +BEGINDEV 10 -testarg 248 Pam4YFailThreshold 44 +ENDDEV 10 +BEGINDEV 11 -testarg 248 Pam4YFailThreshold 44 +ENDDEV 11 -testarg 248 Pam4YPassThreshold 50 -testarg 248 PrintMarginalWarning true -testarg 248 Verbose 1 +BEGINDEV 0 -testarg 248 YFailThreshold 39 +ENDDEV 0 +BEGINDEV 1 -testarg 248 YFailThreshold 39 +ENDDEV 1 +BEGINDEV 2 -testarg 248 YFailThreshold 39 +ENDDEV 2 +BEGINDEV 3 -testarg 248 YFailThreshold 39 +ENDDEV 3 +BEGINDEV 4 -testarg 248 YFailThreshold 39 +ENDDEV 4 +BEGINDEV 5 -testarg 248 YFailThreshold 39 +ENDDEV 5 +BEGINDEV 6 -testarg 248 YFailThreshold 39 +ENDDEV 6 +BEGINDEV 7 -testarg 248 YFailThreshold 39 +ENDDEV 7 +BEGINDEV 8 -testarg 248 YFailThreshold 44 +ENDDEV 8 +BEGINDEV 9 -testarg 248 YFailThreshold 44 +ENDDEV 9 +BEGINDEV 10 -testarg 248 YFailThreshold 44 +ENDDEV 10 +BEGINDEV 11 -testarg 248 YFailThreshold 44 +ENDDEV 11 -testarg 248 YPassThreshold 50 -timeout_ms 5000 -un_supp_req_tol 0 -only_pci_dev 85:00.0 -gpu_name b6:00.0 GPU7_b6:00.0_SXM2 -gpu_loc_id b6:00.0 7 -gpu_name b5:00.0 GPU6_b5:00.0_SXM4 -gpu_loc_id b5:00.0 6 -gpu_name 06:00.0 GPU1_06:00.0_SXM6 -gpu_loc_id 06:00.0 1 -gpu_name 46:00.0 GPU3_46:00.0_SXM3 -gpu_loc_id 46:00.0 3 -gpu_name 05:00.0 GPU0_05:00.0_SXM8 -gpu_loc_id 05:00.0 0 -gpu_name 86:00.0 GPU5_86:00.0_SXM7 -gpu_loc_id 86:00.0 5 -gpu_name 45:00.0 GPU2_45:00.0_SXM1 -gpu_loc_id 45:00.0 2 -gpu_name 85:00.0 GPU4_85:00.0_SXM5 -gpu_loc_id 85:00.0 4 -time -matsinfo"
+  ,"operating_system" : "Linux x86_64"
+  ,"kernel" : "5.15.0-35-generic"
+  ,"kernel_driver" : "4.22"
+}
+,{ "__tag__" : "sysid"
+  ,"HostName" : "diagnostic-os"
+}
+,{ "__tag__" : "cpu"
+  ,"arch" : "x86_64"
+  ,"Name" : "AMD EPYC 7452 32-Core Processor"
+  ,"cores" : 128
+}
+,{ "__tag__" : "found_gpu"
+  ,"gpu_name" : "GPU4_85:00.0_SXM5"
+  ,"gpu_inst" : 0
+  ,"dev_inst" : 0
+  ,"subdev_inst" : 0
+  ,"devinst" : "0"
+  ,"pci_location" : "0x00, 0x85, 0x00, 0x00"
+  ,"numa_node" : "7"
+  ,"gpu_did" : "0x2330"
+  ,"pdi" : "0xc6563272c95929a9"
+  ,"raw_ecid" : "0x002016000000000992050de1"
+  ,"raw_ecid_ghs" : "0x1780992050c00000018008040"
+  ,"ecid" : "TSMC-U2P853-24_x1_y1"
+  ,"device_id" : "GH100"
+  ,"chip_name" : "GH100"
+  ,"revision" : "a1"
+  ,"sub_revision" : "3"
+  ,"nv_base" : "0x5a042000000"
+  ,"bar0_access" : "DirectMap"
+  ,"fb_base" : "0x56000000000"
+  ,"irq" : "78"
+}
+,{ "__tag__" : "nvlink_topology"
+}
+,{ "__tag__" : "carrier_fru_info"
+}
+,{ "__tag__" : "gpu"
+  ,"gpu_name" : "GPU4_85:00.0_SXM5"
+  ,"gpu_inst" : 0
+  ,"dev_inst" : 0
+  ,"subdev_inst" : 0
+  ,"devinst" : "0"
+  ,"pci_location" : "0x00, 0x85, 0x00, 0x00"
+  ,"numa_node" : "7"
+  ,"gpu_did" : "0x2330"
+  ,"pdi" : "0xc6563272c95929a9"
+  ,"uuid" : "fbc41fd9-5778-3d52-6923-ae90fbb64552"
+  ,"raw_ecid" : "0x002016000000000992050de1"
+  ,"raw_ecid_ghs" : "0x1780992050c00000018008040"
+  ,"gsp_rm" : "Disabled"
+  ,"ecid" : "TSMC-U2P853-24_x1_y1"
+  ,"device_id" : "GH100"
+  ,"chip_name" : "GH100"
+  ,"product" : "H100 80GB HBM3"
+  ,"revision" : "a1"
+  ,"sub_revision" : "3"
+  ,"platform" : "Hardware"
+  ,"foundry" : "TSMC"
+  ,"subsystem_vid" : "0x10de"
+  ,"subsystem_did" : "0x16c1"
+  ,"board_id" : "0x0437"
+  ,"prod_ser_no" : "1654023012279"
+  ,"project" : "G520-0200"
+  ,"fuse_file_fmt" : "JSON"
+  ,"cc_mode" : "Disabled"
+  ,"display" : "Disabled"
+  ,"sbios_init" : "Secondary"
+  ,"memory_size" : "81880 MB"
+  ,"fb_vendor" : "Hynix"
+  ,"hbm_revision" : "16GB_8Hi"
+  ,"ecc" : "(FBPA,L2,SM,L1DATA,L1TAG,SM_ICACHE,GCC,GPCMMU,HUBMMU_L2TLB,HUBMMU_HUBTLB,HUBMMU_FILLUNIT,GPCCS,FECS,SM_RAMS,HSHUBMMU,PCIE_REORDER,PCIE_P2PREQ)"
+  ,"ecc_poison" : "Enabled"
+  ,"ram_protocol" : "HBM3"
+  ,"memory_index" : "1"
+  ,"ram_config" : "0"
+  ,"row_remapper" : "Enabled"
+  ,"num_row_remaps" : "0"
+  ,"rom_version" : "96.00.74.00.0d"
+  ,"rom_variant" : "885-0"
+  ,"rom_type" : "Unsigned"
+  ,"rom_guid" : null
+  ,"nv_base" : "0x5a042000000"
+  ,"bar0_access" : "DirectMap"
+  ,"fb_base" : "0x56000000000"
+  ,"irq" : "9"
+  ,"hooked_int_type" : "MSI-X"
+  ,"pstate_mode" : "2 [0]"
+  ,"pstate_version" : "4.0"
+  ,"gpc_clock" : "1980.000 MHz DEFAULT"
+  ,"dram_clock" : "2619.000 MHz DEFAULT"
+  ,"xbar_clock" : "1710.000 MHz DEFAULT"
+  ,"sys_clock" : "1665.000 MHz DEFAULT"
+  ,"power_clock" : "540.000 MHz NAFLL"
+  ,"nvdec_clock" : "1545.000 MHz NAFLL"
+  ,"nvvdd" : "940.00 mV"
+  ,"msvdd" : "945.00 mV"
+  ,"tgp_limit" : "700.000 W"
+  ,"vbios_skyline_0" : "4-8-8-8-8-8-9-9 0x0a48"
+  ,"vbios_skyline_1" : "8-8-8-8-0-0-0-0 0x0000"
+  ,"vbios_skyline_2" : "4-8-8-8-0-0-0-0 0x0048"
+  ,"vbios_skyline_3" : "8-8-0-0-0-0-0-0 0x0000"
+  ,"vbios_skyline_4" : "4-8-0-0-0-0-0-0 0x0008"
+  ,"vbios_skyline_5" : "8-0-0-0-0-0-0-0 0x0000"
+  ,"active_skyline" : "4-8-8-8-8-8-9-9 0x0a48 (VBIOS Entry 0) "
+  ,"gpc_mask" : "0xff (8 GPCs)"
+  ,"tpc_mask" : "[1f7 1ff 1ff 1bf 1bf 1bf 1bf 1df] (66 TPCs)"
+  ,"gfx_gpc_mask" : "0x01 (1 GPC)"
+  ,"gfx_tpc_mask" : "[x x x x x x x 7] (3 TPCs)"
+  ,"cpc_mask" : "[7 7 7 7 7 7 7 7] (24 CPCs)"
+  ,"fb_mask" : "0x7bf (10 FB Partitions)"
+  ,"l2_mask" : "[x 3 3 3 3 x 3 3 3 3 3 3] (20 L2s)"
+  ,"l2_slice_mask" : "[x ff ff ff ff x ff ff ff ff ff ff] (80 L2 Slices)"
+  ,"pes_mask" : "[0 0 0 0 0 0 0 1] (1 PES)"
+  ,"rop_mask" : "[0 0 0 0 0 0 0 1] (1 ROP)"
+  ,"fbio_mask" : "0x3fcfff (20 FBIO Partitions)"
+  ,"xp_mask" : "0x03 (2 3gio Pads)"
+  ,"nvdec_mask" : "0xfe (7 engines)"
+  ,"nvenc_mask" : "0x00 (0 engines)"
+  ,"nvjpg_mask" : "0xfd (7 engines)"
+  ,"ofa_mask" : "0x01 (1 engine)"
+  ,"pce_mask" : "0xffff (16 PCEs)"
+  ,"syspipe_mask" : "0xff (8 syspipes)"
+  ,"lce_pce_map" : "[ 2:0x1000 3:0x2000 4:0xfff ]"
+  ,"grce_shared" : "[ 0:2 1:3 ]"
+  ,"gpu_temp" : "34 deg C"
+  ,"pex_rx_lanes" : "0xffff"
+  ,"pex_tx_lanes" : "0xffff"
+  ,"pex_det_lanes" : "0xffff"
+  ,"pex_width_aslm" : "16 lanes, Not Supported"
+  ,"pex_link_speed" : "32.0 Gbit/s"
+  ,"pex_bandwidth" : "512.0 Gbit/s"
+  ,"pex_dep1_sp_wid" : "5.0 Gbit/s, 16"
+  ,"pex_dep1_aspm" : "Disabled"
+  ,"pex_dep2_sp_wid" : "16.0 Gbit/s, 16"
+  ,"pex_dep2_aspm" : "Disabled"
+  ,"aspm_aspm_cya" : "(L1, Disabled)"
+  ,"ltr" : "Disabled"
+}
+,{ "__tag__" : "chipset"
+  ,"vid" : 4130
+  ,"did" : 5248
+  ,"vidstr" : "AMD"
+  ,"didstr" : "Unknow"
+  ,"aspm" : "Disabled"
+}
+,{ "__tag__" : "rm"
+  ,"ver" : "rel/gpu_drv/r525/r525_00-547"
+  ,"version" : "Private r525_00 rel/gpu_drv/r525/r525_00-547 unknown"
+  ,"changelist" : 0
+}
+,{ "__tag__" : "js_fileid"
+  ,"resumehandler.js" : "2"
+  ,"gputest.js" : "1029"
+  ,"base.spc" : "12"
+  ,"boards.js" : "1"
+}
+,{ "__tag__" : "pcie_chipset"
+  ,"downstream_nodes" : [
+  {
+     "domain" : "0x0"
+    ,"bus" : "0x80"
+    ,"dev" : "0x1"
+    ,"func" : "0x1"
+    ,"maxspeed" : 16000
+    ,"maxwidth" : 16
+    ,"lanes" : 16
+    ,"aspm_state" : "0x2"
+    ,"aspm_cap" : "0x0"
+    ,"aspm_l1ss_state" : "0x1"
+    ,"aspm_l1ss_cap" : "0x0"
+    ,"retimer_count" : "1"
+    ,"dpc_cap" : "RP-Ext(TLP,SW)"
+    ,"dpc_state" : "Fatal"
+    ,"connected_to" : "pcie_bridge 0x0/0x81"
+  }]
+  ,"depth_from_root" : 0
+}
+,{ "__tag__" : "pcie_bridge 0x0/0x81"
+  ,"upstream_domain" : "0x0"
+  ,"upstream_bus" : "0x81"
+  ,"upstream_dev" : "0x0"
+  ,"upstream_func" : "0x0"
+  ,"upstream_connected_to" : "root"
+  ,"upstream_speed" : 16000
+  ,"upstream_lanes" : 16
+  ,"upstream_aspm_state" : "0x0"
+  ,"upstream_aspm_l1ss_state" : "not_supported"
+  ,"upstream_retimer_count" : "1"
+  ,"downstream_nodes" : [
+  {
+     "domain" : "0x0"
+    ,"bus" : "0x82"
+    ,"dev" : "0x0"
+    ,"func" : "0x0"
+    ,"maxspeed" : 5000
+    ,"maxwidth" : 16
+    ,"lanes" : 16
+    ,"aspm_state" : "0x2"
+    ,"aspm_cap" : "0x0"
+    ,"aspm_l1ss_state" : "not_supported"
+    ,"retimer_count" : "0"
+    ,"dpc_cap" : "None"
+    ,"dpc_state" : "Disabled"
+    ,"connected_to" : "pcie_bridge 0x0/0x83"
+  }]
+  ,"depth_from_root" : 1
+}
+,{ "__tag__" : "pcie_bridge 0x0/0x83"
+  ,"upstream_domain" : "0x0"
+  ,"upstream_bus" : "0x83"
+  ,"upstream_dev" : "0x0"
+  ,"upstream_func" : "0x0"
+  ,"upstream_connected_to" : "pcie_bridge 0x0/0x81"
+  ,"upstream_speed" : 5000
+  ,"upstream_lanes" : 16
+  ,"upstream_aspm_state" : "0x0"
+  ,"upstream_aspm_l1ss_state" : "not_supported"
+  ,"upstream_retimer_count" : "0"
+  ,"downstream_nodes" : [
+  {
+     "domain" : "0x0"
+    ,"bus" : "0x84"
+    ,"dev" : "0x0"
+    ,"func" : "0x0"
+    ,"maxspeed" : 32000
+    ,"maxwidth" : 16
+    ,"lanes" : 16
+    ,"aspm_state" : "0x2"
+    ,"aspm_cap" : "0x2"
+    ,"aspm_l1ss_state" : "not_supported"
+    ,"retimer_count" : "1"
+    ,"dpc_cap" : "Basic(TLP,SW)"
+    ,"dpc_state" : "Disabled"
+    ,"connected_to" : "GPU 4 [4] [85:00.0]"
+  }]
+  ,"depth_from_root" : 2
+}
+,{ "__tag__" : "nvlink_topology"
+}
+,{ "__tag__" : "carrier_fru_info"
+}
+,{ "__tag__" : "GlobalStats"
+  ,"pf_MODSInitTimeSec" : 11.385618686676025
+  ,"pf_GPUInitTimeSec" : 7.668114185333252
+  ,"pf_TestsTimeSec" : 0.6499552726745605
+  ,"pf_ShutdownTimeSec" : 0.35662364959716797
+  ,"pf_ProfileCRCTimeSec" : 0
+}
+,{ "__tag__" : "final_rc"
+  ,"rc" : "000000000000"
+ }
+,{ "__tag__" : "MODS_end"
+  ,"timestamp" : "Wed Feb 21 23:50:37 2024 "
+  ,"elapsedSeconds" : 20.177 
+ }
+]
+]

@@ -1,0 +1,2433 @@
+[Testing Procedures]
+
+	1. Putty login
+		10.48.161.78
+			User: sbg01
+			Password: WistronSBG
+			
+		[Vulcan IP using "ifconfig"]
+			ssh diag@[ip.of.Vulcan.Location]
+				Password: diag
+
+	2. (Offline Tests) 
+		./root/Samson/Vulcan_Sorting/PQE_Vulcan_System_Check_07.sh
+		./root/Samson/Vulcan_Sorting/Vulcan_BBX/Gen5_Vulcan_BBX_Reader_23* (*30* for 80G & *38* for 96G)
+		./root/618-24287-XXXX-MFG-38636/Run_Fct.sh
+		./root/618-24287-XXXX-MFG-38636/Run_RIN.sh
+		
+{GPU VBIOS UPDATE}
+
+*** ~/Vulcan_Sorting:
+		
+Check Verison:
+	-> ./nvflash_mfg -i [0-7] --version
+	
+Save Version:	
+	-> ./nvflash_mfg --save -i 0 74_80G.rom --entire
+
+Replace Version:
+	-> ./nvflash_mfg -i 0 74_80G.rom
+	
+Do power cycle:
+	-> ipmitool chassis power cycle
+
+	
+***
+Notes:
+	-> If PCI shows (rev ff) do power cycle to for (rev a1);
+	
+==============================================================================
+[RMA ANALYSIS]
+
+No signs of shipment damage to boxes. Packed correctly according to the new packing standard.
+Unpack and Inspection: All 8 GPUs and 4 LS10 W Heatsink. No component or GPU Tray damaged
+
+Visual inspection passed, ready for testing;
+
+
+[PRE ANALYSIS]
+
+Photos
+
+All 8 GPUs and 4 LS10 W Heatsink. No component or GPU Tray damaged
+
+[MAIN ANALYSIS]
+
+System Check Passed;
+	All 8 GPUs & 4 LS10s detected;
+	GPU VB - 96.00.61.00.02;
+	LS10 -	96.10.35.00.01;
+	RETIMER - 2.4.28;
+	FPGA - 02 01 01; ***5th line + 1st 3 of last 4***
+
+BBX = Passed;
+
+3 FCT loops = Passed;
+1 RIN loop = Passed;
+
+NTF
+
+Test logs attached
+
+==============================================================================
+SN: 1663823650266
+
+System Check Passed;
+	All 8 GPUs & 4 LS10s detected;
+	GPU VB - 96.00.74.00.01;
+	LS10s - 96.10.3F.00.01;
+	RETIMER - 2.7.9;
+
+BBX = Passed;
+	
+3 FCT loops = Passed;
+1 RIN loop = Passed;
+
+NTF
+
+Test logs attached
+
+==============================================================================
+[SN#52600]
+
+Initial FCT
+2023-11-28T16:30:44.071916-08:00	FCT_test	MODS-000000000311 | nvlink                      | nvlink              | concurrent          | NVLink                   | NvSwitch2 [c2:00.0], NvLink 41                | - NVLink_CC c2:00.0 - Fail to enter Safe Mode on NvLink 41.Peer info: GPU7_b6:00.0_SXM2 link 4
+2023-11-28T16:30:44.071939-08:00	FCT_test	MODS-000000000311 | nvswitch                    | nvswitch            | singleinstance      | NVSwitch                 | NvSwitch2 [c2:00.0], NvLink 41                | - NVLink_CC c2:00.0 - Fail to enter Safe Mode on NvLink 41.Peer info: GPU7_b6:00.0_SXM2 link 4
+
+GPU2 & GPU6 swapped
+2023-11-28T18:35:10.358757-08:00	FCT_test	MODS-000000000311 | nvlink                      | nvlink              | concurrent          | NVLink                   | NvSwitch2 [c2:00.0], NvLink 41                | - NVLink_CC c2:00.0 - Fail to enter Safe Mode on NvLink 41.Peer info: GPU7_b6:00.0_SXM2 link 4
+2023-11-28T18:35:10.358784-08:00	FCT_test	MODS-000000000311 | nvswitch                    | nvswitch            | singleinstance      | NVSwitch                 | NvSwitch2 [c2:00.0], NvLink 41                | - NVLink_CC c2:00.0 - Fail to enter Safe Mode on NvLink 41.Peer info: GPU7_b6:00.0_SXM2 link 4
+
+==============================================================================
+[SN#50183]
+
+Photos
+
+All 8 GPUs and 4 LS10 W Heatsink. No component or GPU Tray damaged
+
+System Check
+	All 8 GPUs & LS10s detected;
+	GPU VB - 96.00.74.00.21
+	LS10 - 96.10.3F.00.01
+	RETIMER - 2.7.9
+	
+BBX = Passed;
+
+Initial FCT = Failed;
+	Error:
+	"2023-11-29T15:41:04.968010-08:00	FCT_test	DGX-000000000008  | thermalsensorcheck          | thermalsensorcheck  |                     | System                   | PCB_1                                         | BMC command failed after all retries, check /root/618-24287-XXXX-MFG-38636/core/spec_deltanext_hbm2e_ut2_fct.json"
+	"2023-11-29T15:41:04.968054-08:00	FCT_test	DGX-000000000008  | thermalsensorcheck          | thermalsensorcheck  |                     | System                   | Retimer_7                                     | BMC command failed after all retries, check /root/618-24287-XXXX-MFG-38636/core/spec_deltanext_hbm2e_ut2_fct.json"
+	"2023-11-29T15:41:04.968078-08:00	FCT_test	DGX-000000000008  | pressuresensorcheck         | pressuresensorcheck |                     | System                   | Altitude_Pressure                             | BMC command failed for all retries. Check /root/618-24287-XXXX-MFG-38636/core/spec_deltanext_hbm2e_ut2_fct.json"
+	"2023-11-29T15:41:11.221910-08:00	FCT_test	{{CORE_ERROR_CODE:025-000-0-000000000008}}"
+	"2023-11-29T15:41:11.222137-08:00	FCT_test	{{ComponentId=PCB_1,Retimer_7,Altitude_Pressure}}"
+	"2023-11-29T15:41:11.223584-08:00	FCT_test	{{CORE_ERROR_MSG:PCB_1,Retimer_7,Altitude_Pressure BMC command failed after all retries, check /root/618-24287-XXXX-MFG-38636/core/spec_deltanext_hbm2e_ut2_fct.json}}"
+	
+==============================================================================
+[SN#52600]
+
+Photos
+
+All 8 GPUs and 4 LS10 W Heatsink. No component or GPU Tray damaged
+
+System Check
+	All 8 GPUs & LS10s detected;
+	GPU VB - 96.00.74.00.21
+	LS10 - 96.10.3F.00.01
+	RETIMER - 2.7.9
+
+BBX = Passed;
+
+Initial FCT = Failed;
+	Error:
+	"2023-11-28T16:30:44.071916-08:00	FCT_test	MODS-000000000311 | nvlink                      | nvlink              | concurrent          | NVLink                   | NvSwitch2 [c2:00.0], NvLink 41                | - NVLink_CC c2:00.0 - Fail to enter Safe Mode on NvLink 41.Peer info: GPU7_b6:00.0_SXM2 link 4"
+	"2023-11-28T16:30:44.071939-08:00	FCT_test	MODS-000000000311 | nvswitch                    | nvswitch            | singleinstance      | NVSwitch                 | NvSwitch2 [c2:00.0], NvLink 41                | - NVLink_CC c2:00.0 - Fail to enter Safe Mode on NvLink 41.Peer info: GPU7_b6:00.0_SXM2 link 4"
+
+Swapped GPU7 + GPU5 and retest FCT = Passed;
+	System Check = Passed;
+
+Swapped GPUs back to original location and retest FCT;
+	System Check = Passed;
+	3 FCT loops = Passed;
+	1 Rin loop = Passed;
+
+==============================================================================
+[SN# 1662823650367]
+
+System Check
+	All 8 GPUs & LS10s detected;
+	GPU VB - 96.00.74.00.01
+	LS10 - 96.10.38.00.01
+	RETIMER - 0.0.8
+
+BBX = Failed;
+	GPU6(SXM4) SN: 1652723001975;
+	Error:
+	Error Code = 000000000005 (bad command line argument)
+	
+Reseat GPU6 & retest BBX = Failed;
+	GPU6(SXM4) SN: 1652723001975;
+	Error:
+	Error Code = 000000000005 (bad command line argument)
+
+==============================================================================
+[SN# 1663823653636]
+
+Photos
+
+All 8 GPUs and 4 LS10 W Heatsink. No component or GPU Tray damaged
+
+Missing plastic fuse caps;
+
+
+System Check
+	All 8 GPUs & LS10s detected;
+	GPU VB - 96.00.74.00.01
+	LS10 - 96.10.3F.00.01
+	RETIMER - 2.4.15 
+
+System Check shows: (downgraded) speed for all 8 GPUs;
+	-> AC Power Cycle;
+		-> 8 GPUs shows (downgraded);
+	-> Chassis Power Cycle;
+		-> 8 GPUs shows (downgraded);
+	
+Log files attached
+
+==============================================================================
+[SN: 1663723650546]
+
+No signs of shipment damage to boxes. Packed correctly according to the new packing standard.
+Unpack and Inspection: All 8 GPUs and 4 LS10 W Heatsink. No component or GPU Tray damaged
+
+Missing plastic fuse caps
+
+Visual inspection passed, ready for testing;
+
+
+Photos
+
+All 8 GPUs and 4 LS10 W Heatsink. No component or GPU Tray damaged
+
+Missing plastic fuse caps;
+
+
+Initial System Check:
+	7/8 GPUs detected;
+		GPU0 = missing;
+
+Reseat + System Check:
+	7/8 GPUs detected;
+		GPU0 = Missing;
+		
+Swapped GPU0 + GPU2;
+	7/8 GPUs detected;
+		GPU0 = missing at SXM1;
+			Faulty GPU0 SN: 1653623014758
+			
+Swapped GPU0 for Golden + System Check:
+	8 GPUs detected + 4 LS10s detected;
+	GPU VB - 96.00.74.00.21
+	LS10 - 96.10.3F.00.01
+	RETIMER - 2.7.9
+	FPGA - 02 02 0c
+	
+BBX = Passed;
+
+3 FCT LOOPS = Passed;
+1 RIN LOOP = Passed;
+
+==============================================================================
+[SN: 1663423652723]
+
+Photos
+
+All 8 GPUs and 4 LS10 W Heatsink. No component or GPU Tray damaged
+
+Missing plastic fuse caps;
+
+
+System Check:
+	All 8 GPUs + 4 LS10s detected;
+	GPU VB - 96.00.74.00.01
+	LS10 - 96.10.3F.00.01
+	RETIMER - 2.7.7
+	FPGA - 02 02 0c
+
+Initial FCT:
+	Failed:
+		Error: 
+
+==============================================================================
+[SN: 1661323652023]
+
+Photos
+
+All 8 GPUs and 4 LS10 W Heatsink. No component or GPU Tray damaged
+
+Missing plastic fuse caps;
+
+
+System Check - Initial:
+	6/8 GPU + 4 LS10s detected;
+		-> All GPU shows (downgraded)
+		-> Defective/Missing GPU0 + GPU6 SN: 1650723001381, 1650723006690;
+		
+	GPU VB - 96.00.74.00.01
+	LS10 - 96.10.3F.00.01
+	RETIMER - 2.4.15
+	FPGA - 02 01 01
+
+System Check - Reseat GPU0 + GPU6;
+	GPU0 + GPU6 still missing;
+		-> All GPU shows (downgraded)
+	
+System Check - Swapped GPU0 W/GPU4 + GPU6 W/GPU2
+	GPU4 + GPU2 is missing;
+		-> All GPU shows (downgraded)
+	
+System Check - Swapped GPU0 + GPU6 with Golden GPU;
+	All 8 GPUs + 4 LS10s detected;
+		-> All GPU shows (downgraded)
+
+		
+Updated Retimer:
+	-> All GPUs speeds (OK);
+	-> 2.7.9
+		-> BBX 			= Passed;
+		-> 3 FCT Loops 	= Passed;
+		-> 1 RIN Loop 	= Passed;
+
+==============================================================================
+[SN: 1663423652723]
+
+Initial System Check:
+	-> All 8 GPUs + 4 LS10s detected;
+		GPU VB	- 96.00.74.00.01
+		LS10	- 96.10.3F.00.01
+		RETIMER	- 2.7.7
+		FPGA 	- 02 02 0c
+
+BBX = Passed;
+
+Initial FCT:
+	Failed with Error:
+		-> "GPU 1 [06:00.0]- GPU_OFFSET_MAX,GPU 7 [b6:00.0]- GPU_OFFSET_MAX,GPU 1 [06:00.0]- GPU_OFFSET_MAX,GPU 7 [b6:00.0]- GPU_OFFSET_MAX,GPU 1 [06:00.0]- GPU_OFFSET_MAX,GPU 7 [b6:00.0]- GPU_OFFSET_MAX,,, 2 Overtemp events detected. Temp > Max Allowed (106.00 degrees)"
+		
+Reseat all GPUs + System Check:
+	-> All 8 GPUs + 4 LS10s detected;
+		-> Missing 2 GPUs during GPU info check;
+			-> GPU0 + GPU7 was missing
+			
+Updated Retimer + System Check:
+	-> All 8 GPUs + 4 LS10s detected;
+		-> All 8 GPUs shown in GPU info check:
+		-> RETIMER	- 2.7.9
+		
+	-> FCT Failed with Error:
+		->	"2023-12-13T11:57:43.859278-08:00        FCT_test        {{CORE_ERROR_CODE:003-010-1-000000000139}}"
+			"2023-12-13T11:57:43.859601-08:00        FCT_test        {{ComponentId=GPU 7 [b6:00.0]- GPU_OFFSET_MAX,GPU 1 [06:00.0]- GPU_OFFSET_MAX,GPU 7 [b6:00.0]- GPU_OFFSET_MAX,GPU 1 [06:00.0]- GPU_OFFSET_MAX,GPU 7 [b6:00.0]- GPU_OFFSET_MAX,GPU 1 [06:00.0]- GPU_OFFSET_MAX,,,}}"
+			"2023-12-13T11:57:43.861112-08:00        FCT_test        {{CORE_ERROR_MSG:GPU 7 [b6:00.0]- GPU_OFFSET_MAX,GPU 1 [06:00.0]- GPU_OFFSET_MAX,GPU 7 [b6:00.0]- GPU_OFFSET_MAX,GPU 1 [06:00.0]- GPU_OFFSET_MAX,GPU 7 [b6:00.0]- GPU_OFFSET_MAX,GPU 1 [06:00.0]- GPU_OFFSET_MAX,,, 1 Overtemp events detected. Temp > Max Allowed (104.00 degrees)}}"
+		
+Swapped GPU 1 + GPU 7 W/ Golden GPUs:
+	-> System Check = Passed;
+		-> FCT = Passed;
+		-> RIN = Passed;
+
+	
+	
+
+
+==============================================================================
+[SN: 1661523650112]
+
+Photos
+
+All 8 GPUs and 4 LS10 W Heatsink. No component or GPU Tray damaged
+
+
+Initial System Check:
+	-> Failed;
+		-> All 8 GPUs + 4 LS10s detected;
+			GPU VB	- 96.00.74.00.01
+			LS10	- 96.10.3F.00.01
+			FPGA 	- 02 02 0c		
+			RETIMER = Bad;
+				-> 6/8 shows 2.4.8
+				-> 2/8 shows 2.7.9
+				
+Updated Retimer + System Check:
+	-> Passed;
+		-> All 8 GPUs + 4 LS10s detected;
+			GPU VB	- 96.00.74.00.01
+			LS10	- 96.10.3F.00.01
+			RETIMER - 2.7.9
+			FPGA 	- 02 02 0c
+		
+		-> FCT = Passed;
+		-> RIN = Passed;
+			
+==============================================================================
+[SN: 1661423650513]
+
+No signs of shipment damage to boxes. Packed correctly according to the new packing standard.
+Unpack and Inspection: All 8 GPUs and 4 LS10 W Heatsink. No component or GPU Tray damaged
+
+Missing plastic fuse caps
+
+Visual inspection passed, ready for testing;
+
+***
+
+Photos
+
+All 8 GPUs and 4 LS10 W Heatsink. No component or GPU Tray damaged
+
+Missing plastic fuse caps;
+
+***
+
+Initial System Check:
+	-> All 8 GPUs + LS10s detected;
+		GPU VB	- 96.00.74.00.01
+		LS10	- 96.10.3F.00.01
+		RETIMER - 2.4.15
+		FPGA 	- 02 02 01
+		
+BBX:
+	-> Passed;
+
+Initial FCT:
+	-> Failed With Error:
+		-> "2023-12-14T14:32:22.717368-08:00        EC01_EC143_EC139_PARSER {{CORE_ERROR_CODE:003-010-1-000000000143}}"
+		
+Updated Retimer + System Check:
+	-> All 8 GPUs + LS10s detected;
+		GPU VB	- 96.00.74.00.01
+		LS10	- 96.10.3F.00.01
+		RETIMER - 2.7.9
+		FPGA 	- 02 02 01
+		
+	FCT:
+		-> Passed;
+	RIN:
+		-> Passed;
+
+
+
+==============================================================================
+[SN:1662223650696]
+
+Photos
+
+All 8 GPUs and 4 LS10 W Heatsink. No component or GPU Tray damaged
+
+Missing plastic fuse caps;
+
+***
+
+Initial System Check:
+	-> Failed;
+		-> All GPUs speed shows (Downgraded);
+		    GPU VB	- 96.00.74.00.01
+			LS10	- 96.10.3F.00.01
+			RETIMER - 2.4.15
+			FPGA 	- 02 01 01
+		
+Update Retimer + System Check:
+	-> Good;
+		-> All 8 GPUs + 4 LS10s detected;
+		-> All GPUs speed shows (OK);
+		    GPU VB	- 96.00.74.00.01
+			LS10	- 96.10.3F.00.01
+			RETIMER - 2.7.9
+			FPGA 	- 02 01 01
+			
+	BBX:
+		-> Passed;		
+	FCT:
+		-> Passed;
+	RIN:
+		-> Passed;
+
+==============================================================================
+[SN: 1662823651075]
+
+No signs of shipment damage to boxes. Packed correctly according to the new packing standard.
+Unpack and Inspection: All 8 GPUs and 4 LS10 W Heatsink. No component or GPU Tray damaged
+
+Missing plastic fuse caps
+
+Visual inspection passed, ready for testing;
+
+***
+
+Photos
+
+All 8 GPUs and 4 LS10 W Heatsink. No component or GPU Tray damaged
+
+Missing plastic fuse caps;
+
+***
+
+Initial System Check:
+	-> All 8 GPUs + 4 LS10s detected;
+		GPU VB - 96.00.68.00.01
+		LS10 - 96.10.38.00.01
+		RETIMER - 1.31.8
+		FPGA - 02 01 01
+	
+	-> BBX = Passed;
+
+Initial FCT:
+	-> Failed with Error:
+		-> "Final Error Code: 028001006_003-000-0-000000000001"
+
+Update Retimer:
+	-> System Check:
+		->All 8 GPUs + 4 LS10s detected;
+			GPU VB - 96.00.68.00.01
+			LS10 - 96.10.38.00.01
+			RETIMER - 2.7.9
+			FPGA - 02 01 01
+			
+	-> Post Retimer + FCT:
+		-> Passed;
+	-> Post Retimer + RIN:
+		-> Passed;
+
+
+==============================================================================
+[SN: 1663223652278]
+
+No signs of shipment damage to boxes. Packed correctly according to the new packing standard.
+Unpack and Inspection: All 8 GPUs and 4 LS10 W Heatsink. No component or GPU Tray damaged
+
+Visual inspection passed, ready for testing;
+
+***
+
+Photos
+
+All 8 GPUs and 4 LS10 W Heatsink. No component or GPU Tray damaged
+
+***
+
+Initial System Check:
+	-> All 8 GPUs + 4 LS10s detected;
+		GPU VB - 96.00.74.00.01
+		LS10 - 96.10.3F.00.01
+		RETIMER - 2.7.7
+		FPGA - 02 02 0c
+	
+	-> BBX = Passed;
+
+Initial FCT:
+	-> Passed;
+Rin:
+	-> Passed;
+
+
+
+==============================================================================
+[SN: 1662723651679] - Kush
+
+
+No signs of shipment damage to boxes. Packed correctly according to the new packing standard.
+Unpack and Inspection: All 8 GPUs and 4 LS10 W Heatsink. No component or GPU Tray damaged
+
+Visual inspection passed, ready for testing;
+
+***
+
+Photos
+
+All 8 GPUs and 4 LS10 W Heatsink. No component or GPU Tray damaged
+
+***
+
+Picking up where Kush left off;
+
+
+LS10 FW Update + System Check:
+	-> 5/8 GPUs + 2/4 LS10s detected;
+		GPU VB 	- [96.00.61.00.01], [96.00.68.00.01], [96.00.74.00.01];
+		LS10 	- 96.10.45.00.01
+		RETIMER - 2.7.9
+		FPGA 	- 02 01 01
+			-> GPU0, GPU4, GPU5 | [05, 85, 86] = Missing; 
+
+Swapped GPUs [0 + 4 + 5], with [2 + 6 + 1];
+	-> System Check:
+		-> LSPCI 06/GPU5 + b5/GPU4 = missing
+			-> GPU info check shows 05/GPU2 missing;
+			
+Swapped GPUs [0, 4, 5] with Golden GPUS:
+	-> All 8 GPUs + 4 LS10s detected;
+		GPU VB 	- [96.00.61.00.01], [96.00.68.00.01], [96.00.74.00.01];
+		LS10 	- 96.10.45.00.01
+		RETIMER - 2.7.9
+		FPGA 	- 02 01 01
+			-> Retimer #1 shows 0.0.9
+
+Swapped all GPUs with Golden GPUs:
+	-> All 8 GPUs + 4 LS10s detected;
+		GPU VB 	- 96.00.68.00.01;
+		LS10 	- 96.10.45.00.01
+		RETIMER - 2.7.9
+		FPGA 	- 02 01 01
+	-> FCT passed... failed overall due to IST on golden GPU6
+	-> Baseboard is good, maybe.. Maybe a single GPU is causing issues on original GPUs.
+
+
+
+==============================================================================
+[SN: 1662023650368]
+
+No signs of shipment damage to boxes. Packed correctly according to the new packing standard.
+Unpack and Inspection: All 8 GPUs and 4 LS10 W Heatsink. No component or GPU Tray damaged
+
+Missing plastic fuse caps
+
+Visual inspection passed, ready for testing;
+
+***
+
+Photos
+
+All 8 GPUs and 4 LS10 W Heatsink. No component or GPU Tray damaged
+
+Missing plastic fuse caps;
+
+***
+
+Initial System Check:
+	-> All 8 GPUs + 3/4 LS10s detected;
+		2/8 GPUs + 3 LS10s shows: (rev ff)
+		GPU VB - 96.00.61.00.02
+		LS10 - 96.10.35.00.01
+		RETIMER - 2.4.28
+		FPGA - 02 01 01
+		
+AC Power Cycle + System Check:
+	-> All 8 GPUs + 4 LS10s detected + shows (rev a1);
+		GPU VB - 96.00.61.00.02
+		LS10 - 96.10.35.00.01
+		RETIMER - 2.4.28
+		FPGA - 02 01 01
+		
+	-> BBX:
+		-> Passed;
+	-> FCT:
+		-> Passed;
+	-> RIN:
+		-> Failed;
+			-> "2023-12-19T11:54:19.218899-08:00	lspci_check_logging	{{CORE_ERROR_MSG:LSPCI check FAIL: c0:00.0 }}"
+		
+Updated retimer + System Check:
+	-> All 8 GPUs + 4 LS10s detected + shows (rev a1);
+		GPU VB - 96.00.61.00.02
+		LS10 - 96.10.35.00.01
+		RETIMER - 2.7.9
+		FPGA - 02 01 01
+
+	-> Rin:
+		-> Passed;
+
+==============================================================================
+[SN: 1662123650122]
+
+No signs of shipment damage to boxes. Packed correctly according to the new packing standard.
+Unpack and Inspection: All 8 GPUs and 4 LS10 W Heatsink. No component or GPU Tray damaged
+
+Missing plastic fuse caps
+
+Visual inspection passed, ready for testing;
+
+***
+
+Photos
+
+All 8 GPUs and 4 LS10 W Heatsink. No component or GPU Tray damaged
+
+Missing plastic fuse caps;
+
+***
+
+Initial System Check:
+	-> All 8 GPUs + 4 LS10s detected;
+		GPU VB - 96.00.61.00.02
+		LS10 - 96.10.35.00.01
+		RETIMER - 2.4.28
+		FPGA - 02 01 01
+	
+	-> BBX:
+		-> Passed;
+	-> FCT:
+		-> Failed on GPU2 SN:1651923009414
+		-> Failed with Error:
+			-> "2023-12-19T17:16:59.179178-08:00    FCT_test    {{CORE_ERROR_CODE:003-010-1-000000000316}}"
+			-> "2023-12-19T17:16:59.181036-08:00	FCT_test	{{CORE_ERROR_MSG:GPU2_45:00.0_SXM1,GPU2_45:00.0_SXM1,GPU2_45:00.0_SXM1,GPU2_45:00.0_SXM1,GPU2_45:00.0_SXM1,GPU2_45:00.0_SXM1,GPU2_45:00.0_SXM1,GPU2_45:00.0_SXM1,GPU2_45:00.0_SXM1,GPU2_45:00.0_SXM1,GPU2_45:00.0_SXM1,GPU2_45:00.0_SXM1,GPU2_45:00.0_SXM1,GPU2_45:00.0_SXM1,GPU2_45:00.0_SXM1 Found memory error type "CORR" in "FB".}}"
+			
+Reseat GPU2 + Retest:
+	-> System Check:
+		-> Normal;
+	-> FCT:
+		-> Same error;
+
+Swapped GPU2 + GPU6 + Retest:
+	-> System Check:
+		-> Normal;
+	-> FCT:
+		-> GPU2 Failed on SXM4:
+			-> "2023-12-19T20:54:05.413147-08:00	FCT_test	{{CORE_ERROR_CODE:003-010-1-000000000316}}"
+			-> "2023-12-19T20:54:05.414226-08:00	FCT_test	{{CORE_ERROR_MSG:GPU6_b5:00.0_SXM4,GPU6_b5:00.0_SXM4,GPU6_b5:00.0_SXM4,GPU6_b5:00.0_SXM4,GPU6_b5:00.0_SXM4,GPU6_b5:00.0_SXM4,GPU6_b5:00.0_SXM4,GPU6_b5:00.0_SXM4,GPU6_b5:00.0_SXM4,GPU6_b5:00.0_SXM4,GPU6_b5:00.0_SXM4,GPU6_b5:00.0_SXM4,GPU6_b5:00.0_SXM4,GPU6_b5:00.0_SXM4,GPU6_b5:00.0_SXM4 Found memory error type "CORR" in "FB".}}"
+
+Swapped GPU2 back + replaced with Golden GPU + Retest:
+	-> System Check:
+		-> Normal;
+	-> FCT:
+		-> Passed;
+	-> RIN:
+		-> Passed;
+	
+
+
+==============================================================================
+[SN: 1663623652078]
+
+No signs of shipment damage to boxes. Packed correctly according to the new packing standard.
+Unpack and Inspection: All 8 GPUs and 4 LS10 W Heatsink. No component or GPU Tray damaged
+
+Missing plastic fuse caps
+
+Visual inspection passed, ready for testing;
+
+***
+
+Photos
+
+All 8 GPUs and 4 LS10 W Heatsink. No component or GPU Tray damaged
+
+Missing plastic fuse caps
+
+***
+
+Initial System Check:
+	-> All 8 GPUs + 4 LS10s detected;
+		GPU VB - 96.00.74.00.21
+		LS10 - 96.10.3F.00.01
+		RETIMER - 2.7.9
+		FPGA - 02 02 0c
+		
+	-> BBX:
+		-> Passed;
+	-> FCT:
+		-> Passed;
+	-> RIN:
+		-> Passed;
+
+NTF;
+
+==============================================================================
+[SN: 1662023651499]
+
+No signs of shipment damage to boxes. Packed correctly according to the new packing standard.
+Unpack and Inspection: All 8 GPUs and 4 LS10 W Heatsink. No component or GPU Tray damaged
+
+Missing plastic fuse caps
+
+Visual inspection passed, ready for testing;
+
+***
+
+Photos
+
+All 8 GPUs and 4 LS10 W Heatsink. No component or GPU Tray damaged
+
+Missing plastic fuse caps;
+
+***
+
+Initial System Check:
+	-> All 8 GPUs + 4 LS10s detected;
+		GPU VB - 96.00.61.00.02
+		LS10 - 96.10.35.00.01
+		RETIMER - 2.4.28
+		FPGA - 02 01 01
+	
+	-> BBX:
+		-> Passed;
+	-> FCT:
+		-> Passed;
+	-> RIN:
+		-> Passed;
+	
+NTF;
+		
+==============================================================================
+[SN: 1662023650218]
+
+No signs of shipment damage to boxes. Packed correctly according to the new packing standard.
+Unpack and Inspection: All 8 GPUs and 4 LS10 W Heatsink. No component or GPU Tray damaged
+
+Missing plastic fuse caps
+
+Visual inspection passed, ready for testing;	
+	
+***
+
+Photos
+
+All 8 GPUs and 4 LS10 W Heatsink. No component or GPU Tray damaged
+
+Missing plastic fuse caps;
+
+***
+
+Initial System Check:
+	-> All 8 GPUs + 4 LS10s detected;
+		GPU VB - 96.00.61.00.02
+		LS10 - 96.10.35.00.01
+		RETIMER - 2.4.28
+		FPGA - 02 01 01
+
+	-> BBX:
+		-> Failed on 3/8 GPUs;
+			-> GPU 0 SN: 1651823005007;
+			-> GPU 5 SN: 1651823003315;
+			-> GPU 4 SN: 1651823000817;
+			
+	-> FCT:
+		-> Failed with Error:
+			-> "2023-12-20T18:54:52.611904-08:00	FCT_test	{{CORE_ERROR_CODE:003-010-0-000000000002}}"
+			   "2023-12-20T18:54:52.612000-08:00	FCT_test	{{ComponentId=GPU0_05:00.0_SXM8,,GPU3_46:00.0_SXM3,,GPU3_46:00.0_SXM3,,GPU7_b6:00.0_SXM2,,,,}}"
+
+Updated Retimer + Retest:
+	-> System Check:
+		-> All 8 GPUs + 4 LS10s detected;
+		GPU VB - 96.00.61.00.02
+		LS10 - 96.10.35.00.01
+		RETIMER - 2.7.9
+		FPGA - 02 01 01
+	
+	-> FCT:
+		-> Passed;
+	-> RIN:
+		-> Passed;
+
+
+==============================================================================
+[SN: 1664922650957]
+
+No signs of shipment damage to boxes. Packed correctly according to the new packing standard.
+Unpack and Inspection: All 8 GPUs and 4 LS10 W Heatsink. No component or GPU Tray damaged
+
+Visual inspection passed, ready for testing;	
+	
+***
+
+Photos
+
+All 8 GPUs and 4 LS10 W Heatsink. No component or GPU Tray damaged
+
+***
+
+Peter - Loose connector;
+
+Initial System Check:
+	-> All 8 GPUs + 4 LS10s detected;
+		-> 2/8 GPUs Width shows (downgraded)
+		GPU VB - 96.00.51.00.0B
+		LS10 - 96.10.29.00.01
+		RETIMER - 1.26.5
+		FPGA - 02 00 07
+
+Updated Retimer + Retest:
+	-> All 8 GPUs + 4 LS10s detected;
+		-> 2/8 GPUs Width shows (downgraded)
+		GPU VB - 96.00.51.00.0B
+		LS10 - 96.10.29.00.01
+		RETIMER - 2.7.9
+		FPGA - 02 00 07
+
+AC Cycle + Retest:
+	-> System Check still shows 2/8 GPU width (Downgraded);
+	
+LS10 FW Update + Retest:
+	-> All 8 GPUs + 4 LS10s detected;
+		GPU VB - 96.10.45.00.01
+		LS10 - 96.10.29.00.01
+		RETIMER - 2.7.9
+		FPGA - 02 00 07
+			-> System Check still shows 2/8 GPU width (Downgraded);
+
+	-> BBX:
+		-> Passed;
+	-> FCT:
+		-> Failed;
+			->	"Core Error Code : 003-010-1-000000000665"
+				"Core Error Msg  : GPU1_06:00.0_SXM6 [IsHost: False],,GPU0_05:00.0_SXM8 [IsHost: False],GPU1_06:00.0_SXM6 [IsHost: False],GPU0_05:00.0_SXM8 [IsHost: False],GPU0_05:00.0_SXM8 [IsHost: False],GPU1_06:00.0_SXM6 [IsHost: False],GPU0_05:00.0_SXM8 [IsHost: False],GPU1_06:00.0_SXM6 [IsHost: False] PcieLinkWidth: Found 8, Expected(Min/Max) [16,16]"
+				"Final Error Code: 028001006_003-010-1-000000000665"
+
+Reseat GPU0, GPU1 + Retest FCT:
+	-> System Check:
+		-> All 8 GPUs + 4 LS10s detected with correct speed + Width showing (OK);
+	-> FCT:
+		-> Passed;
+	-> RIN:
+		-> Passed;
+
+==============================================================================
+[SN: 1660123650672]
+
+No signs of shipment damage to boxes. Packed correctly according to the new packing standard.
+Unpack and Inspection: All 8 GPUs and 4 LS10 W Heatsink. No component or GPU Tray damaged
+
+Missing plastic fuse caps
+
+Visual inspection passed, ready for testing;	
+	
+***
+
+Photos
+
+All 8 GPUs and 4 LS10 W Heatsink. No component or GPU Tray damaged
+
+Missing plastic fuse caps;
+
+***
+
+Initial System Check:
+	-> All 8 GPUs + 4 LS10s detected;
+		-> All 8 GPUs speed shows (downgraded)
+		GPU VB - 96.00.74.00.01
+		LS10 - 96.10.3F.00.01
+		RETIMER - 2.4.15
+		FPGA - 02 01 01
+
+Updated Retimer + Retest:
+	-> All 8 GPUs + 4 LS10s detected;
+		-> All 8 GPUs speed shows (OK);
+		GPU VB - 96.00.74.00.01
+		LS10 - 96.10.3F.00.01
+		RETIMER - 2.7.9
+		FPGA - 02 01 01
+
+	-> BBX:
+		-> Passed;
+	-> FCT:
+		-> Failed:
+			-> 	"Core Error Code : 003-010-0-000000000002"
+				"Core Error Msg  : GPU4_85:00.0_SXM5,Retimer_5,,GPU7_b6:00.0_SXM2,,GPU7_b6:00.0_SXM2,,GPU7_b6:00.0_SXM2,,,, Timed out - no error code detected"
+				"Final Error Code: 028001006_003-010-0-000000000002"
+				
+Reseat GPU4 + Retest FCT:
+	-> System Check:
+		-> Normal;
+	-> FCT:
+		-> Failed:
+			-> 	"2023-12-26T14:00:13.353086-08:00	EC01_EC143_EC139_PARSER	{{CORE_ERROR_CODE:003-010-0-000000000002}}"
+				"2023-12-26T14:00:13.353225-08:00	EC01_EC143_EC139_PARSER	{{ComponentId=GPU4_85:00.0_SXM5,Retimer_5,,GPU2_45:00.0_SXM1,,GPU2_45:00.0_SXM1,,GPU2_45:00.0_SXM1,,,,}}"
+				"2023-12-26T14:00:13.354419-08:00	EC01_EC143_EC139_PARSER	{{CORE_ERROR_MSG:GPU4_85:00.0_SXM5,Retimer_5,,GPU2_45:00.0_SXM1,,GPU2_45:00.0_SXM1,,GPU2_45:00.0_SXM1,,,, Timed out - no error code detected}}"
+
+Swap GPU4 with GPU0 + Retest FCT:
+	-> System Check:
+		-> Normal;		
+	-> FCT:
+		-> Failed: Error follows GPU;
+			-> 	"2023-12-26T16:11:58.896321-08:00	EC01_EC143_EC139_PARSER	{{CORE_ERROR_CODE:003-010-0-000000000002}}"
+				"2023-12-26T16:11:58.896474-08:00	EC01_EC143_EC139_PARSER	{{ComponentId=GPU0_05:00.0_SXM8,Retimer_8,,GPU2_45:00.0_SXM1,,GPU2_45:00.0_SXM1,,GPU3_46:00.0_SXM3,,,,}}"
+	
+Swap GPU4 with Golden + Retest FCT:	
+	-> System Check:
+		-> Normal;
+	-> FCT:
+		-> Passed;
+	-> RIN:
+		-> Passed;
+		
+GPU 4 SN: [1655222014211] is defected;
+
+==============================================================================
+[SN: 1663923652313]
+
+No signs of shipment damage to boxes. Packed correctly according to the new packing standard.
+Unpack and Inspection: All 8 GPUs and 4 LS10 W Heatsink. No component or GPU Tray damaged
+
+Visual inspection passed, ready for testing;	
+	
+***
+
+Photos
+
+All 8 GPUs and 4 LS10 W Heatsink. No component or GPU Tray damaged
+
+***
+
+Initial System Check:
+	-> All 8 GPUs + 4 LS10s detected;
+		GPU VB - 96.00.74.00.01
+		LS10 - 96.10.3F.00.01
+		RETIMER - 2.7.9
+		FPGA - 02 02 0c
+	
+	-> BBX:
+		-> Passed;
+	-> FCT:
+		-> Passed;
+	-> RIN:
+		-> Failed;
+			-> 	"2023-12-27T05:57:43.543937-08:00	RIN_test_RETRY	{{CORE_ERROR_CODE:015-000-1-000000000077}}"
+				"2023-12-27T05:57:43.544091-08:00	RIN_test_RETRY	{{ComponentId=c3:00.0,c2:00.0,c1:00.0,c0:00.0,c0:00.0 ,c1:00.0 ,c2:00.0 ,c3:00.0 ,c0:00.0 ,c1:00.0 ,c2:00.0 ,c3:00.0 ,BMC_TEMP_GB1_PCB1 ,BMC_TEMP_GB1_PCB2 }}"
+				"2023-12-27T05:57:43.545033-08:00	RIN_test_RETRY	{{CORE_ERROR_MSG:c3:00.0,c2:00.0,c1:00.0,c0:00.0,c0:00.0 ,c1:00.0 ,c2:00.0 ,c3:00.0 ,c0:00.0 ,c1:00.0 ,c2:00.0 ,c3:00.0 ,BMC_TEMP_GB1_PCB1 ,BMC_TEMP_GB1_PCB2  timeout error}}"
+		
+Retest RIN:
+	-> Failed;
+		-> 	"2023-12-27T11:47:05.685227-08:00	EC01_EC143_EC139_PARSER_2	{{CORE_ERROR_CODE:014-000-1-000000000665}}"
+			"2023-12-27T11:47:05.685412-08:00	EC01_EC143_EC139_PARSER_2	{{ComponentId=GPU0_05:00.0_SXM8 [IsHost: False]}}"
+			"2023-12-27T11:47:05.685484-08:00	EC01_EC143_EC139_PARSER_2	{{CORE_ERROR_MSG:GPU0_05:00.0_SXM8 [IsHost: False] PcieLinkWidth: Found 8, Expected(Min/Max) [16,16]}}"
+		
+Reseat GPU0:
+	-> System Check shows Width downgraded on SXM8
+		
+Swapped GPU0 with GPU2:
+	-> System Check shows Width downgraded on SXM8 
+	-> Retry RIN:
+		-> Error: Error stayed at same location
+			-> 	"2023-12-27T13:59:52.811691-08:00        EC01_EC143_EC139_PARSER_2       {{CORE_ERROR_CODE:014-000-1-000000000665}}"
+				"2023-12-27T13:59:52.811757-08:00        EC01_EC143_EC139_PARSER_2       {{ComponentId=GPU0_05:00.0_SXM8 [IsHost: False]}}"
+				"2023-12-27T13:59:52.811803-08:00        EC01_EC143_EC139_PARSER_2       {{CORE_ERROR_MSG:GPU0_05:00.0_SXM8 [IsHost: False] PcieLinkWidth: Found 8, Expected(Min/Max) [16,16]}}"
+		
+==============================================================================
+[SN: 1662123651600]
+
+No signs of shipment damage to boxes. Packed correctly according to the new packing standard.
+Unpack and Inspection: All 8 GPUs and 4 LS10 W Heatsink. No component or GPU Tray damaged
+
+Missing plastic fuse caps
+
+Visual inspection passed, ready for testing;	
+	
+***
+
+Photos
+
+All 8 GPUs and 4 LS10 W Heatsink. No component or GPU Tray damaged
+
+Missing plastic fuse caps;
+
+***
+
+Initial System Check:
+	-> 7/8 GPUs + 4 LS10s detected;
+		-> GPU 6 is missing;
+		GPU VB - 96.00.74.00.02
+		LS10 - 96.10.3F.00.01
+		RETIMER - 2.7.9
+		FPGA - 02 02 0c
+
+Reseat GPU 6 + System Check:
+	-> 7/8 GPUs + 4 LS10s detected;
+		-> GPU 6 is still missing;
+		
+Swap GPU 6 with GPU 2 + System Check:
+	-> 7/8 GPUs + 4 LS10s detected;
+		-> GPU 6 is still missing;
+
+Replace GPU 6 with Golden GPU + System Check:
+	-> All 8 GPUs + 4 LS10s detected;
+
+	-> BBX:
+		-> Passed;
+	-> FCT:
+		-> Passed;
+	-> RIN:
+		-> Passed;
+
+	
+GPU6 SN: 1651923010880 is defected;	
+	
+==============================================================================
+[SN: 1661923650799]
+
+No signs of shipment damage to boxes. Packed correctly according to the new packing standard.
+Unpack and Inspection: All 8 GPUs and 4 LS10 W Heatsink. No component or GPU Tray damaged
+
+Missing plastic fuse caps
+
+Visual inspection passed, ready for testing;	
+	
+***
+
+Photos
+
+All 8 GPUs and 4 LS10 W Heatsink. No component or GPU Tray damaged
+
+Missing plastic fuse caps;
+
+***
+
+Initial System Check:
+	->  8 GPUs + 0 LS10s detected;
+					
+AC Cycle + System Check:
+	-> 	All 8 GPUs + 4 LS10s detected;
+		GPU VB - 96.00.61.00.02
+		LS10 - 96.10.35.00.01
+		RETIMER - 2.4.28
+		FPGA - 02 01 01	
+	
+	-> BBX:
+		-> Passed;
+	-> FCT:
+		-> Passed;
+	-> RIN:
+		-> Passed;
+	
+	
+==============================================================================
+[SN: 1662223650389]
+
+No signs of shipment damage to boxes. Packed correctly according to the new packing standard.
+Unpack and Inspection: All 8 GPUs and 4 LS10 W Heatsink. No component or GPU Tray damaged
+
+Missing plastic fuse caps
+
+Visual inspection passed, ready for testing;	
+	
+***
+
+Photos
+
+All 8 GPUs and 4 LS10 W Heatsink. No component or GPU Tray damaged
+
+Missing plastic fuse caps;
+
+***
+
+Initial System Check:
+	-> 0 GPUs + 0 LS10s detected;
+		GPU VB 	- Missing
+		LS10	- Missing
+		RETIMER - 1.26.10
+		FPGA 	- 02 00 07
+
+System Check on different tester + AC power cycle:
+	-> 0 GPUs + 0 LS10s detected;
+		GPU VB 	- Missing
+		LS10	- Missing
+		RETIMER - 1.26.10
+		FPGA 	- 02 00 07
+
+Retimer Update:
+	-> Retimer failed to update;
+		-> "chk_task.txt" - retimer update output attached;
+		
+Systme Check + BBX with Golden BB:
+	-> All 8 GPUs detected;
+		GPU VB - 96.00.51.00.03
+	-> BBX:
+		->Passed;
+	
+I did further visual inspections on this unit and did not find any damages;
+
+
+System Check Prior to FLB Test:
+	-> 8 GPUs detected + 0 LS10s detected;
+FLB:
+	-> Failed;
+
+
+
+==============================================================================
+[SN: 1662323651942]
+
+No signs of shipment damage to boxes. Packed correctly according to the new packing standard.
+Unpack and Inspection: All 8 GPUs and 4 LS10 W Heatsink. No component or GPU Tray damaged
+
+Missing plastic fuse caps
+
+Visual inspection passed, ready for testing;	
+	
+***
+
+Photos
+
+All 8 GPUs and 4 LS10 W Heatsink. No component or GPU Tray damaged
+
+Missing plastic fuse caps;
+
+***
+
+Initial System Check:
+	-> All 8 GPUs + 4 LS10s detected;
+		GPU VB - 96.00.74.00.02
+		LS10 - 96.10.3F.00.01
+		RETIMER - 2.7.9
+		FPGA - 02 02 0c		
+		
+	-> BBX:
+		-> Passed;
+	-> FCT:
+		-> Passed;
+	-> RIN:
+		-> Passed;
+
+==============================================================================
+[SN: 1662123650903]
+
+No signs of shipment damage to boxes. Packed correctly according to the new packing standard.
+Unpack and Inspection: All 8 GPUs and 4 LS10 W Heatsink. No component or GPU Tray damaged
+
+Visual inspection passed, ready for testing;	
+	
+***
+
+Photos
+
+All 8 GPUs and 4 LS10 W Heatsink. No component or GPU Tray damaged
+
+***
+
+Initial System Check:
+	-> All 8 GPUs + 4 LS10s detected;
+		GPU VB - 96.00.61.00.02
+		LS10 - 96.10.35.00.01
+		RETIMER - 2.4.28
+		FPGA - 02 01 01
+	
+	-> BBX:
+		-> Passed;
+	-> FCT:
+		-> Passed;
+	-> RIN:
+		-> Passed;
+
+
+==============================================================================
+[SN: 1662123650144] S15-3
+
+No signs of shipment damage to boxes. Packed correctly according to the new packing standard.
+Unpack and Inspection: All 8 GPUs and 4 LS10 W Heatsink. No component or GPU Tray damaged
+
+Missing plastic fuse caps
+
+Visual inspection passed, ready for testing;	
+	
+***
+
+Photos
+
+All 8 GPUs and 4 LS10 W Heatsink. No component or GPU Tray damaged
+
+Missing plastic fuse caps;
+
+***
+
+Initial System Check:
+	-> All 8 GPUs + 4 LS10s detected;
+		GPU VB 	- 96.00.61.00.02
+		LS10 	- 96.10.35.00.01
+		RETIMER - 2.4.28
+		FPGA 	- 02 01 01
+		
+	-> BBX:
+		-> Passed;
+	-> FCT:
+		-> Passed;
+	-> RIN:
+		-> Passed;
+
+
+==============================================================================
+[SN: 1661923650452] S16-3
+
+No signs of shipment damage to boxes. Packed correctly according to the new packing standard.
+Unpack and Inspection: All 8 GPUs and 4 LS10 W Heatsink. No component or GPU Tray damaged
+
+Visual inspection passed, ready for testing;	
+	
+***
+
+Photos
+
+All 8 GPUs and 4 LS10 W Heatsink. No component or GPU Tray damaged
+
+***
+
+Initial System Check:
+	->  8 GPUs + 0 LS10s detected;
+		GPU VB 	- 96.00.61.00.02
+		LS10 	- Missing;
+		RETIMER - 2.4.28
+		FPGA 	- 02 01 01
+
+Missing LS10s; -> DC Cycle + System Check;
+	-> All 8 GPUs + 4 LS10s detected;
+		GPU VB 	- 96.00.61.00.02
+		LS10 	- 96.10.35.00.01
+		RETIMER - 2.4.28
+		FPGA 	- 02 01 01
+
+	-> BBX:
+		-> Passed;
+	-> FCT:
+		-> Passed;
+	-> RIN:
+		-> Incomplete, tester was accidentally turned off by engineers remotely;
+
+Retry new tester:
+	-> System Check:
+		-> Missing 4 LS10s;
+
+DC Cycle + System Check:
+	-> all 4 LS10s still missing;
+
+Updating Retimer to 2.7.9 + System Check:
+	-> All 8 GPUs + 4 LS10s detected;
+		GPU VB 	- 96.00.61.00.02
+		LS10 	- 96.10.35.00.01
+		RETIMER - 2.7.9
+		FPGA 	- 02 01 01
+		
+	-> RIN:
+		-> Passed;
+		
+==============================================================================
+[SN: 1662523651788] S36-1
+
+No signs of shipment damage to boxes. Packed correctly according to the new packing standard.
+Unpack and Inspection: All 8 GPUs and 4 LS10 W Heatsink. No component or GPU Tray damaged
+
+Visual inspection passed, ready for testing;	
+	
+***
+
+Photos
+
+All 8 GPUs and 4 LS10 W Heatsink. No component or GPU Tray damaged
+
+***
+
+Initial System Check:
+	-> 7/8 GPUs + 4 LS10s detected;
+		GPU VB 	- 96.00.61.00.02
+		LS10 	- 96.10.35.00.01
+		RETIMER - 2.4.28
+		FPGA 	- 02 01 01		
+
+Reseat GPU 0 + System Check:
+	-> All 8 GPUs + 4 LS10s detected;
+
+	-> BBX:
+		-> Passed;
+	-> FCT:
+		-> Failed;
+			-> Error:
+				-> 	"Core Error Code : 003-000-0-000000000001"
+					"Core Error Msg  : ,,,GPU1_06:00.0_SXM6,,GPU1_06:00.0_SXM6,,GPU1_06:00.0_SXM6,,,, Recovery count higher than threshold for GPU 05:00.0, recovery count = 4294967295"
+					"Final Error Code: 028001006_003-000-0-000000000001"
+					
+Reseat GPU 1 + Retest:
+	-> System Check:
+		->  Normal;
+	-> FCT:
+		-> Failed;
+			-> Error:
+				-> 	"2024-01-03T15:09:27.704941-08:00        FCT_test        {{CORE_ERROR_CODE:003-000-0-000000000001}}"
+					"2024-01-03T15:09:27.705038-08:00        FCT_test        {{ComponentId=,,,GPU6_b5:00.0_SXM4,,GPU6_b5:00.0_SXM4,,GPU5_86:00.0_SXM7,,,,}}"
+					"2024-01-03T15:09:27.706025-08:00        FCT_test        {{CORE_ERROR_MSG:,,,GPU6_b5:00.0_SXM4,,GPU6_b5:00.0_SXM4,,GPU5_86:00.0_SXM7,,,, Recovery count higher than threshold for GPU 05:00.0, recovery count = 4294967295}}"
+
+Update Retimer + Retest:
+	-> System Check:
+		-> All 8 GPUs + 4 LS10s detected;
+			GPU VB 	- 96.00.61.00.02
+			LS10 	- 96.10.35.00.01
+			RETIMER - 2.7.9
+			FPGA 	- 02 01 01	
+		
+	-> FCT:
+		-> Passed;
+	-> RIN:
+		-> Passed;
+				
+==============================================================================
+[SN: 1662123650956] S16-1
+
+No signs of shipment damage to boxes. Packed correctly according to the new packing standard.
+Unpack and Inspection: All 8 GPUs and 4 LS10 W Heatsink. No component or GPU Tray damaged
+
+Missing plastic fuse caps
+
+Visual inspection passed, ready for testing;	
+	
+***
+
+Photos
+
+All 8 GPUs and 4 LS10 W Heatsink. No component or GPU Tray damaged
+
+Missing plastic fuse caps;
+
+***
+
+Initial System Check:
+	-> 0 GPUs + 2 LS10s detected;
+		GPU VB 	- Missing;
+		LS10 	- 96.10.3F.00.01
+		RETIMER - 0.0.0
+		FPGA 	- 02 02 0c		
+		
+			-> Error when checking Retimer: "Unable to send RAW command (channel=0x0 netfn=0x30 lun=0x0 cmd=0x81 rsp=0xff): Unspecified error"
+***
+A). Missing All GPUs + 2 LS10s detected; -> DC Cycle + System Check:
+	-> 0 GPUs + 2 LS10s detected;
+		
+B). Trying Retimer update...; -> Update finished. DC Cycle -> 
+	-> Still showing 0 GPUs + 2 LS10s detected;
+	
+C). Swap Original GPUs to Golden BB; If GPUs detected then run BBX 
+	-> if not detected then swap back to original BB;
+		-> find the Faulty GPU;
+***
+
+Swapped Original GPUs to Golden BB + System Check:
+	-> All 8 GPUs detected;
+		GPU VB 	- 96.00.74.00.02
+
+	-> BBX:
+		-> Passed;
+		
+I did further visual inspections on the Baseboard and did not find any damages;
+	
+		
+==============================================================================
+[SN: 1663123651901]
+
+No signs of shipment damage to boxes. Packed correctly according to the new packing standard.
+Unpack and Inspection: All 8 GPUs and 4 LS10 W Heatsink. No component or GPU Tray damaged
+
+Missing plastic fuse caps
+
+Visual inspection passed, ready for testing;	
+	
+***
+
+Photos
+
+All 8 GPUs and 4 LS10 W Heatsink. No component or GPU Tray damaged
+
+Missing plastic fuse caps;
+
+***
+
+Initial System Check:
+	-> All 8 GPUs + 4 LS10s detected;
+		GPU VB 	- 96.00.74.00.02
+		LS10 	- 96.10.3F.00.01
+		RETIMER - 2.7.9
+		FPGA 	- 02 02 0c
+		
+	-> BBX:
+		-> Passed;
+	-> FCT:
+		-> Failed:
+			EC311:
+			-> 	"2024-01-03T18:38:21.866451-08:00	FCT_test	{{CORE_ERROR_CODE:003-012-1-000000000311}}"
+				"2024-01-03T18:38:21.866646-08:00	FCT_test	{{ComponentId=NvSwitch2 [c2:00.0], NvLink 63,NvSwitch2 [c2:00.0], NvLink 63,NvSwitch2 [c2:00.0], NvLink 63}}"
+				"2024-01-03T18:38:21.868025-08:00	FCT_test	{{CORE_ERROR_MSG:NvSwitch2 [c2:00.0], NvLink 63,NvSwitch2 [c2:00.0], NvLink 63,NvSwitch2 [c2:00.0], NvLink 63 - NVLink_CC c2:00.0 - Fail to enter Safe Mode on NvLink 63.Peer info: GPU2_45:00.0_SXM1 link 7}}"
+		
+Swap GPU 2 with GPU 6 + Retest:
+	-> System Check:
+		-> Normal;
+	-> FCT:
+		-> Passed;
+
+Swap GPU back to original location + Retest:
+	-> System Check:
+		-> Normal;
+	-> FCT:
+		-> Passed;
+	-> RIN:
+		-> Passed;
+		
+==============================================================================
+[SN: 1663723650999]
+
+No signs of shipment damage to boxes. Packed correctly according to the new packing standard.
+Unpack and Inspection: All 8 GPUs and 4 LS10 W Heatsink. No component or GPU Tray damaged
+
+Visual inspection passed, ready for testing;	
+	
+***
+
+Photos
+
+All 8 GPUs and 4 LS10 W Heatsink. No component or GPU Tray damaged
+
+***
+
+Initial System Check:
+	-> All 8 GPUs + 4 LS10s detected;
+		GPU VB 	- 96.00.74.00.21
+		LS10 	- 96.10.3F.00.01
+		RETIMER - 2.7.9
+		FPGA 	- 02 02 0c
+***		
+	-> BBX:
+		-> Failed on 2 GPUs:
+			-> (SXM6 + SXM8);
+			-> ERROR: "Error Code = 000000000220 (pci device not found)"
+				-> Same error for both GPUs;			
+Reseat + Retest BBX???
+	-> Disregard reseating. Swap to Golden and retest maybe? -> Ask Peter for ideas...
+	-> NVM. Reseating worked. Proceed to further testing.
+		-> We will disregard the Previous BBX logs.
+***
+	-> BBX:
+		-> Passed;
+	-> FCT:
+		EC001:
+		-> 	"2024-01-03T19:17:24.995101-08:00	FCT_test	{{CORE_ERROR_CODE:003-000-0-000000000001}}"
+			"2024-01-03T19:17:24.995206-08:00	FCT_test	{{ComponentId=,GPU4_85:00.0_SXM5,,GPU4_85:00.0_SXM5,,GPU4_85:00.0_SXM5,,GPU4_85:00.0_SXM5,,,,}}"
+			"2024-01-03T19:17:24.995827-08:00	FCT_test	{{CORE_ERROR_MSG:,GPU4_85:00.0_SXM5,,GPU4_85:00.0_SXM5,,GPU4_85:00.0_SXM5,,GPU4_85:00.0_SXM5,,,, Recovery count higher than threshold for GPU 05:00.0, recovery count = 53770}}"
+	
+Swap GPU4 with GPU0 + Retest:
+	System Check:
+		-> GPU4 & GPU 0 info are both missing;
+		
+Replace GPU4 With Golden GPU + Retest:
+	System Check:
+		-> All GPUs detected;
+	-> FCT:
+		-> Passed;
+	-> RIN:
+		-> Passed;
+		
+GPU 4 SN: [1653023027630] is defective;
+
+==============================================================================
+[SN: 1663823654400]
+
+No signs of shipment damage to boxes. Packed correctly according to the new packing standard.
+Unpack and Inspection: All 8 GPUs and 4 LS10 W Heatsink. No component or GPU Tray damaged
+
+Visual inspection passed, ready for testing;	
+	
+***
+
+Photos
+
+All 8 GPUs and 4 LS10 W Heatsink. No component or GPU Tray damaged
+
+***
+
+Initial System Check:
+	-> All 8 GPUs + 0 LS10s detected;
+		GPU VB 	- 96.00.74.00.01
+		LS10 	- Missing;
+		RETIMER - 2.7.9
+		FPGA 	- 02 02 0c
+			-> All 4 LS10s missing;
+			
+DC Cycle + System Check:
+	-> All 8 GPUs + 4 LS10s detected;
+		GPU VB 	- 96.00.74.00.01
+		LS10 	- 96.10.3F.00.01
+		RETIMER - 2.7.9
+		FPGA 	- 02 02 0c
+
+	-> BBX:
+		-> Passed;
+	-> FCT:
+		-> Passed;
+	-> RIN:
+		-> Passed;
+		
+Thanks Sang. Known U451 issue, please refurb.
+==============================================================================
+[SN: 1663823656453]
+
+No signs of shipment damage to boxes. Packed correctly according to the new packing standard.
+Unpack and Inspection: All 8 GPUs and 4 LS10 W Heatsink. No component or GPU Tray damaged
+
+Visual inspection passed, ready for testing;	
+	
+***
+
+Photos
+
+All 8 GPUs and 4 LS10 W Heatsink. No component or GPU Tray damaged
+
+***
+
+Initial System Check:
+	-> All 8 GPUs + 0 LS10s detected;
+		GPU VB 	- 96.00.74.00.01
+		LS10 	- Missing;
+		RETIMER - 2.7.9
+		FPGA 	- 02 02 0c
+			-> All 4 LS10s missing;
+			
+DC Cycle + System Check:
+	-> All 8 GPUs + 0 LS10s detected;
+		GPU VB 	- 96.00.74.00.01
+		LS10 	- Missing;
+		RETIMER - 2.7.9
+		FPGA 	- 02 02 0c
+			-> All 4 LS10s missing;
+			
+Swap All GPUs to Golden BB + System Check:
+	-> All 8 GPUs + 0 LS10s detected;
+		GPU VB 	- 96.00.74.00.01
+		LS10 	- 96.10.3F.00.01
+		RETIMER - 2.7.9
+		FPGA 	- 02 02 0c
+		
+	-> BBX:
+		-> Passed;
+
+I didn't notice this during my inital inspection. After further visual analysis:			
+	-> CID Found near rear mounting screw, at U62;
+	-> Damage looks repairable but I am unsure;
+		
+Thanks Sang. CID, please refurb.
+		
+==============================================================================
+[SN: 1663923653364] S38-1
+
+No signs of shipment damage to boxes. Packed correctly according to the new packing standard.
+Unpack and Inspection: All 8 GPUs and 4 LS10 W Heatsink. No component or GPU Tray damaged
+
+Visual inspection passed, ready for testing;	
+	
+***
+
+Photos
+
+All 8 GPUs and 4 LS10 W Heatsink. No component or GPU Tray damaged	
+
+***
+
+Initial System Check:
+	-> All 8 GPUs + 4 LS10s detected;
+		GPU VB 	- 96.00.74.00.01
+		LS10 	- 96.10.3F.00.01
+		RETIMER - 2.7.9
+		FPGA 	- 02 02 0c
+
+	-> BBX:
+		-> Passed;
+	-> FCT:
+		-> Passed;
+	-> RIN:
+		-> Passed;
+
+==============================================================================
+[SN: 1664023650471] S34-1
+
+No signs of shipment damage to boxes. Packed correctly according to the new packing standard.
+Unpack and Inspection: All 8 GPUs and 4 LS10 W Heatsink. No component or GPU Tray damaged
+
+Visual inspection passed, ready for testing;	
+	
+***
+
+Photos
+
+All 8 GPUs and 4 LS10 W Heatsink. No component or GPU Tray damaged	
+
+***
+
+Initial System Check:
+	-> All 8 GPUs + 4 LS10s detected;
+		GPU VB 	- 96.00.74.00.01
+		LS10 	- 96.10.3F.00.01
+		RETIMER - 2.7.9
+		FPGA 	- 02 02 0c
+	
+	-> BBX:
+		-> Passed;
+	-> FCT:
+		-> Passed;
+	-> RIN:
+		-> Passed;
+
+
+==============================================================================
+[SN: 1663423650641]
+
+No signs of shipment damage to boxes. Packed correctly according to the new packing standard.
+Unpack and Inspection: All 8 GPUs and 4 LS10 W Heatsink. No component or GPU Tray damaged
+
+Missing plastic fuse caps
+
+Visual inspection passed, ready for testing;	
+	
+***
+
+Photos
+
+All 8 GPUs and 4 LS10 W Heatsink. No component or GPU Tray damaged
+
+Missing plastic fuse caps;
+
+***
+
+Initial System Check:
+	-> All 8 GPUs + 4 LS10s detected;
+		GPU VB 	- 96.00.74.00.01
+		LS10 	- 96.10.3F.00.01
+		RETIMER - 2.7.9
+		FPGA 	- 02 02 0c
+
+	-> BBX:
+		-> Passed;
+	-> FCT:
+		-> Failed with Error GPU0:
+			-> 	"Core Error Code : 003-010-1-000000000363"
+				"Core Error Msg  : GPU0_05:00.0_SXM8,GPU0_05:00.0_SXM8,GPU0_05:00.0_SXM8,GPU0_05:00.0_SXM8,, Row remapping failed"
+				"Final Error Code: 028001006_003-010-1-000000000363"
+
+Swap GPU0 with Golden GPU + Retest:
+	-> System Check:
+		-> Normal;
+	-> FCT:
+		-> Passed;
+	-> RIN:
+		-> Passed;
+		
+GPU0 SN:[1652823089350] is defective;
+
+==============================================================================
+[SN: 1662623653144]
+
+No signs of shipment damage to boxes. Packed correctly according to the new packing standard.
+Unpack and Inspection: All 8 GPUs and 4 LS10 W Heatsink. No component or GPU Tray damaged
+
+Missing plastic fuse caps
+
+Visual inspection passed, ready for testing;	
+	
+***
+
+Photos
+
+All 8 GPUs and 4 LS10 W Heatsink. No component or GPU Tray damaged
+
+Missing plastic fuse caps;
+
+***
+
+Initial System Check:
+	-> All 8 GPUs + 4 LS10s detected;
+		GPU VB 	- 96.00.74.00.01
+		LS10 	- 96.10.3F.00.01
+		RETIMER - 2.7.5
+		FPGA 	- 02 02 0c
+
+	-> BBX:
+		-> Passed;
+	-> FCT:
+		-> Passed;
+	-> RIN:
+		-> Passed;
+
+		
+==============================================================================
+[SN: 1662723650040] S34-1
+
+No signs of shipment damage to boxes. Packed correctly according to the new packing standard.
+Unpack and Inspection: All 8 GPUs and 4 LS10 W Heatsink. No component or GPU Tray damaged
+
+Visual inspection passed, ready for testing;	
+	
+***
+
+Photos
+
+All 8 GPUs and 4 LS10 W Heatsink. No component or GPU Tray damaged	
+
+***
+
+Initial System Check:
+	-> All 8 GPUs + 4 LS10s detected;
+		GPU VB 	- 96.00.74.00.01
+		LS10 	- 96.10.3F.00.01
+		RETIMER - 2.7.5
+		FPGA 	- 02 02 0c
+		
+	-> BBX:
+		-> Passed;
+	-> FCT:
+		-> Passed;
+	-> RIN:
+		-> Failed with Error:
+			-> "2024-01-06T12:04:59.529504-08:00	RESCAN_2	{{CORE_ERROR_MSG:rescan fail. missing 0 GPU(s)  . missing 1 LS10(s)  c0:00.0 }}"
+
+DC Cycle + Retest RIN:
+	-> System Check:
+		-> Normal, all 8 GPUs + 4 LS10s detected;
+	-> RIN:
+		-> Passed;
+		
+		
+==============================================================================
+[SN: 1662723650020] S38-1
+
+No signs of shipment damage to boxes. Packed correctly according to the new packing standard.
+Unpack and Inspection: All 8 GPUs and 4 LS10 W Heatsink. No component or GPU Tray damaged
+
+Visual inspection passed, ready for testing;	
+	
+***
+
+Photos
+
+All 8 GPUs and 4 LS10 W Heatsink. No component or GPU Tray damaged	
+
+***
+
+Initial System Check:
+	-> All 8 GPUs + 4 LS10s detected;
+		GPU VB 	- 96.00.74.00.01
+		LS10 	- 96.10.3F.00.01
+		RETIMER - 2.7.5
+		FPGA 	- 02 02 0c
+		
+	-> BBX:
+		-> Passed;
+	-> FCT:
+		-> Passed;
+	-> RIN:
+		-> Passed;
+		
+		
+==============================================================================
+[SN: 1663423651867] S19-1
+
+No signs of shipment damage to boxes. Packed correctly according to the new packing standard.
+Unpack and Inspection: All 8 GPUs and 4 LS10 W Heatsink. No component or GPU Tray damaged
+
+Missing plastic fuse caps
+
+Visual inspection passed, ready for testing;	
+	
+***
+
+Photos
+
+All 8 GPUs and 4 LS10 W Heatsink. No component or GPU Tray damaged
+
+Missing plastic fuse caps;
+
+***
+
+Initial System Check:
+	-> All 8 GPUs + 4 LS10s detected;
+		GPU VB 	- 96.00.74.00.01
+		LS10 	- 96.10.3F.00.01
+		RETIMER - 2.7.9
+		FPGA 	- 02 02 0c
+		
+	-> BBX:
+		-> Passed;
+	-> FCT:
+		-> Passed;
+	-> RIN:
+		-> Failed with Error:
+		"2024-01-08T17:12:34.719829-08:00	lspci_check_logging	{{CORE_ERROR_MSG:LS10 BDF c0:00.0 NOT FOUND}}"
+		
+AC Cycle + Retest RIN:
+	-> System Check:
+		-> All 8 GPUs + 4 LS10s detected;
+	
+	-> RIN:
+		-> Passed;
+		
+
+==============================================================================
+[SN: 1663423650499] S33-1
+
+No signs of shipment damage to boxes. Packed correctly according to the new packing standard.
+Unpack and Inspection: All 8 GPUs and 4 LS10 W Heatsink. No component or GPU Tray damaged
+
+Missing plastic fuse caps
+
+Visual inspection passed, ready for testing;	
+	
+***
+
+Photos
+
+All 8 GPUs and 4 LS10 W Heatsink. No component or GPU Tray damaged
+
+Missing plastic fuse caps;
+
+***
+
+Initial System Check:
+	-> All 8 GPUs + 0 LS10s detected;
+		GPU VB 	- 96.00.74.00.01
+		LS10 	- Missing;
+		RETIMER - 2.7.9
+		FPGA 	- 02 02 0c		
+				
+Missing LS10s, AC Cycle + System Check:
+	-> All 8 GPUs + 4 LS10s detected;
+		GPU VB 	- 96.00.74.00.01
+		LS10 	- 96.10.3F.00.01
+		RETIMER - 2.7.9
+		FPGA 	- 02 02 0c
+
+	-> BBX:
+		-> Passed;
+	-> FCT:
+		-> Passed;
+	-> RIN:
+		-> Passed;
+
+
+==============================================================================
+[SN: 1663623651914] S44-1
+
+No signs of shipment damage to boxes. Packed correctly according to the new packing standard.
+Unpack and Inspection: All 8 GPUs and 4 LS10 W Heatsink. 
+
+Cosmetic Damage size of thumb found on GPU4 + GPU6 Heatsink fins.
+
+Minor cosmetic damage on LS0 + LS3 heatsink fins;
+
+Missing plastic fuse caps
+
+Visual inspection passed, ready for testing;	
+	
+***
+
+Photos
+
+All 8 GPUs and 4 LS10 W Heatsink. 
+
+Cosmetic Damage size of thumb found on GPU4 + GPU6 Heatsink fins.
+
+Minor cosmetic damage on LS0 + LS3 heatsink fins;
+
+Missing plastic fuse caps;
+
+***
+
+Initial System Check:
+	-> All 8 GPUs + 4 LS10s detected;
+		GPU VB 	- 96.00.74.00.02
+		LS10 	- 96.10.3F.00.01
+		RETIMER - 2.7.9
+		FPGA 	- 02 02 0c
+		
+	-> BBX:
+		-> Passed;
+	-> FCT:
+		-> Failed with Error:
+			-> 	"Core Error Code : 023-049-1-000000000077"
+				"Core Error Msg  : GPU0_05:00.0_SXM8 timeout error"
+				"Final Error Code: 028149006_023-049-1-000000000077"
+				
+Reseat GPU0 + Retest:
+	-> System Check:
+		-> Normal;
+		
+	-> FCT:
+		-> Failed with Error:
+			-> 	"Core Error Code : 009-001-1-000000000143"
+				"Core Error Msg  : GPU0_05:00.0_SXM8,GPU0_05:00.0_SXM8 PCI Express bus error"
+				"Final Error Code: 028001006_009-001-1-000000000143"
+
+Swap GPU0 with GPU4 + Retest:
+	-> System Check:
+		-> Normal;
+	-> FCT:
+		-> Passed;
+		
+Swap GPUs back to original location + Retest;
+	-> System Check:
+		-> Normal;
+		
+	-> FCT:
+		-> Failed with Error:
+			-> 	"Core Error Code : 009-001-1-000000000143"
+				"Core Error Msg  : GPU0_05:00.0_SXM8 PCI Express bus error"
+				"Final Error Code: 028001006_009-001-1-000000000143"
+
+		
+==============================================================================
+[SN: 1662123650378] S48-2
+
+No signs of shipment damage to boxes. Packed correctly according to the new packing standard.
+Unpack and Inspection: All 8 GPUs and 4 LS10 W Heatsink. No component or GPU Tray damaged
+
+Missing plastic fuse caps
+
+Visual inspection passed, ready for testing;	
+
+***
+
+Photos
+
+All 8 GPUs and 4 LS10 W Heatsink. No component or GPU Tray damaged
+
+Missing plastic fuse caps;
+
+***
+
+Initial System Check:
+	-> All 8 GPUs + 4 LS10s detected;
+		GPU VB 	- 96.00.61.00.02
+		LS10 	- 96.10.35.00.01
+		RETIMER - 2.4.28
+		FPGA 	- 02 01 01
+		
+	-> BBX:
+		-> Passed;
+	-> FCT:
+		-> Passed;
+	-> RIN:
+		-> Passed;
+		
+		
+==============================================================================
+[SN: 1663123650661] S44-2
+
+No signs of shipment damage to boxes. Packed correctly according to the new packing standard.
+Unpack and Inspection: All 8 GPUs and 4 LS10 W Heatsink. No component or GPU Tray damaged
+
+Missing plastic fuse caps
+
+Missing rear mounting screw
+
+Visual inspection passed, ready for testing;	
+	
+***
+
+Photos
+
+All 8 GPUs and 4 LS10 W Heatsink. No component or GPU Tray damaged
+
+Missing rear mounting screw
+
+Missing plastic fuse caps;
+
+***
+
+Initial System Check:
+	-> All 8 GPUs + 4 LS10s detected;
+		GPU VB 	- 96.00.61.00.01
+		LS10 	- 96.10.35.00.01
+		RETIMER - 2.4.7
+		FPGA 	- 02 01 01
+		
+	-> BBX:
+		-> Passed;
+	-> FCT:
+		-> Passed;
+	-> RIN:
+		-> Passed;
+		
+		
+==============================================================================
+[SN: 1663423650888] S44-3
+
+No signs of shipment damage to boxes. Packed correctly according to the new packing standard.
+Unpack and Inspection: All 8 GPUs and 4 LS10 W Heatsink. No component or GPU Tray damaged
+
+Visual inspection passed, ready for testing;	
+	
+***
+
+Photos
+
+All 8 GPUs and 4 LS10 W Heatsink. No component or GPU Tray damaged	
+
+***
+
+Initial System Check:
+	-> All 8 GPUs + 4 LS10s detected;
+		GPU VB 	- 96.00.61.00.01
+		LS10 	- 96.10.35.00.01
+		RETIMER - 2.4.7
+		FPGA 	- 02 01 01
+		
+	-> BBX:
+		-> Passed;
+	-> FCT:
+		-> Passed;
+	-> RIN:
+		-> Failed with Error: 
+			->	"Core Error Code : 014-000-0-000000000002"
+				"Core Error Msg  :  Timed out - no error code detected"
+				"Final Error Code: 055015006_014-000-0-000000000002"
+				
+Updated Retimer + Retest RIN:
+	-> System Check
+		-> All 8 GPUs + 4 LS10s detected;
+			GPU VB 	- 96.00.61.00.01
+			LS10 	- 96.10.35.00.01
+			RETIMER - 2.7.9
+			FPGA 	- 02 01 01
+			
+	-> RIN:
+		-> Passed;
+	
+==============================================================================
+[SN: 1662523651848] S44-1
+
+No signs of shipment damage to boxes. Packed correctly according to the new packing standard.
+Unpack and Inspection: All 8 GPUs and 4 LS10 W Heatsink. No component or GPU Tray damaged
+
+Missing plastic fuse caps
+
+Visual inspection passed, ready for testing;	
+	
+***
+
+Photos
+
+All 8 GPUs and 4 LS10 W Heatsink. No component or GPU Tray damaged
+
+Missing plastic fuse caps;
+
+***
+
+Initial System Check:
+	-> All 8 GPUs + 4 LS10s detected;
+		GPU VB 	- 96.00.74.00.02
+		LS10 	- 96.10.3F.00.01
+		RETIMER - 2.7.9
+		FPGA 	- 02 02 0c
+		
+	-> BBX:
+		-> Passed;
+	-> FCT:
+		-> Failed with Error:
+			-> 	"2024-01-12T13:19:37.617965-08:00	FCT_test	{{CORE_ERROR_CODE:029-053-0-000000000010}}"
+				"2024-01-12T13:19:37.618242-08:00	FCT_test	{{ComponentId=NvSwitch0_c0:00.0,Host: 00:bf:00.0, Local: c0:00.0,NvSwitch0 [c0:00.0], Lane 0,NvSwitch0 [c0:00.0], Lane 1}}"
+				"2024-01-12T13:19:37.619787-08:00	FCT_test	{{CORE_ERROR_MSG:NvSwitch0_c0:00.0,Host: 00:bf:00.0, Local: c0:00.0,NvSwitch0 [c0:00.0], Lane 0,NvSwitch0 [c0:00.0], Lane 1 NvSwitch0_c0:00.0 - Invalid Link Speed: expected ['16GT/s'] found 2.5GT/s}}"
+
+Retest on different tester:
+	-> System Check:
+		-> Normal;
+
+	-> FCT:
+		-> Passed;
+	-> RIN:
+		-> Failed with Error:
+			-> 	"2024-01-12T17:52:39.324663-08:00	RIN_test_noThermal	{{CORE_ERROR_CODE:014-000-0-000000000127}}"
+				"2024-01-12T17:52:39.324862-08:00	RIN_test_noThermal	{{ComponentId=,NvSwitch0 [c0:00.0],NvSwitch1 [c1:00.0],NvSwitch2 [c2:00.0],NvSwitch3 [c3:00.0]}}"
+				"2024-01-12T17:52:39.326209-08:00	RIN_test_noThermal	{{CORE_ERROR_MSG:,NvSwitch0 [c0:00.0],NvSwitch1 [c1:00.0],NvSwitch2 [c2:00.0],NvSwitch3 [c3:00.0] Failed to initialize retimer log dump}}"
+
+Retest RIN same tester:
+	-> RIN:
+		-> Passed;
+
+==============================================================================
+[SN: 1663223651355] S16-1
+
+No signs of shipment damage to boxes. Packed correctly according to the new packing standard.
+Unpack and Inspection: All 8 GPUs and 4 LS10 W Heatsink. No component or GPU Tray damaged
+
+Missing plastic fuse caps
+
+Visual inspection passed, ready for testing;	
+	
+***
+
+Photos
+
+All 8 GPUs and 4 LS10 W Heatsink. No component or GPU Tray damaged
+
+Missing plastic fuse caps;
+
+***
+
+Initial System Check:
+	-> All 8 GPUs + 4 LS10s detected;
+		GPU VB 	- 96.00.74.00.21
+		LS10 	- 96.10.3F.00.01
+		RETIMER - 2.7.9
+		FPGA 	- 02 02 0c
+		
+	-> BBX:
+		-> Passed;
+	-> FCT:
+		-> Passed;
+	-> RIN:
+		-> Passed;
+
+
+==============================================================================
+[SN: 1662023650817] S44-1 (ALREADY SUBMITTED TO ETQ, STILL IN TESTER);
+
+No signs of shipment damage to boxes. Packed correctly according to the new packing standard.
+Unpack and Inspection: All 8 GPUs and 4 LS10 W Heatsink. No component or GPU Tray damaged
+
+Missing plastic fuse caps
+
+Visual inspection passed, ready for testing;	
+	
+***
+
+Photos
+
+All 8 GPUs and 4 LS10 W Heatsink. No component or GPU Tray damaged
+
+Missing plastic fuse caps;
+
+***
+
+Initial System Check:
+	-> All 8 GPUs + 4 LS10s detected;
+		-> All GPU speed shows (downgraded);
+		GPU VB 	- 96.00.74.00.01
+		LS10 	- 96.10.3F.00.01
+		RETIMER - 2.4.15
+		FPGA 	- 02 01 01
+
+Update Retimer + System Check:
+	-> All 8 GPUs + 4 LS10s detected;
+		-> All GPU speed shows (ok);
+		GPU VB 	- 96.00.74.00.01
+		LS10 	- 96.10.3F.00.01
+		RETIMER - 2.7.9
+		FPGA 	- 02 01 01
+		
+	-> BBX:
+		-> Passed;
+	-> FCT:
+		-> Passed;
+	-> RIN:
+		-> Passed;
+		
+==============================================================================
+[SN: 1662623652548] S44-3
+
+No signs of shipment damage to boxes. Packed correctly according to the new packing standard.
+Unpack and Inspection: All 8 GPUs and 4 LS10 W Heatsink. No component or GPU Tray damaged
+
+Missing plastic fuse caps
+
+Visual inspection passed, ready for testing;	
+	
+***
+
+Photos
+
+All 8 GPUs and 4 LS10 W Heatsink. No component or GPU Tray damaged
+
+Missing plastic fuse caps;
+
+***
+
+Initial System Check:
+	-> 0 GPU + 2 LS10s detected;
+		-> Missing all 8 GPUs + missing 2 LS10s;
+		GPU VB 	- Missing;
+		LS10 	- 96.10.38.00.01'
+		RETIMER - 0.0.0
+		FPGA 	- 02 01 01
+
+DC Cycle + Retry System Check:
+	-> Same result;
+		
+Swapped BB with Golden BB + Retest:
+	-> System Check:
+		-> All 8 GPUs Detected;
+		GPU VB 	- 96.00.68.00.01
+		LS10 	- 96.10.45.00.01
+		RETIMER - 2.7.9
+		FPGA 	- 02 02 0c
+				
+	-> BBX:
+		-> Passed;
+
+Hi, I found CID on the BB that was easily missed during the initial inspection process, located at [U2]. Photo's attached;
+
+==============================================================================
+[SN: 1662623652582] S44-3
+
+No signs of shipment damage to boxes. Packed correctly according to the new packing standard.
+Unpack and Inspection: All 8 GPUs and 4 LS10 W Heatsink. No component or GPU Tray damaged
+
+Missing plastic fuse caps
+
+Visual inspection passed, ready for testing;	
+	
+***
+
+Photos
+
+All 8 GPUs and 4 LS10 W Heatsink. No component or GPU Tray damaged
+
+Missing plastic fuse caps;
+
+***
+
+Initial System Check:
+	-> All 8 GPUs + 4 LS10s detected;
+		GPU VB 	- 96.00.61.00.01
+		LS10 	- 96.10.35.00.01
+		RETIMER - 2.4.7
+		FPGA 	- 02 01 01
+	-> BBX:
+		-> Passed;
+	-> FCT:
+		-> Failed with Error:
+			-> 	"Core Error Code : 023-049-1-000000000210"
+				"Core Error Msg  : GPU2_45:00.0_SXM1 Maths Access Error"
+				"Final Error Code: 028149006_023-049-1-000000000210"
+	
+Reseat GPU2 + retest:
+	-> System Check:
+		-> Normal;
+	-> FCT:
+		-> Failed with Error:
+			-> 	"Core Error Code : 023-049-1-000000000210"
+				"Core Error Msg  : GPU2_45:00.0_SXM1 Maths Access Error"
+				"Final Error Code: 028149006_023-049-1-000000000210"
+ 
+Swap GPU2 with Golden GPU + Retest:	
+	-> System Check:
+		-> Normal;
+	-> FCT:
+		-> Passed;
+	-> RIN:
+		-> Passed;
+		
+GPU2 is defective - SN: [1652523031313]		
+		
+		
+==============================================================================
+[SN: 1663223652889] S44-1
+
+No signs of shipment damage to boxes. Packed correctly according to the new packing standard.
+Unpack and Inspection: All 8 GPUs and 4 LS10 W Heatsink. No component or GPU Tray damaged
+
+Visual inspection passed, ready for testing;	
+	
+***
+
+Photos
+
+All 8 GPUs and 4 LS10 W Heatsink. No component or GPU Tray damaged	
+
+***
+
+Initial System Check:
+	-> All 8 GPUs + 4 LS10s detected;
+		GPU VB 	- 96.00.74.00.01
+		LS10 	- 96.10.3F.00.01
+		RETIMER - 2.7.9
+		FPGA 	- 02 02 0c
+		
+	-> BBX:
+		-> Passed;
+	-> FCT:
+		-> Passed;	
+	-> RIN:
+		-> Passed;
+		
+==============================================================================
+[SN: 1661923650203] S44-1
+
+No signs of shipment damage to boxes. Packed correctly according to the new packing standard.
+Unpack and Inspection: All 8 GPUs and 4 LS10 W Heatsink. No component or GPU Tray damaged
+
+Missing plastic fuse caps
+
+Visual inspection passed, ready for testing;	
+	
+***
+
+Photos
+
+All 8 GPUs and 4 LS10 W Heatsink. No component or GPU Tray damaged
+
+Missing plastic fuse caps;
+
+***
+
+Initial System Check:
+	-> 0 GPUs + 0 LS10s detected;
+		GPU VB 	- Missing;
+		LS10 	- Missing;
+		RETIMER - 2.4.15
+		FPGA 	- 02 00 07
+		
+AC Cycle + Retest:
+	-> All GPUs + LS10s still missing;
+		
+Update Retimer + Retest:
+	-> Failed to update the Retimer;
+		-> Output for retimer update attached [chk_task.txt];
+
+Moved All GPUs to Golden BB + BBX:
+	-> System Check:
+		-> All 8 GPUs detected;
+			-> GPU VB -  96.00.51.00.0B
+	-> BBX:
+		-> Passed;
+
+
+==============================================================================
+[SN: 1662923650611] S44-3
+
+No signs of shipment damage to boxes. Packed correctly according to the new packing standard.
+Unpack and Inspection: All 8 GPUs and 4 LS10 W Heatsink. No component or GPU Tray damaged
+
+Missing plastic fuse caps
+
+Visual inspection passed, ready for testing;	
+	
+***
+
+Photos
+
+All 8 GPUs and 4 LS10 W Heatsink. No component or GPU Tray damaged
+
+Missing plastic fuse caps;
+
+***
+
+Initial System Check:
+	-> All 8 GPUs + 4 LS10s detected;
+		-> All GPU speed shows (Downgraded);
+		GPU VB 	- 96.00.74.00.01
+		LS10 	- 96.10.3F.00.01
+		RETIMER - 2.4.15
+		FPGA 	- 02 01 01
+		
+AC Cycle + System Check:
+	-> All 8 GPUs + 4 LS10s detected;
+		-> All GPU Speed still shows (Downgraded);
+		
+Updated retimer + System Check:
+	-> All 8 GPUs + 4 LS10s detected;
+		-> All GPU speed shows (OK);
+		RETIMER - 2.7.9
+
+	-> BBX:
+		-> Passed;
+	-> FCT:
+		-> Failed with error:
+			-> 	"2024-01-29T18:32:33.184727-08:00	IST	{{CORE_ERROR_CODE:023-049-1-000000000233}}"
+				"2024-01-29T18:32:33.184834-08:00	IST	{{ComponentId=GPU2_45:00.0_SXM1,GPU2_45:00.0_SXM1,GPU2_45:00.0_SXM1}}"
+				"2024-01-29T18:32:33.185488-08:00	IST	{{CORE_ERROR_MSG:GPU2_45:00.0_SXM1,GPU2_45:00.0_SXM1,GPU2_45:00.0_SXM1 bad NVIDIA chip}}"
+	
+Replace GPU2 with Golden GPU + Retest:
+	-> System Check:
+		-> Normal;
+	-> FCT:
+		-> Passed;
+	-> RIN:
+		-> Passed;
+		
+GPU2 is defective - SN: [1652823011837]
+
+				

@@ -1,0 +1,2 @@
+- The Rin Test power cycles, connection will drop during this. This must be why Eric made a script to check to see if your rin test is running at all. 
+- This may cause LS10s to dropoff. You will have to manually power cycle your shit again. 

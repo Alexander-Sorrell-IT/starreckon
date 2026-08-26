@@ -1,0 +1,3946 @@
+[
+    {
+        "tag": "TIME_START_CLIENT",
+        "value": "2024-02-21T22:18:11.324238-08:00",
+        "valuetype": "timestamp",
+        "scope": "process",
+        "purpose": "na",
+        "event_ts": "2024-02-21T22:18:11.887590-08:00"
+    },
+    {
+        "tag": "STARTUP_LOG",
+        "value": "./trace_2024_02_21_22_18_11_324.log",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T22:18:11.888422-08:00"
+    },
+    {
+        "tag": "MANIFEST",
+        "value": "./configs/manifest_datacenter.json",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T22:18:11.888633-08:00"
+    },
+    {
+        "tag": "STATION",
+        "value": "TEST_STATION",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T22:18:11.888861-08:00"
+    },
+    {
+        "tag": "PROCESS",
+        "value": "FCT",
+        "valuetype": "rstring",
+        "scope": "process",
+        "purpose": "na",
+        "event_ts": "2024-02-21T22:18:11.889100-08:00"
+    },
+    {
+        "tag": "DIR_TEMP",
+        "value": "/root/Vulcan_Sorting/618-24287-XXXX-MFG-39260/temp",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T22:18:11.889359-08:00"
+    },
+    {
+        "tag": "DIR_LOGS",
+        "value": "/root/Vulcan_Sorting/618-24287-XXXX-MFG-39260/logs",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T22:18:11.889628-08:00"
+    },
+    {
+        "tag": "DIR_CONFIGS",
+        "value": "/root/Vulcan_Sorting/618-24287-XXXX-MFG-39260/configs",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T22:18:11.889920-08:00"
+    },
+    {
+        "tag": "DIR_SCRIPTS",
+        "value": "/root/Vulcan_Sorting/618-24287-XXXX-MFG-39260/scripts",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T22:18:11.890232-08:00"
+    },
+    {
+        "tag": "DIR_RECIPES",
+        "value": "/root/Vulcan_Sorting/618-24287-XXXX-MFG-39260/recipes",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T22:18:11.890569-08:00"
+    },
+    {
+        "tag": "DIR_CORE",
+        "value": "/root/Vulcan_Sorting/618-24287-XXXX-MFG-39260/core",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T22:18:11.890906-08:00"
+    },
+    {
+        "tag": "DIR_BIN",
+        "value": "/root/Vulcan_Sorting/618-24287-XXXX-MFG-39260/nautilus_bins",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T22:18:11.891268-08:00"
+    },
+    {
+        "tag": "MLA_VERSION",
+        "value": "20.58",
+        "valuetype": "rstring",
+        "scope": "process",
+        "purpose": "db",
+        "event_ts": "2024-02-21T22:18:11.891641-08:00"
+    },
+    {
+        "tag": "MLA_PATH",
+        "value": "/root/Vulcan_Sorting/618-24287-XXXX-MFG-39260/nautilus_bins/utils/mla",
+        "valuetype": "rstring",
+        "scope": "process",
+        "purpose": "db",
+        "event_ts": "2024-02-21T22:18:11.892035-08:00"
+    },
+    {
+        "tag": "PORT",
+        "value": "ANY",
+        "valuetype": "rstring",
+        "scope": "process",
+        "purpose": "na",
+        "event_ts": "2024-02-21T22:18:11.892449-08:00"
+    },
+    {
+        "tag": "DIAG",
+        "value": "618-24287-XXXX-MFG-39260",
+        "valuetype": "rstring",
+        "scope": "process",
+        "purpose": "na",
+        "event_ts": "2024-02-21T22:18:11.892878-08:00"
+    },
+    {
+        "tag": "EXAMPLE",
+        "value": "12345",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T22:18:11.893319-08:00"
+    },
+    {
+        "tag": "APP_NAME",
+        "value": "Nautilus",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T22:18:11.893783-08:00"
+    },
+    {
+        "tag": "NAUTILUS_VERSION",
+        "value": "3.11",
+        "valuetype": "rstring",
+        "scope": "process",
+        "purpose": "na",
+        "event_ts": "2024-02-21T22:18:11.894318-08:00"
+    },
+    {
+        "tag": "PYTHON",
+        "value": "/root/Vulcan_Sorting/618-24287-XXXX-MFG-39260/nautilus_bins/python/bin/python3.6",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T22:18:11.894840-08:00"
+    },
+    {
+        "tag": "AUTO_EXIT",
+        "value": "False",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T22:18:11.895366-08:00"
+    },
+    {
+        "tag": "HOST_MAC_ADDR",
+        "value": "a1:71:aa:69:c6:4d",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T22:18:11.895916-08:00"
+    },
+    {
+        "tag": "HOST_IP_ADDR",
+        "value": "192.168.43.1",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T22:18:11.896482-08:00"
+    },
+    {
+        "tag": "HOST_NAME",
+        "value": "diagnostic-os",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T22:18:11.897274-08:00"
+    },
+    {
+        "tag": "GV_GROUPS",
+        "value": "DATAFILE:/var/diags/datafile;TOPO_FILE:namefrommods.topo;DIR_SKU:/root/Vulcan_Sorting/618-24287-XXXX-MFG-39260/sku;FRU_FILE:vulcan_FRU_ROM_B00_Board_935-24287-0000-000_699-205_v2.8;BOARD_PN:699-25612-0002-205;CHASSIS_SERIAL:;PRODUCT_SN:1664123654410;BOARD_SN:1664023550907;OS_IP:192.168.43.1;BMC_IP:192.168.43.5;BMC_PATH:/root/Vulcan_Sorting/618-24287-XXXX-MFG-39260/sku/Test_UT10_V88_05_290314.ima;FW_CONFIG:/root/Vulcan_Sorting/618-24287-XXXX-MFG-39260/sku/fw_config.txt;RC_FILE:utester_fw_update.service;BASE_DIR:/root/Vulcan_Sorting/618-24287-XXXX-MFG-39260;TEST_ARGS_FCT:testargs_deltanext_hbm3_ut2_fct.json;TEST_ARGS_RIN:testargs_deltanext_hbm3_ut2_rin.json;TEST_ARGS_RIN_WITHOUT_TREX:testargs_deltanext_hbm3_ut2_rin_ftt.json;SPEC_FILE_FCT:spec_deltanext_hbm3_ut2_fct.json;SPEC_FILE_RIN:spec_deltanext_hbm3_ut2_rin.json;SPEC_FILE_RIN_WITHOUT_TREX:spec_deltanext_hbm3_ut2_rin_ftt.json;FW_BUNDLE_FILE:nvfw_HGX-H100x8_0002_231101.1.0_prod-signed.fwpkg;FW_RETIMER_FILE:;MARGINING:spec_deltanext_ut2_pcielanemargining.json;GEN:;FW_FOLDER:FW_80G;ONEDIAGMFG:onediagmfg.r6.268;NVQUAL:NVQual_HGX_H100_8-GPU_QS_PS_MP_x86_v04.5",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T22:18:11.897866-08:00"
+    },
+    {
+        "tag": "DATAFILE",
+        "value": "/var/diags/datafile",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T22:18:11.898495-08:00"
+    },
+    {
+        "tag": "TOPO_FILE",
+        "value": "namefrommods.topo",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T22:18:11.899129-08:00"
+    },
+    {
+        "tag": "DIR_SKU",
+        "value": "/root/Vulcan_Sorting/618-24287-XXXX-MFG-39260/sku",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T22:18:11.899772-08:00"
+    },
+    {
+        "tag": "FRU_FILE",
+        "value": "vulcan_FRU_ROM_B00_Board_935-24287-0000-000_699-205_v2.8",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T22:18:11.900434-08:00"
+    },
+    {
+        "tag": "BOARD_PN",
+        "value": "699-25612-0002-205",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T22:18:11.901112-08:00"
+    },
+    {
+        "tag": "CHASSIS_SERIAL",
+        "value": "",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T22:18:11.901804-08:00"
+    },
+    {
+        "tag": "PRODUCT_SN",
+        "value": "1664123654410",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T22:18:11.902580-08:00"
+    },
+    {
+        "tag": "BOARD_SN",
+        "value": "1664023550907",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T22:18:11.903321-08:00"
+    },
+    {
+        "tag": "OS_IP",
+        "value": "192.168.43.1",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T22:18:11.904101-08:00"
+    },
+    {
+        "tag": "BMC_IP",
+        "value": "192.168.43.5",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T22:18:11.904896-08:00"
+    },
+    {
+        "tag": "BMC_PATH",
+        "value": "/root/Vulcan_Sorting/618-24287-XXXX-MFG-39260/sku/Test_UT10_V88_05_290314.ima",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T22:18:11.905715-08:00"
+    },
+    {
+        "tag": "FW_CONFIG",
+        "value": "/root/Vulcan_Sorting/618-24287-XXXX-MFG-39260/sku/fw_config.txt",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T22:18:11.906544-08:00"
+    },
+    {
+        "tag": "RC_FILE",
+        "value": "utester_fw_update.service",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T22:18:11.907387-08:00"
+    },
+    {
+        "tag": "BASE_DIR",
+        "value": "/root/Vulcan_Sorting/618-24287-XXXX-MFG-39260",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T22:18:11.908244-08:00"
+    },
+    {
+        "tag": "TEST_ARGS_FCT",
+        "value": "testargs_deltanext_hbm3_ut2_fct.json",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T22:18:11.909126-08:00"
+    },
+    {
+        "tag": "TEST_ARGS_RIN",
+        "value": "testargs_deltanext_hbm3_ut2_rin.json",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T22:18:11.910018-08:00"
+    },
+    {
+        "tag": "TEST_ARGS_RIN_WITHOUT_TREX",
+        "value": "testargs_deltanext_hbm3_ut2_rin_ftt.json",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T22:18:11.910949-08:00"
+    },
+    {
+        "tag": "SPEC_FILE_FCT",
+        "value": "spec_deltanext_hbm3_ut2_fct.json",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T22:18:11.911881-08:00"
+    },
+    {
+        "tag": "SPEC_FILE_RIN",
+        "value": "spec_deltanext_hbm3_ut2_rin.json",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T22:18:11.912842-08:00"
+    },
+    {
+        "tag": "SPEC_FILE_RIN_WITHOUT_TREX",
+        "value": "spec_deltanext_hbm3_ut2_rin_ftt.json",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T22:18:11.913828-08:00"
+    },
+    {
+        "tag": "FW_BUNDLE_FILE",
+        "value": "nvfw_HGX-H100x8_0002_231101.1.0_prod-signed.fwpkg",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T22:18:11.914873-08:00"
+    },
+    {
+        "tag": "FW_RETIMER_FILE",
+        "value": "",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T22:18:11.915886-08:00"
+    },
+    {
+        "tag": "MARGINING",
+        "value": "spec_deltanext_ut2_pcielanemargining.json",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T22:18:11.916956-08:00"
+    },
+    {
+        "tag": "GEN",
+        "value": "",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T22:18:11.918034-08:00"
+    },
+    {
+        "tag": "FW_FOLDER",
+        "value": "FW_80G",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T22:18:11.919103-08:00"
+    },
+    {
+        "tag": "ONEDIAGMFG",
+        "value": "onediagmfg.r6.268",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T22:18:11.920174-08:00"
+    },
+    {
+        "tag": "NVQUAL",
+        "value": "NVQual_HGX_H100_8-GPU_QS_PS_MP_x86_v04.5",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T22:18:11.921265-08:00"
+    },
+    {
+        "tag": "ERROR_CODE_DICT",
+        "value": "./configs/errorcode.dict",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T22:18:11.922369-08:00"
+    },
+    {
+        "tag": "DISPOSITION_DICT",
+        "value": "./configs/disposition.dict",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T22:18:11.923502-08:00"
+    },
+    {
+        "tag": "INTERVAL",
+        "value": "0",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T22:18:11.924647-08:00"
+    },
+    {
+        "tag": "ENVMONITOR",
+        "value": "False",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T22:18:11.925808-08:00"
+    },
+    {
+        "tag": "IN_CLUSTER",
+        "value": "False",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T22:18:11.927004-08:00"
+    },
+    {
+        "tag": "SHOW_STDOUT",
+        "value": "False",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T22:18:11.928211-08:00"
+    },
+    {
+        "tag": "PORT_MAPPING_BLOCK",
+        "value": "DummyBlock",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T22:18:11.929434-08:00"
+    },
+    {
+        "tag": "PORT_ADDRESS",
+        "value": "",
+        "valuetype": "rstring",
+        "scope": "process",
+        "purpose": "na",
+        "event_ts": "2024-02-21T22:18:11.930727-08:00"
+    },
+    {
+        "tag": "PORT_PROTOCOL",
+        "value": "pcie",
+        "valuetype": "rstring",
+        "scope": "process",
+        "purpose": "na",
+        "event_ts": "2024-02-21T22:18:11.931987-08:00"
+    },
+    {
+        "tag": "PORT_ENABLED",
+        "value": "True",
+        "valuetype": "rstring",
+        "scope": "process",
+        "purpose": "na",
+        "event_ts": "2024-02-21T22:18:11.933277-08:00"
+    },
+    {
+        "tag": "FIXTURE",
+        "value": "diagnostic-os",
+        "valuetype": "rstring",
+        "scope": "process",
+        "purpose": "na",
+        "event_ts": "2024-02-21T22:18:11.934567-08:00"
+    },
+    {
+        "tag": "NUM_OF_PORTS",
+        "value": "1",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T22:18:11.935878-08:00"
+    },
+    {
+        "tag": "SN",
+        "value": "1664123654410",
+        "valuetype": "rstring",
+        "scope": "process",
+        "purpose": "dm",
+        "event_ts": "2024-02-21T22:18:11.937219-08:00"
+    },
+    {
+        "tag": "RECIPE",
+        "value": "/root/Vulcan_Sorting/618-24287-XXXX-MFG-39260/recipes/recipe_FCT.xml",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T22:18:11.938582-08:00"
+    },
+    {
+        "tag": "FACTORY",
+        "value": "WIHK",
+        "valuetype": "rstring",
+        "scope": "process",
+        "purpose": "dm",
+        "event_ts": "2024-02-21T22:18:11.939931-08:00"
+    },
+    {
+        "tag": "LINE",
+        "value": "LINE01",
+        "valuetype": "rstring",
+        "scope": "process",
+        "purpose": "dm",
+        "event_ts": "2024-02-21T22:18:11.941326-08:00"
+    },
+    {
+        "tag": "OPERATOR",
+        "value": "debugger",
+        "valuetype": "rstring",
+        "scope": "process",
+        "purpose": "dm",
+        "event_ts": "2024-02-21T22:18:11.942710-08:00"
+    },
+    {
+        "tag": "DISPLAY",
+        "value": "text",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T22:18:11.944107-08:00"
+    },
+    {
+        "tag": "DEBUG",
+        "value": "False",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T22:18:11.945570-08:00"
+    },
+    {
+        "tag": "INFINITE",
+        "value": "False",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T22:18:11.947036-08:00"
+    },
+    {
+        "tag": "SKU",
+        "value": "XXXX",
+        "valuetype": "rstring",
+        "scope": "process",
+        "purpose": "dm",
+        "event_ts": "2024-02-21T22:18:11.948482-08:00"
+    },
+    {
+        "tag": "BUILD",
+        "value": "DEBUG",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T22:18:11.949948-08:00"
+    },
+    {
+        "tag": "PRODUCT",
+        "value": "P4287",
+        "valuetype": "rstring",
+        "scope": "process",
+        "purpose": "dm",
+        "event_ts": "2024-02-21T22:18:11.951438-08:00"
+    },
+    {
+        "tag": "PN",
+        "value": "935-24287-0000-000",
+        "valuetype": "rstring",
+        "scope": "process",
+        "purpose": "dm",
+        "event_ts": "2024-02-21T22:18:11.952935-08:00"
+    },
+    {
+        "tag": "WORK_ORDER",
+        "value": "NA",
+        "valuetype": "rstring",
+        "scope": "process",
+        "purpose": "db",
+        "event_ts": "2024-02-21T22:18:11.954456-08:00"
+    },
+    {
+        "tag": "PBR",
+        "value": "NA",
+        "valuetype": "rstring",
+        "scope": "process",
+        "purpose": "dm",
+        "event_ts": "2024-02-21T22:18:11.955982-08:00"
+    },
+    {
+        "tag": "ALLOW_NODEVICE",
+        "value": "False",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T22:18:11.957530-08:00"
+    },
+    {
+        "tag": "SESSION_ID",
+        "value": "276b3e01-d14a-11ee-a76f-a171aa69c64d",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T22:18:11.959120-08:00"
+    },
+    {
+        "tag": "REMOVE_LOG_DIR",
+        "value": "False",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T22:18:11.960708-08:00"
+    },
+    {
+        "tag": "NOCLEAR",
+        "value": "False",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T22:18:11.962306-08:00"
+    },
+    {
+        "tag": "ELAPSED_SECONDS_ACCUMULATED",
+        "value": 0,
+        "valuetype": "duration",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T22:18:11.963970-08:00"
+    },
+    {
+        "tag": "PF",
+        "value": "P",
+        "valuetype": "rstring",
+        "scope": "process",
+        "purpose": "dm",
+        "event_ts": "2024-02-21T22:18:11.965610-08:00"
+    },
+    {
+        "tag": "PASS_FAIL",
+        "value": "P",
+        "valuetype": "rstring",
+        "scope": "process",
+        "purpose": "dm",
+        "event_ts": "2024-02-21T22:18:11.967270-08:00"
+    },
+    {
+        "tag": "TIME_BEGIN_RECIPE",
+        "value": "2024-02-21T22:18:11.766235-08:00",
+        "valuetype": "timestamp",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T22:18:11.968950-08:00"
+    },
+    {
+        "tag": "TIMESTAMP",
+        "value": "20240221221811766",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T22:18:11.970651-08:00"
+    },
+    {
+        "tag": "TIMESTAMP_ISO8601_SHORT",
+        "value": "20240221T221811Z",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T22:18:11.972411-08:00"
+    },
+    {
+        "tag": "TIMESTAMP_ISO8601_LONG",
+        "value": "2024-02-21T22:18:11.766235-08:00",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T22:18:11.974141-08:00"
+    },
+    {
+        "tag": "LOGPATH",
+        "value": "/root/Vulcan_Sorting/618-24287-XXXX-MFG-39260/logs/WIHK_NA_935-24287-0000-000_1664123654410_T_FCT_20240221T221811Z",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T22:18:11.975880-08:00"
+    },
+    {
+        "tag": "LOGPATH_NAUTILUS",
+        "value": "/root/Vulcan_Sorting/618-24287-XXXX-MFG-39260/logs/WIHK_NA_935-24287-0000-000_1664123654410_T_FCT_20240221T221811Z/nautilus",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T22:18:11.977640-08:00"
+    },
+    {
+        "tag": "Save_Datafile",
+        "value": "PASS",
+        "valuetype": "exec_item",
+        "scope": "subprocess",
+        "purpose": "na",
+        "event_ts": "2024-02-21T22:18:13.995861-08:00",
+        "seq": 1,
+        "item_name": "Save_Datafile",
+        "item_id": "1",
+        "loop": 0,
+        "retry": 0,
+        "start_time": "2024-02-21T22:18:11.979500-08:00",
+        "end_time": "2024-02-21T22:18:13.993605-08:00",
+        "test_state": "PASS",
+        "elapsed": 2.01,
+        "group_name": "Dut_Info",
+        "test_error_code": "000",
+        "test_error_msg": "Success",
+        "core_failed_test": null,
+        "core_error_code": null,
+        "core_error_msg": null,
+        "log_files": []
+    },
+    {
+        "tag": "sanity_check",
+        "value": "PASS",
+        "valuetype": "exec_item",
+        "scope": "subprocess",
+        "purpose": "na",
+        "event_ts": "2024-02-21T22:18:17.434649-08:00",
+        "seq": 2,
+        "item_name": "sanity_check",
+        "item_id": "1",
+        "loop": 0,
+        "retry": 0,
+        "start_time": "2024-02-21T22:18:13.998252-08:00",
+        "end_time": "2024-02-21T22:18:17.432289-08:00",
+        "test_state": "PASS",
+        "elapsed": 3.43,
+        "group_name": "Dut_Info",
+        "test_error_code": "000",
+        "test_error_msg": "Success",
+        "core_failed_test": null,
+        "core_error_code": null,
+        "core_error_msg": null,
+        "log_files": []
+    },
+    {
+        "tag": "setpci",
+        "value": "PASS",
+        "valuetype": "exec_item",
+        "scope": "subprocess",
+        "purpose": "na",
+        "event_ts": "2024-02-21T22:18:20.483577-08:00",
+        "seq": 3,
+        "item_name": "setpci",
+        "item_id": "1",
+        "loop": 0,
+        "retry": 0,
+        "start_time": "2024-02-21T22:18:17.437194-08:00",
+        "end_time": "2024-02-21T22:18:20.481306-08:00",
+        "test_state": "PASS",
+        "elapsed": 3.04,
+        "group_name": "Dut_Info",
+        "test_error_code": "000",
+        "test_error_msg": "Success",
+        "core_failed_test": null,
+        "core_error_code": null,
+        "core_error_msg": null,
+        "log_files": []
+    },
+    {
+        "tag": "BMC_Cold_reset_1",
+        "value": "PASS",
+        "valuetype": "exec_item",
+        "scope": "subprocess",
+        "purpose": "na",
+        "event_ts": "2024-02-21T22:21:48.235410-08:00",
+        "seq": 4,
+        "item_name": "BMC_Cold_reset_1",
+        "item_id": "1",
+        "loop": 0,
+        "retry": 0,
+        "start_time": "2024-02-21T22:18:20.486099-08:00",
+        "end_time": "2024-02-21T22:21:48.233117-08:00",
+        "test_state": "PASS",
+        "elapsed": 207.75,
+        "group_name": "BMC_reset",
+        "test_error_code": "000",
+        "test_error_msg": "Success",
+        "core_failed_test": null,
+        "core_error_code": null,
+        "core_error_msg": null,
+        "log_files": []
+    },
+    {
+        "tag": "lspci_check_1",
+        "value": "PASS",
+        "valuetype": "exec_item",
+        "scope": "subprocess",
+        "purpose": "na",
+        "event_ts": "2024-02-21T22:21:49.078135-08:00",
+        "seq": 5,
+        "item_name": "lspci_check_1",
+        "item_id": "1",
+        "loop": 0,
+        "retry": 0,
+        "start_time": "2024-02-21T22:21:48.238209-08:00",
+        "end_time": "2024-02-21T22:21:49.075803-08:00",
+        "test_state": "PASS",
+        "elapsed": 0.84,
+        "group_name": "lspci_check",
+        "test_error_code": "000",
+        "test_error_msg": "Success",
+        "core_failed_test": null,
+        "core_error_code": null,
+        "core_error_msg": null,
+        "log_files": []
+    },
+    {
+        "tag": "RESCAN_1",
+        "value": "PASS",
+        "valuetype": "exec_item",
+        "scope": "subprocess",
+        "purpose": "na",
+        "event_ts": "2024-02-21T22:21:51.447641-08:00",
+        "seq": 6,
+        "item_name": "RESCAN_1",
+        "item_id": "1",
+        "loop": 0,
+        "retry": 0,
+        "start_time": "2024-02-21T22:21:49.080729-08:00",
+        "end_time": "2024-02-21T22:21:51.445395-08:00",
+        "test_state": "PASS",
+        "elapsed": 2.36,
+        "group_name": "lspci_check",
+        "test_error_code": "000",
+        "test_error_msg": "Success",
+        "core_failed_test": null,
+        "core_error_code": null,
+        "core_error_msg": null,
+        "log_files": []
+    },
+    {
+        "tag": "I2C_ACCESS",
+        "value": "PASS",
+        "valuetype": "exec_item",
+        "scope": "subprocess",
+        "purpose": "na",
+        "event_ts": "2024-02-21T22:21:54.570292-08:00",
+        "seq": 7,
+        "item_name": "I2C_ACCESS",
+        "item_id": "1",
+        "loop": 0,
+        "retry": 0,
+        "start_time": "2024-02-21T22:21:51.450402-08:00",
+        "end_time": "2024-02-21T22:21:54.567992-08:00",
+        "test_state": "PASS",
+        "elapsed": 3.12,
+        "group_name": "I2C_ACCESS",
+        "test_error_code": "000",
+        "test_error_msg": "Success",
+        "core_failed_test": null,
+        "core_error_code": null,
+        "core_error_msg": null,
+        "log_files": []
+    },
+    {
+        "tag": "log_hmcfpgapcie_status",
+        "value": "PASS",
+        "valuetype": "exec_item",
+        "scope": "subprocess",
+        "purpose": "na",
+        "event_ts": "2024-02-21T22:21:57.697113-08:00",
+        "seq": 8,
+        "item_name": "log_hmcfpgapcie_status",
+        "item_id": "1",
+        "loop": 0,
+        "retry": 0,
+        "start_time": "2024-02-21T22:21:54.573035-08:00",
+        "end_time": "2024-02-21T22:21:57.694870-08:00",
+        "test_state": "PASS",
+        "elapsed": 3.12,
+        "group_name": "Dut_Info",
+        "test_error_code": "000",
+        "test_error_msg": "Success",
+        "core_failed_test": null,
+        "core_error_code": null,
+        "core_error_msg": null,
+        "log_files": []
+    },
+    {
+        "tag": "unlock_SMBus",
+        "value": "PASS",
+        "valuetype": "exec_item",
+        "scope": "subprocess",
+        "purpose": "na",
+        "event_ts": "2024-02-21T22:22:00.821741-08:00",
+        "seq": 9,
+        "item_name": "unlock_SMBus",
+        "item_id": "1",
+        "loop": 0,
+        "retry": 0,
+        "start_time": "2024-02-21T22:21:57.699953-08:00",
+        "end_time": "2024-02-21T22:22:00.819442-08:00",
+        "test_state": "PASS",
+        "elapsed": 3.12,
+        "group_name": "DUT_Info",
+        "test_error_code": "000",
+        "test_error_msg": "Success",
+        "core_failed_test": null,
+        "core_error_code": null,
+        "core_error_msg": null,
+        "log_files": []
+    },
+    {
+        "tag": "disable_nvsm",
+        "value": "PASS",
+        "valuetype": "exec_item",
+        "scope": "subprocess",
+        "purpose": "na",
+        "event_ts": "2024-02-21T22:22:00.841497-08:00",
+        "seq": 10,
+        "item_name": "disable_nvsm",
+        "item_id": "1",
+        "loop": 0,
+        "retry": 0,
+        "start_time": "2024-02-21T22:22:00.824740-08:00",
+        "end_time": "2024-02-21T22:22:00.839246-08:00",
+        "test_state": "PASS",
+        "elapsed": 0.01,
+        "group_name": "DUT_Info",
+        "test_error_code": "000",
+        "test_error_msg": "Success",
+        "core_failed_test": null,
+        "core_error_code": null,
+        "core_error_msg": null,
+        "log_files": []
+    },
+    {
+        "tag": "Vulcan_gpu_enum_check_pre",
+        "value": "PASS",
+        "valuetype": "exec_item",
+        "scope": "subprocess",
+        "purpose": "na",
+        "event_ts": "2024-02-21T22:22:02.574050-08:00",
+        "seq": 11,
+        "item_name": "Vulcan_gpu_enum_check_pre",
+        "item_id": "1",
+        "loop": 0,
+        "retry": 0,
+        "start_time": "2024-02-21T22:22:00.844358-08:00",
+        "end_time": "2024-02-21T22:22:02.571746-08:00",
+        "test_state": "PASS",
+        "elapsed": 1.73,
+        "group_name": "Dut_Info",
+        "test_error_code": "000",
+        "test_error_msg": "Success",
+        "core_failed_test": null,
+        "core_error_code": null,
+        "core_error_msg": null,
+        "log_files": []
+    },
+    {
+        "tag": "FCT_test_inventory_1",
+        "value": "FAIL",
+        "valuetype": "exec_item",
+        "scope": "subprocess",
+        "purpose": "na",
+        "event_ts": "2024-02-21T22:33:16.049797-08:00",
+        "seq": 12,
+        "item_name": "FCT_test_inventory_1",
+        "item_id": "1",
+        "loop": 0,
+        "retry": 0,
+        "start_time": "2024-02-21T22:22:02.577169-08:00",
+        "end_time": "2024-02-21T22:33:16.047004-08:00",
+        "test_state": "FAIL",
+        "elapsed": 673.47,
+        "group_name": "INVENTORY",
+        "test_error_code": "006",
+        "test_error_msg": "FCT_test_inventory_1(non-zero-exit-code)",
+        "core_failed_test": null,
+        "core_error_code": "048-000-0-000000000086",
+        "core_error_msg": "GB_FPGA_version,PEX_RETIMER1_version,PEX_RETIMER2_version,PEX_RETIMER3_version,PEX_RETIMER4_version,PEX_RETIMER5_version,PEX_RETIMER6_version,PEX_RETIMER7_version,PEX_RETIMER8_version,PEX_SWITCH_version,FPGA_EROT_EC_FW_version,HMC_EROT_EC_FW_version,SXM1_EROT_EC_FW_version,SXM2_EROT_EC_FW_version,SXM3_EROT_EC_FW_version,SXM4_EROT_EC_FW_version,SXM5_EROT_EC_FW_version,SXM6_EROT_EC_FW_version,SXM7_EROT_EC_FW_version,SXM8_EROT_EC_FW_version,NVSWITCH0_EROT_EC_FW_version,NVSWITCH1_EROT_EC_FW_version,NVSWITCH2_EROT_EC_FW_version,NVSWITCH3_EROT_EC_FW_version,PEX_SW_EROT_EC_FW_version,HMC_FW_version,HGX_FW_GPU_SXM_1_version,HGX_FW_GPU_SXM_2_version,HGX_FW_GPU_SXM_3_version,HGX_FW_GPU_SXM_4_version,HGX_FW_GPU_SXM_5_version,HGX_FW_GPU_SXM_6_version,HGX_FW_GPU_SXM_7_version,HGX_FW_GPU_SXM_8_version,HGX_FW_NVSwitch_0_version,HGX_FW_NVSwitch_1_version,HGX_FW_NVSwitch_2_version,HGX_FW_NVSwitch_3_version 'GB_FPGA_version': found '2.2C' expected '2.37'",
+        "log_files": []
+    },
+    {
+        "tag": "BMC_Cold_reset_2",
+        "value": "PASS",
+        "valuetype": "exec_item",
+        "scope": "subprocess",
+        "purpose": "na",
+        "event_ts": "2024-02-21T22:36:43.878785-08:00",
+        "seq": 13,
+        "item_name": "BMC_Cold_reset_2",
+        "item_id": "1",
+        "loop": 0,
+        "retry": 0,
+        "start_time": "2024-02-21T22:33:16.053031-08:00",
+        "end_time": "2024-02-21T22:36:43.876482-08:00",
+        "test_state": "PASS",
+        "elapsed": 207.82,
+        "group_name": "BMC_reset",
+        "test_error_code": "000",
+        "test_error_msg": "Success",
+        "core_failed_test": null,
+        "core_error_code": null,
+        "core_error_msg": null,
+        "log_files": []
+    },
+    {
+        "tag": "Sleep_120_Seconds_1",
+        "value": "PASS",
+        "valuetype": "exec_item",
+        "scope": "subprocess",
+        "purpose": "na",
+        "event_ts": "2024-02-21T22:38:44.024341-08:00",
+        "seq": 14,
+        "item_name": "Sleep_120_Seconds_1",
+        "item_id": "1",
+        "loop": 0,
+        "retry": 0,
+        "start_time": "2024-02-21T22:36:43.881935-08:00",
+        "end_time": "2024-02-21T22:38:44.022150-08:00",
+        "test_state": "PASS",
+        "elapsed": 120.14,
+        "group_name": "Framework_Test_Item",
+        "test_error_code": "000",
+        "test_error_msg": "Success",
+        "core_failed_test": null,
+        "core_error_code": null,
+        "core_error_msg": null,
+        "log_files": []
+    },
+    {
+        "tag": "FCT_test_inventory_2",
+        "value": "FAIL",
+        "valuetype": "exec_item",
+        "scope": "subprocess",
+        "purpose": "na",
+        "event_ts": "2024-02-21T22:48:48.501242-08:00",
+        "seq": 15,
+        "item_name": "FCT_test_inventory_2",
+        "item_id": "1",
+        "loop": 0,
+        "retry": 0,
+        "start_time": "2024-02-21T22:38:44.027483-08:00",
+        "end_time": "2024-02-21T22:48:48.498438-08:00",
+        "test_state": "FAIL",
+        "elapsed": 604.47,
+        "group_name": "INVENTORY",
+        "test_error_code": "006",
+        "test_error_msg": "FCT_test_inventory_2(non-zero-exit-code)",
+        "core_failed_test": null,
+        "core_error_code": "048-000-0-000000000086",
+        "core_error_msg": "GB_FPGA_version,PEX_RETIMER1_version,PEX_RETIMER2_version,PEX_RETIMER3_version,PEX_RETIMER4_version,PEX_RETIMER5_version,PEX_RETIMER6_version,PEX_RETIMER7_version,PEX_RETIMER8_version,PEX_SWITCH_version,FPGA_EROT_EC_FW_version,HMC_EROT_EC_FW_version,SXM1_EROT_EC_FW_version,SXM2_EROT_EC_FW_version,SXM3_EROT_EC_FW_version,SXM4_EROT_EC_FW_version,SXM5_EROT_EC_FW_version,SXM6_EROT_EC_FW_version,SXM7_EROT_EC_FW_version,SXM8_EROT_EC_FW_version,NVSWITCH0_EROT_EC_FW_version,NVSWITCH1_EROT_EC_FW_version,NVSWITCH2_EROT_EC_FW_version,NVSWITCH3_EROT_EC_FW_version,PEX_SW_EROT_EC_FW_version,HMC_FW_version,HGX_FW_GPU_SXM_1_version,HGX_FW_GPU_SXM_2_version,HGX_FW_GPU_SXM_3_version,HGX_FW_GPU_SXM_4_version,HGX_FW_GPU_SXM_5_version,HGX_FW_GPU_SXM_6_version,HGX_FW_GPU_SXM_7_version,HGX_FW_GPU_SXM_8_version,HGX_FW_NVSwitch_0_version,HGX_FW_NVSwitch_1_version,HGX_FW_NVSwitch_2_version,HGX_FW_NVSwitch_3_version 'GB_FPGA_version': found '2.2C' expected '2.37'",
+        "log_files": []
+    },
+    {
+        "tag": "SET_FAN_100",
+        "value": "PASS",
+        "valuetype": "exec_item",
+        "scope": "subprocess",
+        "purpose": "na",
+        "event_ts": "2024-02-21T22:49:05.376830-08:00",
+        "seq": 16,
+        "item_name": "SET_FAN_100",
+        "item_id": "1",
+        "loop": 0,
+        "retry": 0,
+        "start_time": "2024-02-21T22:48:48.505094-08:00",
+        "end_time": "2024-02-21T22:49:05.374537-08:00",
+        "test_state": "PASS",
+        "elapsed": 16.87,
+        "group_name": "Server_Chassischeck",
+        "test_error_code": "000",
+        "test_error_msg": "Success",
+        "core_failed_test": null,
+        "core_error_code": null,
+        "core_error_msg": null,
+        "log_files": []
+    },
+    {
+        "tag": "FCT_test",
+        "value": "PASS",
+        "valuetype": "exec_item",
+        "scope": "subprocess",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:22:34.384866-08:00",
+        "seq": 17,
+        "item_name": "FCT_test",
+        "item_id": "1",
+        "loop": 0,
+        "retry": 0,
+        "start_time": "2024-02-21T22:49:05.380322-08:00",
+        "end_time": "2024-02-21T23:22:34.382563-08:00",
+        "test_state": "PASS",
+        "elapsed": 2009.0,
+        "group_name": "FCT",
+        "test_error_code": "000",
+        "test_error_msg": "Success",
+        "core_failed_test": null,
+        "core_error_code": null,
+        "core_error_msg": null,
+        "log_files": []
+    },
+    {
+        "tag": "PARSE_FCT",
+        "value": "PASS",
+        "valuetype": "exec_item",
+        "scope": "subprocess",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:22:35.488236-08:00",
+        "seq": 18,
+        "item_name": "PARSE_FCT",
+        "item_id": "1",
+        "loop": 0,
+        "retry": 0,
+        "start_time": "2024-02-21T23:22:34.388683-08:00",
+        "end_time": "2024-02-21T23:22:35.485933-08:00",
+        "test_state": "PASS",
+        "elapsed": 1.1,
+        "group_name": "Dut_Info",
+        "test_error_code": "000",
+        "test_error_msg": "Success",
+        "core_failed_test": null,
+        "core_error_code": null,
+        "core_error_msg": null,
+        "log_files": []
+    },
+    {
+        "tag": "PARSE_LS10_ECID",
+        "value": "PASS",
+        "valuetype": "exec_item",
+        "scope": "subprocess",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:22:35.515302-08:00",
+        "seq": 19,
+        "item_name": "PARSE_LS10_ECID",
+        "item_id": "1",
+        "loop": 0,
+        "retry": 0,
+        "start_time": "2024-02-21T23:22:35.491827-08:00",
+        "end_time": "2024-02-21T23:22:35.513017-08:00",
+        "test_state": "PASS",
+        "elapsed": 0.02,
+        "group_name": "Dut_Info",
+        "test_error_code": "000",
+        "test_error_msg": "Success",
+        "core_failed_test": null,
+        "core_error_code": null,
+        "core_error_msg": null,
+        "log_files": []
+    },
+    {
+        "tag": "IST",
+        "value": "PASS",
+        "valuetype": "exec_item",
+        "scope": "subprocess",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:24.306523-08:00",
+        "seq": 20,
+        "item_name": "IST",
+        "item_id": "1",
+        "loop": 0,
+        "retry": 0,
+        "start_time": "2024-02-21T23:22:35.518692-08:00",
+        "end_time": "2024-02-21T23:51:24.304192-08:00",
+        "test_state": "PASS",
+        "elapsed": 1728.79,
+        "group_name": "IST",
+        "test_error_code": "000",
+        "test_error_msg": "Success",
+        "core_failed_test": null,
+        "core_error_code": null,
+        "core_error_msg": null,
+        "log_files": []
+    },
+    {
+        "tag": "vulcan_gpu_enum_check_post",
+        "value": "PASS",
+        "valuetype": "exec_item",
+        "scope": "subprocess",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:36.353015-08:00",
+        "seq": 21,
+        "item_name": "vulcan_gpu_enum_check_post",
+        "item_id": "1",
+        "loop": 0,
+        "retry": 0,
+        "start_time": "2024-02-21T23:51:24.310413-08:00",
+        "end_time": "2024-02-21T23:51:36.350635-08:00",
+        "test_state": "PASS",
+        "elapsed": 12.04,
+        "group_name": "Dut_Info",
+        "test_error_code": "000",
+        "test_error_msg": "Success",
+        "core_failed_test": null,
+        "core_error_code": null,
+        "core_error_msg": null,
+        "log_files": []
+    },
+    {
+        "tag": "ELAPSED_SECONDS_ACCUMULATED",
+        "value": 5604.26,
+        "valuetype": "duration",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:36.357806-08:00"
+    },
+    {
+        "tag": "GPU0_bdf",
+        "value": "05:00.0",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:36.366553-08:00"
+    },
+    {
+        "tag": "GPU0_sxm",
+        "value": "SXM8",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:36.369695-08:00"
+    },
+    {
+        "tag": "GPU1_bdf",
+        "value": "06:00.0",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:36.372754-08:00"
+    },
+    {
+        "tag": "GPU1_sxm",
+        "value": "SXM6",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:36.375929-08:00"
+    },
+    {
+        "tag": "GPU2_bdf",
+        "value": "45:00.0",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:36.379079-08:00"
+    },
+    {
+        "tag": "GPU2_sxm",
+        "value": "SXM1",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:36.382236-08:00"
+    },
+    {
+        "tag": "GPU3_bdf",
+        "value": "46:00.0",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:36.385360-08:00"
+    },
+    {
+        "tag": "GPU3_sxm",
+        "value": "SXM3",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:36.388642-08:00"
+    },
+    {
+        "tag": "GPU4_bdf",
+        "value": "85:00.0",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:36.391806-08:00"
+    },
+    {
+        "tag": "GPU4_sxm",
+        "value": "SXM5",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:36.395069-08:00"
+    },
+    {
+        "tag": "GPU5_bdf",
+        "value": "86:00.0",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:36.398284-08:00"
+    },
+    {
+        "tag": "GPU5_sxm",
+        "value": "SXM7",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:36.401491-08:00"
+    },
+    {
+        "tag": "GPU6_bdf",
+        "value": "b5:00.0",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:36.404723-08:00"
+    },
+    {
+        "tag": "GPU6_sxm",
+        "value": "SXM4",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:36.407980-08:00"
+    },
+    {
+        "tag": "GPU7_bdf",
+        "value": "b6:00.0",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:36.411288-08:00"
+    },
+    {
+        "tag": "GPU7_sxm",
+        "value": "SXM2",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:36.414553-08:00"
+    },
+    {
+        "tag": "LS10_1_bdf",
+        "value": "c0:00.0",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:36.417894-08:00"
+    },
+    {
+        "tag": "LS10_2_bdf",
+        "value": "c1:00.0",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:36.421225-08:00"
+    },
+    {
+        "tag": "LS10_3_bdf",
+        "value": "c2:00.0",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:36.424553-08:00"
+    },
+    {
+        "tag": "LS10_4_bdf",
+        "value": "c3:00.0",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:36.427945-08:00"
+    },
+    {
+        "tag": "HMC-FPGA-PCIE-status",
+        "value": " 04 12 00 00 00",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:36.431341-08:00"
+    },
+    {
+        "tag": "ComponentId",
+        "value": "GB_FPGA_version,PEX_RETIMER1_version,PEX_RETIMER2_version,PEX_RETIMER3_version,PEX_RETIMER4_version,PEX_RETIMER5_version,PEX_RETIMER6_version,PEX_RETIMER7_version,PEX_RETIMER8_version,PEX_SWITCH_version,FPGA_EROT_EC_FW_version,HMC_EROT_EC_FW_version,SXM1_EROT_EC_FW_version,SXM2_EROT_EC_FW_version,SXM3_EROT_EC_FW_version,SXM4_EROT_EC_FW_version,SXM5_EROT_EC_FW_version,SXM6_EROT_EC_FW_version,SXM7_EROT_EC_FW_version,SXM8_EROT_EC_FW_version,NVSWITCH0_EROT_EC_FW_version,NVSWITCH1_EROT_EC_FW_version,NVSWITCH2_EROT_EC_FW_version,NVSWITCH3_EROT_EC_FW_version,PEX_SW_EROT_EC_FW_version,HMC_FW_version,HGX_FW_GPU_SXM_1_version,HGX_FW_GPU_SXM_2_version,HGX_FW_GPU_SXM_3_version,HGX_FW_GPU_SXM_4_version,HGX_FW_GPU_SXM_5_version,HGX_FW_GPU_SXM_6_version,HGX_FW_GPU_SXM_7_version,HGX_FW_GPU_SXM_8_version,HGX_FW_NVSwitch_0_version,HGX_FW_NVSwitch_1_version,HGX_FW_NVSwitch_2_version,HGX_FW_NVSwitch_3_version",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:36.434730-08:00"
+    },
+    {
+        "tag": "SXM8_bdf",
+        "value": "05:00.0",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:36.438132-08:00"
+    },
+    {
+        "tag": "SXM8_VBIOS",
+        "value": "96.00.74.00.0d",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:36.441581-08:00"
+    },
+    {
+        "tag": "SXM8_SN",
+        "value": "1653923056061",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:36.445080-08:00"
+    },
+    {
+        "tag": "SXM8_rawECID",
+        "value": "0x006002c000000009924925e1",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:36.448540-08:00"
+    },
+    {
+        "tag": "SXM8_rawECID_GHS",
+        "value": "0x178099249240000000b0000c0",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:36.452011-08:00"
+    },
+    {
+        "tag": "SXM8_ECID",
+        "value": "TSMC-U2P999-11_x0_y3",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:36.455483-08:00"
+    },
+    {
+        "tag": "SXM8_INFOROM",
+        "value": "",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:36.459068-08:00"
+    },
+    {
+        "tag": "SXM6_bdf",
+        "value": "06:00.0",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:36.462621-08:00"
+    },
+    {
+        "tag": "SXM6_VBIOS",
+        "value": "96.00.74.00.0d",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:36.466170-08:00"
+    },
+    {
+        "tag": "SXM6_SN",
+        "value": "1653923071727",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:36.469689-08:00"
+    },
+    {
+        "tag": "SXM6_rawECID",
+        "value": "0x00c0320000000009b08205e1",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:36.473234-08:00"
+    },
+    {
+        "tag": "SXM6_rawECID_GHS",
+        "value": "0x17809b0820400000008018180",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:36.476865-08:00"
+    },
+    {
+        "tag": "SXM6_ECID",
+        "value": "TSMC-U2R221-08_x3_y6",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:36.480482-08:00"
+    },
+    {
+        "tag": "SXM6_INFOROM",
+        "value": "",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:36.484090-08:00"
+    },
+    {
+        "tag": "SXM1_bdf",
+        "value": "45:00.0",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:36.487718-08:00"
+    },
+    {
+        "tag": "SXM1_VBIOS",
+        "value": "96.00.74.00.0d",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:36.491389-08:00"
+    },
+    {
+        "tag": "SXM1_SN",
+        "value": "1653923070365",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:36.495059-08:00"
+    },
+    {
+        "tag": "SXM1_rawECID",
+        "value": "0x012002c000000009b2430de1",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:36.498733-08:00"
+    },
+    {
+        "tag": "SXM1_rawECID_GHS",
+        "value": "0x17809b2430c0000000b000240",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:36.502444-08:00"
+    },
+    {
+        "tag": "SXM1_ECID",
+        "value": "TSMC-U2R933-11_x0_y9",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:36.506225-08:00"
+    },
+    {
+        "tag": "SXM1_INFOROM",
+        "value": "",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:36.510011-08:00"
+    },
+    {
+        "tag": "SXM3_bdf",
+        "value": "46:00.0",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:36.513804-08:00"
+    },
+    {
+        "tag": "SXM3_VBIOS",
+        "value": "96.00.74.00.0d",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:36.517574-08:00"
+    },
+    {
+        "tag": "SXM3_SN",
+        "value": "1653923070118",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:36.521401-08:00"
+    },
+    {
+        "tag": "SXM3_rawECID",
+        "value": "0x00dfd10000000009714305e1",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:36.525336-08:00"
+    },
+    {
+        "tag": "SXM3_rawECID_GHS",
+        "value": "0x1780971430400000004fe8180",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:36.529250-08:00"
+    },
+    {
+        "tag": "SXM3_ECID",
+        "value": "TSMC-U2N531-04_x-3_y6",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:36.533168-08:00"
+    },
+    {
+        "tag": "SXM3_INFOROM",
+        "value": "",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:36.537058-08:00"
+    },
+    {
+        "tag": "SXM5_bdf",
+        "value": "85:00.0",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:36.541031-08:00"
+    },
+    {
+        "tag": "SXM5_VBIOS",
+        "value": "96.00.74.00.0d",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:36.544992-08:00"
+    },
+    {
+        "tag": "SXM5_SN",
+        "value": "1654023012279",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:36.548896-08:00"
+    },
+    {
+        "tag": "SXM5_rawECID",
+        "value": "0x002016000000000992050de1",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:36.552878-08:00"
+    },
+    {
+        "tag": "SXM5_rawECID_GHS",
+        "value": "0x1780992050c00000018008040",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:36.556956-08:00"
+    },
+    {
+        "tag": "SXM5_ECID",
+        "value": "TSMC-U2P853-24_x1_y1",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:36.560999-08:00"
+    },
+    {
+        "tag": "SXM5_INFOROM",
+        "value": "",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:36.564989-08:00"
+    },
+    {
+        "tag": "SXM7_bdf",
+        "value": "86:00.0",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:36.569026-08:00"
+    },
+    {
+        "tag": "SXM7_VBIOS",
+        "value": "96.00.74.00.0d",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:36.573107-08:00"
+    },
+    {
+        "tag": "SXM7_SN",
+        "value": "1654023001720",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:36.577162-08:00"
+    },
+    {
+        "tag": "SXM7_rawECID",
+        "value": "0x00ffd60000000009b08725e1",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:36.581335-08:00"
+    },
+    {
+        "tag": "SXM7_rawECID_GHS",
+        "value": "0x17809b0872400000018fe81c0",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:36.585452-08:00"
+    },
+    {
+        "tag": "SXM7_ECID",
+        "value": "TSMC-U2R279-24_x-3_y7",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:36.589594-08:00"
+    },
+    {
+        "tag": "SXM7_INFOROM",
+        "value": "",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:36.593692-08:00"
+    },
+    {
+        "tag": "SXM4_bdf",
+        "value": "b5:00.0",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:36.597825-08:00"
+    },
+    {
+        "tag": "SXM4_VBIOS",
+        "value": "96.00.74.00.0d",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:36.601963-08:00"
+    },
+    {
+        "tag": "SXM4_SN",
+        "value": "1653923071308",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:36.606156-08:00"
+    },
+    {
+        "tag": "SXM4_rawECID",
+        "value": "0x0020218000000009710521e1",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:36.610324-08:00"
+    },
+    {
+        "tag": "SXM4_rawECID_GHS",
+        "value": "0x1780971052000000006010040",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:36.614558-08:00"
+    },
+    {
+        "tag": "SXM4_ECID",
+        "value": "TSMC-U2N458-06_x2_y1",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:36.618818-08:00"
+    },
+    {
+        "tag": "SXM4_INFOROM",
+        "value": "",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:36.623084-08:00"
+    },
+    {
+        "tag": "SXM2_bdf",
+        "value": "b6:00.0",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:36.627354-08:00"
+    },
+    {
+        "tag": "SXM2_VBIOS",
+        "value": "96.00.74.00.0d",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:36.631626-08:00"
+    },
+    {
+        "tag": "SXM2_SN",
+        "value": "1653923072024",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:36.635967-08:00"
+    },
+    {
+        "tag": "SXM2_rawECID",
+        "value": "0x008002c000000009b08205e1",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:36.640586-08:00"
+    },
+    {
+        "tag": "SXM2_rawECID_GHS",
+        "value": "0x17809b082040000000b000100",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:36.644954-08:00"
+    },
+    {
+        "tag": "SXM2_ECID",
+        "value": "TSMC-U2R221-11_x0_y4",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:36.649354-08:00"
+    },
+    {
+        "tag": "SXM2_INFOROM",
+        "value": "",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:36.653862-08:00"
+    },
+    {
+        "tag": "FRU_GPU_Chassis_SerialNumber",
+        "value": "0000000000000000000000000",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:36.658289-08:00"
+    },
+    {
+        "tag": "FRU_GPU_Board_Mfg",
+        "value": "NVIDIA",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:36.662934-08:00"
+    },
+    {
+        "tag": "FRU_GPU_BoardProduct",
+        "value": "P5612-B00",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:36.667430-08:00"
+    },
+    {
+        "tag": "FRU_GPU_Board_SerialNumber",
+        "value": "1664023550907",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:36.671903-08:00"
+    },
+    {
+        "tag": "FRU_GPU_Board_PartNumber",
+        "value": "699-25612-0002-205",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:36.676397-08:00"
+    },
+    {
+        "tag": "FRU_GPU_Product_Manufacturer",
+        "value": "NVIDIA",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:36.680929-08:00"
+    },
+    {
+        "tag": "FRU_GPU_ProductName",
+        "value": "NVIDIAHGXH1008-GPU",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:36.685540-08:00"
+    },
+    {
+        "tag": "FRU_GPU_Product_PartNumber",
+        "value": "935-24287-0000-000",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:36.690112-08:00"
+    },
+    {
+        "tag": "FRU_GPU_Product_Version",
+        "value": "00",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:36.694689-08:00"
+    },
+    {
+        "tag": "Manufacturer",
+        "value": "NVIDIA",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:36.699335-08:00"
+    },
+    {
+        "tag": "GPUNum",
+        "value": "8",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:36.703913-08:00"
+    },
+    {
+        "tag": "GPU_05_00_0_RetimerCount",
+        "value": "1",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:36.708495-08:00"
+    },
+    {
+        "tag": "GPU_45_00_0_RetimerCount",
+        "value": "1",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:36.713100-08:00"
+    },
+    {
+        "tag": "GPU_86_00_0_RetimerCount",
+        "value": "1",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:36.717803-08:00"
+    },
+    {
+        "tag": "GPU_06_00_0_RetimerCount",
+        "value": "1",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:36.722462-08:00"
+    },
+    {
+        "tag": "GPU_85_00_0_RetimerCount",
+        "value": "1",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:36.727190-08:00"
+    },
+    {
+        "tag": "GPU_B5_00_0_RetimerCount",
+        "value": "1",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:36.731932-08:00"
+    },
+    {
+        "tag": "GPU_46_00_0_RetimerCount",
+        "value": "1",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:36.736677-08:00"
+    },
+    {
+        "tag": "GPU_B6_00_0_RetimerCount",
+        "value": "1",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:36.741416-08:00"
+    },
+    {
+        "tag": "GPU_05_00_0_VendorID",
+        "value": "10de",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:36.746216-08:00"
+    },
+    {
+        "tag": "GPU_05_00_0_DeviceID",
+        "value": "2330",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:36.751039-08:00"
+    },
+    {
+        "tag": "GPU_05_00_0_Vendor",
+        "value": "NVIDIACorporation",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:36.755921-08:00"
+    },
+    {
+        "tag": "GPU_05_00_0_DeviceName",
+        "value": "Device2330",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:36.760776-08:00"
+    },
+    {
+        "tag": "GPU_05_00_0_PCISpeed",
+        "value": "32GT/s",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:36.765648-08:00"
+    },
+    {
+        "tag": "GPU_05_00_0_PCIWidth",
+        "value": "x16",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:36.770674-08:00"
+    },
+    {
+        "tag": "GPU_05_00_0_SSVendorID",
+        "value": "10de",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:36.775613-08:00"
+    },
+    {
+        "tag": "GPU_05_00_0_SSDeviceID",
+        "value": "16c1",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:36.780570-08:00"
+    },
+    {
+        "tag": "GPU_05_00_0_PCIID",
+        "value": "05=00.0",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:36.785568-08:00"
+    },
+    {
+        "tag": "GPU_45_00_0_VendorID",
+        "value": "10de",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:36.790504-08:00"
+    },
+    {
+        "tag": "GPU_45_00_0_DeviceID",
+        "value": "2330",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:36.795478-08:00"
+    },
+    {
+        "tag": "GPU_45_00_0_Vendor",
+        "value": "NVIDIACorporation",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:36.800463-08:00"
+    },
+    {
+        "tag": "GPU_45_00_0_DeviceName",
+        "value": "Device2330",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:36.805472-08:00"
+    },
+    {
+        "tag": "GPU_45_00_0_PCISpeed",
+        "value": "32GT/s",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:36.810467-08:00"
+    },
+    {
+        "tag": "GPU_45_00_0_PCIWidth",
+        "value": "x16",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:36.815476-08:00"
+    },
+    {
+        "tag": "GPU_45_00_0_SSVendorID",
+        "value": "10de",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:36.820524-08:00"
+    },
+    {
+        "tag": "GPU_45_00_0_SSDeviceID",
+        "value": "16c1",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:36.825599-08:00"
+    },
+    {
+        "tag": "GPU_45_00_0_PCIID",
+        "value": "45=00.0",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:36.831028-08:00"
+    },
+    {
+        "tag": "GPU_86_00_0_VendorID",
+        "value": "10de",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:36.836387-08:00"
+    },
+    {
+        "tag": "GPU_86_00_0_DeviceID",
+        "value": "2330",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:36.841491-08:00"
+    },
+    {
+        "tag": "GPU_86_00_0_Vendor",
+        "value": "NVIDIACorporation",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:36.846648-08:00"
+    },
+    {
+        "tag": "GPU_86_00_0_DeviceName",
+        "value": "Device2330",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:36.851830-08:00"
+    },
+    {
+        "tag": "GPU_86_00_0_PCISpeed",
+        "value": "32GT/s",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:36.857104-08:00"
+    },
+    {
+        "tag": "GPU_86_00_0_PCIWidth",
+        "value": "x16",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:36.862311-08:00"
+    },
+    {
+        "tag": "GPU_86_00_0_SSVendorID",
+        "value": "10de",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:36.867489-08:00"
+    },
+    {
+        "tag": "GPU_86_00_0_SSDeviceID",
+        "value": "16c1",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:36.872709-08:00"
+    },
+    {
+        "tag": "GPU_86_00_0_PCIID",
+        "value": "86=00.0",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:36.877918-08:00"
+    },
+    {
+        "tag": "GPU_06_00_0_VendorID",
+        "value": "10de",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:36.883302-08:00"
+    },
+    {
+        "tag": "GPU_06_00_0_DeviceID",
+        "value": "2330",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:36.888552-08:00"
+    },
+    {
+        "tag": "GPU_06_00_0_Vendor",
+        "value": "NVIDIACorporation",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:36.893885-08:00"
+    },
+    {
+        "tag": "GPU_06_00_0_DeviceName",
+        "value": "Device2330",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:36.899180-08:00"
+    },
+    {
+        "tag": "GPU_06_00_0_PCISpeed",
+        "value": "32GT/s",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:36.904461-08:00"
+    },
+    {
+        "tag": "GPU_06_00_0_PCIWidth",
+        "value": "x16",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:36.909816-08:00"
+    },
+    {
+        "tag": "GPU_06_00_0_SSVendorID",
+        "value": "10de",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:36.915201-08:00"
+    },
+    {
+        "tag": "GPU_06_00_0_SSDeviceID",
+        "value": "16c1",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:36.920553-08:00"
+    },
+    {
+        "tag": "GPU_06_00_0_PCIID",
+        "value": "06=00.0",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:36.925900-08:00"
+    },
+    {
+        "tag": "GPU_85_00_0_VendorID",
+        "value": "10de",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:36.931326-08:00"
+    },
+    {
+        "tag": "GPU_85_00_0_DeviceID",
+        "value": "2330",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:36.936734-08:00"
+    },
+    {
+        "tag": "GPU_85_00_0_Vendor",
+        "value": "NVIDIACorporation",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:36.942118-08:00"
+    },
+    {
+        "tag": "GPU_85_00_0_DeviceName",
+        "value": "Device2330",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:36.947559-08:00"
+    },
+    {
+        "tag": "GPU_85_00_0_PCISpeed",
+        "value": "32GT/s",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:36.952979-08:00"
+    },
+    {
+        "tag": "GPU_85_00_0_PCIWidth",
+        "value": "x16",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:36.958429-08:00"
+    },
+    {
+        "tag": "GPU_85_00_0_SSVendorID",
+        "value": "10de",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:36.963938-08:00"
+    },
+    {
+        "tag": "GPU_85_00_0_SSDeviceID",
+        "value": "16c1",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:36.969438-08:00"
+    },
+    {
+        "tag": "GPU_85_00_0_PCIID",
+        "value": "85=00.0",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:36.974981-08:00"
+    },
+    {
+        "tag": "GPU_B5_00_0_VendorID",
+        "value": "10de",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:36.980524-08:00"
+    },
+    {
+        "tag": "GPU_B5_00_0_DeviceID",
+        "value": "2330",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:36.986051-08:00"
+    },
+    {
+        "tag": "GPU_B5_00_0_Vendor",
+        "value": "NVIDIACorporation",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:36.991638-08:00"
+    },
+    {
+        "tag": "GPU_B5_00_0_DeviceName",
+        "value": "Device2330",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:36.997302-08:00"
+    },
+    {
+        "tag": "GPU_B5_00_0_PCISpeed",
+        "value": "32GT/s",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:37.002927-08:00"
+    },
+    {
+        "tag": "GPU_B5_00_0_PCIWidth",
+        "value": "x16",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:37.008519-08:00"
+    },
+    {
+        "tag": "GPU_B5_00_0_SSVendorID",
+        "value": "10de",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:37.014184-08:00"
+    },
+    {
+        "tag": "GPU_B5_00_0_SSDeviceID",
+        "value": "16c1",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:37.019857-08:00"
+    },
+    {
+        "tag": "GPU_B5_00_0_PCIID",
+        "value": "b5=00.0",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:37.025562-08:00"
+    },
+    {
+        "tag": "GPU_46_00_0_VendorID",
+        "value": "10de",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:37.031311-08:00"
+    },
+    {
+        "tag": "GPU_46_00_0_DeviceID",
+        "value": "2330",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:37.037010-08:00"
+    },
+    {
+        "tag": "GPU_46_00_0_Vendor",
+        "value": "NVIDIACorporation",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:37.042753-08:00"
+    },
+    {
+        "tag": "GPU_46_00_0_DeviceName",
+        "value": "Device2330",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:37.048601-08:00"
+    },
+    {
+        "tag": "GPU_46_00_0_PCISpeed",
+        "value": "32GT/s",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:37.054389-08:00"
+    },
+    {
+        "tag": "GPU_46_00_0_PCIWidth",
+        "value": "x16",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:37.060273-08:00"
+    },
+    {
+        "tag": "GPU_46_00_0_SSVendorID",
+        "value": "10de",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:37.066267-08:00"
+    },
+    {
+        "tag": "GPU_46_00_0_SSDeviceID",
+        "value": "16c1",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:37.072285-08:00"
+    },
+    {
+        "tag": "GPU_46_00_0_PCIID",
+        "value": "46=00.0",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:37.078310-08:00"
+    },
+    {
+        "tag": "GPU_B6_00_0_VendorID",
+        "value": "10de",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:37.084257-08:00"
+    },
+    {
+        "tag": "GPU_B6_00_0_DeviceID",
+        "value": "2330",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:37.090311-08:00"
+    },
+    {
+        "tag": "GPU_B6_00_0_Vendor",
+        "value": "NVIDIACorporation",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:37.096385-08:00"
+    },
+    {
+        "tag": "GPU_B6_00_0_DeviceName",
+        "value": "Device2330",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:37.102302-08:00"
+    },
+    {
+        "tag": "GPU_B6_00_0_PCISpeed",
+        "value": "32GT/s",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:37.108202-08:00"
+    },
+    {
+        "tag": "GPU_B6_00_0_PCIWidth",
+        "value": "x16",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:37.114133-08:00"
+    },
+    {
+        "tag": "GPU_B6_00_0_SSVendorID",
+        "value": "10de",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:37.120114-08:00"
+    },
+    {
+        "tag": "GPU_B6_00_0_SSDeviceID",
+        "value": "16c1",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:37.126072-08:00"
+    },
+    {
+        "tag": "GPU_B6_00_0_PCIID",
+        "value": "b6=00.0",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:37.132063-08:00"
+    },
+    {
+        "tag": "NVSWITCHNum",
+        "value": "4",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:37.138106-08:00"
+    },
+    {
+        "tag": "NVSWITCH_C1_00_0_RetimerCount",
+        "value": "0",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:37.144258-08:00"
+    },
+    {
+        "tag": "NVSWITCH_C0_00_0_RetimerCount",
+        "value": "0",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:37.150363-08:00"
+    },
+    {
+        "tag": "NVSWITCH_C3_00_0_RetimerCount",
+        "value": "0",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:37.156474-08:00"
+    },
+    {
+        "tag": "NVSWITCH_C2_00_0_RetimerCount",
+        "value": "0",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:37.162588-08:00"
+    },
+    {
+        "tag": "NVSWITCH_C1_00_0_VendorID",
+        "value": "10de",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:37.168705-08:00"
+    },
+    {
+        "tag": "NVSWITCH_C1_00_0_DeviceID",
+        "value": "22a3",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:37.174838-08:00"
+    },
+    {
+        "tag": "NVSWITCH_C1_00_0_Vendor",
+        "value": "NVIDIACorporation",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:37.180961-08:00"
+    },
+    {
+        "tag": "NVSWITCH_C1_00_0_DeviceName",
+        "value": "Device22a3",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:37.187732-08:00"
+    },
+    {
+        "tag": "NVSWITCH_C1_00_0_PCISpeed",
+        "value": "16GT/s",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:37.194041-08:00"
+    },
+    {
+        "tag": "NVSWITCH_C1_00_0_PCIWidth",
+        "value": "x2",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:37.200254-08:00"
+    },
+    {
+        "tag": "NVSWITCH_C1_00_0_SSVendorID",
+        "value": "10de",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:37.206521-08:00"
+    },
+    {
+        "tag": "NVSWITCH_C1_00_0_SSDeviceID",
+        "value": "1796",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:37.212836-08:00"
+    },
+    {
+        "tag": "NVSWITCH_C1_00_0_PCIID",
+        "value": "c1=00.0",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:37.219231-08:00"
+    },
+    {
+        "tag": "NVSWITCH_C0_00_0_VendorID",
+        "value": "10de",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:37.225631-08:00"
+    },
+    {
+        "tag": "NVSWITCH_C0_00_0_DeviceID",
+        "value": "22a3",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:37.232049-08:00"
+    },
+    {
+        "tag": "NVSWITCH_C0_00_0_Vendor",
+        "value": "NVIDIACorporation",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:37.238520-08:00"
+    },
+    {
+        "tag": "NVSWITCH_C0_00_0_DeviceName",
+        "value": "Device22a3",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:37.244968-08:00"
+    },
+    {
+        "tag": "NVSWITCH_C0_00_0_PCISpeed",
+        "value": "16GT/s",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:37.251489-08:00"
+    },
+    {
+        "tag": "NVSWITCH_C0_00_0_PCIWidth",
+        "value": "x2",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:37.257993-08:00"
+    },
+    {
+        "tag": "NVSWITCH_C0_00_0_SSVendorID",
+        "value": "10de",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:37.264635-08:00"
+    },
+    {
+        "tag": "NVSWITCH_C0_00_0_SSDeviceID",
+        "value": "1796",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:37.271181-08:00"
+    },
+    {
+        "tag": "NVSWITCH_C0_00_0_PCIID",
+        "value": "c0=00.0",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:37.277671-08:00"
+    },
+    {
+        "tag": "NVSWITCH_C3_00_0_VendorID",
+        "value": "10de",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:37.284226-08:00"
+    },
+    {
+        "tag": "NVSWITCH_C3_00_0_DeviceID",
+        "value": "22a3",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:37.290811-08:00"
+    },
+    {
+        "tag": "NVSWITCH_C3_00_0_Vendor",
+        "value": "NVIDIACorporation",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:37.297498-08:00"
+    },
+    {
+        "tag": "NVSWITCH_C3_00_0_DeviceName",
+        "value": "Device22a3",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:37.304106-08:00"
+    },
+    {
+        "tag": "NVSWITCH_C3_00_0_PCISpeed",
+        "value": "16GT/s",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:37.310884-08:00"
+    },
+    {
+        "tag": "NVSWITCH_C3_00_0_PCIWidth",
+        "value": "x2",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:37.317565-08:00"
+    },
+    {
+        "tag": "NVSWITCH_C3_00_0_SSVendorID",
+        "value": "10de",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:37.324322-08:00"
+    },
+    {
+        "tag": "NVSWITCH_C3_00_0_SSDeviceID",
+        "value": "1796",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:37.331076-08:00"
+    },
+    {
+        "tag": "NVSWITCH_C3_00_0_PCIID",
+        "value": "c3=00.0",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:37.337818-08:00"
+    },
+    {
+        "tag": "NVSWITCH_C2_00_0_VendorID",
+        "value": "10de",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:37.344541-08:00"
+    },
+    {
+        "tag": "NVSWITCH_C2_00_0_DeviceID",
+        "value": "22a3",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:37.351341-08:00"
+    },
+    {
+        "tag": "NVSWITCH_C2_00_0_Vendor",
+        "value": "NVIDIACorporation",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:37.358122-08:00"
+    },
+    {
+        "tag": "NVSWITCH_C2_00_0_DeviceName",
+        "value": "Device22a3",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:37.364998-08:00"
+    },
+    {
+        "tag": "NVSWITCH_C2_00_0_PCISpeed",
+        "value": "16GT/s",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:37.371864-08:00"
+    },
+    {
+        "tag": "NVSWITCH_C2_00_0_PCIWidth",
+        "value": "x2",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:37.378682-08:00"
+    },
+    {
+        "tag": "NVSWITCH_C2_00_0_SSVendorID",
+        "value": "10de",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:37.385530-08:00"
+    },
+    {
+        "tag": "NVSWITCH_C2_00_0_SSDeviceID",
+        "value": "1796",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:37.392456-08:00"
+    },
+    {
+        "tag": "NVSWITCH_C2_00_0_PCIID",
+        "value": "c2=00.0",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:37.399328-08:00"
+    },
+    {
+        "tag": "PEX_RETIMER1_WriteProtect",
+        "value": "False",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:37.406441-08:00"
+    },
+    {
+        "tag": "PEX_RETIMER2_WriteProtect",
+        "value": "False",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:37.413399-08:00"
+    },
+    {
+        "tag": "PEX_RETIMER3_WriteProtect",
+        "value": "False",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:37.420402-08:00"
+    },
+    {
+        "tag": "PEX_RETIMER4_WriteProtect",
+        "value": "False",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:37.427475-08:00"
+    },
+    {
+        "tag": "PEX_RETIMER5_WriteProtect",
+        "value": "False",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:37.434489-08:00"
+    },
+    {
+        "tag": "PEX_RETIMER6_WriteProtect",
+        "value": "False",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:37.441490-08:00"
+    },
+    {
+        "tag": "PEX_RETIMER7_WriteProtect",
+        "value": "False",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:37.448582-08:00"
+    },
+    {
+        "tag": "PEX_RETIMER8_WriteProtect",
+        "value": "False",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:37.455776-08:00"
+    },
+    {
+        "tag": "NVSWITCH_0_WriteProtect",
+        "value": "False",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:37.462777-08:00"
+    },
+    {
+        "tag": "NVSWITCH_1_WriteProtect",
+        "value": "False",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:37.469712-08:00"
+    },
+    {
+        "tag": "NVSWITCH_2_WriteProtect",
+        "value": "False",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:37.476660-08:00"
+    },
+    {
+        "tag": "NVSWITCH_3_WriteProtect",
+        "value": "False",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:37.483633-08:00"
+    },
+    {
+        "tag": "GPU_0_WriteProtect",
+        "value": "False",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:37.490652-08:00"
+    },
+    {
+        "tag": "GPU_1_WriteProtect",
+        "value": "False",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:37.497623-08:00"
+    },
+    {
+        "tag": "GPU_2_WriteProtect",
+        "value": "False",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:37.504696-08:00"
+    },
+    {
+        "tag": "GPU_3_WriteProtect",
+        "value": "False",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:37.511738-08:00"
+    },
+    {
+        "tag": "GPU_4_WriteProtect",
+        "value": "False",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:37.518829-08:00"
+    },
+    {
+        "tag": "GPU_5_WriteProtect",
+        "value": "False",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:37.525953-08:00"
+    },
+    {
+        "tag": "GPU_6_WriteProtect",
+        "value": "False",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:37.533038-08:00"
+    },
+    {
+        "tag": "GPU_7_WriteProtect",
+        "value": "False",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:37.540182-08:00"
+    },
+    {
+        "tag": "HMC_WriteProtect",
+        "value": "False",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:37.547363-08:00"
+    },
+    {
+        "tag": "HERM_WriteProtect",
+        "value": "False",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:37.554556-08:00"
+    },
+    {
+        "tag": "PEX_SWITCH_WriteProtect",
+        "value": "False",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:37.561757-08:00"
+    },
+    {
+        "tag": "BOARD_EEPROM_WriteProtect",
+        "value": "False",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:37.568952-08:00"
+    },
+    {
+        "tag": "HMC_READY_STATUS",
+        "value": "0",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:37.576193-08:00"
+    },
+    {
+        "tag": "PEX_Switch_Version",
+        "value": "1.7.7F",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:37.583431-08:00"
+    },
+    {
+        "tag": "FPGA_EROT_EC_FW_version",
+        "value": "00.02.0134.0000_n00",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:37.590724-08:00"
+    },
+    {
+        "tag": "SXM1_EROT_EC_FW_version",
+        "value": "00.02.0134.0000_n00",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:37.597957-08:00"
+    },
+    {
+        "tag": "SXM2_EROT_EC_FW_version",
+        "value": "00.02.0134.0000_n00",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:37.605190-08:00"
+    },
+    {
+        "tag": "SXM3_EROT_EC_FW_version",
+        "value": "00.02.0134.0000_n00",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:37.612527-08:00"
+    },
+    {
+        "tag": "SXM4_EROT_EC_FW_version",
+        "value": "00.02.0134.0000_n00",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:37.619841-08:00"
+    },
+    {
+        "tag": "SXM5_EROT_EC_FW_version",
+        "value": "00.02.0134.0000_n00",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:37.627195-08:00"
+    },
+    {
+        "tag": "SXM6_EROT_EC_FW_version",
+        "value": "00.02.0134.0000_n00",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:37.634603-08:00"
+    },
+    {
+        "tag": "SXM7_EROT_EC_FW_version",
+        "value": "00.02.0134.0000_n00",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:37.641992-08:00"
+    },
+    {
+        "tag": "SXM8_EROT_EC_FW_version",
+        "value": "00.02.0134.0000_n00",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:37.649701-08:00"
+    },
+    {
+        "tag": "HMC_EROT_EC_FW_version",
+        "value": "00.02.0134.0000_n00",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:37.657107-08:00"
+    },
+    {
+        "tag": "NVSWITCH0_EROT_EC_FW_version",
+        "value": "00.02.0134.0000_n00",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:37.664562-08:00"
+    },
+    {
+        "tag": "NVSWITCH1_EROT_EC_FW_version",
+        "value": "00.02.0134.0000_n00",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:37.671990-08:00"
+    },
+    {
+        "tag": "NVSWITCH2_EROT_EC_FW_version",
+        "value": "00.02.0134.0000_n00",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:37.679496-08:00"
+    },
+    {
+        "tag": "NVSWITCH3_EROT_EC_FW_version",
+        "value": "00.02.0134.0000_n00",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:37.686971-08:00"
+    },
+    {
+        "tag": "PEX_SW_EROT_EC_FW_version",
+        "value": "00.02.0134.0000_n00",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:37.694515-08:00"
+    },
+    {
+        "tag": "PEX_RETIMER1_version",
+        "value": "2.7.9",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:37.702014-08:00"
+    },
+    {
+        "tag": "PEX_RETIMER2_version",
+        "value": "2.7.9",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:37.709562-08:00"
+    },
+    {
+        "tag": "PEX_RETIMER3_version",
+        "value": "2.7.9",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:37.717209-08:00"
+    },
+    {
+        "tag": "PEX_RETIMER4_version",
+        "value": "2.7.9",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:37.724752-08:00"
+    },
+    {
+        "tag": "PEX_RETIMER5_version",
+        "value": "2.7.9",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:37.732367-08:00"
+    },
+    {
+        "tag": "PEX_RETIMER6_version",
+        "value": "2.7.9",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:37.739958-08:00"
+    },
+    {
+        "tag": "PEX_RETIMER7_version",
+        "value": "2.7.9",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:37.747647-08:00"
+    },
+    {
+        "tag": "PEX_RETIMER8_version",
+        "value": "2.7.9",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:37.755291-08:00"
+    },
+    {
+        "tag": "HMC_FW_Version",
+        "value": "HGX-22.10-3-rc44",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:37.762999-08:00"
+    },
+    {
+        "tag": "HMC_FW_hash",
+        "value": "09c9bce3ac",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:37.770732-08:00"
+    },
+    {
+        "tag": "HMC_FW_boot_complete",
+        "value": "00",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:37.778472-08:00"
+    },
+    {
+        "tag": "GB_FPGA_version",
+        "value": "2.2C",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:37.786310-08:00"
+    },
+    {
+        "tag": "HGX_FW_GPU_SXM_1_version",
+        "value": "96.00.74.00.0D",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:37.794106-08:00"
+    },
+    {
+        "tag": "HGX_FW_GPU_SXM_2_version",
+        "value": "96.00.74.00.0D",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:37.801936-08:00"
+    },
+    {
+        "tag": "HGX_FW_GPU_SXM_3_version",
+        "value": "96.00.74.00.0D",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:37.809747-08:00"
+    },
+    {
+        "tag": "HGX_FW_GPU_SXM_4_version",
+        "value": "96.00.74.00.0D",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:37.817561-08:00"
+    },
+    {
+        "tag": "HGX_FW_GPU_SXM_5_version",
+        "value": "96.00.74.00.0D",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:37.825348-08:00"
+    },
+    {
+        "tag": "HGX_FW_GPU_SXM_6_version",
+        "value": "96.00.74.00.0D",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:37.833167-08:00"
+    },
+    {
+        "tag": "HGX_FW_GPU_SXM_7_version",
+        "value": "96.00.74.00.0D",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:37.840988-08:00"
+    },
+    {
+        "tag": "HGX_FW_GPU_SXM_8_version",
+        "value": "96.00.74.00.0D",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:37.848885-08:00"
+    },
+    {
+        "tag": "HGX_InfoROM_GPU_SXM_1_version",
+        "value": "G520.0200.00.05",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:37.856849-08:00"
+    },
+    {
+        "tag": "HGX_InfoROM_GPU_SXM_2_version",
+        "value": "G520.0200.00.05",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:37.864738-08:00"
+    },
+    {
+        "tag": "HGX_InfoROM_GPU_SXM_3_version",
+        "value": "G520.0200.00.05",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:37.872669-08:00"
+    },
+    {
+        "tag": "HGX_InfoROM_GPU_SXM_4_version",
+        "value": "G520.0200.00.05",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:37.880736-08:00"
+    },
+    {
+        "tag": "HGX_InfoROM_GPU_SXM_5_version",
+        "value": "G520.0200.00.05",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:37.888777-08:00"
+    },
+    {
+        "tag": "HGX_InfoROM_GPU_SXM_6_version",
+        "value": "G520.0200.00.05",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:37.896789-08:00"
+    },
+    {
+        "tag": "HGX_InfoROM_GPU_SXM_7_version",
+        "value": "G520.0200.00.05",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:37.904766-08:00"
+    },
+    {
+        "tag": "HGX_InfoROM_GPU_SXM_8_version",
+        "value": "G520.0200.00.05",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:37.912881-08:00"
+    },
+    {
+        "tag": "HGX_FW_NVSwitch_0_version",
+        "value": "96.10.3F.00.03",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:37.920880-08:00"
+    },
+    {
+        "tag": "HGX_FW_NVSwitch_1_version",
+        "value": "96.10.3F.00.03",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:37.929020-08:00"
+    },
+    {
+        "tag": "HGX_FW_NVSwitch_2_version",
+        "value": "96.10.3F.00.03",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:37.937034-08:00"
+    },
+    {
+        "tag": "HGX_FW_NVSwitch_3_version",
+        "value": "96.10.3F.00.03",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:37.945122-08:00"
+    },
+    {
+        "tag": "HGX_InfoROM_NVSwitch_0_version",
+        "value": "5612.0002.00.01",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:37.953266-08:00"
+    },
+    {
+        "tag": "HGX_InfoROM_NVSwitch_1_version",
+        "value": "5612.0002.00.01",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:37.961409-08:00"
+    },
+    {
+        "tag": "HGX_InfoROM_NVSwitch_2_version",
+        "value": "5612.0002.00.01",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:37.969549-08:00"
+    },
+    {
+        "tag": "HGX_InfoROM_NVSwitch_3_version",
+        "value": "5612.0002.00.01",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:37.977720-08:00"
+    },
+    {
+        "tag": "LS10_1_VBIOS",
+        "value": "96.10.3F.00.03",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:37.985878-08:00"
+    },
+    {
+        "tag": "LS10_2_VBIOS",
+        "value": "96.10.3F.00.03",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:37.994097-08:00"
+    },
+    {
+        "tag": "LS10_3_VBIOS",
+        "value": "96.10.3F.00.03",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:38.002253-08:00"
+    },
+    {
+        "tag": "LS10_4_VBIOS",
+        "value": "96.10.3F.00.03",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:38.010443-08:00"
+    },
+    {
+        "tag": "FPGA_Version",
+        "value": "2.2C",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:38.018672-08:00"
+    },
+    {
+        "tag": "PRODUCT_PN",
+        "value": "935-24287-0000-000",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:38.026982-08:00"
+    },
+    {
+        "tag": "GPU_BOM_VERSION",
+        "value": "00",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:38.035252-08:00"
+    },
+    {
+        "tag": "FRU_CHASSIS_PN",
+        "value": "0000000000000000000000000",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:38.043552-08:00"
+    },
+    {
+        "tag": "FRU_VERSION",
+        "value": "v2.8",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:38.051848-08:00"
+    },
+    {
+        "tag": "CUSTOMER_INFO",
+        "value": "00000000000000000000",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:38.060180-08:00"
+    },
+    {
+        "tag": "GPU_BASEBOARD",
+        "value": "699-25612-0002-205",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:38.068493-08:00"
+    },
+    {
+        "tag": "FRU_CHASSIS_SN",
+        "value": "0000000000000000000000000",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:38.077011-08:00"
+    },
+    {
+        "tag": "LS10_1_EC_FW_version",
+        "value": "00.02.0134.0000_n00",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:38.085396-08:00"
+    },
+    {
+        "tag": "LS10_2_EC_FW_version",
+        "value": "00.02.0134.0000_n00",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:38.093818-08:00"
+    },
+    {
+        "tag": "LS10_3_EC_FW_version",
+        "value": "00.02.0134.0000_n00",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:38.102312-08:00"
+    },
+    {
+        "tag": "LS10_4_EC_FW_version",
+        "value": "00.02.0134.0000_n00",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:38.110814-08:00"
+    },
+    {
+        "tag": "BMC_Version",
+        "value": "23.09",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:38.119288-08:00"
+    },
+    {
+        "tag": "CPU_Version",
+        "value": "AMD EPYC 7452 32-Core Processor",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:38.127753-08:00"
+    },
+    {
+        "tag": "FW_BUNDLE_VERSION",
+        "value": "0002_231101.1.0",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:38.136267-08:00"
+    },
+    {
+        "tag": "OneDiag_version",
+        "value": "r6.268",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:38.144789-08:00"
+    },
+    {
+        "tag": "SBIOS_Version",
+        "value": "0.13",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:38.153535-08:00"
+    },
+    {
+        "tag": "LS10_1_ECID",
+        "value": "U2S351-17_x-2_y03",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:38.162064-08:00"
+    },
+    {
+        "tag": "LS10_1_rawECID",
+        "value": "0x07fe44000000009c0c505e1",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:38.170670-08:00"
+    },
+    {
+        "tag": "LS10_2_ECID",
+        "value": "U2S351-17_x-2_y04",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:38.187921-08:00"
+    },
+    {
+        "tag": "LS10_2_rawECID",
+        "value": "0x09fe44000000009c0c505e1",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:38.196497-08:00"
+    },
+    {
+        "tag": "LS10_3_ECID",
+        "value": "U2S351-17_x-4_y07",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:38.205076-08:00"
+    },
+    {
+        "tag": "LS10_3_rawECID",
+        "value": "0x0ffc44000000009c0c505e1",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:38.213599-08:00"
+    },
+    {
+        "tag": "LS10_4_ECID",
+        "value": "U2S351-23_x10_y07",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:38.222176-08:00"
+    },
+    {
+        "tag": "LS10_4_rawECID",
+        "value": "0x0e0a5c000000009c0c505e1",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:38.230676-08:00"
+    },
+    {
+        "tag": "TIME_END_RECIPE",
+        "value": "2024-02-21T23:51:36.357651-08:00",
+        "valuetype": "timestamp",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:38.239381-08:00"
+    },
+    {
+        "tag": "TestTime",
+        "value": 5604.59,
+        "valuetype": "duration",
+        "scope": "process",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:38.496709-08:00"
+    },
+    {
+        "tag": "Elapsed",
+        "value": 5604.26,
+        "valuetype": "duration",
+        "scope": "process",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:38.505593-08:00"
+    },
+    {
+        "tag": "TestStatus",
+        "value": "PASS",
+        "valuetype": "result",
+        "scope": "process",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:38.514372-08:00"
+    },
+    {
+        "tag": "Failure",
+        "value": "na",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:38.523102-08:00"
+    },
+    {
+        "tag": "ProcessName",
+        "value": "FCT",
+        "valuetype": "rstring",
+        "scope": "process",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:38.531809-08:00"
+    },
+    {
+        "tag": "ProcessCode",
+        "value": "028",
+        "valuetype": "rstring",
+        "scope": "process",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:38.540638-08:00"
+    },
+    {
+        "tag": "GroupName",
+        "value": "na",
+        "valuetype": "rstring",
+        "scope": "process",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:38.549388-08:00"
+    },
+    {
+        "tag": "GroupCode",
+        "value": "000",
+        "valuetype": "rstring",
+        "scope": "process",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:38.558244-08:00"
+    },
+    {
+        "tag": "TestErrorCode",
+        "value": "000",
+        "valuetype": "errorcode",
+        "scope": "process",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:38.567113-08:00"
+    },
+    {
+        "tag": "TestErrorMessage",
+        "value": "Success",
+        "valuetype": "rstring",
+        "scope": "process",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:38.575975-08:00"
+    },
+    {
+        "tag": "CoreFailure",
+        "value": "na",
+        "valuetype": "rstring",
+        "scope": "nautilus",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:38.584896-08:00"
+    },
+    {
+        "tag": "CoreErrorCode",
+        "value": "na",
+        "valuetype": "errorcode",
+        "scope": "process",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:38.593790-08:00"
+    },
+    {
+        "tag": "CoreErrorMessage",
+        "value": "na",
+        "valuetype": "rstring",
+        "scope": "process",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:38.602664-08:00"
+    },
+    {
+        "tag": "ErrorCodeDictionaryVersion",
+        "value": "852",
+        "valuetype": "rstring",
+        "scope": "process",
+        "purpose": "dm",
+        "event_ts": "2024-02-21T23:51:38.611559-08:00"
+    },
+    {
+        "tag": "FactoryErrorCode",
+        "value": "028000000_na",
+        "valuetype": "errorcode",
+        "scope": "process",
+        "purpose": "db",
+        "event_ts": "2024-02-21T23:51:38.620502-08:00"
+    },
+    {
+        "tag": "FactoryErrorMsg",
+        "value": "na",
+        "valuetype": "rstring",
+        "scope": "process",
+        "purpose": "db",
+        "event_ts": "2024-02-21T23:51:38.629466-08:00"
+    },
+    {
+        "tag": "Bin",
+        "value": "na",
+        "valuetype": "rstring",
+        "scope": "process",
+        "purpose": "db",
+        "event_ts": "2024-02-21T23:51:38.638464-08:00"
+    },
+    {
+        "tag": "DispositionDictionaryVersion",
+        "value": "3",
+        "valuetype": "rstring",
+        "scope": "process",
+        "purpose": "dm",
+        "event_ts": "2024-02-21T23:51:38.647444-08:00"
+    },
+    {
+        "tag": "DispositionCode",
+        "value": "D001",
+        "valuetype": "rstring",
+        "scope": "process",
+        "purpose": "db",
+        "event_ts": "2024-02-21T23:51:38.656672-08:00"
+    },
+    {
+        "tag": "DispositionMessage",
+        "value": "Pass",
+        "valuetype": "rstring",
+        "scope": "process",
+        "purpose": "db",
+        "event_ts": "2024-02-21T23:51:38.665713-08:00"
+    },
+    {
+        "tag": "DispositionComment",
+        "value": "Test passed, OK to move to next step in process",
+        "valuetype": "rstring",
+        "scope": "process",
+        "purpose": "na",
+        "event_ts": "2024-02-21T23:51:38.674819-08:00"
+    }
+]

@@ -1,0 +1,8 @@
+To look at vbios (Does not work if files are on the USB, must be in correct directory in linux.) 
+
+"tail -n20 *.log | less" 
+"clear && tail -n20 *.log" #without piping 
+"ll | grep .log | wc -1" # shows the number of logs. For BBX, number of tests run. 
+"less 1561021042958-BBX.log" #This will show us the fucked up log. 
+
+All of this is in the linux terminal that we opened up at that specific folder by shift+right clicking. 

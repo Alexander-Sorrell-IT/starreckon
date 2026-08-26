@@ -1,0 +1,20 @@
+[
+[
+ { "__tag__" : "MODS_Start"
+  ,"timestamp" : "Thu Feb 22 15:13:09 2024 "
+ }
+,{ "__tag__" : "sw"
+  ,"mods" : "525.165"
+  ,"command_line" : "gputest.js -notest -no_gold -json_append pcie.jso -pex_verbose 0x100 -reset_device -nvlink_skip_topology_detect -hulk_cert HULK.js -load_hulk_via_mods -timeout_ms 60000 -bg_nvswitch_temp 1000 -corr_error_tol 10 -perlink_corr_error 2 0xFFFFFFFF 0xFFFFFFFF -perlink_pex_corr_error_rate_tol 2 4 16 3.40282347E+38 -perlink_corr_error 3 0xFFFFFFFF 0xFFFFFFFF -perlink_pex_corr_error_rate_tol 3 4 16 3.40282347E+38 -ignore_hwfs_event EXT_POWER -nvlink_pre_fec_tol gpu 0 0.0000001 -nvlink_pre_fec_tol gpu 1 0.0000001 -nvlink_pre_fec_tol gpu 2 0.0000001 -nvlink_pre_fec_tol gpu 3 0.0000001 -nvlink_pre_fec_tol gpu 4 0.0000001 -nvlink_pre_fec_tol gpu 5 0.0000001 -nvlink_pre_fec_tol gpu 6 0.0000001 -nvlink_pre_fec_tol gpu 7 0.0000001 -nvlink_pre_fec_tol nvswitch 0 0.0000001 -nvlink_pre_fec_tol nvswitch 1 0.0000001 -nvlink_pre_fec_tol nvswitch 2 0.0000001 -nvlink_pre_fec_tol nvswitch 3 0.0000001 -nvlink_topology_disable_auto_map -nvlink_verbose 0x1 -pex_verbose 0xa0 -power_cap_tgp_mw 700000 -unlimit_power_policies -rmkey RmGpuFabricProbe 0 -row_remap_on_error -max_per_bank_remapped_rows 2 -max_total_remapped_rows 32 -skip_inta_intr_check +BEGINDEV 0 -testarg 248 Pam4YFailThreshold 39 +ENDDEV 0 +BEGINDEV 1 -testarg 248 Pam4YFailThreshold 39 +ENDDEV 1 +BEGINDEV 2 -testarg 248 Pam4YFailThreshold 39 +ENDDEV 2 +BEGINDEV 3 -testarg 248 Pam4YFailThreshold 39 +ENDDEV 3 +BEGINDEV 4 -testarg 248 Pam4YFailThreshold 39 +ENDDEV 4 +BEGINDEV 5 -testarg 248 Pam4YFailThreshold 39 +ENDDEV 5 +BEGINDEV 6 -testarg 248 Pam4YFailThreshold 39 +ENDDEV 6 +BEGINDEV 7 -testarg 248 Pam4YFailThreshold 39 +ENDDEV 7 +BEGINDEV 8 -testarg 248 Pam4YFailThreshold 44 +ENDDEV 8 +BEGINDEV 9 -testarg 248 Pam4YFailThreshold 44 +ENDDEV 9 +BEGINDEV 10 -testarg 248 Pam4YFailThreshold 44 +ENDDEV 10 +BEGINDEV 11 -testarg 248 Pam4YFailThreshold 44 +ENDDEV 11 -testarg 248 Pam4YPassThreshold 50 -testarg 248 PrintMarginalWarning true -testarg 248 Verbose 1 +BEGINDEV 0 -testarg 248 YFailThreshold 39 +ENDDEV 0 +BEGINDEV 1 -testarg 248 YFailThreshold 39 +ENDDEV 1 +BEGINDEV 2 -testarg 248 YFailThreshold 39 +ENDDEV 2 +BEGINDEV 3 -testarg 248 YFailThreshold 39 +ENDDEV 3 +BEGINDEV 4 -testarg 248 YFailThreshold 39 +ENDDEV 4 +BEGINDEV 5 -testarg 248 YFailThreshold 39 +ENDDEV 5 +BEGINDEV 6 -testarg 248 YFailThreshold 39 +ENDDEV 6 +BEGINDEV 7 -testarg 248 YFailThreshold 39 +ENDDEV 7 +BEGINDEV 8 -testarg 248 YFailThreshold 44 +ENDDEV 8 +BEGINDEV 9 -testarg 248 YFailThreshold 44 +ENDDEV 9 +BEGINDEV 10 -testarg 248 YFailThreshold 44 +ENDDEV 10 +BEGINDEV 11 -testarg 248 YFailThreshold 44 +ENDDEV 11 -testarg 248 YPassThreshold 50 -un_supp_req_tol 0 -verbose_fsp +BEGINDEV 8 -pex_recovery_tol 0 +ENDDEV 8 +BEGINDEV 9 -pex_recovery_tol 0 +ENDDEV 9 +BEGINDEV 10 -pex_recovery_tol 0 +ENDDEV 10 +BEGINDEV 11 -pex_recovery_tol 0 +ENDDEV 11 -only_pci_dev c1:00.0 -gpu_name b6:00.0 GPU7_b6:00.0_SXM2 -gpu_loc_id b6:00.0 7 -gpu_name b5:00.0 GPU6_b5:00.0_SXM4 -gpu_loc_id b5:00.0 6 -gpu_name 06:00.0 GPU1_06:00.0_SXM6 -gpu_loc_id 06:00.0 1 -gpu_name 46:00.0 GPU3_46:00.0_SXM3 -gpu_loc_id 46:00.0 3 -gpu_name 05:00.0 GPU0_05:00.0_SXM8 -gpu_loc_id 05:00.0 0 -gpu_name 86:00.0 GPU5_86:00.0_SXM7 -gpu_loc_id 86:00.0 5 -gpu_name 45:00.0 GPU2_45:00.0_SXM1 -gpu_loc_id 45:00.0 2 -gpu_name 85:00.0 GPU4_85:00.0_SXM5 -gpu_loc_id 85:00.0 4 -time -matsinfo"
+  ,"operating_system" : "Linux x86_64"
+  ,"kernel" : "5.15.0-35-generic"
+  ,"kernel_driver" : "4.22"
+}
+,{ "__tag__" : "sysid"
+  ,"HostName" : "diagnostic-os"
+}
+,{ "__tag__" : "cpu"
+  ,"arch" : "x86_64"
+  ,"Name" : "AMD EPYC 7452 32-Core Processor"
+  ,"cores" : 128
+}

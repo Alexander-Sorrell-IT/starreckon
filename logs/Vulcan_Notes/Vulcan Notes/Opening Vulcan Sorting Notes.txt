@@ -1,0 +1,145 @@
+1. Pulling a Unit. Pull unit from the sort pile. 
+	- (1) Picture of RMA# 
+	- (2) Picture from up above. 
+	- (3) Picture of it wrapped up from up above  
+	- (4) First lid visible, unwrapped.  
+	- (5) Second black cover. 
+	- (6) Picture of unit from up above.
+
+Inspect for any damage. Take pictures here is possible. 	
+	
+2. Pull Unit inside
+	- (7) Picture of unit from the top down (Up Above) 
+	- (8-12) Picture of Unit from every quadrant. (4 pictures) 
+	- (13-17) Angled Pictures (These angles should be very close). Refer to pictures that Alex Sorrel, takes, hes very good at it. 
+	- (18-20) HMC card (front side with barcode, (if present) barcode from above, picture angled for viewing most of the card.)  
+	- (21-22) Connectors (the connectors that go into the tester. 2 pictures) 
+	- (23) LS10s (One parrallel wide shot.) 
+	- (24-25) Barcodes(the barcodes with the MPSN and the MPPN are always present. Across the pond, there may or may not be more barcodes) 
+	- (26-27) QRCodes (There are two QRcodes, take pictures of both of these QR codes)
+
+There can be a total of 27 photos, however, HMC might add or deduct photo, Barcodes may add or deduct photo. After all these photos are taken.
+Add on the photos for damage.(25) Actual count is around 23, in the field. Don't know how I am getting 27. Should be 25-23. 
+	
+Of course take pictures of any damage and rename these photos. 
+
+3. Erics Traveller
+	- Scan "Enter Suffix" 
+	- Enter in MPPN(935#), MPSN, PCBPN(699#), PCBSN. 
+	- To scan in GPUS. This is the order for Vulcans. 
+		
+		6 2 0 4 
+		7 3 1 5 
+		
+	    Switches
+	
+	- Enter in the BBType, the filled in stuff doesn't matter. The Baseboard type will be in the buttcrack of the unit. 
+	- Enter in GPU size. 
+	- GPU PN#: will just be the barcode next to the GPUs SNs
+	
+	ALWAYS CHECK TO MAKE SURE YOU SCANNED IN THE RIGHT GPUS. SNs. 
+	
+4. ETQ
+	- ETQ must be done before anything else can be done. 
+	- click on the 9x9 square. 
+	- Supplier Initiated - Draft 
+		- Type of FA: sub-System
+		- Priority: medium (usually medium, unless its google.)
+		- RMA Type: RMA verification 
+		- Display Model: Vulcan 
+		
+		
+		
+		- Click on RMA#, enter in the SN# where it says, Nvidia SN on the far left of the box that comes up. 
+		(If this is not possible, then you type in "00000" into the RMA box. Click the one that pops up, "00000". 
+		To locate the RMA# you will have to go to serviceMe, go to Report > Service Request Report > Line Raw Data, ennter in your S\N into the S\N box and hit inquire. 
+		A box will pop up, you will have to scroll all the way to the left. The RMA# will appear like this. NA|| RMA# || NA 
+		Then you wil have to manually enter the information in ETQ. Including the RMA#, MPSN, MPPN.)
+		
+			RMA Analysis Info: Initial Inspection goes here. 
+			RAW FA Notes: Component Checklist
+	THIS WILL GIVE YOU A SUFA#, PUT THIS SUFA NUMBER INTO YOUR TRAVELLER. WE NEED THE SUFA#. 
+		
+		
+5. ServiceME
+	Repair Management > Repair Order Management > RO Create List, click on this. Click "ADD".  
+	RO Category: SYS, RoHS: Yes&No, Repair Loc: C1NN, ROType: C25 - Naomi FRU Sorting
+	Enter SN into Barcode
+	Hit "save"
+	
+	Go to Inspection, copy past barcode here. Scan in GPUs. 
+	This is where you will get checked to see if you scanned in your GPUS correctly into your traveller. 
+	GPU Board is the PCBSN. 
+	Hit "send" 
+	You have to do everything right here.
+	
+	!!! Must select Result of Inspection!!!
+	Result - Pass/Fail
+	Repair comment = Inspection commments from the traveller
+	Internal comment = All information about the unit in the data component sheet in excel. \
+	Customer Problem: NV17
+
+	QIS#: SUFA No, taken from ETQ
+	Baseboard SN#: PCBSN		
+	Baseboard PN#: PCBPN
+			
+	hit "update", sends to the Run-In station. Item now available In Run-In. 
+	
+Before moving on to testing, in RUN IN AND SWAP Station: 
+	Enter in the SN to find the unit. 
+	Go down to result, waiting, waiting for process. 
+	then click, "Update" 
+	
+	
+	
+6. Vulcan Testing
+	- Find a sled and a USB
+	- Vulcan Sort, are all racks beginning from 42 to 48. (Right(4\2) to Left(48)) 
+	- Putting the Vulcan into the tester: 
+		It slides in weird. No need to force it. The handles seem to click into place. Look at running testers, for an example of how it should fit in 
+	- If you begin the autoscript on the laptop then you can no longer ssh into the tester.
+	
+	Procedure for SSH into the tester, this is the jump server: 
+		
+		ssh sbg01@10.48.161.78
+		pw: WistronSBG
+		
+	From here we have to ssh into another server: 
+		
+		ssh diag@192.168.48.13	#the number 48, is the rack, the number 13 is the position of the tester within the rack. 
+		pw: diag (1, 13, 25) .25 for tester number 3. 
+		
+	#in diag, we must be sudo to look at the script or even run it. sudo su, pw: diag. 
+	#Cris made some kind of autoscript, he called it jump, he just hits ./jump and goes to the server. Maybe get that from him or ask him about it. 
+	
+	(Important, if we need to find our files, if we have lost them or anything. We can always go into Vulcan_Sorting. A directory accessible from root. 
+	The way to our files is, 
+		"cd Vulcan_Sorting" 
+		"cd 618-24287-XXXX-MFG-####" 
+		"cd logs" 
+	#get into the habit of using "ll" instead of "ls", "ll"  shows us the times, which is really important here.
+	
+	"ll -tr" #orders logs that it pulls up in order that they happened. 
+	"tail -f tas.txt" #follows, this confirmed works. If its not updating, test is not running. 
+	"less tas.txt" #scrollable 
+	"cat tas.txt" #print log to console
+	"ipmitool chassis power cycle" #power cycle through the console. 
+	
+	
+	- POWER CYCLING: 
+	pull all the cords, put them back in order. Fixes alot of issues. 
+	
+	-VULCAN USEFUL LINUX COMMANDS. 
+
+- Where the BBX is. Go to the file, "tail -n20 *.log | less" seemed to work for the BBXs. 
+- "nano" systemcheck file, we could easily look at it there. 
+- "ll -tr" #lists in reverse time
+- "tail -f tas.txt" #follows if test was started inside the server room
+- "less tas.txt" #allows you to scroll
+- "cat or nano" to print log to the file. 
+	
+	
+	49a4H8t7f06: cert password 
+	serviceMe: thyW1llb3d0n3
+	
+	thyW1llb3d0n3

@@ -1,0 +1,8 @@
+UNIT SN#53890 
+
+We threw it into a tester. 
+Ran a basic GPUCheck, for our last two GPUs, in the far left, was "ff", whereas all the other GPUs had "a1". This means the GPUs are bad. 
+My initial thought was to take it out of the test and reseat but instead I ran a BBX. The BBX showed that there was a row remapping error, which 
+could not be fixed by a reseat. We saved ourselves the trouble of reseating. Though, we knew the bus locations of our bad GPUs before hand. 
+
+We brought the unit out of the tester and did a GPUswap with GoldenGPUs. (NOTE: When swapping GPUs in general. They must be from different clusters.) 

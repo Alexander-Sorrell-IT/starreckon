@@ -1,0 +1,647 @@
+[
+[
+ { "__tag__" : "MODS_Start"
+  ,"timestamp" : "Wed Feb 21 22:55:43 2024 "
+ }
+,{ "__tag__" : "sw"
+  ,"mods" : "525.165"
+  ,"command_line" : "gputest.js -blink_lights -hasbug_override 36555174 1 -dev all -readspec onediagmfgdeltanext_ftt_hgx2testernext.spc -spec gpuTestSpec_memory -bg_power 4000 -itmp_range 0 90 -bg_int_temp 1000 -memtmp_range 0 97 -ignore_nvswitch -json_append pcie.jso -pex_verbose 0x100 -nvlink_force_disable -bg_nvswitch_temp 1000 -corr_error_tol 10 +BEGINDEV 0 -perlink_corr_error 1 0xFFFFFFFF 0xFFFFFFFF +ENDDEV 0 +BEGINDEV 1 -perlink_corr_error 1 0xFFFFFFFF 0xFFFFFFFF +ENDDEV 1 +BEGINDEV 2 -perlink_corr_error 1 0xFFFFFFFF 0xFFFFFFFF +ENDDEV 2 +BEGINDEV 3 -perlink_corr_error 1 0xFFFFFFFF 0xFFFFFFFF +ENDDEV 3 +BEGINDEV 4 -perlink_corr_error 1 0xFFFFFFFF 0xFFFFFFFF +ENDDEV 4 +BEGINDEV 5 -perlink_corr_error 1 0xFFFFFFFF 0xFFFFFFFF +ENDDEV 5 +BEGINDEV 6 -perlink_corr_error 1 0xFFFFFFFF 0xFFFFFFFF +ENDDEV 6 +BEGINDEV 7 -perlink_corr_error 1 0xFFFFFFFF 0xFFFFFFFF +ENDDEV 7 +BEGINDEV 0 -perlink_pex_corr_error_rate_tol 1 4 16 3.40282347E+38 +ENDDEV 0 +BEGINDEV 1 -perlink_pex_corr_error_rate_tol 1 4 16 3.40282347E+38 +ENDDEV 1 +BEGINDEV 2 -perlink_pex_corr_error_rate_tol 1 4 16 3.40282347E+38 +ENDDEV 2 +BEGINDEV 3 -perlink_pex_corr_error_rate_tol 1 4 16 3.40282347E+38 +ENDDEV 3 +BEGINDEV 4 -perlink_pex_corr_error_rate_tol 1 4 16 3.40282347E+38 +ENDDEV 4 +BEGINDEV 5 -perlink_pex_corr_error_rate_tol 1 4 16 3.40282347E+38 +ENDDEV 5 +BEGINDEV 6 -perlink_pex_corr_error_rate_tol 1 4 16 3.40282347E+38 +ENDDEV 6 +BEGINDEV 7 -perlink_pex_corr_error_rate_tol 1 4 16 3.40282347E+38 +ENDDEV 7 -perlink_corr_error 2 0xFFFFFFFF 0xFFFFFFFF -perlink_pex_corr_error_rate_tol 2 4 16 3.40282347E+38 -perlink_corr_error 3 0xFFFFFFFF 0xFFFFFFFF -perlink_pex_corr_error_rate_tol 3 4 16 3.40282347E+38 -ignore_hwfs_event EXT_POWER -nvlink_pre_fec_tol gpu 0 0.0000001 -nvlink_pre_fec_tol gpu 1 0.0000001 -nvlink_pre_fec_tol gpu 2 0.0000001 -nvlink_pre_fec_tol gpu 3 0.0000001 -nvlink_pre_fec_tol gpu 4 0.0000001 -nvlink_pre_fec_tol gpu 5 0.0000001 -nvlink_pre_fec_tol gpu 6 0.0000001 -nvlink_pre_fec_tol gpu 7 0.0000001 -nvlink_pre_fec_tol nvswitch 0 0.0000001 -nvlink_pre_fec_tol nvswitch 1 0.0000001 -nvlink_pre_fec_tol nvswitch 2 0.0000001 -nvlink_pre_fec_tol nvswitch 3 0.0000001 -nvlink_topology_disable_auto_map -nvlink_verbose 0x1 -pex_verbose 0xa0 -power_cap_tgp_mw 700000 -unlimit_power_policies -rmkey RmGpuFabricProbe 0 -row_remap_on_error -max_per_bank_remapped_rows 2 -max_total_remapped_rows 32 -skip_inta_intr_check +BEGINDEV 0 -testarg 248 Pam4YFailThreshold 39 +ENDDEV 0 +BEGINDEV 1 -testarg 248 Pam4YFailThreshold 39 +ENDDEV 1 +BEGINDEV 2 -testarg 248 Pam4YFailThreshold 39 +ENDDEV 2 +BEGINDEV 3 -testarg 248 Pam4YFailThreshold 39 +ENDDEV 3 +BEGINDEV 4 -testarg 248 Pam4YFailThreshold 39 +ENDDEV 4 +BEGINDEV 5 -testarg 248 Pam4YFailThreshold 39 +ENDDEV 5 +BEGINDEV 6 -testarg 248 Pam4YFailThreshold 39 +ENDDEV 6 +BEGINDEV 7 -testarg 248 Pam4YFailThreshold 39 +ENDDEV 7 +BEGINDEV 8 -testarg 248 Pam4YFailThreshold 44 +ENDDEV 8 +BEGINDEV 9 -testarg 248 Pam4YFailThreshold 44 +ENDDEV 9 +BEGINDEV 10 -testarg 248 Pam4YFailThreshold 44 +ENDDEV 10 +BEGINDEV 11 -testarg 248 Pam4YFailThreshold 44 +ENDDEV 11 -testarg 248 Pam4YPassThreshold 50 -testarg 248 PrintMarginalWarning true -testarg 248 Verbose 1 +BEGINDEV 0 -testarg 248 YFailThreshold 39 +ENDDEV 0 +BEGINDEV 1 -testarg 248 YFailThreshold 39 +ENDDEV 1 +BEGINDEV 2 -testarg 248 YFailThreshold 39 +ENDDEV 2 +BEGINDEV 3 -testarg 248 YFailThreshold 39 +ENDDEV 3 +BEGINDEV 4 -testarg 248 YFailThreshold 39 +ENDDEV 4 +BEGINDEV 5 -testarg 248 YFailThreshold 39 +ENDDEV 5 +BEGINDEV 6 -testarg 248 YFailThreshold 39 +ENDDEV 6 +BEGINDEV 7 -testarg 248 YFailThreshold 39 +ENDDEV 7 +BEGINDEV 8 -testarg 248 YFailThreshold 44 +ENDDEV 8 +BEGINDEV 9 -testarg 248 YFailThreshold 44 +ENDDEV 9 +BEGINDEV 10 -testarg 248 YFailThreshold 44 +ENDDEV 10 +BEGINDEV 11 -testarg 248 YFailThreshold 44 +ENDDEV 11 -testarg 248 YPassThreshold 50 -timeout_ms 5000 -un_supp_req_tol 0 +BEGINDEV 8 -pex_recovery_tol 0 +ENDDEV 8 +BEGINDEV 9 -pex_recovery_tol 0 +ENDDEV 9 +BEGINDEV 10 -pex_recovery_tol 0 +ENDDEV 10 +BEGINDEV 11 -pex_recovery_tol 0 +ENDDEV 11 -only_pci_dev 06:00.0 -gpu_name b6:00.0 GPU7_b6:00.0_SXM2 -gpu_loc_id b6:00.0 7 -gpu_name b5:00.0 GPU6_b5:00.0_SXM4 -gpu_loc_id b5:00.0 6 -gpu_name 06:00.0 GPU1_06:00.0_SXM6 -gpu_loc_id 06:00.0 1 -gpu_name 46:00.0 GPU3_46:00.0_SXM3 -gpu_loc_id 46:00.0 3 -gpu_name 05:00.0 GPU0_05:00.0_SXM8 -gpu_loc_id 05:00.0 0 -gpu_name 86:00.0 GPU5_86:00.0_SXM7 -gpu_loc_id 86:00.0 5 -gpu_name 45:00.0 GPU2_45:00.0_SXM1 -gpu_loc_id 45:00.0 2 -gpu_name 85:00.0 GPU4_85:00.0_SXM5 -gpu_loc_id 85:00.0 4 -time -matsinfo"
+  ,"operating_system" : "Linux x86_64"
+  ,"kernel" : "5.15.0-35-generic"
+  ,"kernel_driver" : "4.22"
+}
+,{ "__tag__" : "sysid"
+  ,"HostName" : "diagnostic-os"
+}
+,{ "__tag__" : "cpu"
+  ,"arch" : "x86_64"
+  ,"Name" : "AMD EPYC 7452 32-Core Processor"
+  ,"cores" : 128
+}
+,{ "__tag__" : "found_gpu"
+  ,"gpu_name" : "GPU1_06:00.0_SXM6"
+  ,"gpu_inst" : 0
+  ,"dev_inst" : 0
+  ,"subdev_inst" : 0
+  ,"devinst" : "0"
+  ,"pci_location" : "0x00, 0x06, 0x00, 0x00"
+  ,"numa_node" : "3"
+  ,"gpu_did" : "0x2330"
+  ,"pdi" : "0x36b8de627d5eb9cd"
+  ,"raw_ecid" : "0x00c0320000000009b08205e1"
+  ,"raw_ecid_ghs" : "0x17809b0820400000008018180"
+  ,"ecid" : "TSMC-U2R221-08_x3_y6"
+  ,"device_id" : "GH100"
+  ,"chip_name" : "GH100"
+  ,"revision" : "a1"
+  ,"sub_revision" : "3"
+  ,"nv_base" : "0x30042000000"
+  ,"bar0_access" : "DirectMap"
+  ,"fb_base" : "0x2c000000000"
+  ,"irq" : "39"
+}
+,{ "__tag__" : "nvlink_topology"
+}
+,{ "__tag__" : "carrier_fru_info"
+}
+,{ "__tag__" : "gpu"
+  ,"gpu_name" : "GPU1_06:00.0_SXM6"
+  ,"gpu_inst" : 0
+  ,"dev_inst" : 0
+  ,"subdev_inst" : 0
+  ,"devinst" : "0"
+  ,"pci_location" : "0x00, 0x06, 0x00, 0x00"
+  ,"numa_node" : "3"
+  ,"gpu_did" : "0x2330"
+  ,"pdi" : "0x36b8de627d5eb9cd"
+  ,"uuid" : "5f0c20d5-3847-4849-5b62-4f9649cabc9c"
+  ,"raw_ecid" : "0x00c0320000000009b08205e1"
+  ,"raw_ecid_ghs" : "0x17809b0820400000008018180"
+  ,"gsp_rm" : "Disabled"
+  ,"ecid" : "TSMC-U2R221-08_x3_y6"
+  ,"device_id" : "GH100"
+  ,"chip_name" : "GH100"
+  ,"product" : "H100 80GB HBM3"
+  ,"revision" : "a1"
+  ,"sub_revision" : "3"
+  ,"platform" : "Hardware"
+  ,"foundry" : "TSMC"
+  ,"subsystem_vid" : "0x10de"
+  ,"subsystem_did" : "0x16c1"
+  ,"board_id" : "0x0437"
+  ,"prod_ser_no" : "1653923071727"
+  ,"project" : "G520-0200"
+  ,"fuse_file_fmt" : "JSON"
+  ,"cc_mode" : "Disabled"
+  ,"display" : "Disabled"
+  ,"sbios_init" : "Secondary"
+  ,"memory_size" : "81880 MB"
+  ,"fb_vendor" : "Hynix"
+  ,"hbm_revision" : "16GB_8Hi"
+  ,"ecc" : "(FBPA,L2,SM,L1DATA,L1TAG,SM_ICACHE,GCC,GPCMMU,HUBMMU_L2TLB,HUBMMU_HUBTLB,HUBMMU_FILLUNIT,GPCCS,FECS,SM_RAMS,HSHUBMMU,PCIE_REORDER,PCIE_P2PREQ)"
+  ,"ecc_poison" : "Enabled"
+  ,"ram_protocol" : "HBM3"
+  ,"memory_index" : "1"
+  ,"ram_config" : "0"
+  ,"row_remapper" : "Enabled"
+  ,"num_row_remaps" : "0"
+  ,"rom_version" : "96.00.74.00.0d"
+  ,"rom_variant" : "885-0"
+  ,"rom_type" : "Unsigned"
+  ,"rom_guid" : null
+  ,"nv_base" : "0x30042000000"
+  ,"bar0_access" : "DirectMap"
+  ,"fb_base" : "0x2c000000000"
+  ,"irq" : "9"
+  ,"hooked_int_type" : "MSI-X"
+  ,"pstate_mode" : "2 [0]"
+  ,"pstate_version" : "4.0"
+  ,"gpc_clock" : "1980.000 MHz DEFAULT"
+  ,"dram_clock" : "2619.000 MHz DEFAULT"
+  ,"xbar_clock" : "1710.000 MHz DEFAULT"
+  ,"sys_clock" : "1665.000 MHz DEFAULT"
+  ,"power_clock" : "540.000 MHz NAFLL"
+  ,"nvdec_clock" : "1545.000 MHz NAFLL"
+  ,"nvvdd" : "925.00 mV"
+  ,"msvdd" : "935.00 mV"
+  ,"tgp_limit" : "700.000 W"
+  ,"vbios_skyline_0" : "4-8-8-8-8-8-9-9 0x0a48"
+  ,"vbios_skyline_1" : "8-8-8-8-0-0-0-0 0x0000"
+  ,"vbios_skyline_2" : "4-8-8-8-0-0-0-0 0x0048"
+  ,"vbios_skyline_3" : "8-8-0-0-0-0-0-0 0x0000"
+  ,"vbios_skyline_4" : "4-8-0-0-0-0-0-0 0x0008"
+  ,"vbios_skyline_5" : "8-0-0-0-0-0-0-0 0x0000"
+  ,"active_skyline" : "4-8-8-8-8-8-9-9 0x0a48 (VBIOS Entry 0) "
+  ,"gpc_mask" : "0xff (8 GPCs)"
+  ,"tpc_mask" : "[1bf 1bf 1ff 1bf 1f7 1f7 1bf 1ff] (66 TPCs)"
+  ,"gfx_gpc_mask" : "0x01 (1 GPC)"
+  ,"gfx_tpc_mask" : "[x x x x x x x 7] (3 TPCs)"
+  ,"cpc_mask" : "[7 7 7 7 7 7 7 7] (24 CPCs)"
+  ,"fb_mask" : "0x7bf (10 FB Partitions)"
+  ,"l2_mask" : "[x 3 3 3 3 x 3 3 3 3 3 3] (20 L2s)"
+  ,"l2_slice_mask" : "[x ff ff ff ff x ff ff ff ff ff ff] (80 L2 Slices)"
+  ,"pes_mask" : "[0 0 0 0 0 0 0 1] (1 PES)"
+  ,"rop_mask" : "[0 0 0 0 0 0 0 1] (1 ROP)"
+  ,"fbio_mask" : "0x3fcfff (20 FBIO Partitions)"
+  ,"xp_mask" : "0x03 (2 3gio Pads)"
+  ,"nvdec_mask" : "0xfe (7 engines)"
+  ,"nvenc_mask" : "0x00 (0 engines)"
+  ,"nvjpg_mask" : "0xfd (7 engines)"
+  ,"ofa_mask" : "0x01 (1 engine)"
+  ,"pce_mask" : "0xffff (16 PCEs)"
+  ,"syspipe_mask" : "0xff (8 syspipes)"
+  ,"lce_pce_map" : "[ 2:0x1000 3:0x2000 4:0xfff ]"
+  ,"grce_shared" : "[ 0:2 1:3 ]"
+  ,"gpu_temp" : "32 deg C"
+  ,"pex_rx_lanes" : "0xffff"
+  ,"pex_tx_lanes" : "0xffff"
+  ,"pex_det_lanes" : "0xffff"
+  ,"pex_width_aslm" : "16 lanes, Not Supported"
+  ,"pex_link_speed" : "32.0 Gbit/s"
+  ,"pex_bandwidth" : "512.0 Gbit/s"
+  ,"pex_dep1_sp_wid" : "5.0 Gbit/s, 16"
+  ,"pex_dep1_aspm" : "Disabled"
+  ,"pex_dep2_sp_wid" : "16.0 Gbit/s, 16"
+  ,"pex_dep2_aspm" : "Disabled"
+  ,"aspm_aspm_cya" : "(L1, Disabled)"
+  ,"ltr" : "Disabled"
+}
+,{ "__tag__" : "chipset"
+  ,"vid" : 4130
+  ,"did" : 5248
+  ,"vidstr" : "AMD"
+  ,"didstr" : "Unknow"
+  ,"aspm" : "Disabled"
+}
+,{ "__tag__" : "rm"
+  ,"ver" : "rel/gpu_drv/r525/r525_00-547"
+  ,"version" : "Private r525_00 rel/gpu_drv/r525/r525_00-547 unknown"
+  ,"changelist" : 0
+}
+,{ "__tag__" : "js_fileid"
+  ,"resumehandler.js" : "2"
+  ,"gputest.js" : "1029"
+  ,"boards.js" : "1"
+}
+,{ "__tag__" : "pcie_chipset"
+  ,"downstream_nodes" : [
+  {
+     "domain" : "0x0"
+    ,"bus" : "0x0"
+    ,"dev" : "0x1"
+    ,"func" : "0x1"
+    ,"maxspeed" : 16000
+    ,"maxwidth" : 16
+    ,"lanes" : 16
+    ,"aspm_state" : "0x2"
+    ,"aspm_cap" : "0x0"
+    ,"aspm_l1ss_state" : "0x1"
+    ,"aspm_l1ss_cap" : "0x0"
+    ,"retimer_count" : "1"
+    ,"dpc_cap" : "RP-Ext(TLP,SW)"
+    ,"dpc_state" : "Fatal"
+    ,"connected_to" : "pcie_bridge 0x0/0x1"
+  }]
+  ,"depth_from_root" : 0
+}
+,{ "__tag__" : "pcie_bridge 0x0/0x1"
+  ,"upstream_domain" : "0x0"
+  ,"upstream_bus" : "0x1"
+  ,"upstream_dev" : "0x0"
+  ,"upstream_func" : "0x0"
+  ,"upstream_connected_to" : "root"
+  ,"upstream_speed" : 16000
+  ,"upstream_lanes" : 16
+  ,"upstream_aspm_state" : "0x0"
+  ,"upstream_aspm_l1ss_state" : "not_supported"
+  ,"upstream_retimer_count" : "1"
+  ,"downstream_nodes" : [
+  {
+     "domain" : "0x0"
+    ,"bus" : "0x2"
+    ,"dev" : "0x0"
+    ,"func" : "0x0"
+    ,"maxspeed" : 5000
+    ,"maxwidth" : 16
+    ,"lanes" : 16
+    ,"aspm_state" : "0x2"
+    ,"aspm_cap" : "0x0"
+    ,"aspm_l1ss_state" : "not_supported"
+    ,"retimer_count" : "0"
+    ,"dpc_cap" : "None"
+    ,"dpc_state" : "Disabled"
+    ,"connected_to" : "pcie_bridge 0x0/0x3"
+  }]
+  ,"depth_from_root" : 1
+}
+,{ "__tag__" : "pcie_bridge 0x0/0x3"
+  ,"upstream_domain" : "0x0"
+  ,"upstream_bus" : "0x3"
+  ,"upstream_dev" : "0x0"
+  ,"upstream_func" : "0x0"
+  ,"upstream_connected_to" : "pcie_bridge 0x0/0x1"
+  ,"upstream_speed" : 5000
+  ,"upstream_lanes" : 16
+  ,"upstream_aspm_state" : "0x0"
+  ,"upstream_aspm_l1ss_state" : "not_supported"
+  ,"upstream_retimer_count" : "0"
+  ,"downstream_nodes" : [
+  {
+     "domain" : "0x0"
+    ,"bus" : "0x4"
+    ,"dev" : "0x10"
+    ,"func" : "0x0"
+    ,"maxspeed" : 32000
+    ,"maxwidth" : 16
+    ,"lanes" : 16
+    ,"aspm_state" : "0x2"
+    ,"aspm_cap" : "0x2"
+    ,"aspm_l1ss_state" : "not_supported"
+    ,"retimer_count" : "1"
+    ,"dpc_cap" : "Basic(TLP,SW)"
+    ,"dpc_state" : "Disabled"
+    ,"connected_to" : "GPU 1 [5] [06:00.0]"
+  }]
+  ,"depth_from_root" : 2
+}
+,{ "__tag__" : "nvlink_topology"
+}
+,{ "__tag__" : "carrier_fru_info"
+}
+,{ "__tag__" : "enter"
+  ,"tname" : "NewCudaMatsRandom"
+  ,"datetime" : "2024-02-21T22:55:57.596+8:00"
+  ,"test_seq" : 0
+  ,"tnum" : 242
+  ,"parent_num" : -1
+  ,"dev_insts" : [0]
+}
+,{ "__tag__" : "PerGpuMonitor"
+  ,"name" : "IntTemp"
+  ,"gpu_inst" : 0
+  ,"timestamp" : 15515516906
+  ,"timestamps(usec)" : [15515516]
+  ,"samples" : 1
+  ,"values" : [32.9375,42.46875,38.46875,37.9375,34.375,37.875,34,38,37,34,38,33,36]
+}
+,{ "__tag__" : "PerGpuMonitor"
+  ,"name" : "IntTemp"
+  ,"gpu_inst" : 0
+  ,"timestamp" : 17126126866
+  ,"timestamps(usec)" : [17126126]
+  ,"samples" : 1
+  ,"values" : [38.65625,52.28125,48.28125,43.65625,37.15625,40.65625,39,53,53,50,53,48,52]
+}
+,{ "__tag__" : "PerGpuMonitor"
+  ,"name" : "IntTemp"
+  ,"gpu_inst" : 0
+  ,"timestamp" : 18127738368
+  ,"timestamps(usec)" : [18127738]
+  ,"samples" : 1
+  ,"values" : [40.0625,53.75,49.75,45.0625,38.375,41.875,40,56,56,52,56,50,54]
+}
+,{ "__tag__" : "PerGpuMonitor"
+  ,"name" : "Power"
+  ,"gpu_inst" : 0
+  ,"timestamp" : 18514575839
+  ,"timestamps(usec)" : [18514575]
+  ,"samples" : 1
+  ,"values" : [499236,126774,178685,193777,305459,250301,49531,87260,15532,256817,152008,104809,107203]
+}
+,{ "__tag__" : "PerGpuMonitor"
+  ,"name" : "IntTemp"
+  ,"gpu_inst" : 0
+  ,"timestamp" : 19129318999
+  ,"timestamps(usec)" : [19129318]
+  ,"samples" : 1
+  ,"values" : [41,54.6875,50.6875,46,39.1875,42.6875,41,57,57,54,56,51,56]
+}
+,{ "__tag__" : "PerGpuMonitor"
+  ,"name" : "IntTemp"
+  ,"gpu_inst" : 0
+  ,"timestamp" : 20131035501
+  ,"timestamps(usec)" : [20131035]
+  ,"samples" : 1
+  ,"values" : [41.8125,55.34375,51.34375,46.78125,39.875,43.375,42,57,57,55,56,51,56]
+}
+,{ "__tag__" : "PerGpuMonitor"
+  ,"name" : "IntTemp"
+  ,"gpu_inst" : 0
+  ,"timestamp" : 21132278443
+  ,"timestamps(usec)" : [21132278]
+  ,"samples" : 1
+  ,"values" : [42.4375,55.96875,51.96875,47.4375,40.40625,43.90625,43,58,57,56,58,53,57]
+}
+,{ "__tag__" : "PerGpuMonitor"
+  ,"name" : "IntTemp"
+  ,"gpu_inst" : 0
+  ,"timestamp" : 22133680065
+  ,"timestamps(usec)" : [22133680]
+  ,"samples" : 1
+  ,"values" : [43,56.46875,52.46875,48,40.96875,44.46875,43,59,59,56,58,54,58]
+}
+,{ "__tag__" : "PerGpuMonitor"
+  ,"name" : "Power"
+  ,"gpu_inst" : 0
+  ,"timestamp" : 22517101394
+  ,"timestamps(usec)" : [22517101]
+  ,"samples" : 1
+  ,"values" : [502194,131206,178973,192015,310179,493486,110782,176222,17938,261558,152542,109016,108243]
+}
+,{ "__tag__" : "PerGpuMonitor"
+  ,"name" : "IntTemp"
+  ,"gpu_inst" : 0
+  ,"timestamp" : 23135153317
+  ,"timestamps(usec)" : [23135153]
+  ,"samples" : 1
+  ,"values" : [43.59375,56.96875,52.96875,48.5625,41.5,45,44,59,59,57,58,53,58]
+}
+,{ "__tag__" : "PerGpuMonitor"
+  ,"name" : "IntTemp"
+  ,"gpu_inst" : 0
+  ,"timestamp" : 24136599598
+  ,"timestamps(usec)" : [24136599]
+  ,"samples" : 1
+  ,"values" : [42.40625,51.625,47.625,47.40625,42.0625,45.5625,44,54,53,51,54,49,52]
+}
+,{ "__tag__" : "exit"
+  ,"tname" : "NewCudaMatsRandom"
+  ,"test_seq" : 0
+  ,"tnum" : 242
+  ,"parent_num" : -1
+  ,"dev_insts" : [0]
+  ,"Bps" : 2849804723212.532
+  ,"BpsBytes" : 21608886435840
+  ,"BpsSeconds" : 7.5825849609375
+  ,"pf_GbPerSec" : 2849.8047232125323
+  ,"pf_NumCrcs" : 0
+  ,"datetime" : "2024-02-21T22:56:07.665+8:00"
+  ,"rc" : 0
+}
+,{ "__tag__" : "enter"
+  ,"tname" : "NewCudaMatsStress"
+  ,"datetime" : "2024-02-21T22:56:07.909+8:00"
+  ,"test_seq" : 1
+  ,"tnum" : 243
+  ,"parent_num" : -1
+  ,"dev_insts" : [0]
+}
+,{ "__tag__" : "enter"
+  ,"tname" : "CaskLinpackSgemm"
+  ,"datetime" : "2024-02-21T22:56:07.910+8:00"
+  ,"test_seq" : 2
+  ,"tnum" : 600
+  ,"parent_num" : 243
+  ,"dev_insts" : [0]
+}
+,{ "__tag__" : "PerGpuMonitor"
+  ,"name" : "IntTemp"
+  ,"gpu_inst" : 0
+  ,"timestamp" : 25153963097
+  ,"timestamps(usec)" : [25153963]
+  ,"samples" : 1
+  ,"values" : [38.1875,47.71875,43.71875,43.1875,39,42.5,39,44,43,41,44,39,43]
+}
+,{ "__tag__" : "PerGpuMonitor"
+  ,"name" : "IntTemp"
+  ,"gpu_inst" : 0
+  ,"timestamp" : 26191797695
+  ,"timestamps(usec)" : [26191797]
+  ,"samples" : 1
+  ,"values" : [50.75,61.84375,57.84375,55.75,46.4375,49.9375,46,57,57,55,56,53,56]
+}
+,{ "__tag__" : "PerGpuMonitor"
+  ,"name" : "Power"
+  ,"gpu_inst" : 0
+  ,"timestamp" : 26519605819
+  ,"timestamps(usec)" : [26519605]
+  ,"samples" : 1
+  ,"values" : [677461,326673,173488,177300,500161,446464,165701,127775,16658,415834,142345,273489,295877]
+}
+,{ "__tag__" : "PerGpuMonitor"
+  ,"name" : "IntTemp"
+  ,"gpu_inst" : 0
+  ,"timestamp" : 27193058276
+  ,"timestamps(usec)" : [27193058]
+  ,"samples" : 1
+  ,"values" : [51.6875,67.46875,63.03125,57.125,51.90625,55.84375,48,59,59,57,59,55,58]
+}
+,{ "__tag__" : "PerGpuMonitor"
+  ,"name" : "IntTemp"
+  ,"gpu_inst" : 0
+  ,"timestamp" : 28194514058
+  ,"timestamps(usec)" : [28194514]
+  ,"samples" : 1
+  ,"values" : [52.78125,63.0625,59.0625,57.75,48.375,51.875,48,60,59,58,60,56,58]
+}
+,{ "__tag__" : "PerGpuMonitor"
+  ,"name" : "IntTemp"
+  ,"gpu_inst" : 0
+  ,"timestamp" : 29195727599
+  ,"timestamps(usec)" : [29195727]
+  ,"samples" : 1
+  ,"values" : [53.375,64.0625,60.0625,58.375,50.125,53.625,49,61,61,58,61,55,60]
+}
+,{ "__tag__" : "PerGpuMonitor"
+  ,"name" : "IntTemp"
+  ,"gpu_inst" : 0
+  ,"timestamp" : 30197111811
+  ,"timestamps(usec)" : [30197111]
+  ,"samples" : 1
+  ,"values" : [53.875,64.28125,60.28125,58.875,49.75,53.25,49,61,61,58,61,57,61]
+}
+,{ "__tag__" : "PerGpuMonitor"
+  ,"name" : "Power"
+  ,"gpu_inst" : 0
+  ,"timestamp" : 30522047515
+  ,"timestamps(usec)" : [30522047]
+  ,"samples" : 1
+  ,"values" : [716667,344240,172353,200074,516593,689796,328323,169790,17641,416108,143692,272416,295625]
+}
+,{ "__tag__" : "PerGpuMonitor"
+  ,"name" : "IntTemp"
+  ,"gpu_inst" : 0
+  ,"timestamp" : 31198588133
+  ,"timestamps(usec)" : [31198588]
+  ,"samples" : 1
+  ,"values" : [54.40625,70.75,65.9375,60.1875,55.125,59.4375,50,62,61,60,62,57,61]
+}
+,{ "__tag__" : "PerGpuMonitor"
+  ,"name" : "IntTemp"
+  ,"gpu_inst" : 0
+  ,"timestamp" : 32199852575
+  ,"timestamps(usec)" : [32199852]
+  ,"samples" : 1
+  ,"values" : [55.125,65.28125,61.28125,60.125,51.03125,54.53125,50,63,63,60,62,58,62]
+}
+,{ "__tag__" : "PerGpuMonitor"
+  ,"name" : "IntTemp"
+  ,"gpu_inst" : 0
+  ,"timestamp" : 33201045826
+  ,"timestamps(usec)" : [33201045]
+  ,"samples" : 1
+  ,"values" : [55.15625,68.84375,64.84375,60.15625,53.46875,56.96875,51,63,63,60,62,57,62]
+}
+,{ "__tag__" : "PerGpuMonitor"
+  ,"name" : "IntTemp"
+  ,"gpu_inst" : 0
+  ,"timestamp" : 34202484818
+  ,"timestamps(usec)" : [34202484]
+  ,"samples" : 1
+  ,"values" : [55.84375,72.46875,67.40625,61.90625,56.71875,61.28125,52,63,63,60,63,59,62]
+}
+,{ "__tag__" : "PerGpuMonitor"
+  ,"name" : "Power"
+  ,"gpu_inst" : 0
+  ,"timestamp" : 34524805780
+  ,"timestamps(usec)" : [34524805]
+  ,"samples" : 1
+  ,"values" : [675464,325036,176474,173954,501510,693986,331155,170915,17664,414738,143650,271088,294572]
+}
+,{ "__tag__" : "PerGpuMonitor"
+  ,"name" : "IntTemp"
+  ,"gpu_inst" : 0
+  ,"timestamp" : 35204060720
+  ,"timestamps(usec)" : [35204060]
+  ,"samples" : 1
+  ,"values" : [56.84375,67.4375,63.4375,61.8125,56.9375,60.4375,50,53,53,51,52,49,52]
+}
+,{ "__tag__" : "exit"
+  ,"tname" : "CaskLinpackSgemm"
+  ,"test_seq" : 2
+  ,"tnum" : 600
+  ,"parent_num" : 243
+  ,"dev_insts" : [0]
+  ,"pf_NumCrcs" : 0
+  ,"datetime" : "2024-02-21T22:56:18.494+8:00"
+  ,"rc" : 0
+}
+,{ "__tag__" : "exit"
+  ,"tname" : "NewCudaMatsStress"
+  ,"test_seq" : 1
+  ,"tnum" : 243
+  ,"parent_num" : -1
+  ,"dev_insts" : [0]
+  ,"Bps" : 2288856763220.44
+  ,"BpsBytes" : 21521963679744
+  ,"BpsSeconds" : 9.402931640625
+  ,"pf_GbPerSec" : 2288.85676322044
+  ,"pf_NumCrcs" : 0
+  ,"datetime" : "2024-02-21T22:56:18.501+8:00"
+  ,"rc" : 0
+}
+,{ "__tag__" : "enter"
+  ,"tname" : "NewCudaMatsReadOnlyPulse"
+  ,"datetime" : "2024-02-21T22:56:18.589+8:00"
+  ,"test_seq" : 3
+  ,"tnum" : 354
+  ,"parent_num" : -1
+  ,"dev_insts" : [0]
+}
+,{ "__tag__" : "PerGpuMonitor"
+  ,"name" : "IntTemp"
+  ,"gpu_inst" : 0
+  ,"timestamp" : 36348489814
+  ,"timestamps(usec)" : [36348489]
+  ,"samples" : 1
+  ,"values" : [46.875,55.53125,51.53125,51.875,46.5,50,47,54,54,53,54,51,54]
+}
+,{ "__tag__" : "PerGpuMonitor"
+  ,"name" : "IntTemp"
+  ,"gpu_inst" : 0
+  ,"timestamp" : 37349844876
+  ,"timestamps(usec)" : [37349844]
+  ,"samples" : 1
+  ,"values" : [46.28125,55.21875,51.21875,51.28125,45.9375,49.4375,47,55,53,50,55,52,53]
+}
+,{ "__tag__" : "PerGpuMonitor"
+  ,"name" : "IntTemp"
+  ,"gpu_inst" : 0
+  ,"timestamp" : 38351016368
+  ,"timestamps(usec)" : [38351016]
+  ,"samples" : 1
+  ,"values" : [45.96875,54.875,50.875,50.9375,45.5625,49.0625,46,55,54,51,55,51,55]
+}
+,{ "__tag__" : "PerGpuMonitor"
+  ,"name" : "Power"
+  ,"gpu_inst" : 0
+  ,"timestamp" : 38527342495
+  ,"timestamps(usec)" : [38527342]
+  ,"samples" : 1
+  ,"values" : [306219,97785,98272,110162,196057,360759,143678,93987,15769,160541,77315,83226,91632]
+}
+,{ "__tag__" : "PerGpuMonitor"
+  ,"name" : "IntTemp"
+  ,"gpu_inst" : 0
+  ,"timestamp" : 39352189479
+  ,"timestamps(usec)" : [39352189]
+  ,"samples" : 1
+  ,"values" : [45.6875,54.625,50.625,50.65625,45.21875,48.71875,46,53,53,51,52,50,53]
+}
+,{ "__tag__" : "PerGpuMonitor"
+  ,"name" : "IntTemp"
+  ,"gpu_inst" : 0
+  ,"timestamp" : 40353355641
+  ,"timestamps(usec)" : [40353355]
+  ,"samples" : 1
+  ,"values" : [45.5,54.4375,50.4375,50.5,45.15625,48.65625,46,54,53,50,54,49,53]
+}
+,{ "__tag__" : "PerGpuMonitor"
+  ,"name" : "IntTemp"
+  ,"gpu_inst" : 0
+  ,"timestamp" : 41354506533
+  ,"timestamps(usec)" : [41354506]
+  ,"samples" : 1
+  ,"values" : [45.3125,54.21875,50.21875,50.3125,44.96875,48.46875,46,53,53,50,53,50,53]
+}
+,{ "__tag__" : "PerGpuMonitor"
+  ,"name" : "IntTemp"
+  ,"gpu_inst" : 0
+  ,"timestamp" : 42355871744
+  ,"timestamps(usec)" : [42355871]
+  ,"samples" : 1
+  ,"values" : [45.1875,54.125,50.125,50.1875,44.78125,48.28125,46,55,53,51,54,50,55]
+}
+,{ "__tag__" : "PerGpuMonitor"
+  ,"name" : "Power"
+  ,"gpu_inst" : 0
+  ,"timestamp" : 42531794872
+  ,"timestamps(usec)" : [42531794]
+  ,"samples" : 1
+  ,"values" : [317940,100055,97056,120829,197111,297640,73997,95419,15765,157750,74622,83128,138331]
+}
+,{ "__tag__" : "PerGpuMonitor"
+  ,"name" : "IntTemp"
+  ,"gpu_inst" : 0
+  ,"timestamp" : 43357039676
+  ,"timestamps(usec)" : [43357039]
+  ,"samples" : 1
+  ,"values" : [45.09375,53.96875,49.96875,50.0625,44.75,48.25,45,54,53,50,54,49,53]
+}
+,{ "__tag__" : "PerGpuMonitor"
+  ,"name" : "IntTemp"
+  ,"gpu_inst" : 0
+  ,"timestamp" : 44358381318
+  ,"timestamps(usec)" : [44358381]
+  ,"samples" : 1
+  ,"values" : [44.9375,53.6875,49.6875,49.9375,44.59375,48.09375,45,53,53,50,50,49,52]
+}
+,{ "__tag__" : "PerGpuMonitor"
+  ,"name" : "IntTemp"
+  ,"gpu_inst" : 0
+  ,"timestamp" : 45359540009
+  ,"timestamps(usec)" : [45359540]
+  ,"samples" : 1
+  ,"values" : [43.375,52.53125,48.53125,48.375,43.8125,47.3125,44,50,49,46,50,45,48]
+}
+,{ "__tag__" : "exit"
+  ,"tname" : "NewCudaMatsReadOnlyPulse"
+  ,"test_seq" : 3
+  ,"tnum" : 354
+  ,"parent_num" : -1
+  ,"dev_insts" : [0]
+  ,"Bps" : 1182913274278.7864
+  ,"BpsBytes" : 10971881037824
+  ,"BpsSeconds" : 9.2753046875
+  ,"pf_GbPerSec" : 1182.9132742787863
+  ,"pf_NumCrcs" : 0
+  ,"datetime" : "2024-02-21T22:56:28.779+8:00"
+  ,"rc" : 0
+}
+,{ "__tag__" : "GlobalStats"
+  ,"pf_MODSInitTimeSec" : 10.913883924484253
+  ,"pf_GPUInitTimeSec" : 2.53629469871521
+  ,"pf_TestsInitTimeSec" : 1.06611967086792
+  ,"pf_TestsTimeSec" : 31.28932476043701
+  ,"pf_ShutdownTimeSec" : 0.35825085639953613
+  ,"pf_ProfileCRCTimeSec" : 0
+}
+,{ "__tag__" : "final_rc"
+  ,"rc" : "000000000000"
+ }
+,{ "__tag__" : "MODS_end"
+  ,"timestamp" : "Wed Feb 21 22:56:31 2024 "
+  ,"elapsedSeconds" : 48.007 
+ }
+]
+]

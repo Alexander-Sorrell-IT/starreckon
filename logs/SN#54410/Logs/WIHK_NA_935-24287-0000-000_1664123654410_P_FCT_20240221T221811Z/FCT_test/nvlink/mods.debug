@@ -1,0 +1,36 @@
+[<func>                                            ]: MODS LOG ANALYZER DEBUG LOG: Wed Feb 21 23:19:22 2024
+
+[<func>                                            ]: MLA Version: 20.104
+[<func>                                            ]: Processing file '/root/Vulcan_Sorting/618-24287-XXXX-MFG-39260/logs/WIHK_NA_935-24287-0000-000_1664123654410_T_FCT_20240221T221811Z/FCT_test/nvlink/mods.mle' and  writing to '/root/Vulcan_Sorting/618-24287-XXXX-MFG-39260/logs/WIHK_NA_935-24287-0000-000_1664123654410_T_FCT_20240221T221811Z/FCT_test/nvlink/mods.mle'
+[<func>                                            ]: MLE Protobuf
+[<func>                                            ]: Probable bad test exit: Test 254 on GPU 8
+[<func>                                            ]: Probable bad test exit: Test 254 on GPU 9
+[<func>                                            ]: Probable bad test exit: Test 254 on GPU 10
+[<func>                                            ]: Probable bad test exit: Test 254 on GPU 11
+[<func>                                            ]: Probable bad test exit: Test 254 on GPU -1
+[<func>                                            ]: Probable bad test exit: Test 254 on GPU -1
+[<func>                                            ]: Probable bad test exit: Test 254 on GPU -1
+[<func>                                            ]: Probable bad test exit: Test 254 on GPU -1
+[<func>                                            ]: Bad test update: Test 246 on GPU 0
+[<func>                                            ]: Bad test update: Test 246 on GPU 0
+[<func>                                            ]: Bad test update: Test 246 on GPU 0
+[<func>                                            ]: Bad test update: Test 28 on GPU 8
+[<func>                                            ]: Probable bad test exit: Test 254 on GPU 8
+[<func>                                            ]: Probable bad test exit: Test 254 on GPU 9
+[<func>                                            ]: Probable bad test exit: Test 254 on GPU 10
+[<func>                                            ]: Probable bad test exit: Test 254 on GPU 11
+[<func>                                            ]: Probable bad test exit: Test 254 on GPU -1
+[<func>                                            ]: Probable bad test exit: Test 254 on GPU -1
+[<func>                                            ]: Probable bad test exit: Test 254 on GPU -1
+[<func>                                            ]: Probable bad test exit: Test 254 on GPU -1
+[<func>                                            ]: Probable bad test exit: Test 254 on GPU 8
+[<func>                                            ]: Probable bad test exit: Test 254 on GPU 9
+[<func>                                            ]: Probable bad test exit: Test 254 on GPU 10
+[<func>                                            ]: Probable bad test exit: Test 254 on GPU 11
+[<func>                                            ]: Probable bad test exit: Test 254 on GPU -1
+[<func>                                            ]: Probable bad test exit: Test 254 on GPU -1
+[<func>                                            ]: Probable bad test exit: Test 254 on GPU -1
+[<func>                                            ]: Probable bad test exit: Test 254 on GPU -1
+[<func>                                            ]: Bad test progress: Test 246 on GPU 8
+[<func>                                            ]: Bad test update: Test 246 on GPU 8
+[<func>                                            ]: Bad test update: Test 246 on GPU 8

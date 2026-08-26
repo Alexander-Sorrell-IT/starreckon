@@ -1,0 +1,15 @@
+Vulcan Useful Commands. 
+
+- Where the BBX is. Go to the file, "tail -n20 *.log | less" seemed to work for the BBXs. 
+- "nano" systemcheck file, we could easily look at it there. 
+- "ll -tr" #lists in reverse time
+- "tail -f tas.txt" #follows if test was started inside the server room
+- "less tas.txt" #allows you to scroll
+- "cat or nano" to print log to the file. 
+- "hostname -I" #will show current IP address with tester and all. 
+- "wc -m" #shows entire word count of whatever it is we want. 
+- "ps aux" #show the number of processes going on. We can use this to see if a test is still running. For the RIN test, I am getting numbers in the
+		   #tens of thousands also. "Vulcan keyword also seems to display processes of FCT test. 
+		   #processes are running, for the FCT, I've seen anywhere from 6000 to 14000 processes runnning.
+		   
+- "grep -i xxxx" #this seems to filter things, filter input for a certain keyword. Filtering using the "FCT" keyword we get between 7k and 9k

@@ -1,0 +1,38 @@
+[<func>                                            ]: MODS LOG ANALYZER DEBUG LOG: Thu Feb 22 15:17:53 2024
+
+[<func>                                            ]: MLA Version: 20.104
+[<func>                                            ]: Processing file '/root/Vulcan_Sorting/618-24287-XXXX-MFG-39260/logs/WIHK_NA_935-24287-0000-000_1664123654410_T_RIN_20240222T144119Z/PCIe_Lane_margining/bmcevents.mle' and  writing to '/root/Vulcan_Sorting/618-24287-XXXX-MFG-39260/logs/WIHK_NA_935-24287-0000-000_1664123654410_T_RIN_20240222T144119Z/PCIe_Lane_margining/bmcevents.mle'
+[<func>                                            ]: MLE Version 8.0
+[<func>                                            ]: Error: Missing BglDataMetadata for Gpu 0 Monitor 27 Sample 0
+[<func>                                            ]: Error: Missing BglDataMetadata for Gpu 0 Monitor 27 Sample 1
+[<func>                                            ]: Error: Missing BglDataMetadata for Gpu 0 Monitor 27 Sample 2
+[<func>                                            ]: Error: Missing BglDataMetadata for Gpu 0 Monitor 27 Sample 3
+[<func>                                            ]: Error: Missing BglDataMetadata for Gpu 0 Monitor 27 Sample 4
+[<func>                                            ]: Error: Missing BglDataMetadata for Gpu 0 Monitor 27 Sample 5
+[<func>                                            ]: Error: Missing BglDataMetadata for Gpu 0 Monitor 27 Sample 6
+[<func>                                            ]: Error: Missing BglDataMetadata for Gpu 0 Monitor 27 Sample 7
+[<func>                                            ]: Error: Missing BglDataMetadata for Gpu 0 Monitor 27 Sample 8
+[<func>                                            ]: Error: Missing BglDataMetadata for Gpu 0 Monitor 27 Sample 9
+[<func>                                            ]: Error: Missing BglDataMetadata for Gpu 0 Monitor 27 Sample 10
+[<func>                                            ]: Error: Missing BglDataMetadata for Gpu 0 Monitor 27 Sample 11
+[<func>                                            ]: Error: Missing BglDataMetadata for Gpu 0 Monitor 27 Sample 12
+[<func>                                            ]: Error: Missing BglDataMetadata for Gpu 0 Monitor 27 Sample 13
+[<func>                                            ]: Error: Missing BglDataMetadata for Gpu 0 Monitor 27 Sample 14
+[<func>                                            ]: Error: Missing BglDataMetadata for Gpu 0 Monitor 27 Sample 15
+[<func>                                            ]: Error: Missing BglDataMetadata for Gpu 0 Monitor 27 Sample 16
+[<func>                                            ]: Error: Missing BglDataMetadata for Gpu 0 Monitor 27 Sample 17
+[<func>                                            ]: Error: Missing BglDataMetadata for Gpu 0 Monitor 27 Sample 18
+[<func>                                            ]: Error: Missing BglDataMetadata for Gpu 0 Monitor 27 Sample 19
+[<func>                                            ]: Error: Missing BglDataMetadata for Gpu 0 Monitor 27 Sample 20
+[<func>                                            ]: Error: Missing BglDataMetadata for Gpu 0 Monitor 27 Sample 21
+[<func>                                            ]: Error: Missing BglDataMetadata for Gpu 0 Monitor 27 Sample 22
+[<func>                                            ]: Error: Missing BglDataMetadata for Gpu 0 Monitor 27 Sample 23
+[<func>                                            ]: Error: Missing BglDataMetadata for Gpu 0 Monitor 27 Sample 24
+[<func>                                            ]: Error: Missing BglDataMetadata for Gpu 0 Monitor 27 Sample 25
+[<func>                                            ]: Error: Missing BglDataMetadata for Gpu 0 Monitor 27 Sample 26
+[<func>                                            ]: Error: Missing BglDataMetadata for Gpu 0 Monitor 27 Sample 27
+[<func>                                            ]: Error: Missing BglDataMetadata for Gpu 0 Monitor 27 Sample 28
+[<func>                                            ]: Error: Missing BglDataMetadata for Gpu 0 Monitor 27 Sample 29
+[<func>                                            ]: Error: Missing BglDataMetadata for Gpu 0 Monitor 27 Sample 30
+[<func>                                            ]: Error analyzing BgLogger data for MODS run #0
+[<func>                                            ]: Data Error returned from MlaAnalyzer. MLA will attempt to report on partial results

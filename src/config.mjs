@@ -160,3 +160,20 @@ export function effectiveRoots(cliRoots = [], home = null) {
   }
   return out;
 }
+
+/**
+ * Load configuration from spec/config.json
+ * Returns the parsed config object or empty object on error
+ */
+export function loadConfig() {
+  try {
+    const { readFileSync } = require('node:fs');
+    const { join } = require('node:path');
+    const { fileURLToPath } = require('node:url');
+    const __dirname = fileURLToPath(new URL('.', import.meta.url));
+    const configPath = join(__dirname, '..', 'spec', 'config.json');
+    return JSON.parse(readFileSync(configPath, 'utf-8'));
+  } catch {
+    return {};
+  }
+}

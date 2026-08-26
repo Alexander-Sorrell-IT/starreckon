@@ -1,0 +1,18 @@
+{
+  "startup": {
+    "delayMs": 2000,
+    "showTips": true
+  },
+  "fleet": {
+    "maxConcurrentScans": 10,
+    "jobQueueSize": 50
+  },
+  "models": {
+    "cacheDir": ".starreckon/models",
+    "autoUpdate": false
+  },
+  "daemon": {
+    "scheduleCron": "0 0 1 * *",
+    "logLevel": "info"
+  }
+}

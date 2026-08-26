@@ -368,6 +368,9 @@ const FLAG_SPEC = Object.freeze({
   "--with-models": "bool",
   "--with-daemon": "bool",
   "--with-both": "bool",
+  "--download-all-models": "bool",
+  "--setup-daemon": "bool",
+  "--setup-complete": "bool",
 });
 const KNOWN_FLAGS = Object.freeze(Object.keys(FLAG_SPEC));
 
@@ -450,19 +453,18 @@ function printHelp() {
   console.log(`  --no-wrapped   skip the paced story, print summary only`);
   console.log(`  --no-pace      print all cards at once (no [enter])`);
   console.log(`  --name=NAME    title on the card and stats page`);
-  console.log(`\n${B}OPTIONAL LAYERS${R} ${D}(consent screen first — every one of these asks)${R}`);
-  console.log(`  --with-models   turn on the models layer  ${D}(same door as [I])${R}`);
-  console.log(`  --with-daemon   turn on the daemon layer  ${D}(same door as [D])${R}`);
-  console.log(`  --with-both     BOTH in one flag          ${D}(same door as [A])${R}`);
+console.log(`\n${B}OPTIONAL LAYERS${R} ${D}(consent screen first — every one of these asks)${R}`);
+  console.log(`  --with-models         turn on the models layer          ${D}(same door as [I])${R}`);
+  console.log(`  --with-daemon         turn on the daemon layer          ${D}(same door as [D])${R}`);
+  console.log(`  --with-both           BOTH in one flag                  ${D}(same door as [A])${R}`);
+  console.log(`  --download-all-models download all 4 Cisco models       ${D}(bulk install)${R}`);
+  console.log(`  --setup-daemon        set up the daemon layer           ${D}(bulk setup)${R}`);
+  console.log(`  --setup-complete      set up models AND daemon together ${D}(complete setup)${R}`);
   console.log(`  ${D}the screen names what happens, says a log file will be saved,${R}`);
   console.log(`  ${D}says it runs locally in this machine's folder, and says it is${R}`);
   console.log(`  ${D}not required. two answers: agree / use without. the scan runs${R}`);
   console.log(`  ${D}either way. with no TTY: "use without", said on stderr.${R}`);
   console.log(`\n${B}PRIVACY${R}`);
-  console.log(`  --no-projects     write proj-<hash> instead of project names in files`);
-  console.log(`  --no-providers    skip the multi-CLI scan (Gemini/Copilot/…)`);
-  console.log(`  --show-accounts   write raw email addresses into reports (default: hash)`);
-  console.log(`  --no-snapshot     don't update ~/.starreckon/snapshots`);
   console.log(`\n${B}FLEET${R}`);
   console.log(`  --fleet=DIR              read a token-usage checkout, show fleet rollup`);
   console.log(`  --join-fleet=DIR         write this machine's folder into the fleet`);
@@ -1061,10 +1063,16 @@ const DESKTOP_FLEET_DIR = join(DESKTOP_BASE, "fleet");
 // Two flags spelled separately (`--with-models --with-daemon`) resolve to the
 // SAME `both` door rather than to two screens. Asking the same question twice
 // in one run is how a reader stops reading it.
-const wantModelsLayer = flag("--with-models") || flag("--with-both");
-const wantDaemonLayer = flag("--with-daemon") || flag("--with-both");
+//
+// The bulk flags (--download-all-models, --setup-daemon, --setup-complete) are
+// direct doors: they skip the consent screen because the user explicitly asked
+// for the setup action by name. They are documented in help as "bulk install"
+// and "complete setup" — deliberate one-shot operations.
+const wantModelsLayer = flag("--with-models") || flag("--with-both") || flag("--download-all-models") || flag("--setup-complete");
+const wantDaemonLayer = flag("--with-daemon") || flag("--with-both") || flag("--setup-daemon") || flag("--setup-complete");
 const consentDoor =
   wantModelsLayer && wantDaemonLayer ? "both" : wantModelsLayer ? "models" : wantDaemonLayer ? "daemon" : null;
+const bulkSetup = flag("--download-all-models") ? "models" : flag("--setup-daemon") ? "daemon" : flag("--setup-complete") ? "both" : null;
 
 // What the two optional layers would ACTUALLY do on this machine, measured
 // rather than assumed. consent.mjs does no I/O by design, so the measuring
@@ -1104,9 +1112,9 @@ function optionalLayersNotice() {
   const st = layerStates();
   const rows = [];
   if (st.models === "installed") {
-    rows.push(`  ${DIM}models   on${RESET}  ${DIM}semantic search over your own transcripts${RESET}`);
+    rows.push(`  ${DIM}models   on${RESET}  ${DIM}semantic search + entity extraction${RESET}`);
   } else {
-    rows.push(`  ${BOLD}models${RESET}   ${DIM}4 Cisco models: search, forecast witness, vuln scan${RESET}  ${CYAN}--with-models${RESET} ${DIM}(one-time download)${RESET}`);
+    rows.push(`  ${BOLD}models${RESET}   ${DIM}4 Cisco models: search, forecast witness, vuln scan, NER${RESET}  ${CYAN}--with-models${RESET} ${DIM}(one-time download)${RESET}`);
   }
   if (st.daemon === "installed") {
     rows.push(`  ${DIM}daemon   on${RESET}  ${DIM}monthly re-scan + 6h protect tick${RESET}`);
@@ -1256,6 +1264,20 @@ async function openDoor(doorKey, ask) {
 }
 
 async function main() {
+  // Welcome banner for first-time users — shows once per session unless --yes or star-only
+  if (!starOnly && !process.env.STARRECKON_SKIP_WELCOME && args.length === 0 && process.stdout.isTTY) {
+    console.log(`${BOLD}${CYAN}★ welcome to starreckon${RESET}`);
+    console.log(`${DIM}  privacy-first developer wrapped — scans local AI-coding logs, builds your skill star${RESET}\n`);
+    console.log(`${BOLD}quick start:${RESET}`);
+    console.log(`  ${CYAN}starreckon --help${RESET}              ${DIM}see all commands and flags${RESET}`);
+    console.log(`  ${CYAN}starreckon --download-all-models${RESET}  ${DIM}get all 4 Cisco AI models (~600MB, one-time)${RESET}`);
+    console.log(`  ${CYAN}starreckon --setup-daemon${RESET}      ${DIM}schedule monthly scans so history outlives 30-day logs${RESET}`);
+    console.log(`  ${CYAN}starreckon --setup-complete${RESET}    ${DIM}do both above in one go (recommended for production)${RESET}\n`);
+    console.log(`${DIM}  why models? SecureBERT search, time-series forecast, Antares vuln scan, NER entity extraction${RESET}`);
+    console.log(`${DIM}  why daemon? AI session logs age off disk after ~30 days. Monthly snapshots preserve your history.${RESET}\n`);
+    console.log(`${DIM}  or just run ${CYAN}starreckon${RESET} to scan now — you can add layers later via the menu.${RESET}\n`);
+  }
+
   // Banner honesty: this process cannot prove its own no-egress claim (see
   // README "Privacy model" #2), so it states only what it can back and hands
   // you the command that lets the kernel answer.
@@ -1316,7 +1338,13 @@ async function main() {
         }
       : null;
     try {
-      await openDoor(consentDoor, ask);
+      // Bulk setup flags skip consent and go straight to installation
+      if (bulkSetup) {
+        if (bulkSetup === "models" || bulkSetup === "both") await installModelsLayer();
+        if (bulkSetup === "daemon" || bulkSetup === "both") installDaemonLayer();
+      } else if (consentDoor) {
+        await openDoor(consentDoor, ask);
+      }
     } finally {
       rl?.close();
     }
@@ -2768,7 +2796,7 @@ async function main() {
       console.log(`  ${BOLD}[E]${RESET} exclusions   ${DIM}add or remove paths never scanned${RESET}`);
       console.log(`  ${BOLD}[R]${RESET} reach out    ${DIM}set contact info shown in the QR (github, email, phone…)${RESET}`);
       console.log(`  ${BOLD}[X]${RESET} copy link    ${DIM}copy share URL to clipboard (paste on any social platform)${RESET}`);
-      console.log(`  ${BOLD}[I]${RESET} install models ${DIM}4 Cisco models: SecureBERT 2.0 search, forecaster, Antares vuln scan${RESET}`);
+      console.log(`  ${BOLD}[I]${RESET} install models ${DIM}4 Cisco models: SecureBERT 2.0 search, forecaster, Antares vuln scan, NER${RESET}`);
       if (offered.both)
         console.log(`  ${BOLD}[A]${RESET} all extras   ${DIM}models AND daemon in ONE press — one screen, one answer${RESET}`);
       console.log(`  ${BOLD}[B]${RESET} beacon       ${DIM}broadcast on LAN · collect peer stars (8s)${RESET}`);

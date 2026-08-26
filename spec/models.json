@@ -13,8 +13,9 @@
     "",
     "One venv per layer because their dependency sets genuinely conflict —",
     "the forecaster wants torch from the CPU wheel index plus cisco-tsm, search",
-    "wants sentence-transformers, Antares wants transformers + torch. One",
-    "environment holding all three is a resolver fight where the last install wins."
+    "wants sentence-transformers, Antares wants transformers + torch, NER wants",
+    "ModernBERT. One environment holding all four is a resolver fight where the",
+    "last install wins."
   ],
   "pytorch_cpu_index": "https://download.pytorch.org/whl/cpu",
   "layers": [
@@ -51,6 +52,17 @@
       "pipIndexFrom": "pytorch_cpu_index",
       "repos": ["fdtn-ai/antares-350m"],
       "purpose": "scan this tool's own code for vulnerability patterns (SARIF)"
+    },
+    {
+      "name": "ner",
+      "title": "SecureBERT 2.0 NER (entity extraction)",
+      "venv": ".venv-search",
+      "installer": "venv",
+      "pipTorch": false,
+      "pip": ["transformers", "torch", "huggingface_hub"],
+      "pipIndexFrom": "pytorch_cpu_index",
+      "repos": ["cisco-ai/SecureBERT2.0-NER"],
+      "purpose": "extract cybersecurity entities (IPs, domains, malware) from transcripts"
     }
   ]
 }

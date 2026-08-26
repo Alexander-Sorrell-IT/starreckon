@@ -3,11 +3,13 @@
 // Ported from deadreckon-count/install.py, which keeps one venv per model
 // because their dependency sets genuinely conflict: the forecaster wants torch
 // from the CPU wheel index plus cisco-tsm, search wants sentence-transformers,
-// and Antares wants transformers + torch. One environment holding all three is
-// a resolver fight that ends with whichever was installed last winning.
+// Antares wants transformers + torch, and NER wants ModernBERT. One environment
+// holding all four is a resolver fight that ends with whichever was installed
+// last winning.
 //
 //   .venv-search    cisco-ai/SecureBERT2.0-biencoder      candidate retrieval
 //                   cisco-ai/SecureBERT2.0-cross_encoder  reranking
+//                   cisco-ai/SecureBERT2.0-NER            entity extraction
 //   .venv-forecast  cisco-ai/cisco-time-series-model-1.0  the forecast witness
 //   .venv-antares   fdtn-ai/antares-350m                  vulnerability scan
 //

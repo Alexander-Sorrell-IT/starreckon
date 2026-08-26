@@ -24,9 +24,13 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { readBob } from "../src/readers.mjs";
 
-const { DatabaseSync } = await import("node:sqlite");
+let DatabaseSync = null;
+try {
+  ({ DatabaseSync } = await import("node:sqlite"));
+} catch {}
 
 function makeDb(dir, tasks) {
+  if (!DatabaseSync) return;
   mkdirSync(dir, { recursive: true });
   const db = new DatabaseSync(join(dir, "bob.db"));
   db.exec("create table tasks (id text primary key, costs text)");
@@ -41,7 +45,8 @@ const home = () => mkdtempSync(join(tmpdir(), "bobloc-"));
 const total = (r) => r.sessions.reduce((a, s) =>
   a + ["input", "cacheWrite", "cacheRead", "output"].reduce((x, k) => x + s.tokens[k], 0), 0);
 
-test("a second bob database in an instance home is read", async () => {
+test("a second bob database in an instance home is read", async (t) => {
+  if (!DatabaseSync) return t.skip("node:sqlite not available");
   const h = home();
   makeDb(join(h, ".bob", "db"), [["t1", 100, 10, 0, 0]]);
   makeDb(join(h, ".bob-instances", "2", ".bob", "db"), [["t2", 500, 50, 0, 0]]);
@@ -51,7 +56,8 @@ test("a second bob database in an instance home is read", async () => {
   assert.equal(total(r), 660);
 });
 
-test("a database holding the same ids adds nothing", async () => {
+test("a database holding the same ids adds nothing", async (t) => {
+  if (!DatabaseSync) return t.skip("node:sqlite not available");
   const h = home();
   const rows = [["t1", 100, 10, 0, 0], ["t2", 200, 20, 0, 0]];
   makeDb(join(h, ".bob", "db"), rows);
@@ -61,7 +67,8 @@ test("a database holding the same ids adds nothing", async () => {
   assert.equal(total(r), 330, "a copy is not twice the tokens");
 });
 
-test("a truncated copy loses field by field to the fuller one", async () => {
+test("a truncated copy loses field by field to the fuller one", async (t) => {
+  if (!DatabaseSync) return t.skip("node:sqlite not available");
   // Not first-wins: retention truncates one copy, and which directory the walk
   // reaches first must not decide the number.
   const h = home();
@@ -72,7 +79,8 @@ test("a truncated copy loses field by field to the fuller one", async () => {
   assert.equal(total(r), 990);
 });
 
-test("the order the copies are found in does not change the answer", async () => {
+test("the order the copies are found in does not change the answer", async (t) => {
+  if (!DatabaseSync) return t.skip("node:sqlite not available");
   const mk = (first) => {
     const h = home();
     makeDb(join(h, ".bob", "db"), first ? [["t1", 900, 90, 0, 0]] : [["t1", 100, 5, 0, 0]]);
@@ -85,7 +93,8 @@ test("the order the copies are found in does not change the answer", async () =>
   assert.equal(total(a), total(b), "a number that moves with directory order is not a measurement");
 });
 
-test("one corrupt database does not lose the others", async () => {
+test("one corrupt database does not lose the others", async (t) => {
+  if (!DatabaseSync) return t.skip("node:sqlite not available");
   const h = home();
   makeDb(join(h, ".bob", "db"), [["t1", 100, 10, 0, 0]]);
   const bad = join(h, ".bob-instances", "9", ".bob", "db");
@@ -110,7 +119,8 @@ test("every database failing is unreadable, never empty", async () => {
   assert.notEqual(r.state, "empty");
 });
 
-test("a machine with one database is unchanged", async () => {
+test("a machine with one database is unchanged", async (t) => {
+  if (!DatabaseSync) return t.skip("node:sqlite not available");
   const h = home();
   makeDb(join(h, ".bob", "db"), [["t1", 100, 10, 0, 0]]);
   const r = await readBob(h);

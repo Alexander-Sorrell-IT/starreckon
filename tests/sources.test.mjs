@@ -316,8 +316,13 @@ test("cowork is reachable on every platform, not just macOS", () => {
 //           total = input + output = 1,050.   The bug gives 1,950.
 //   task B  input 40, no cache, output 5      total 45
 //   task C  all zero                          not a session
-test("bob: the cache is part of the prompt, not an addition to it", async () => {
-  const { DatabaseSync } = await import("node:sqlite");
+test("bob: the cache is part of the prompt, not an addition to it", async (t) => {
+  let DatabaseSync;
+  try {
+    ({ DatabaseSync } = await import("node:sqlite"));
+  } catch {
+    return t.skip("node:sqlite not available on this Node runtime");
+  }
   const { readBob } = await import("../src/readers.mjs");
   const home = mkdtempSync(join(tmpdir(), "bob-"));
   mkdirSync(join(home, ".bob", "db"), { recursive: true });

@@ -31,6 +31,7 @@
 import { existsSync, mkdirSync, readFileSync, writeFileSync, unlinkSync } from "node:fs";
 import { homedir } from "node:os";
 import { join } from "node:path";
+import { fileURLToPath } from "node:url";
 
 export const KNOWN_CLI_NAMES = new Set([
   "claude", "gemini", "copilot", "codex", "grok",
@@ -161,18 +162,16 @@ export function effectiveRoots(cliRoots = [], home = null) {
   return out;
 }
 
+const __dirname = fileURLToPath(new URL(".", import.meta.url));
+
 /**
  * Load configuration from spec/config.json
  * Returns the parsed config object or empty object on error
  */
 export function loadConfig() {
   try {
-    const { readFileSync } = require('node:fs');
-    const { join } = require('node:path');
-    const { fileURLToPath } = require('node:url');
-    const __dirname = fileURLToPath(new URL('.', import.meta.url));
-    const configPath = join(__dirname, '..', 'spec', 'config.json');
-    return JSON.parse(readFileSync(configPath, 'utf-8'));
+    const configPath = join(__dirname, "..", "spec", "config.json");
+    return JSON.parse(readFileSync(configPath, "utf-8"));
   } catch {
     return {};
   }

@@ -415,10 +415,11 @@ test("POSITIVE CONTROL: the same sabotaged inference is REFUSED inside the wall"
   assert.notEqual(r.status, 0, `sabotaged inference should not have survived the wall:\n${r.out}`);
   // search.py catches the load failure and prints it — the text is the receipt
   assert.match(r.out, /Could not load models/, r.out);
-  assert.match(r.out, /unreachable|refused|denied|Temporary failure/i, r.out);
+  assert.match(r.out, /unreachable|refused|denied|permitted|Temporary failure/i, r.out);
   const refused = r.events.filter((e) => e.event === "connect-refused");
   assert.ok(refused.length >= 1, `expected a kernel refusal, got: ${JSON.stringify(r.events)}`);
-  assert.equal(refused[0].errno, 101, `ENETUNREACH(101) expected, got ${JSON.stringify(refused[0])}`);
+  const expectedErrno = process.platform === "darwin" ? 1 : 101;
+  assert.equal(refused[0].errno, expectedErrno, `expected errno ${expectedErrno}, got ${JSON.stringify(refused[0])}`);
   assert.equal(r.events.filter((e) => e.event === "connected").length, 0);
 });
 

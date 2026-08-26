@@ -1,6 +1,6 @@
 {
   "startup": {
-    "delayMs": 2000,
+    "delayMs": 0,
     "showTips": true
   },
   "fleet": {

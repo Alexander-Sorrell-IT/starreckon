@@ -31,6 +31,8 @@ import {
 import { buildReceipt, renderReceipt } from "../src/receipt.mjs";
 
 const CLI = fileURLToPath(new URL("../src/cli.mjs", import.meta.url));
+const TRUE_BIN = existsSync("/bin/true") ? "/bin/true" : "/usr/bin/true";
+const FALSE_BIN = existsSync("/bin/false") ? "/bin/false" : "/usr/bin/false";
 const fresh = (tag) => mkdtempSync(join(tmpdir(), `sf-${tag}-`));
 const records = (root) =>
   collectRuns(root).records.map((r) => r._file).sort();
@@ -175,7 +177,7 @@ test("every model run writes a record, and the query is not in it", (t) => {
 
   return import("../src/search.mjs").then(async ({ runSearch }) => {
     const secret = "sk-ant-" + "a".repeat(28);
-    const code = await runSearch(["query", `find ${secret} in my notes`, "--top", "7"], { python: "/bin/true" });
+    const code = await runSearch(["query", `find ${secret} in my notes`, "--top", "7"], { python: TRUE_BIN });
     assert.equal(code, 0);
 
     const root = logsRoot(home);
@@ -216,7 +218,7 @@ test("a model run that fails is still recorded, with the failure", (t) => {
     rmSync(home, { recursive: true, force: true });
   });
   return import("../src/search.mjs").then(async ({ runSearch }) => {
-    const code = await runSearch(["setup"], { python: "/bin/false" });
+    const code = await runSearch(["setup"], { python: FALSE_BIN });
     assert.notEqual(code, 0);
     const found = collectRuns(logsRoot(home)).records;
     assert.equal(found.length, 1);

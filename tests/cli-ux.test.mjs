@@ -673,7 +673,7 @@ test("serve --serve-collect=DIR is a known flag and does not exit 2", () => {
   // Pass an invalid port so it fails fast without binding.
   const home = fakeHome();
   const r = runCli(home, ["serve", "--serve-collect=/tmp/sf-collect-test",
-    "--serve-port=1", "--serve-visits=1", "--serve-timeout=0"]);
+    "--serve-port=70000", "--serve-visits=1", "--serve-timeout=0"]);
   // Exit must not be 2 (unknown flag). It may be 1 (port in use / bind error).
   assert.notEqual(r.status, 2,
     `serve --serve-collect rejected as unknown flag: ${r.stderr}`);

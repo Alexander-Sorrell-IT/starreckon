@@ -31,6 +31,9 @@
 //                                 with no TTY these three do not hang and do
 //                                 not assume consent: they default to "use
 //                                 without" and say so on stderr.
+//   --download-all-models         bulk install all 4 Cisco AI models (~600MB)
+//   --setup-daemon                bulk setup monthly scan + 6h protect daemon
+//   --setup-complete              complete setup: models AND daemon together
 //   starreckon --ledger        record sessions in the token ledger so
 //                                 transcript deletion cannot lower the lifetime
 //                                 total. the daemon scan passes this by default.
@@ -465,6 +468,10 @@ console.log(`\n${B}OPTIONAL LAYERS${R} ${D}(consent screen first — every one o
   console.log(`  ${D}not required. two answers: agree / use without. the scan runs${R}`);
   console.log(`  ${D}either way. with no TTY: "use without", said on stderr.${R}`);
   console.log(`\n${B}PRIVACY${R}`);
+  console.log(`  --no-projects     write proj-<hash> instead of project names in files`);
+  console.log(`  --no-providers    skip the multi-CLI scan (Gemini/Copilot/…)`);
+  console.log(`  --show-accounts   write raw email addresses into reports (default: hash)`);
+  console.log(`  --no-snapshot     don't update ~/.starreckon/snapshots`);
   console.log(`\n${B}FLEET${R}`);
   console.log(`  --fleet=DIR              read a token-usage checkout, show fleet rollup`);
   console.log(`  --join-fleet=DIR         write this machine's folder into the fleet`);

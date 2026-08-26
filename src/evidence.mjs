@@ -59,7 +59,14 @@ function maskUnderHome(resolved, home) {
  * file, not the whole scan.
  */
 export function sourceEvidence(home, files) {
-  const root = home ? resolve(home) : null;
+  let root = null;
+  if (home) {
+    try {
+      root = realpathSync(home);
+    } catch {
+      root = resolve(home);
+    }
+  }
   const out = [];
   for (const f of files ?? []) {
     let resolved;

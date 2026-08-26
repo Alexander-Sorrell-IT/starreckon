@@ -1,0 +1,127 @@
+{
+  "machine": "Dell Inspiron Desktop Linux",
+  "generated_at": "2026-08-09T02:26:58-05:00",
+  "scanner_version": "2e512dc55519",
+  "anthropic_only_tokens": 824886,
+  "by_provider": {
+    "anthropic": 824886
+  },
+  "other_tools": [
+    {
+      "vendor": "gemini",
+      "label": "Gemini CLI",
+      "dir": "/home/phantom-gramps/.gemini",
+      "files": 48,
+      "records_usage": false
+    },
+    {
+      "vendor": "copilot",
+      "label": "GitHub Copilot CLI",
+      "dir": "/home/phantom-gramps/.copilot",
+      "files": 132,
+      "records_usage": false
+    }
+  ],
+  "grand_total_tokens": 824886,
+  "accounts": [
+    {
+      "config_dir": "/home/phantom-gramps/.claude",
+      "sessions": 1,
+      "files": {
+        "main": 1,
+        "subagent": 2
+      },
+      "turns": 26,
+      "totals": {
+        "input_tokens": 3815,
+        "cache_creation_input_tokens": 148543,
+        "cache_read_input_tokens": 672383,
+        "output_tokens": 145
+      },
+      "by_kind": {
+        "subagent": {
+          "input_tokens": 3815,
+          "cache_creation_input_tokens": 148543,
+          "cache_read_input_tokens": 672383,
+          "output_tokens": 145
+        }
+      },
+      "by_provider": {
+        "anthropic": {
+          "input_tokens": 3815,
+          "cache_creation_input_tokens": 148543,
+          "cache_read_input_tokens": 672383,
+          "output_tokens": 145
+        }
+      },
+      "by_model": {
+        "claude-haiku-4-5-20251001": {
+          "input_tokens": 3815,
+          "cache_creation_input_tokens": 148543,
+          "cache_read_input_tokens": 672383,
+          "output_tokens": 145
+        }
+      },
+      "by_day": {
+        "2026-01-21": {
+          "input_tokens": 3815,
+          "cache_creation_input_tokens": 148543,
+          "cache_read_input_tokens": 672383,
+          "output_tokens": 145
+        }
+      },
+      "by_project": {
+        "-media-phantom-gramps-2TB-Storage-VS-code-projects-custom-wifi-router-mesh-The-Un-Ending": {
+          "input_tokens": 3815,
+          "cache_creation_input_tokens": 148543,
+          "cache_read_input_tokens": 672383,
+          "output_tokens": 145
+        }
+      },
+      "account": "broodierchip@gmail.com",
+      "user_id": "c27b4a9d126ec2d32ffc8f20d6ec0ee4496d81705319298a5d7361b510c1c9c8",
+      "identity": {
+        "auth": "oauth",
+        "email": "broodierchip@gmail.com",
+        "org_uuid": "6bfc754e-a205-41c3-9dac-80e593f494e0",
+        "org_name": "broodierchip@gmail.com's Organization",
+        "account_uuid": "a9fec27d-ab5d-48bb-9679-a9bf60bfb97e",
+        "user_id": "c27b4a9d126ec2d32ffc8f20d6ec0ee4496d81705319298a5d7361b510c1c9c8",
+        "approved_api_keys": []
+      },
+      "grand_total": 824886
+    },
+    {
+      "config_dir": "/home/phantom-gramps/.ai-logs-archive/claude/claude",
+      "sessions": 1,
+      "files": {
+        "main": 1,
+        "subagent": 2
+      },
+      "turns": 0,
+      "totals": {
+        "input_tokens": 0,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "output_tokens": 0
+      },
+      "by_kind": {},
+      "by_provider": {},
+      "by_model": {},
+      "by_day": {},
+      "by_project": {},
+      "account": "unknown (claude)",
+      "user_id": null,
+      "identity": {
+        "auth": "unknown",
+        "email": null,
+        "org_uuid": null,
+        "org_name": null,
+        "account_uuid": null,
+        "user_id": null,
+        "approved_api_keys": []
+      },
+      "grand_total": 0
+    }
+  ]
+}

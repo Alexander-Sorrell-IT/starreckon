@@ -1,0 +1,105 @@
+{
+ "scope": "ASUS Laptop Linux",
+ "generated_at": "2026-08-09T02:52:23-05:00",
+ "total_tokens": 146981095,
+ "sessions": 36,
+ "fields": {
+  "input_tokens": 37168,
+  "cache_creation_input_tokens": 7565358,
+  "cache_read_input_tokens": 124779208,
+  "output_tokens": 813876
+ },
+ "new_content_tokens": 8416402,
+ "hours": 13.8,
+ "by_cli": {
+  "codex": {
+   "sessions": 1,
+   "tokens": 670073,
+   "minutes": 18.8
+  },
+  "gemini": {
+   "sessions": 5,
+   "tokens": 4837000,
+   "minutes": 140.6
+  },
+  "claude": {
+   "sessions": 29,
+   "tokens": 133195610,
+   "minutes": 639.0
+  },
+  "antigravity": {
+   "sessions": 1,
+   "tokens": 8278412,
+   "minutes": 29.5
+  }
+ },
+ "by_model": {
+  "claude-opus-4-7": 129547879,
+  "gemini-antigravity-brain": 8278412,
+  "gemini-3-flash-preview": 4752512,
+  "claude-haiku-4-5-20251001": 3647731,
+  "gpt-5.1-codex-max": 670073,
+  "gemini-3-pro-preview": 84488
+ },
+ "records": {
+  "longest_session": {
+   "id": "57e25c90-431b-4bcb-ae8a-b72b792f63d0",
+   "cli": "claude",
+   "machine": "ASUS Laptop Linux",
+   "minutes": 483.6
+  },
+  "most_tokens": {
+   "id": "57e25c90-431b-4bcb-ae8a-b72b792f63d0",
+   "cli": "claude",
+   "machine": "ASUS Laptop Linux",
+   "tokens": 123112332
+  },
+  "most_turns": {
+   "id": "57e25c90-431b-4bcb-ae8a-b72b792f63d0",
+   "cli": "claude",
+   "machine": "ASUS Laptop Linux",
+   "turns": 494
+  }
+ },
+ "scans": {
+  "ASUS Laptop Linux": "2026-08-09T02:32:12-05:00"
+ },
+ "first_last_seen": {
+  "codex": {
+   "first": "2025-12-21T19:23:38.486Z",
+   "last": "2025-12-21T19:42:28.952Z",
+   "sources": [
+    "transcripts"
+   ]
+  },
+  "gemini": {
+   "first": "2025-12-28T19:20:30.962Z",
+   "last": "2026-05-05T21:21:00.834Z",
+   "sources": [
+    "transcripts"
+   ]
+  },
+  "claude": {
+   "first": "2026-01-17T20:02:45.058Z",
+   "last": "2026-05-05T00:07:13.955Z",
+   "sources": [
+    "transcripts"
+   ]
+  },
+  "antigravity": {
+   "first": "2026-08-03T03:33:29Z",
+   "last": "2026-08-09T07:32:10Z",
+   "sources": [
+    "transcripts"
+   ]
+  },
+  "copilot": {
+   "first": "2026-01-04T07:44:14.452000Z",
+   "last": "2026-01-04T07:44:14.452000Z",
+   "sources": [
+    "vscode:Code - Insiders"
+   ]
+  }
+ },
+ "scanner_version": "2e512dc55519"
+}

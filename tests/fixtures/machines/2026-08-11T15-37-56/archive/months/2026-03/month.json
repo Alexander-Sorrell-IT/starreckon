@@ -1,0 +1,20 @@
+{
+ "tokens": 5843447,
+ "sessions": 5,
+ "turns": 4358,
+ "minutes": 1123.6000000000001,
+ "by_cli": {
+  "copilot": 5692840,
+  "gemini": 150607
+ },
+ "by_machine": {
+  "HP Laptop Linux": 5843447
+ },
+ "by_model": {
+  "unknown": 5692840,
+  "gemini-2.5-flash": 150607
+ },
+ "first": "2026-03-04T11:22:32.739Z",
+ "last": "2026-03-25T23:32:55.803Z",
+ "month": "2026-03"
+}

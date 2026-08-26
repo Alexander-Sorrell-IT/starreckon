@@ -1,0 +1,160 @@
+{
+ "scope": "The fleet",
+ "generated_at": "2026-08-05T23:58:10-05:00",
+ "total_tokens": 51190757894,
+ "sessions": 17116,
+ "fields": {
+  "input_tokens": 404739553,
+  "cache_creation_input_tokens": 1751102275,
+  "cache_read_input_tokens": 41703096352,
+  "output_tokens": 183666811
+ },
+ "new_content_tokens": 2339508639,
+ "hours": 1108.9,
+ "by_cli": {
+  "codex": {
+   "sessions": 148,
+   "tokens": 2313178830,
+   "minutes": 3561.2
+  },
+  "gemini": {
+   "sessions": 69,
+   "tokens": 2597624749,
+   "minutes": 5597.4
+  },
+  "claude": {
+   "sessions": 16727,
+   "tokens": 44124850282,
+   "minutes": 42816.7
+  },
+  "antigravity": {
+   "sessions": 62,
+   "tokens": 215302468,
+   "minutes": 1116.6
+  },
+  "copilot": {
+   "sessions": 91,
+   "tokens": 1855829269,
+   "minutes": 12903.0
+  },
+  "lmstudio": {
+   "sessions": 10,
+   "tokens": 172933,
+   "minutes": 0.0
+  },
+  "kilocode": {
+   "sessions": 4,
+   "tokens": 7074501,
+   "minutes": 79.3
+  },
+  "grok": {
+   "sessions": 5,
+   "tokens": 76724862,
+   "minutes": 459.9
+  }
+ },
+ "by_model": {
+  "claude-opus-4-8": 18103721373,
+  "claude-opus-5": 15556991843,
+  "claude-opus-4-7": 5771529593,
+  "claude-fable-5": 2569118103,
+  "gemini-3-flash-preview": 2269297465,
+  "gpt-5.6-sol": 1450778440,
+  "deepseek-v4-pro": 1445952016,
+  "unknown": 1123159069,
+  "claude-sonnet-4-6": 662248304,
+  "gpt-5.5": 605118460,
+  "gpt-5.4-mini": 353641657,
+  "claude-sonnet-4.6": 279118768,
+  "gemini-3-pro-preview": 201521906,
+  "gpt-5.6-luna": 180826644,
+  "claude-opus-4.7": 94058304,
+  "grok-4.5-build": 76724862,
+  "gemini-3-flash-d": 74439389,
+  "gemini-2.5-pro": 66610041,
+  "gemini-3.1-pro-preview": 62675334,
+  "gemini-3-flash-agent": 48392056
+ },
+ "records": {
+  "longest_session": {
+   "id": "37aba660-0aef-4454-8384-d58e31c238c8",
+   "cli": "claude",
+   "machine": "MacBook Air M1",
+   "minutes": 3652.8
+  },
+  "most_tokens": {
+   "id": "f4b9b473-5470-452b-baaf-a70f6ad029e2",
+   "cli": "claude",
+   "machine": "MacBook Air M1",
+   "tokens": 5968942051
+  },
+  "most_turns": {
+   "id": "f4b9b473-5470-452b-baaf-a70f6ad029e2",
+   "cli": "claude",
+   "machine": "MacBook Air M1",
+   "turns": 45141
+  }
+ },
+ "scans": {
+  "ASUS Laptop Linux": "2026-08-04T01:46:32-05:00",
+  "Dell Inspiron Desktop Linux": "2026-08-04T02:05:53-05:00",
+  "Dell Latitude 7480 Linux": "2026-08-05T00:25:24-05:00",
+  "HP Laptop Linux": "2026-08-05T23:58:08-05:00",
+  "MacBook Air M1": "2026-08-04T20:44:43-05:00"
+ },
+ "first_last_seen": {
+  "lmstudio": {
+   "first": "2025-07-01T06:58:19.695000Z",
+   "last": "2025-07-04T00:24:10.034000Z",
+   "sources": [
+    "transcripts"
+   ]
+  },
+  "kilocode": {
+   "first": "2025-07-17T06:18:26.913000Z",
+   "last": "2026-01-13T09:17:03.568000Z",
+   "sources": [
+    "transcripts",
+    "vscode:Code",
+    "vscode:Code - Insiders"
+   ]
+  },
+  "codex": {
+   "first": "2025-12-21T07:51:12.181Z",
+   "last": "2026-01-08T20:20:37.521Z",
+   "sources": [
+    "transcripts"
+   ]
+  },
+  "gemini": {
+   "first": "2025-12-27T19:46:57.086Z",
+   "last": "2026-07-02T23:30:25.789Z",
+   "sources": [
+    "transcripts"
+   ]
+  },
+  "copilot": {
+   "first": "2025-10-09T17:44:18.929000Z",
+   "last": "2026-05-28T14:46:07.294Z",
+   "sources": [
+    "transcripts",
+    "vscode:Code",
+    "vscode:Code - Insiders"
+   ]
+  },
+  "claude": {
+   "first": "2026-05-04T17:09:10.131Z",
+   "last": "2026-08-06T04:57:37.189Z",
+   "sources": [
+    "transcripts"
+   ]
+  },
+  "antigravity": {
+   "first": "2026-05-29T00:17:13Z",
+   "last": "2026-07-23T07:23:27Z",
+   "sources": [
+    "transcripts"
+   ]
+  }
+ }
+}

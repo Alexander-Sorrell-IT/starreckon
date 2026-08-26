@@ -1,0 +1,92 @@
+{
+ "machine": "Dell Latitude 7480 Linux",
+ "generated_at": "2026-08-09T02:49:46-05:00",
+ "failed": 1,
+ "warned": 1,
+ "checks": [
+  {
+   "area": "scan",
+   "check": "totals.json written",
+   "status": "ok",
+   "detail": ""
+  },
+  {
+   "area": "scan",
+   "check": "sessions.json written",
+   "status": "ok",
+   "detail": ""
+  },
+  {
+   "area": "scan",
+   "check": "hardware.json written",
+   "status": "ok",
+   "detail": ""
+  },
+  {
+   "area": "scan",
+   "check": "scan is recent",
+   "status": "ok",
+   "detail": "0.0h old"
+  },
+  {
+   "area": "scan",
+   "check": "both scanners same version",
+   "status": "ok",
+   "detail": "2e512dc55519 / 2e512dc55519"
+  },
+  {
+   "area": "readers",
+   "check": "every CLI has a row",
+   "status": "ok",
+   "detail": "8 rows"
+  },
+  {
+   "area": "readers",
+   "check": "no CLI is installed-but-silent",
+   "status": "ok",
+   "detail": "none"
+  },
+  {
+   "area": "readers",
+   "check": "no reader raised",
+   "status": "ok",
+   "detail": "none"
+  },
+  {
+   "area": "agreement",
+   "check": "analyze_tokens == sessions",
+   "status": "ok",
+   "detail": "2,353,868,873 vs 2,354,908,812 \u2014 1,039,939 apart (0.04%)"
+  },
+  {
+   "area": "corpus",
+   "check": "export exists",
+   "status": "ok",
+   "detail": "/home/phantom-orchestrator/token-corpus/dell-latitude-7480-linux"
+  },
+  {
+   "area": "corpus",
+   "check": "export is recent",
+   "status": "WARN",
+   "detail": "2026-08-06T06:40:05-05:00"
+  },
+  {
+   "area": "corpus",
+   "check": "profiles match the scan",
+   "status": "FAIL",
+   "detail": "6 exported / 12 scanned"
+  },
+  {
+   "area": "corpus",
+   "check": "redaction ran",
+   "status": "ok",
+   "detail": "topic 47,302, span 535, path 266,016, email 7,339"
+  },
+  {
+   "area": "archive",
+   "check": "a dated snapshot exists",
+   "status": "ok",
+   "detail": "2 snapshot(s), newest 2026-08-09T02-49-45"
+  }
+ ]
+}

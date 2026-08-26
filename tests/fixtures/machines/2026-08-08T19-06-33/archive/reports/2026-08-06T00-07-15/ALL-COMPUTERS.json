@@ -1,0 +1,201 @@
+{
+  "generated_at": "2026-08-06T00:07:03-05:00",
+  "grand_total_tokens": 11576825537,
+  "machines": [
+    {
+      "machine": "HP Laptop Linux",
+      "folder": "hp-laptop-linux",
+      "total": 11576825537,
+      "scanned": "2026-08-06T00:06:37-05:00",
+      "sessions_scanned": true
+    }
+  ],
+  "accounts": [
+    {
+      "account": "broodierchip@gmail.com",
+      "total": 6365568232,
+      "sessions": 2690,
+      "turns": 25106,
+      "by_machine": {
+        "HP Laptop Linux": 6365568232
+      },
+      "totals": {
+        "input_tokens": 6665327,
+        "cache_creation_input_tokens": 219984438,
+        "cache_read_input_tokens": 6109187198,
+        "output_tokens": 29731269
+      }
+    },
+    {
+      "account": "codehunterextreme@gmail.com",
+      "total": 3717819380,
+      "sessions": 40,
+      "turns": 22543,
+      "by_machine": {
+        "HP Laptop Linux": 3717819380
+      },
+      "totals": {
+        "input_tokens": 3443408,
+        "cache_creation_input_tokens": 168102251,
+        "cache_read_input_tokens": 3527671492,
+        "output_tokens": 18602229
+      }
+    },
+    {
+      "account": "DeepSeek backend (~/.my-claude)",
+      "total": 1409787623,
+      "sessions": 6,
+      "turns": 14797,
+      "by_machine": {
+        "HP Laptop Linux": 1409787623
+      },
+      "totals": {
+        "input_tokens": 61324095,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 1343468672,
+        "output_tokens": 4994856
+      }
+    },
+    {
+      "account": "alexander.sorrell.it@gmail.com",
+      "total": 83212683,
+      "sessions": 2,
+      "turns": 885,
+      "by_machine": {
+        "HP Laptop Linux": 83212683
+      },
+      "totals": {
+        "input_tokens": 25878,
+        "cache_creation_input_tokens": 2434605,
+        "cache_read_input_tokens": 80236487,
+        "output_tokens": 515713
+      }
+    },
+    {
+      "account": "API key (org 15a93e14-aabb-4293-8228-8c56a803d972)",
+      "total": 437619,
+      "sessions": 1,
+      "turns": 18,
+      "by_machine": {
+        "HP Laptop Linux": 437619
+      },
+      "totals": {
+        "input_tokens": 3856,
+        "cache_creation_input_tokens": 28703,
+        "cache_read_input_tokens": 394815,
+        "output_tokens": 10245
+      }
+    }
+  ],
+  "by_cli": {
+    "claude": {
+      "sessions": 155,
+      "tokens": 11576825537,
+      "active_min": 15069.5
+    },
+    "gemini": {
+      "sessions": 46,
+      "tokens": 1468362549,
+      "active_min": 4217.7
+    },
+    "copilot": {
+      "sessions": 31,
+      "tokens": 295831967,
+      "active_min": 3280.7
+    },
+    "antigravity": {
+      "sessions": 19,
+      "tokens": 26927559,
+      "active_min": 98.7
+    },
+    "kilocode": {
+      "sessions": 4,
+      "tokens": 7074501,
+      "active_min": 79.3
+    },
+    "codex": {
+      "sessions": 2,
+      "tokens": 1453618,
+      "active_min": 23.3
+    },
+    "lmstudio": {
+      "sessions": 7,
+      "tokens": 119774,
+      "active_min": 0.0
+    },
+    "grok": {
+      "sessions": 0,
+      "tokens": 0,
+      "active_min": 0.0
+    }
+  },
+  "by_provider": {
+    "anthropic": 10130873521,
+    "deepseek": 1445952016
+  },
+  "by_machine_provider": {
+    "HP Laptop Linux": {
+      "anthropic": 10130873521,
+      "synthetic": 0,
+      "deepseek": 1445952016
+    }
+  },
+  "cli_by_provider": {
+    "anthropic": {
+      "sessions": 106,
+      "tokens": 10130873521,
+      "active_min": 10506.2
+    },
+    "google": {
+      "sessions": 67,
+      "tokens": 1502315230,
+      "active_min": 4395.0
+    },
+    "deepseek": {
+      "sessions": 48,
+      "tokens": 1445955546,
+      "active_min": 4563.3
+    },
+    "openai": {
+      "sessions": 28,
+      "tokens": 291346333,
+      "active_min": 2031.0
+    },
+    "synthetic": {
+      "sessions": 7,
+      "tokens": 5939252,
+      "active_min": 1273.0
+    },
+    "mistral": {
+      "sessions": 5,
+      "tokens": 116185,
+      "active_min": 0.0
+    },
+    "other": {
+      "sessions": 1,
+      "tokens": 38733,
+      "active_min": 0.6
+    },
+    "xai": {
+      "sessions": 1,
+      "tokens": 10646,
+      "active_min": 0.1
+    },
+    "meta": {
+      "sessions": 1,
+      "tokens": 59,
+      "active_min": 0.0
+    }
+  },
+  "uncountable_tools": [
+    {
+      "tool": "grok-cli (@vibe-kit)",
+      "dir": "/home/phantomcore/.npm-global/bin/grok",
+      "files": 1,
+      "records_token_usage": false,
+      "counted_here": false,
+      "why": "community npm CLI, distinct from xAI's official Grok Build CLI; stores no usage of any kind",
+      "machine": "HP Laptop Linux"
+    }
+  ]
+}

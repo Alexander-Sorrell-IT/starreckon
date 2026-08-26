@@ -1,0 +1,20 @@
+{
+ "tokens": 432221663,
+ "sessions": 14,
+ "turns": 2645,
+ "minutes": 1011.8000000000001,
+ "by_cli": {
+  "claude": 432221663
+ },
+ "by_machine": {
+  "HP Laptop Linux": 432221663
+ },
+ "by_model": {
+  "claude-fable-5": 289003888,
+  "claude-opus-5": 143097189,
+  "claude-sonnet-5": 120586
+ },
+ "first": "2026-08-03T02:34:23.852Z",
+ "last": "2026-08-08T05:17:25.515Z",
+ "month": "2026-08"
+}

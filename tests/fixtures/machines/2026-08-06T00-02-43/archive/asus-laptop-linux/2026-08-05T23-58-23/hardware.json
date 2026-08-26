@@ -1,0 +1,28 @@
+{
+  "machine": "ASUS Laptop Linux",
+  "hostname": "phantom-eternal",
+  "hardware": {
+    "model_identifier": "x86_64",
+    "chip": "x86_64",
+    "cpu_logical": 8,
+    "memory_gb": 31.3,
+    "os": "Linux 6.14.0-35-generic"
+  },
+  "disk": {
+    "volume": "/home/phantom-eternal",
+    "total_gb": 433.3,
+    "used_gb": 48.4,
+    "free_gb": 384.9
+  },
+  "python": "3.12.3",
+  "accounts": [
+    {
+      "account": "broodierchip@gmail.com",
+      "config_dir": "/home/phantom-eternal/.claude",
+      "profile_env": "unset (default)",
+      "sessions": 28,
+      "transcript_files": 56,
+      "projects": 5
+    }
+  ]
+}

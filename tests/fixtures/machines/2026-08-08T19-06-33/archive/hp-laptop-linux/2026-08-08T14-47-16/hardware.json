@@ -1,0 +1,205 @@
+{
+  "machine": "HP Laptop Linux",
+  "hostname": "HP-Phantom-Core",
+  "hardware": {
+    "model_identifier": "x86_64",
+    "chip": "x86_64",
+    "cpu_logical": 12,
+    "memory_gb": 62.5,
+    "os": "Linux 6.17.0-35-generic"
+  },
+  "disk": {
+    "volume": "/home/phantomcore",
+    "total_gb": 1875.7,
+    "used_gb": 1631.8,
+    "free_gb": 148.5
+  },
+  "python": "3.12.3",
+  "accounts": [
+    {
+      "account": "unknown (Desktop_standout_full_.claude)",
+      "config_dir": "/home/phantomcore/.ai-logs-archive/claude/Desktop_standout_full_.claude",
+      "profile_env": "CLAUDE_CONFIG_DIR=/home/phantomcore/.ai-logs-archive/claude/Desktop_standout_full_.claude",
+      "sessions": 805,
+      "transcript_files": 805,
+      "projects": 110
+    },
+    {
+      "account": "unknown (Desktop_standout_max_.claude)",
+      "config_dir": "/home/phantomcore/.ai-logs-archive/claude/Desktop_standout_max_.claude",
+      "profile_env": "CLAUDE_CONFIG_DIR=/home/phantomcore/.ai-logs-archive/claude/Desktop_standout_max_.claude",
+      "sessions": 805,
+      "transcript_files": 805,
+      "projects": 110
+    },
+    {
+      "account": "broodierchip@gmail.com",
+      "config_dir": "/home/phantomcore/Desktop/standout_full/.claude",
+      "profile_env": "unset (default)",
+      "sessions": 805,
+      "transcript_files": 805,
+      "projects": 110
+    },
+    {
+      "account": "broodierchip@gmail.com",
+      "config_dir": "/home/phantomcore/Desktop/standout_max/.claude",
+      "profile_env": "unset (default)",
+      "sessions": 805,
+      "transcript_files": 805,
+      "projects": 110
+    },
+    {
+      "account": "unknown (Desktop_standout_sandbox_.claude)",
+      "config_dir": "/home/phantomcore/.ai-logs-archive/claude/Desktop_standout_sandbox_.claude",
+      "profile_env": "CLAUDE_CONFIG_DIR=/home/phantomcore/.ai-logs-archive/claude/Desktop_standout_sandbox_.claude",
+      "sessions": 576,
+      "transcript_files": 735,
+      "projects": 45
+    },
+    {
+      "account": "broodierchip@gmail.com",
+      "config_dir": "/home/phantomcore/Desktop/standout_sandbox/.claude",
+      "profile_env": "unset (default)",
+      "sessions": 576,
+      "transcript_files": 735,
+      "projects": 45
+    },
+    {
+      "account": "codehunterextreme@gmail.com",
+      "config_dir": "/home/phantomcore/.claude-alt",
+      "profile_env": "CLAUDE_CONFIG_DIR=/home/phantomcore/.claude-alt",
+      "sessions": 27,
+      "transcript_files": 638,
+      "projects": 42
+    },
+    {
+      "account": "unknown (.claude-alt)",
+      "config_dir": "/home/phantomcore/.ai-logs-archive/claude/.claude-alt",
+      "profile_env": "CLAUDE_CONFIG_DIR=/home/phantomcore/.ai-logs-archive/claude/.claude-alt",
+      "sessions": 27,
+      "transcript_files": 638,
+      "projects": 42
+    },
+    {
+      "account": "unknown (claude-alt)",
+      "config_dir": "/home/phantomcore/.ai-logs-archive/claude/claude-alt",
+      "profile_env": "CLAUDE_CONFIG_DIR=/home/phantomcore/.ai-logs-archive/claude/claude-alt",
+      "sessions": 27,
+      "transcript_files": 638,
+      "projects": 42
+    },
+    {
+      "account": "unknown (Desktop_standout_clean_.claude)",
+      "config_dir": "/home/phantomcore/.ai-logs-archive/claude/Desktop_standout_clean_.claude",
+      "profile_env": "CLAUDE_CONFIG_DIR=/home/phantomcore/.ai-logs-archive/claude/Desktop_standout_clean_.claude",
+      "sessions": 420,
+      "transcript_files": 420,
+      "projects": 55
+    },
+    {
+      "account": "broodierchip@gmail.com",
+      "config_dir": "/home/phantomcore/Desktop/standout_clean/.claude",
+      "profile_env": "unset (default)",
+      "sessions": 420,
+      "transcript_files": 420,
+      "projects": 55
+    },
+    {
+      "account": "broodierchip@gmail.com",
+      "config_dir": "/home/phantomcore/.claude",
+      "profile_env": "unset (default)",
+      "sessions": 84,
+      "transcript_files": 143,
+      "projects": 46
+    },
+    {
+      "account": "broodierchip@gmail.com",
+      "config_dir": "/home/phantomcore/.ai-logs-archive/claude/.claude",
+      "profile_env": "unset (default)",
+      "sessions": 84,
+      "transcript_files": 143,
+      "projects": 46
+    },
+    {
+      "account": "unknown (claude)",
+      "config_dir": "/home/phantomcore/.ai-logs-archive/claude/claude",
+      "profile_env": "CLAUDE_CONFIG_DIR=/home/phantomcore/.ai-logs-archive/claude/claude",
+      "sessions": 84,
+      "transcript_files": 143,
+      "projects": 46
+    },
+    {
+      "account": "user:73ae64bf180b",
+      "config_dir": "/home/phantomcore/.my-claude",
+      "profile_env": "CLAUDE_CONFIG_DIR=/home/phantomcore/.my-claude",
+      "sessions": 6,
+      "transcript_files": 130,
+      "projects": 14
+    },
+    {
+      "account": "unknown (.my-claude)",
+      "config_dir": "/home/phantomcore/.ai-logs-archive/claude/.my-claude",
+      "profile_env": "CLAUDE_CONFIG_DIR=/home/phantomcore/.ai-logs-archive/claude/.my-claude",
+      "sessions": 6,
+      "transcript_files": 130,
+      "projects": 14
+    },
+    {
+      "account": "unknown (my-claude)",
+      "config_dir": "/home/phantomcore/.ai-logs-archive/claude/my-claude",
+      "profile_env": "CLAUDE_CONFIG_DIR=/home/phantomcore/.ai-logs-archive/claude/my-claude",
+      "sessions": 6,
+      "transcript_files": 130,
+      "projects": 14
+    },
+    {
+      "account": "alexander.sorrell.it@gmail.com",
+      "config_dir": "/home/phantomcore/.claude-it",
+      "profile_env": "CLAUDE_CONFIG_DIR=/home/phantomcore/.claude-it",
+      "sessions": 2,
+      "transcript_files": 3,
+      "projects": 2
+    },
+    {
+      "account": "unknown (.claude-it)",
+      "config_dir": "/home/phantomcore/.ai-logs-archive/claude/.claude-it",
+      "profile_env": "CLAUDE_CONFIG_DIR=/home/phantomcore/.ai-logs-archive/claude/.claude-it",
+      "sessions": 2,
+      "transcript_files": 3,
+      "projects": 2
+    },
+    {
+      "account": "unknown (claude-it)",
+      "config_dir": "/home/phantomcore/.ai-logs-archive/claude/claude-it",
+      "profile_env": "CLAUDE_CONFIG_DIR=/home/phantomcore/.ai-logs-archive/claude/claude-it",
+      "sessions": 2,
+      "transcript_files": 3,
+      "projects": 2
+    },
+    {
+      "account": "user:4be462f3a2f9",
+      "config_dir": "/home/phantomcore/.claude-alt-api",
+      "profile_env": "CLAUDE_CONFIG_DIR=/home/phantomcore/.claude-alt-api",
+      "sessions": 1,
+      "transcript_files": 1,
+      "projects": 1
+    },
+    {
+      "account": "unknown (.claude-alt-api)",
+      "config_dir": "/home/phantomcore/.ai-logs-archive/claude/.claude-alt-api",
+      "profile_env": "CLAUDE_CONFIG_DIR=/home/phantomcore/.ai-logs-archive/claude/.claude-alt-api",
+      "sessions": 1,
+      "transcript_files": 1,
+      "projects": 1
+    },
+    {
+      "account": "unknown (claude-alt-api)",
+      "config_dir": "/home/phantomcore/.ai-logs-archive/claude/claude-alt-api",
+      "profile_env": "CLAUDE_CONFIG_DIR=/home/phantomcore/.ai-logs-archive/claude/claude-alt-api",
+      "sessions": 1,
+      "transcript_files": 1,
+      "projects": 1
+    }
+  ],
+  "scanner_version": "1250021e3791"
+}

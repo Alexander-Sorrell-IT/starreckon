@@ -1,0 +1,801 @@
+{
+  "machine": "Dell Latitude 7480 Linux",
+  "generated_at": "2026-08-05T00:24:51-05:00",
+  "scanner_version": "abaab905ae4c",
+  "anthropic_only_tokens": 3726175980,
+  "by_provider": {
+    "anthropic": 3726175980,
+    "synthetic": 0
+  },
+  "other_tools": [
+    {
+      "vendor": "gemini",
+      "label": "Gemini CLI",
+      "dir": "/home/phantom-orchestrator/.gemini",
+      "files": 103,
+      "records_usage": false
+    },
+    {
+      "vendor": "copilot",
+      "label": "GitHub Copilot CLI",
+      "dir": "/home/phantom-orchestrator/.copilot",
+      "files": 205,
+      "records_usage": false
+    },
+    {
+      "vendor": "antigravity",
+      "label": "Antigravity CLI",
+      "dir": "/home/phantom-orchestrator/.antigravitycli",
+      "files": 1,
+      "records_usage": false
+    },
+    {
+      "vendor": "openai",
+      "label": "OpenAI Codex CLI",
+      "dir": "/home/phantom-orchestrator/.codex",
+      "files": 282,
+      "records_usage": true
+    }
+  ],
+  "grand_total_tokens": 3726175980,
+  "accounts": [
+    {
+      "config_dir": "/home/phantom-orchestrator/.claude-it",
+      "sessions": 70,
+      "files": {
+        "main": 70,
+        "subagent": 10
+      },
+      "turns": 8697,
+      "totals": {
+        "input_tokens": 479829,
+        "cache_creation_input_tokens": 94679746,
+        "cache_read_input_tokens": 2073330096,
+        "output_tokens": 12281400
+      },
+      "by_kind": {
+        "main": {
+          "input_tokens": 365870,
+          "cache_creation_input_tokens": 88716973,
+          "cache_read_input_tokens": 2035770400,
+          "output_tokens": 11986808
+        },
+        "subagent": {
+          "input_tokens": 113959,
+          "cache_creation_input_tokens": 5962773,
+          "cache_read_input_tokens": 37559696,
+          "output_tokens": 294592
+        }
+      },
+      "by_provider": {
+        "anthropic": {
+          "input_tokens": 479829,
+          "cache_creation_input_tokens": 94679746,
+          "cache_read_input_tokens": 2073330096,
+          "output_tokens": 12281400
+        },
+        "synthetic": {
+          "input_tokens": 0,
+          "cache_creation_input_tokens": 0,
+          "cache_read_input_tokens": 0,
+          "output_tokens": 0
+        }
+      },
+      "by_model": {
+        "claude-opus-5": {
+          "input_tokens": 24456,
+          "cache_creation_input_tokens": 19052798,
+          "cache_read_input_tokens": 424269109,
+          "output_tokens": 3734955
+        },
+        "claude-opus-4-8": {
+          "input_tokens": 241083,
+          "cache_creation_input_tokens": 55201473,
+          "cache_read_input_tokens": 1139486639,
+          "output_tokens": 5294277
+        },
+        "<synthetic>": {
+          "input_tokens": 0,
+          "cache_creation_input_tokens": 0,
+          "cache_read_input_tokens": 0,
+          "output_tokens": 0
+        },
+        "claude-fable-5": {
+          "input_tokens": 213436,
+          "cache_creation_input_tokens": 15727344,
+          "cache_read_input_tokens": 497066200,
+          "output_tokens": 2980946
+        },
+        "claude-opus-4-7": {
+          "input_tokens": 854,
+          "cache_creation_input_tokens": 4698131,
+          "cache_read_input_tokens": 12508148,
+          "output_tokens": 271222
+        }
+      },
+      "by_day": {
+        "2026-08-04": {
+          "input_tokens": 279,
+          "cache_creation_input_tokens": 319173,
+          "cache_read_input_tokens": 10474731,
+          "output_tokens": 143087
+        },
+        "2026-08-02": {
+          "input_tokens": 695,
+          "cache_creation_input_tokens": 2000198,
+          "cache_read_input_tokens": 52199330,
+          "output_tokens": 425463
+        },
+        "2026-08-03": {
+          "input_tokens": 150,
+          "cache_creation_input_tokens": 633398,
+          "cache_read_input_tokens": 12138152,
+          "output_tokens": 117179
+        },
+        "2026-07-29": {
+          "input_tokens": 13189,
+          "cache_creation_input_tokens": 3849892,
+          "cache_read_input_tokens": 61022808,
+          "output_tokens": 623398
+        },
+        "2026-07-30": {
+          "input_tokens": 3857,
+          "cache_creation_input_tokens": 3068996,
+          "cache_read_input_tokens": 54052778,
+          "output_tokens": 462299
+        },
+        "2026-08-01": {
+          "input_tokens": 511,
+          "cache_creation_input_tokens": 1286125,
+          "cache_read_input_tokens": 26712400,
+          "output_tokens": 245891
+        },
+        "2026-07-04": {
+          "input_tokens": 69817,
+          "cache_creation_input_tokens": 4410153,
+          "cache_read_input_tokens": 35255459,
+          "output_tokens": 798669
+        },
+        "2026-07-05": {
+          "input_tokens": 39516,
+          "cache_creation_input_tokens": 5664928,
+          "cache_read_input_tokens": 213993842,
+          "output_tokens": 1134439
+        },
+        "2026-07-06": {
+          "input_tokens": 46605,
+          "cache_creation_input_tokens": 3481672,
+          "cache_read_input_tokens": 114599769,
+          "output_tokens": 334819
+        },
+        "2026-07-07": {
+          "input_tokens": 50922,
+          "cache_creation_input_tokens": 6570991,
+          "cache_read_input_tokens": 223684741,
+          "output_tokens": 851554
+        },
+        "2026-07-11": {
+          "input_tokens": 34323,
+          "cache_creation_input_tokens": 4100797,
+          "cache_read_input_tokens": 44015294,
+          "output_tokens": 172726
+        },
+        "2026-07-12": {
+          "input_tokens": 10795,
+          "cache_creation_input_tokens": 7580702,
+          "cache_read_input_tokens": 182504016,
+          "output_tokens": 515818
+        },
+        "2026-07-23": {
+          "input_tokens": 6131,
+          "cache_creation_input_tokens": 19214199,
+          "cache_read_input_tokens": 257740206,
+          "output_tokens": 1344277
+        },
+        "2026-07-22": {
+          "input_tokens": 771,
+          "cache_creation_input_tokens": 1443329,
+          "cache_read_input_tokens": 56930824,
+          "output_tokens": 562814
+        },
+        "2026-07-24": {
+          "input_tokens": 417,
+          "cache_creation_input_tokens": 2466624,
+          "cache_read_input_tokens": 115684242,
+          "output_tokens": 292533
+        },
+        "2026-07-25": {
+          "input_tokens": 315,
+          "cache_creation_input_tokens": 2989222,
+          "cache_read_input_tokens": 16059411,
+          "output_tokens": 158034
+        },
+        "2026-08-05": {
+          "input_tokens": 114,
+          "cache_creation_input_tokens": 203467,
+          "cache_read_input_tokens": 2918380,
+          "output_tokens": 40032
+        },
+        "2026-07-08": {
+          "input_tokens": 115617,
+          "cache_creation_input_tokens": 4579020,
+          "cache_read_input_tokens": 164352679,
+          "output_tokens": 779268
+        },
+        "2026-07-09": {
+          "input_tokens": 10493,
+          "cache_creation_input_tokens": 2835307,
+          "cache_read_input_tokens": 130919609,
+          "output_tokens": 308478
+        },
+        "2026-07-13": {
+          "input_tokens": 526,
+          "cache_creation_input_tokens": 1613273,
+          "cache_read_input_tokens": 1074514,
+          "output_tokens": 4331
+        },
+        "2026-07-26": {
+          "input_tokens": 4556,
+          "cache_creation_input_tokens": 2270228,
+          "cache_read_input_tokens": 97916402,
+          "output_tokens": 751295
+        },
+        "2026-07-27": {
+          "input_tokens": 68558,
+          "cache_creation_input_tokens": 6680309,
+          "cache_read_input_tokens": 72426035,
+          "output_tokens": 750436
+        },
+        "2026-07-28": {
+          "input_tokens": 938,
+          "cache_creation_input_tokens": 6348011,
+          "cache_read_input_tokens": 88673924,
+          "output_tokens": 914559
+        },
+        "2026-07-31": {
+          "input_tokens": 320,
+          "cache_creation_input_tokens": 549375,
+          "cache_read_input_tokens": 10299962,
+          "output_tokens": 156337
+        },
+        "2026-07-14": {
+          "input_tokens": 414,
+          "cache_creation_input_tokens": 520357,
+          "cache_read_input_tokens": 27680588,
+          "output_tokens": 393664
+        }
+      },
+      "by_project": {
+        "-home-phantom-orchestrator": {
+          "input_tokens": 282841,
+          "cache_creation_input_tokens": 55801000,
+          "cache_read_input_tokens": 1294837808,
+          "output_tokens": 7097689
+        },
+        "-home-phantom-orchestrator-Documents-Transcript-engine": {
+          "input_tokens": 30,
+          "cache_creation_input_tokens": 35890,
+          "cache_read_input_tokens": 380221,
+          "output_tokens": 12627
+        },
+        "-home-phantom-orchestrator-questline": {
+          "input_tokens": 69846,
+          "cache_creation_input_tokens": 13277832,
+          "cache_read_input_tokens": 116486881,
+          "output_tokens": 1657650
+        },
+        "-home-phantom-orchestrator-tv-tracker": {
+          "input_tokens": 6085,
+          "cache_creation_input_tokens": 12973013,
+          "cache_read_input_tokens": 225069451,
+          "output_tokens": 1658876
+        },
+        "-media-phantom-orchestrator-BitcoinNode-AI-Projects-MultiBoot": {
+          "input_tokens": 120613,
+          "cache_creation_input_tokens": 12071654,
+          "cache_read_input_tokens": 408875147,
+          "output_tokens": 1460894
+        },
+        "-media-phantom-orchestrator-Elements1-Build-From-Scratch-Ideas-look-at-this-Cognitive-profile": {
+          "input_tokens": 414,
+          "cache_creation_input_tokens": 520357,
+          "cache_read_input_tokens": 27680588,
+          "output_tokens": 393664
+        }
+      },
+      "account": "alexander.sorrell.it@gmail.com",
+      "user_id": "3572682e824fbb759bad843c8552a4fa8dd47736a85bfc94a44fecdfa8fc346b",
+      "identity": {
+        "auth": "oauth",
+        "email": "alexander.sorrell.it@gmail.com",
+        "org_uuid": "66565064-263e-4d54-b06f-15cae4b2febc",
+        "org_name": "alexander.sorrell.it@gmail.com's Organization",
+        "account_uuid": "55c75c9e-b932-41e8-a80c-e3abf56861d8",
+        "user_id": "3572682e824fbb759bad843c8552a4fa8dd47736a85bfc94a44fecdfa8fc346b",
+        "approved_api_keys": []
+      },
+      "grand_total": 2180771071
+    },
+    {
+      "config_dir": "/home/phantom-orchestrator/.claude",
+      "sessions": 16441,
+      "files": {
+        "main": 16441,
+        "workflow": 15
+      },
+      "turns": 32475,
+      "totals": {
+        "input_tokens": 321495214,
+        "cache_creation_input_tokens": 252692654,
+        "cache_read_input_tokens": 919526763,
+        "output_tokens": 17632348
+      },
+      "by_kind": {
+        "main": {
+          "input_tokens": 321483311,
+          "cache_creation_input_tokens": 249122654,
+          "cache_read_input_tokens": 884979386,
+          "output_tokens": 17408176
+        },
+        "workflow": {
+          "input_tokens": 11903,
+          "cache_creation_input_tokens": 3570000,
+          "cache_read_input_tokens": 34547377,
+          "output_tokens": 224172
+        }
+      },
+      "by_provider": {
+        "synthetic": {
+          "input_tokens": 0,
+          "cache_creation_input_tokens": 0,
+          "cache_read_input_tokens": 0,
+          "output_tokens": 0
+        },
+        "anthropic": {
+          "input_tokens": 321495214,
+          "cache_creation_input_tokens": 252692654,
+          "cache_read_input_tokens": 919526763,
+          "output_tokens": 17632348
+        }
+      },
+      "by_model": {
+        "<synthetic>": {
+          "input_tokens": 0,
+          "cache_creation_input_tokens": 0,
+          "cache_read_input_tokens": 0,
+          "output_tokens": 0
+        },
+        "claude-opus-5": {
+          "input_tokens": 13543,
+          "cache_creation_input_tokens": 8794887,
+          "cache_read_input_tokens": 239134511,
+          "output_tokens": 1014494
+        },
+        "claude-opus-4-8": {
+          "input_tokens": 321481128,
+          "cache_creation_input_tokens": 242420854,
+          "cache_read_input_tokens": 679197396,
+          "output_tokens": 16497697
+        },
+        "claude-opus-4-6": {
+          "input_tokens": 21,
+          "cache_creation_input_tokens": 390029,
+          "cache_read_input_tokens": 0,
+          "output_tokens": 317
+        },
+        "claude-haiku-4-5-20251001": {
+          "input_tokens": 522,
+          "cache_creation_input_tokens": 1086884,
+          "cache_read_input_tokens": 1194856,
+          "output_tokens": 119840
+        }
+      },
+      "by_day": {
+        "2026-08-02": {
+          "input_tokens": 406,
+          "cache_creation_input_tokens": 582515,
+          "cache_read_input_tokens": 19567324,
+          "output_tokens": 122182
+        },
+        "2026-07-25": {
+          "input_tokens": 876,
+          "cache_creation_input_tokens": 2963554,
+          "cache_read_input_tokens": 50329688,
+          "output_tokens": 496901
+        },
+        "2026-07-26": {
+          "input_tokens": 13168,
+          "cache_creation_input_tokens": 8076162,
+          "cache_read_input_tokens": 163394351,
+          "output_tokens": 932376
+        },
+        "2026-07-27": {
+          "input_tokens": 286,
+          "cache_creation_input_tokens": 2079913,
+          "cache_read_input_tokens": 37434345,
+          "output_tokens": 135433
+        },
+        "2026-07-28": {
+          "input_tokens": 193,
+          "cache_creation_input_tokens": 1340373,
+          "cache_read_input_tokens": 44334028,
+          "output_tokens": 86432
+        },
+        "2026-07-23": {
+          "input_tokens": 2281,
+          "cache_creation_input_tokens": 29964221,
+          "cache_read_input_tokens": 26448840,
+          "output_tokens": 631667
+        },
+        "2026-07-11": {
+          "input_tokens": 2904615,
+          "cache_creation_input_tokens": 71107266,
+          "cache_read_input_tokens": 94271184,
+          "output_tokens": 2305745
+        },
+        "2026-07-14": {
+          "input_tokens": 0,
+          "cache_creation_input_tokens": 0,
+          "cache_read_input_tokens": 0,
+          "output_tokens": 0
+        },
+        "2026-07-04": {
+          "input_tokens": 32172638,
+          "cache_creation_input_tokens": 6727512,
+          "cache_read_input_tokens": 38884041,
+          "output_tokens": 1137442
+        },
+        "2026-07-12": {
+          "input_tokens": 5634,
+          "cache_creation_input_tokens": 52384532,
+          "cache_read_input_tokens": 65693103,
+          "output_tokens": 1637784
+        },
+        "2026-07-13": {
+          "input_tokens": 1186,
+          "cache_creation_input_tokens": 11198250,
+          "cache_read_input_tokens": 13623484,
+          "output_tokens": 339498
+        },
+        "2026-07-05": {
+          "input_tokens": 44997330,
+          "cache_creation_input_tokens": 8409904,
+          "cache_read_input_tokens": 53373676,
+          "output_tokens": 1509131
+        },
+        "2026-07-07": {
+          "input_tokens": 66963432,
+          "cache_creation_input_tokens": 11011525,
+          "cache_read_input_tokens": 82360129,
+          "output_tokens": 2115140
+        },
+        "2026-07-09": {
+          "input_tokens": 19250941,
+          "cache_creation_input_tokens": 3614434,
+          "cache_read_input_tokens": 23613657,
+          "output_tokens": 611563
+        },
+        "2026-07-10": {
+          "input_tokens": 70139806,
+          "cache_creation_input_tokens": 11322759,
+          "cache_read_input_tokens": 86121896,
+          "output_tokens": 2395261
+        },
+        "2026-07-08": {
+          "input_tokens": 46981106,
+          "cache_creation_input_tokens": 7164883,
+          "cache_read_input_tokens": 56796918,
+          "output_tokens": 1486539
+        },
+        "2026-07-03": {
+          "input_tokens": 8716518,
+          "cache_creation_input_tokens": 1952169,
+          "cache_read_input_tokens": 10272721,
+          "output_tokens": 297705
+        },
+        "2026-07-21": {
+          "input_tokens": 116,
+          "cache_creation_input_tokens": 1226126,
+          "cache_read_input_tokens": 1189548,
+          "output_tokens": 31584
+        },
+        "2026-07-06": {
+          "input_tokens": 29343298,
+          "cache_creation_input_tokens": 5513126,
+          "cache_read_input_tokens": 36963832,
+          "output_tokens": 985662
+        },
+        "2026-07-22": {
+          "input_tokens": 1384,
+          "cache_creation_input_tokens": 16053430,
+          "cache_read_input_tokens": 14853998,
+          "output_tokens": 374303
+        }
+      },
+      "by_project": {
+        "-home-phantom-orchestrator": {
+          "input_tokens": 316,
+          "cache_creation_input_tokens": 414841,
+          "cache_read_input_tokens": 19349480,
+          "output_tokens": 110768
+        },
+        "-home-phantom-orchestrator-Documents-Music": {
+          "input_tokens": 14091,
+          "cache_creation_input_tokens": 13540792,
+          "cache_read_input_tokens": 294515400,
+          "output_tokens": 1542716
+        },
+        "-media-phantom-orchestrator-Elements1-logistis-App": {
+          "input_tokens": 28,
+          "cache_creation_input_tokens": 415336,
+          "cache_read_input_tokens": 268028,
+          "output_tokens": 5910
+        },
+        "-media-phantom-orchestrator-Elements1-logistis-app": {
+          "input_tokens": 321480257,
+          "cache_creation_input_tokens": 237234801,
+          "cache_read_input_tokens": 604198999,
+          "output_tokens": 15853114
+        },
+        "-tmp": {
+          "input_tokens": 522,
+          "cache_creation_input_tokens": 1086884,
+          "cache_read_input_tokens": 1194856,
+          "output_tokens": 119840
+        }
+      },
+      "account": "broodierchip@gmail.com",
+      "user_id": "08537de04fe9cd9f989aa2c5fa9ffa076ee3f6a0286fc671f5c7a6016fc374b3",
+      "identity": {
+        "auth": "oauth",
+        "email": "broodierchip@gmail.com",
+        "org_uuid": "6bfc754e-a205-41c3-9dac-80e593f494e0",
+        "org_name": "broodierchip@gmail.com's Organization",
+        "account_uuid": "a9fec27d-ab5d-48bb-9679-a9bf60bfb97e",
+        "user_id": "08537de04fe9cd9f989aa2c5fa9ffa076ee3f6a0286fc671f5c7a6016fc374b3",
+        "approved_api_keys": [
+          "NzV2BSkqhmQ-gPyMhgAA"
+        ]
+      },
+      "grand_total": 1511346979
+    },
+    {
+      "config_dir": "/home/phantom-orchestrator/.claude-alt",
+      "sessions": 2,
+      "files": {
+        "main": 2
+      },
+      "turns": 223,
+      "totals": {
+        "input_tokens": 11074,
+        "cache_creation_input_tokens": 3398458,
+        "cache_read_input_tokens": 23159635,
+        "output_tokens": 206897
+      },
+      "by_kind": {
+        "main": {
+          "input_tokens": 11074,
+          "cache_creation_input_tokens": 3398458,
+          "cache_read_input_tokens": 23159635,
+          "output_tokens": 206897
+        }
+      },
+      "by_provider": {
+        "synthetic": {
+          "input_tokens": 0,
+          "cache_creation_input_tokens": 0,
+          "cache_read_input_tokens": 0,
+          "output_tokens": 0
+        },
+        "anthropic": {
+          "input_tokens": 11074,
+          "cache_creation_input_tokens": 3398458,
+          "cache_read_input_tokens": 23159635,
+          "output_tokens": 206897
+        }
+      },
+      "by_model": {
+        "<synthetic>": {
+          "input_tokens": 0,
+          "cache_creation_input_tokens": 0,
+          "cache_read_input_tokens": 0,
+          "output_tokens": 0
+        },
+        "claude-opus-4-8": {
+          "input_tokens": 11074,
+          "cache_creation_input_tokens": 3398458,
+          "cache_read_input_tokens": 23159635,
+          "output_tokens": 206897
+        }
+      },
+      "by_day": {
+        "2026-08-01": {
+          "input_tokens": 0,
+          "cache_creation_input_tokens": 0,
+          "cache_read_input_tokens": 0,
+          "output_tokens": 0
+        },
+        "2026-07-25": {
+          "input_tokens": 11021,
+          "cache_creation_input_tokens": 1791242,
+          "cache_read_input_tokens": 19945968,
+          "output_tokens": 191928
+        },
+        "2026-07-26": {
+          "input_tokens": 53,
+          "cache_creation_input_tokens": 1607216,
+          "cache_read_input_tokens": 3213667,
+          "output_tokens": 14969
+        }
+      },
+      "by_project": {
+        "-home-phantom-orchestrator": {
+          "input_tokens": 0,
+          "cache_creation_input_tokens": 0,
+          "cache_read_input_tokens": 0,
+          "output_tokens": 0
+        },
+        "-home-phantom-orchestrator-Documents-Transcript-engine": {
+          "input_tokens": 11074,
+          "cache_creation_input_tokens": 3398458,
+          "cache_read_input_tokens": 23159635,
+          "output_tokens": 206897
+        }
+      },
+      "account": "codehunterextreme@gmail.com",
+      "user_id": "2b2f79380228ba53af8e39adbd917e1bdd126de65caf3d62a42d62f349fd9473",
+      "identity": {
+        "auth": "oauth",
+        "email": "codehunterextreme@gmail.com",
+        "org_uuid": "ba511861-53b4-4599-8019-93db6389d991",
+        "org_name": "codehunterextreme@gmail.com's Organization",
+        "account_uuid": "cf12fe66-594f-449a-b951-c9bb2ce5db76",
+        "user_id": "2b2f79380228ba53af8e39adbd917e1bdd126de65caf3d62a42d62f349fd9473",
+        "approved_api_keys": []
+      },
+      "grand_total": 26776064
+    },
+    {
+      "config_dir": "/home/phantom-orchestrator/.claude-alt-api",
+      "sessions": 1,
+      "files": {
+        "main": 1
+      },
+      "turns": 111,
+      "totals": {
+        "input_tokens": 457,
+        "cache_creation_input_tokens": 1210774,
+        "cache_read_input_tokens": 5935628,
+        "output_tokens": 135007
+      },
+      "by_kind": {
+        "main": {
+          "input_tokens": 457,
+          "cache_creation_input_tokens": 1210774,
+          "cache_read_input_tokens": 5935628,
+          "output_tokens": 135007
+        }
+      },
+      "by_provider": {
+        "anthropic": {
+          "input_tokens": 457,
+          "cache_creation_input_tokens": 1210774,
+          "cache_read_input_tokens": 5935628,
+          "output_tokens": 135007
+        }
+      },
+      "by_model": {
+        "claude-sonnet-4-6": {
+          "input_tokens": 457,
+          "cache_creation_input_tokens": 1210774,
+          "cache_read_input_tokens": 5935628,
+          "output_tokens": 135007
+        }
+      },
+      "by_day": {
+        "2026-04-24": {
+          "input_tokens": 457,
+          "cache_creation_input_tokens": 1210774,
+          "cache_read_input_tokens": 5935628,
+          "output_tokens": 135007
+        }
+      },
+      "by_project": {
+        "-media-phantom-orchestrator-Elements1-Final-API-alt": {
+          "input_tokens": 457,
+          "cache_creation_input_tokens": 1210774,
+          "cache_read_input_tokens": 5935628,
+          "output_tokens": 135007
+        }
+      },
+      "account": "user:2d4777822844",
+      "user_id": "2d4777822844690431e6e0c2b862bc04d5388b9850bcdef441c6342683a1c1d2",
+      "identity": {
+        "auth": "api_key",
+        "email": null,
+        "org_uuid": null,
+        "org_name": null,
+        "account_uuid": null,
+        "user_id": "2d4777822844690431e6e0c2b862bc04d5388b9850bcdef441c6342683a1c1d2",
+        "approved_api_keys": [
+          "tIUs5OMW7gg-PFOgagAA"
+        ],
+        "api_key_file": null,
+        "linked_account": null,
+        "link_basis": "unlinked \u2014 org not among this machine's logins"
+      },
+      "grand_total": 7281866
+    },
+    {
+      "config_dir": "/home/phantom-orchestrator/.claude-api",
+      "sessions": 1,
+      "files": {
+        "main": 1
+      },
+      "turns": 3,
+      "totals": {
+        "input_tokens": 0,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "output_tokens": 0
+      },
+      "by_kind": {
+        "main": {
+          "input_tokens": 0,
+          "cache_creation_input_tokens": 0,
+          "cache_read_input_tokens": 0,
+          "output_tokens": 0
+        }
+      },
+      "by_provider": {
+        "synthetic": {
+          "input_tokens": 0,
+          "cache_creation_input_tokens": 0,
+          "cache_read_input_tokens": 0,
+          "output_tokens": 0
+        }
+      },
+      "by_model": {
+        "<synthetic>": {
+          "input_tokens": 0,
+          "cache_creation_input_tokens": 0,
+          "cache_read_input_tokens": 0,
+          "output_tokens": 0
+        }
+      },
+      "by_day": {
+        "2026-04-24": {
+          "input_tokens": 0,
+          "cache_creation_input_tokens": 0,
+          "cache_read_input_tokens": 0,
+          "output_tokens": 0
+        }
+      },
+      "by_project": {
+        "-media-phantom-orchestrator-Elements1-Final-API-alt": {
+          "input_tokens": 0,
+          "cache_creation_input_tokens": 0,
+          "cache_read_input_tokens": 0,
+          "output_tokens": 0
+        }
+      },
+      "account": "user:283b8e5b8e48",
+      "user_id": "283b8e5b8e48d17836c99894017f4ce322b58772226367f320d5373a1104bd43",
+      "identity": {
+        "auth": "api_key",
+        "email": null,
+        "org_uuid": null,
+        "org_name": null,
+        "account_uuid": null,
+        "user_id": "283b8e5b8e48d17836c99894017f4ce322b58772226367f320d5373a1104bd43",
+        "approved_api_keys": [
+          "NzV2BSkqhmQ-gPyMhgAA"
+        ],
+        "api_key_file": null,
+        "linked_account": null,
+        "link_basis": "unlinked \u2014 org not among this machine's logins"
+      },
+      "grand_total": 0
+    }
+  ]
+}

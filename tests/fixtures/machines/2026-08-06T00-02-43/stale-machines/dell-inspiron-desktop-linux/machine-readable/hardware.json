@@ -1,0 +1,28 @@
+{
+  "machine": "Dell Inspiron Desktop Linux",
+  "hostname": "phantom-gramps",
+  "hardware": {
+    "model_identifier": "x86_64",
+    "chip": "x86_64",
+    "cpu_logical": 4,
+    "memory_gb": 11.6,
+    "os": "Linux 6.17.0-19-generic"
+  },
+  "disk": {
+    "volume": "/home/phantom-gramps",
+    "total_gb": 104.6,
+    "used_gb": 91.3,
+    "free_gb": 8.0
+  },
+  "python": "3.12.3",
+  "accounts": [
+    {
+      "account": "broodierchip@gmail.com",
+      "config_dir": "/home/phantom-gramps/.claude",
+      "profile_env": "unset (default)",
+      "sessions": 1,
+      "transcript_files": 3,
+      "projects": 2
+    }
+  ]
+}

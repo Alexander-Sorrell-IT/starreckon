@@ -1,0 +1,37 @@
+{
+  "machine": "ASUS Laptop Linux",
+  "hostname": "phantom-eternal",
+  "hardware": {
+    "model_identifier": "x86_64",
+    "chip": "x86_64",
+    "cpu_logical": 8,
+    "memory_gb": 31.3,
+    "os": "Linux 6.14.0-35-generic"
+  },
+  "disk": {
+    "volume": "/home/phantom-eternal",
+    "total_gb": 432.0,
+    "used_gb": 49.1,
+    "free_gb": 382.9
+  },
+  "python": "3.12.3",
+  "accounts": [
+    {
+      "account": "broodierchip@gmail.com",
+      "config_dir": "/home/phantom-eternal/.claude",
+      "profile_env": "unset (default)",
+      "sessions": 28,
+      "transcript_files": 56,
+      "projects": 5
+    },
+    {
+      "account": "unknown (claude)",
+      "config_dir": "/home/phantom-eternal/.ai-logs-archive/claude/claude",
+      "profile_env": "CLAUDE_CONFIG_DIR=/home/phantom-eternal/.ai-logs-archive/claude/claude",
+      "sessions": 28,
+      "transcript_files": 56,
+      "projects": 5
+    }
+  ],
+  "scanner_version": "2e512dc55519"
+}

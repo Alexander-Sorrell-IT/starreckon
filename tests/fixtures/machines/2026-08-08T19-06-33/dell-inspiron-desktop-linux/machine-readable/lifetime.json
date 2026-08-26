@@ -1,0 +1,30 @@
+{
+ "tokens": 11550034,
+ "sessions": 8,
+ "turns": 275,
+ "minutes": 82.3,
+ "by_cli": {
+  "gemini": 402029,
+  "claude": 2130613,
+  "antigravity": 9017392
+ },
+ "by_machine": {
+  "Dell Inspiron Desktop Linux": 11550034
+ },
+ "by_model": {
+  "gemini-3-pro-preview": 402029,
+  "claude-haiku-4-5-20251001": 2130613,
+  "gemini-3.6-flash-high": 9017392,
+  "<synthetic>": 0
+ },
+ "fields": {
+  "input_tokens": 15200,
+  "cache_creation_input_tokens": 476572,
+  "cache_read_input_tokens": 1638589,
+  "output_tokens": 252
+ },
+ "first": "2026-01-13T21:39:45.839Z",
+ "last": "2026-08-06T06:00:54Z",
+ "machines": {},
+ "scanner_version": "1108dc477b34"
+}

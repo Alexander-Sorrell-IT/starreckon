@@ -1,0 +1,443 @@
+# By account
+
+_What each login spent, across every computer_
+
+_Generated 2026-08-08T10:41:52-05:00 by `stats_page.py`. Do not edit by hand._
+
+**49,218,248,048** tokens of Claude Code across 5 scanned computer(s) · **56,500,210,229** across every CLI on the 5 that ran `sessions.py`.
+
+Those two are not added: the second contains the first. See [BY-COMPUTER.md](BY-COMPUTER.md) for the reconciliation.
+
+Reports: [computers](BY-COMPUTER.md) · [accounts](BY-ACCOUNT.md) · [companies](BY-COMPANY.md) · [how it works](README.md)
+
+---
+
+_scans taken 2026-08-06 00:50:35 .. 2026-08-08 10:41:23_
+
+The per-account total across computers is the number that matters: the same login gets driven from several machines and no machine can see another's sessions.
+
+| Account | Tokens | Share | Computers | Sessions | Turns | |
+|---|---:|---:|---:|---:|---:|---|
+| **broodierchip@gmail.com** | 27,639,996,292 | 56.2% | 5 | 19,304 | 189,800 | ████████████████············ |
+| **codehunterextreme@gmail.com** | 17,266,301,312 | 35.1% | 3 | 2,176 | 58,760 | ██████████·················· |
+| **alexander.sorrell.it@gmail.com** | 2,894,443,336 | 5.9% | 3 | 79 | 12,419 | ██·························· |
+| **DeepSeek backend (~/.my-claude)** | 1,409,787,623 | 2.9% | 1 | 6 | 14,797 | █··························· |
+| **user:2d4777822844** | 7,281,866 | 0.0% | 1 | 1 | 111 | █··························· |
+| **API key (org 15a93e14-aabb-4293-8228-8c56a803d972)** | 437,619 | 0.0% | 1 | 1 | 18 | █··························· |
+| **unknown (.claude-alt)** | 0 | 0.0% | 1 | 27 | 0 | ···························· |
+| **unknown (.claude-alt-api)** | 0 | 0.0% | 1 | 1 | 0 | ···························· |
+| **unknown (.claude-it)** | 0 | 0.0% | 1 | 2 | 0 | ···························· |
+| **unknown (.my-claude)** | 0 | 0.0% | 1 | 6 | 0 | ···························· |
+| **user:283b8e5b8e48** | 0 | 0.0% | 1 | 1 | 3 | ···························· |
+| **All** | **49,218,248,048** | 100% | | | | |
+
+## Across every CLI, by account
+
+The table above is Claude Code only, because it is the one tool that writes its account email to disk. This one folds in every other CLI using the ownership declared in [`accounts.json`](accounts.json).
+
+| Account | Tokens | Sessions | Via |
+|---|---:|---:|---|
+| **broodierchip@gmail.com** | 30,432,155,588 | 16,724 | claude 27.61B, gemini 2.79B _file_, claude → DeepSeek 36.16M |
+| **codehunterextreme@gmail.com** | 17,266,301,312 | 49 | claude 17.27B |
+| **alexander.sorrell.it@gmail.com** | 2,894,658,464 | 79 | claude 2.89B |
+| **nefabious@gmail.com** | 90,209,318 | 6 | grok 90.21M _owner_ |
+| **All attributed** | **50,683,324,682** | | |
+
+`file` means the email was read out of that tool's own account file. `owner` means it was stated by the account holder and cannot be checked against anything on disk. Claude Code rows carry neither because the email is in the session record itself.
+
+> ⚠️ **5,816,885,547 tokens have no account.** These tools record no identity on disk and none is declared for them yet:
+
+| CLI | Company that served it | Sessions | Tokens |
+|---|---|---:|---:|
+| codex | OpenAI | 148 | 2,313,579,758 |
+| claude ⚠️ | DeepSeek | 17 | 1,409,787,623 |
+| copilot | — (no API call) | 36 | 1,123,159,069 |
+| copilot | Anthropic | 27 | 442,116,658 |
+| copilot | OpenAI | 28 | 290,553,542 |
+| antigravity | Google | 63 | 222,721,978 |
+| claude | Anthropic | 2 | 7,719,485 |
+| kilocode | Google | 2 | 7,025,122 |
+| lmstudio | Mistral | 5 | 116,185 |
+| lmstudio | — (unidentified) | 3 | 53,159 |
+| kilocode | — (unidentified) | 1 | 38,733 |
+| kilocode | xAI | 1 | 10,646 |
+| lmstudio | DeepSeek | 1 | 3,530 |
+| lmstudio | Meta | 1 | 59 |
+| claude ⚠️ | — (no API call) | 1 | 0 |
+
+⚠️ marks a row where the tool's name and the company that served the tokens disagree. `claude` served by DeepSeek is a Claude Code build pointed at a DeepSeek backend: the interface is Claude Code, every token is DeepSeek, and Anthropic was paid nothing. Reading the CLI column alone would count it as Claude usage.
+
+
+Add a `services` entry to the right account in `accounts.json` to fold any of these in. They are left under a placeholder rather than split across accounts by proportion, because that would invent numbers that look measured.
+
+### Account x computer
+
+| Account | MacBook Air M1 | HP Laptop Linux | Dell Latitude 7480 Linux | ASUS Laptop Linux | Dell Inspiron Desktop Linux | Total |
+|---|---|---|---|---|---|---|
+| broodierchip@gmail.com | 17.56B | 6.76B | 3.05B | 266.15M | 2.13M | **27,639,996,292** |
+| codehunterextreme@gmail.com | 11.04B | 6.20B | 26.78M | — | — | **17,266,301,312** |
+| alexander.sorrell.it@gmail.com | 571.75M | 83.21M | 2.24B | — | — | **2,894,443,336** |
+| DeepSeek backend (~/.my-claude) | — | 1.41B | — | — | — | **1,409,787,623** |
+| user:2d4777822844 | — | — | 7.28M | — | — | **7,281,866** |
+| API key (org 15a93e14-aabb-4293-8228-8c56a803d972) | — | 437.62K | — | — | — | **437,619** |
+| unknown (.claude-alt) | — | — | — | — | — | **0** |
+| unknown (.claude-alt-api) | — | — | — | — | — | **0** |
+| unknown (.claude-it) | — | — | — | — | — | **0** |
+| unknown (.my-claude) | — | — | — | — | — | **0** |
+| user:283b8e5b8e48 | — | — | — | — | — | **0** |
+| **All** | **29.17B** | **14.46B** | **5.32B** | **266.15M** | **2.13M** | **49,218,248,048** |
+
+---
+
+## broodierchip@gmail.com
+
+**27,639,996,292 tokens** (56.2%) · 19,304 sessions · 189,800 turns · 87 active days
+
+| Computer | Tokens | Share of this account |
+|---|---:|---:|
+| MacBook Air M1 | 17,557,582,699 | 63.5% |
+| HP Laptop Linux | 6,763,060,576 | 24.5% |
+| Dell Latitude 7480 Linux | 3,051,075,728 | 11.0% |
+| ASUS Laptop Linux | 266,146,676 | 1.0% |
+| Dell Inspiron Desktop Linux | 2,130,613 | 0.0% |
+
+| Company | Tokens |
+|---|---:|
+| Anthropic | 27,603,831,899 |
+| DeepSeek | 36,164,393 |
+| — (no API call) | 0 |
+
+| Model | Tokens |
+|---|---:|
+| `claude-opus-5` | 10,118,462,334 |
+| `claude-opus-4-8` | 8,428,348,105 |
+| `claude-opus-4-7` | 5,729,729,896 |
+| `claude-fable-5` | 1,742,100,179 |
+| `claude-opus-4-6` | 834,041,599 |
+| `claude-opus-4-5-20251101` | 575,579,698 |
+| `claude-haiku-4-5-20251001` | 134,283,984 |
+| `deepseek-v4-pro` | 36,142,409 |
+| `claude-sonnet-4-6` | 24,981,514 |
+| `claude-sonnet-4-5-20250929` | 16,304,590 |
+| `deepseek-v4-flash` | 21,984 |
+| `<synthetic>` | 0 |
+
+| Input | Cache write | Cache read | Output |
+|---:|---:|---:|---:|
+| 341,597,771 | 1,313,944,225 | 25,866,467,752 | 117,986,544 |
+
+All four are billed. Cache reads dominate because every turn re-reads the whole conversation, so a session's context is billed once per turn.
+
+---
+
+## codehunterextreme@gmail.com
+
+**17,266,301,312 tokens** (35.1%) · 2,176 sessions · 58,760 turns · 35 active days
+
+| Computer | Tokens | Share of this account |
+|---|---:|---:|
+| MacBook Air M1 | 11,040,991,167 | 63.9% |
+| HP Laptop Linux | 6,198,534,081 | 35.9% |
+| Dell Latitude 7480 Linux | 26,776,064 | 0.2% |
+
+| Company | Tokens |
+|---|---:|
+| Anthropic | 17,266,301,312 |
+| — (no API call) | 0 |
+
+| Model | Tokens |
+|---|---:|
+| `claude-opus-4-8` | 8,160,200,883 |
+| `claude-opus-5` | 7,797,081,265 |
+| `claude-fable-5` | 1,306,933,926 |
+| `claude-sonnet-5` | 1,704,578 |
+| `claude-opus-4-7` | 380,660 |
+| `<synthetic>` | 0 |
+
+| Input | Cache write | Cache read | Output |
+|---:|---:|---:|---:|
+| 3,265,432 | 592,070,694 | 16,613,620,513 | 57,344,673 |
+
+All four are billed. Cache reads dominate because every turn re-reads the whole conversation, so a session's context is billed once per turn.
+
+---
+
+## alexander.sorrell.it@gmail.com
+
+**2,894,443,336 tokens** (5.9%) · 79 sessions · 12,419 turns · 32 active days
+
+| Computer | Tokens | Share of this account |
+|---|---:|---:|
+| Dell Latitude 7480 Linux | 2,239,476,898 | 77.4% |
+| MacBook Air M1 | 571,753,755 | 19.8% |
+| HP Laptop Linux | 83,212,683 | 2.9% |
+
+| Company | Tokens |
+|---|---:|
+| Anthropic | 2,894,443,336 |
+| — (no API call) | 0 |
+
+| Model | Tokens |
+|---|---:|
+| `claude-opus-4-8` | 1,640,532,780 |
+| `claude-fable-5` | 515,987,926 |
+| `claude-opus-5` | 504,799,256 |
+| `claude-sonnet-4-6` | 212,137,606 |
+| `claude-opus-4-7` | 18,466,244 |
+| `claude-haiku-4-5-20251001` | 2,519,524 |
+| `<synthetic>` | 0 |
+
+| Input | Cache write | Cache read | Output |
+|---:|---:|---:|---:|
+| 583,985 | 112,570,210 | 2,765,544,970 | 15,744,171 |
+
+All four are billed. Cache reads dominate because every turn re-reads the whole conversation, so a session's context is billed once per turn.
+
+---
+
+## DeepSeek backend (~/.my-claude)
+
+**1,409,787,623 tokens** (2.9%) · 6 sessions · 14,797 turns · 22 active days
+
+| Computer | Tokens | Share of this account |
+|---|---:|---:|
+| HP Laptop Linux | 1,409,787,623 | 100.0% |
+
+| Company | Tokens |
+|---|---:|
+| DeepSeek | 1,409,787,623 |
+| — (no API call) | 0 |
+
+| Model | Tokens |
+|---|---:|
+| `deepseek-v4-pro` | 1,292,420,894 |
+| `deepseek-v4-flash` | 117,366,729 |
+| `<synthetic>` | 0 |
+
+| Input | Cache write | Cache read | Output |
+|---:|---:|---:|---:|
+| 61,324,095 | 0 | 1,343,468,672 | 4,994,856 |
+
+All four are billed. Cache reads dominate because every turn re-reads the whole conversation, so a session's context is billed once per turn.
+
+---
+
+## user:2d4777822844
+
+**7,281,866 tokens** (0.0%) · 1 sessions · 111 turns · 1 active days
+
+| Computer | Tokens | Share of this account |
+|---|---:|---:|
+| Dell Latitude 7480 Linux | 7,281,866 | 100.0% |
+
+| Company | Tokens |
+|---|---:|
+| Anthropic | 7,281,866 |
+
+| Model | Tokens |
+|---|---:|
+| `claude-sonnet-4-6` | 7,281,866 |
+
+| Input | Cache write | Cache read | Output |
+|---:|---:|---:|---:|
+| 457 | 1,210,774 | 5,935,628 | 135,007 |
+
+All four are billed. Cache reads dominate because every turn re-reads the whole conversation, so a session's context is billed once per turn.
+
+---
+
+## API key (org 15a93e14-aabb-4293-8228-8c56a803d972)
+
+**437,619 tokens** (0.0%) · 1 sessions · 18 turns · 1 active days
+
+| Computer | Tokens | Share of this account |
+|---|---:|---:|
+| HP Laptop Linux | 437,619 | 100.0% |
+
+| Company | Tokens |
+|---|---:|
+| Anthropic | 437,619 |
+
+| Model | Tokens |
+|---|---:|
+| `claude-opus-4-8` | 307,503 |
+| `claude-fable-5` | 130,116 |
+
+| Input | Cache write | Cache read | Output |
+|---:|---:|---:|---:|
+| 3,856 | 28,703 | 394,815 | 10,245 |
+
+All four are billed. Cache reads dominate because every turn re-reads the whole conversation, so a session's context is billed once per turn.
+
+---
+
+## unknown (.claude-alt)
+
+**0 tokens** (0.0%) · 27 sessions · 0 turns · 0 active days
+
+| Computer | Tokens | Share of this account |
+|---|---:|---:|
+| HP Laptop Linux | 0 | — |
+
+| Company | Tokens |
+|---|---:|
+
+| Model | Tokens |
+|---|---:|
+
+| Input | Cache write | Cache read | Output |
+|---:|---:|---:|---:|
+| 0 | 0 | 0 | 0 |
+
+All four are billed. Cache reads dominate because every turn re-reads the whole conversation, so a session's context is billed once per turn.
+
+---
+
+## unknown (.claude-alt-api)
+
+**0 tokens** (0.0%) · 1 sessions · 0 turns · 0 active days
+
+| Computer | Tokens | Share of this account |
+|---|---:|---:|
+| HP Laptop Linux | 0 | — |
+
+| Company | Tokens |
+|---|---:|
+
+| Model | Tokens |
+|---|---:|
+
+| Input | Cache write | Cache read | Output |
+|---:|---:|---:|---:|
+| 0 | 0 | 0 | 0 |
+
+All four are billed. Cache reads dominate because every turn re-reads the whole conversation, so a session's context is billed once per turn.
+
+---
+
+## unknown (.claude-it)
+
+**0 tokens** (0.0%) · 2 sessions · 0 turns · 0 active days
+
+| Computer | Tokens | Share of this account |
+|---|---:|---:|
+| HP Laptop Linux | 0 | — |
+
+| Company | Tokens |
+|---|---:|
+
+| Model | Tokens |
+|---|---:|
+
+| Input | Cache write | Cache read | Output |
+|---:|---:|---:|---:|
+| 0 | 0 | 0 | 0 |
+
+All four are billed. Cache reads dominate because every turn re-reads the whole conversation, so a session's context is billed once per turn.
+
+---
+
+## unknown (.my-claude)
+
+**0 tokens** (0.0%) · 6 sessions · 0 turns · 0 active days
+
+| Computer | Tokens | Share of this account |
+|---|---:|---:|
+| HP Laptop Linux | 0 | — |
+
+| Company | Tokens |
+|---|---:|
+
+| Model | Tokens |
+|---|---:|
+
+| Input | Cache write | Cache read | Output |
+|---:|---:|---:|---:|
+| 0 | 0 | 0 | 0 |
+
+All four are billed. Cache reads dominate because every turn re-reads the whole conversation, so a session's context is billed once per turn.
+
+---
+
+## user:283b8e5b8e48
+
+**0 tokens** (0.0%) · 1 sessions · 3 turns · 1 active days
+
+| Computer | Tokens | Share of this account |
+|---|---:|---:|
+| Dell Latitude 7480 Linux | 0 | — |
+
+| Company | Tokens |
+|---|---:|
+| — (no API call) | 0 |
+
+| Model | Tokens |
+|---|---:|
+| `<synthetic>` | 0 |
+
+| Input | Cache write | Cache read | Output |
+|---:|---:|---:|---:|
+| 0 | 0 | 0 | 0 |
+
+All four are billed. Cache reads dominate because every turn re-reads the whole conversation, so a session's context is billed once per turn.
+
+---
+
+## Each computer
+
+_The same accounts, grouped by machine. One login is usually driven from several computers, and no computer can see another's sessions — which is why the account totals above exist at all._
+
+### MacBook Air M1
+
+**29,170,327,621 tokens** across 3 login(s)
+
+| Account | Tokens | Share |
+|---|---:|---:|
+| broodierchip@gmail.com | 17,557,582,699 |  60.2% |
+| codehunterextreme@gmail.com | 11,040,991,167 |  37.9% |
+| alexander.sorrell.it@gmail.com | 571,753,755 |   2.0% |
+
+### HP Laptop Linux
+
+**14,455,032,582 tokens** across 9 login(s)
+
+| Account | Tokens | Share |
+|---|---:|---:|
+| broodierchip@gmail.com | 6,763,060,576 |  46.8% |
+| codehunterextreme@gmail.com | 6,198,534,081 |  42.9% |
+| DeepSeek backend (~/.my-claude) | 1,409,787,623 |   9.8% |
+| alexander.sorrell.it@gmail.com | 83,212,683 |   0.6% |
+| API key (org 15a93e14-aabb-4293-8228-8c56a803d972) | 437,619 |   0.0% |
+| unknown (.claude-alt) | 0 |   0.0% |
+| unknown (.claude-alt-api) | 0 |   0.0% |
+| unknown (.claude-it) | 0 |   0.0% |
+| unknown (.my-claude) | 0 |   0.0% |
+
+### Dell Latitude 7480 Linux
+
+**5,324,610,556 tokens** across 5 login(s)
+
+| Account | Tokens | Share |
+|---|---:|---:|
+| broodierchip@gmail.com | 3,051,075,728 |  57.3% |
+| alexander.sorrell.it@gmail.com | 2,239,476,898 |  42.1% |
+| codehunterextreme@gmail.com | 26,776,064 |   0.5% |
+| user:2d4777822844 | 7,281,866 |   0.1% |
+| user:283b8e5b8e48 | 0 |   0.0% |
+
+### ASUS Laptop Linux
+
+**266,146,676 tokens** across 1 login(s)
+
+| Account | Tokens | Share |
+|---|---:|---:|
+| broodierchip@gmail.com | 266,146,676 | 100.0% |
+
+### Dell Inspiron Desktop Linux
+
+**2,130,613 tokens** across 1 login(s)
+
+| Account | Tokens | Share |
+|---|---:|---:|
+| broodierchip@gmail.com | 2,130,613 | 100.0% |
+

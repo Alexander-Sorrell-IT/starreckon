@@ -1,0 +1,20 @@
+{
+ "tokens": 2532642,
+ "sessions": 4,
+ "turns": 92,
+ "minutes": 31.799999999999997,
+ "by_cli": {
+  "gemini": 402029,
+  "claude": 2130613
+ },
+ "by_machine": {
+  "Dell Inspiron Desktop Linux": 2532642
+ },
+ "by_model": {
+  "gemini-3-pro-preview": 402029,
+  "claude-haiku-4-5-20251001": 2130613
+ },
+ "first": "2026-01-13T21:39:45.839Z",
+ "last": "2026-01-21T20:15:35.691Z",
+ "month": "2026-01"
+}

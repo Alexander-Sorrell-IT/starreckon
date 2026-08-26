@@ -1,0 +1,152 @@
+{
+ "scope": "HP Laptop Linux",
+ "generated_at": "2026-08-08T15:30:54-05:00",
+ "total_tokens": 8415422675,
+ "sessions": 271,
+ "fields": {
+  "input_tokens": 25190938,
+  "cache_creation_input_tokens": 165856913,
+  "cache_read_input_tokens": 6391073240,
+  "output_tokens": 33513221
+ },
+ "new_content_tokens": 224561072,
+ "hours": 406.5,
+ "by_cli": {
+  "lmstudio": {
+   "sessions": 7,
+   "tokens": 119774,
+   "minutes": 0.0
+  },
+  "kilocode": {
+   "sessions": 4,
+   "tokens": 7074501,
+   "minutes": 79.3
+  },
+  "codex": {
+   "sessions": 2,
+   "tokens": 1453618,
+   "minutes": 23.3
+  },
+  "gemini": {
+   "sessions": 46,
+   "tokens": 1468362549,
+   "minutes": 4217.7
+  },
+  "copilot": {
+   "sessions": 31,
+   "tokens": 295831967,
+   "minutes": 3280.7
+  },
+  "claude": {
+   "sessions": 162,
+   "tokens": 6615652707,
+   "minutes": 16688.4
+  },
+  "antigravity": {
+   "sessions": 19,
+   "tokens": 26927559,
+   "minutes": 98.7
+  }
+ },
+ "by_model": {
+  "claude-opus-4-7": 2441153832,
+  "claude-opus-5": 2211091516,
+  "gemini-3-flash-preview": 1200420521,
+  "claude-fable-5": 651414232,
+  "claude-opus-4-8": 604554104,
+  "deepseek-v4-pro": 534671153,
+  "gpt-5.5": 225314053,
+  "gemini-3-pro-preview": 201035389,
+  "claude-sonnet-4-6": 172597289,
+  "gemini-2.5-pro": 66610041,
+  "gpt-5.4-mini": 64578662,
+  "gemini-3-flash-d": 20218246,
+  "gemini-2.5-pro-preview": 7025122,
+  "unknown": 5939252,
+  "gemini-3-flash-a": 3362293,
+  "gemini-3.5-flash-low": 2949376,
+  "gpt-5.1-codex-max": 1436055,
+  "gemini-3.6-flash-high": 397644,
+  "gemini-2.5-flash": 296598,
+  "claude-sonnet-5": 120586
+ },
+ "records": {
+  "longest_session": {
+   "id": "44f39a17-f72d-46f1-a093-5a14a3ce8622",
+   "cli": "claude",
+   "machine": "HP Laptop Linux",
+   "minutes": 2324.2
+  },
+  "most_tokens": {
+   "id": "44f39a17-f72d-46f1-a093-5a14a3ce8622",
+   "cli": "claude",
+   "machine": "HP Laptop Linux",
+   "tokens": 2067994327
+  },
+  "most_turns": {
+   "id": "44f39a17-f72d-46f1-a093-5a14a3ce8622",
+   "cli": "claude",
+   "machine": "HP Laptop Linux",
+   "turns": 7322
+  }
+ },
+ "scans": {
+  "HP Laptop Linux": "2026-08-08T15:30:51-05:00"
+ },
+ "first_last_seen": {
+  "lmstudio": {
+   "first": "2025-07-01T06:58:19.695000Z",
+   "last": "2025-07-04T00:24:10.034000Z",
+   "sources": [
+    "transcripts"
+   ]
+  },
+  "kilocode": {
+   "first": "2025-07-17T06:18:26.913000Z",
+   "last": "2026-01-13T09:17:03.568000Z",
+   "sources": [
+    "transcripts",
+    "vscode:Code",
+    "vscode:Code - Insiders"
+   ]
+  },
+  "codex": {
+   "first": "2025-12-21T07:51:12.181Z",
+   "last": "2026-01-08T20:20:37.521Z",
+   "sources": [
+    "transcripts"
+   ]
+  },
+  "gemini": {
+   "first": "2025-12-27T19:46:57.086Z",
+   "last": "2026-07-02T23:30:25.789Z",
+   "sources": [
+    "transcripts"
+   ]
+  },
+  "copilot": {
+   "first": "2025-10-09T17:44:18.929000Z",
+   "last": "2026-05-28T14:46:07.294Z",
+   "sources": [
+    "transcripts",
+    "vscode:Code",
+    "vscode:Code - Insiders"
+   ]
+  },
+  "claude": {
+   "first": "2026-05-04T17:09:10.131Z",
+   "last": "2026-08-08T20:30:04.056Z",
+   "sources": [
+    "transcripts"
+   ]
+  },
+  "antigravity": {
+   "first": "2026-05-29T00:17:13Z",
+   "last": "2026-07-23T07:23:27Z",
+   "sources": [
+    "transcripts"
+   ]
+  }
+ },
+ "scanner_version": "1108dc477b34"
+}

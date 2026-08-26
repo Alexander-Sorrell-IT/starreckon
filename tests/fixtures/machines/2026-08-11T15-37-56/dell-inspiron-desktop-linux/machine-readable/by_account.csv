@@ -1,0 +1,3 @@
+account,config_dir,sessions,turns,input_tokens,cache_creation_input_tokens,cache_read_input_tokens,output_tokens,total
+broodierchip@gmail.com,/home/phantom-gramps/.claude,1,26,3815,148543,672383,145,824886
+unknown (claude),/home/phantom-gramps/.ai-logs-archive/claude/claude,1,0,0,0,0,0,0

@@ -1,0 +1,57 @@
+{
+ "tokens": 8415422675,
+ "sessions": 271,
+ "turns": 43893,
+ "minutes": 24388.100000000002,
+ "by_cli": {
+  "lmstudio": 119774,
+  "kilocode": 7074501,
+  "codex": 1453618,
+  "gemini": 1468362549,
+  "copilot": 295831967,
+  "claude": 6615652707,
+  "antigravity": 26927559
+ },
+ "by_machine": {
+  "HP Laptop Linux": 8415422675
+ },
+ "by_model": {
+  "Mixtral-8x7B-Instruct-v0.1.Q6_K.gguf": 116185,
+  "deepseek-coder-6.7b-instruct.Q6_K.gguf": 3530,
+  "Llama-3-13B-Instruct-v0.1.Q4_K_S.gguf": 59,
+  "gemini-2.5-pro-preview": 7025122,
+  "gpt-5.1-codex": 17563,
+  "gemini-2.5-pro": 66610041,
+  "gemini-3-flash-preview": 1200420521,
+  "gemini-3-pro-preview": 201035389,
+  "grok-code-fast-1": 10646,
+  "gpt-5.1-codex-max": 1436055,
+  "devstral-2512:free": 38733,
+  "unknown": 5939252,
+  "gemini-2.5-flash": 296598,
+  "claude-opus-4-7": 2441153832,
+  "deepseek-v4-pro": 534671153,
+  "gpt-5.5": 225314053,
+  "gpt-5.4-mini": 64578662,
+  "claude-sonnet-4-6": 172597289,
+  "gemini-3-flash-d": 20218246,
+  "claude-opus-4-8": 604554104,
+  "claude-fable-5": 651414232,
+  "gemini-3-flash-a": 3362293,
+  "<synthetic>": 49995,
+  "gemini-3.5-flash-low": 2949376,
+  "gemini-3.6-flash-high": 397644,
+  "claude-opus-5": 2211091516,
+  "claude-sonnet-5": 120586
+ },
+ "fields": {
+  "input_tokens": 25190938,
+  "cache_creation_input_tokens": 165856913,
+  "cache_read_input_tokens": 6391073240,
+  "output_tokens": 33513221
+ },
+ "first": "2025-07-01T06:58:19.695000Z",
+ "last": "2026-08-08T20:30:04.056Z",
+ "machines": {},
+ "scanner_version": "1108dc477b34"
+}

@@ -1,0 +1,267 @@
+{
+  "generated_at": "2026-08-04T04:46:23-05:00",
+  "grand_total_tokens": 41985410380,
+  "machines": [
+    {
+      "machine": "MacBook Air M1",
+      "folder": "macbook-air-m1",
+      "total": 28004982986,
+      "scanned": "2026-08-04T03:07:29-05:00",
+      "sessions_scanned": true
+    },
+    {
+      "machine": "HP Laptop Linux",
+      "folder": "hp-laptop-linux",
+      "total": 9847278761,
+      "scanned": "2026-08-04T04:45:03-05:00",
+      "sessions_scanned": true
+    },
+    {
+      "machine": "Dell Latitude 7480 Linux",
+      "folder": "dell-latitude-7480-linux",
+      "total": 3864871344,
+      "scanned": null,
+      "sessions_scanned": false
+    },
+    {
+      "machine": "ASUS Laptop Linux",
+      "folder": "asus-laptop-linux",
+      "total": 266146676,
+      "scanned": "2026-08-04T01:46:32-05:00",
+      "sessions_scanned": true
+    },
+    {
+      "machine": "Dell Inspiron Desktop Linux",
+      "folder": "dell-inspiron-desktop-linux",
+      "total": 2130613,
+      "scanned": "2026-08-04T02:05:52-05:00",
+      "sessions_scanned": true
+    }
+  ],
+  "accounts": [
+    {
+      "account": "broodierchip@gmail.com",
+      "total": 24811576643,
+      "sessions": 16583,
+      "turns": 157319,
+      "by_machine": {
+        "MacBook Air M1": 17484273586,
+        "HP Laptop Linux": 5547678789,
+        "Dell Latitude 7480 Linux": 1511346979,
+        "ASUS Laptop Linux": 266146676,
+        "Dell Inspiron Desktop Linux": 2130613
+      },
+      "totals": {
+        "input_tokens": 335499679,
+        "cache_creation_input_tokens": 1075962035,
+        "cache_read_input_tokens": 23291966332,
+        "output_tokens": 108148597
+      }
+    },
+    {
+      "account": "codehunterextreme@gmail.com",
+      "total": 12781893756,
+      "sessions": 61,
+      "turns": 42550,
+      "by_machine": {
+        "MacBook Air M1": 9948955645,
+        "HP Laptop Linux": 2806162047,
+        "Dell Latitude 7480 Linux": 26776064
+      },
+      "totals": {
+        "input_tokens": 4654630,
+        "cache_creation_input_tokens": 451480838,
+        "cache_read_input_tokens": 12278398327,
+        "output_tokens": 47359961
+      }
+    },
+    {
+      "account": "alexander.sorrell.it@gmail.com",
+      "total": 2974432873,
+      "sessions": 74,
+      "turns": 12602,
+      "by_machine": {
+        "MacBook Air M1": 571753755,
+        "HP Laptop Linux": 83212683,
+        "Dell Latitude 7480 Linux": 2319466435
+      },
+      "totals": {
+        "input_tokens": 627852,
+        "cache_creation_input_tokens": 113275388,
+        "cache_read_input_tokens": 2844578781,
+        "output_tokens": 15950852
+      }
+    },
+    {
+      "account": "DeepSeek backend (~/.my-claude)",
+      "total": 1409787623,
+      "sessions": 6,
+      "turns": 14797,
+      "by_machine": {
+        "HP Laptop Linux": 1409787623
+      },
+      "totals": {
+        "input_tokens": 61324095,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 1343468672,
+        "output_tokens": 4994856
+      }
+    },
+    {
+      "account": "unknown",
+      "total": 7281866,
+      "sessions": 2,
+      "turns": 114,
+      "by_machine": {
+        "Dell Latitude 7480 Linux": 0
+      },
+      "totals": {
+        "input_tokens": 457,
+        "cache_creation_input_tokens": 1210774,
+        "cache_read_input_tokens": 5935628,
+        "output_tokens": 135007
+      }
+    },
+    {
+      "account": "API key (org 15a93e14-aabb-4293-8228-8c56a803d972)",
+      "total": 437619,
+      "sessions": 1,
+      "turns": 18,
+      "by_machine": {
+        "HP Laptop Linux": 437619
+      },
+      "totals": {
+        "input_tokens": 3856,
+        "cache_creation_input_tokens": 28703,
+        "cache_read_input_tokens": 394815,
+        "output_tokens": 10245
+      }
+    }
+  ],
+  "by_cli": {
+    "claude": {
+      "sessions": 212,
+      "tokens": 38202142996,
+      "active_min": 37517.0
+    },
+    "gemini": {
+      "sessions": 57,
+      "tokens": 2468962261,
+      "active_min": 4952.6
+    },
+    "codex": {
+      "sessions": 128,
+      "tokens": 1635327644,
+      "active_min": 1824.3
+    },
+    "copilot": {
+      "sessions": 67,
+      "tokens": 793528750,
+      "active_min": 8067.0
+    },
+    "antigravity": {
+      "sessions": 57,
+      "tokens": 166710334,
+      "active_min": 933.0
+    },
+    "grok": {
+      "sessions": 5,
+      "tokens": 76724862,
+      "active_min": 459.9
+    },
+    "kilocode": {
+      "sessions": 4,
+      "tokens": 7074501,
+      "active_min": 79.3
+    },
+    "lmstudio": {
+      "sessions": 7,
+      "tokens": 119774,
+      "active_min": 0.0
+    }
+  },
+  "by_provider": {
+    "anthropic": 40539458364,
+    "deepseek": 1445952016
+  },
+  "by_machine_provider": {
+    "MacBook Air M1": {
+      "anthropic": 28004982986,
+      "synthetic": 0
+    },
+    "HP Laptop Linux": {
+      "anthropic": 8401326745,
+      "synthetic": 0,
+      "deepseek": 1445952016
+    },
+    "Dell Latitude 7480 Linux": {
+      "anthropic": 3864871344,
+      "synthetic": 0
+    },
+    "ASUS Laptop Linux": {
+      "anthropic": 266146676,
+      "synthetic": 0
+    },
+    "Dell Inspiron Desktop Linux": {
+      "anthropic": 2130613
+    }
+  },
+  "cli_by_provider": {
+    "anthropic": {
+      "sessions": 187,
+      "tokens": 37193854527,
+      "active_min": 35506.9
+    },
+    "google": {
+      "sessions": 113,
+      "tokens": 2638026464,
+      "active_min": 5948.3
+    },
+    "openai": {
+      "sessions": 156,
+      "tokens": 1925881186,
+      "active_min": 3849.0
+    },
+    "deepseek": {
+      "sessions": 48,
+      "tokens": 1445955546,
+      "active_min": 4563.3
+    },
+    "xai": {
+      "sessions": 6,
+      "tokens": 76735508,
+      "active_min": 460.0
+    },
+    "synthetic": {
+      "sessions": 17,
+      "tokens": 65311661,
+      "active_min": 3489.1
+    },
+    "other": {
+      "sessions": 4,
+      "tokens": 4709986,
+      "active_min": 16.5
+    },
+    "mistral": {
+      "sessions": 5,
+      "tokens": 116185,
+      "active_min": 0.0
+    },
+    "meta": {
+      "sessions": 1,
+      "tokens": 59,
+      "active_min": 0.0
+    }
+  },
+  "uncountable_tools": [
+    {
+      "tool": "grok-cli (@vibe-kit)",
+      "dir": "/home/phantomcore/.npm-global/bin/grok",
+      "files": 1,
+      "records_token_usage": false,
+      "counted_here": false,
+      "why": "community npm CLI, distinct from xAI's official Grok Build CLI; stores no usage of any kind",
+      "machine": "HP Laptop Linux"
+    }
+  ]
+}

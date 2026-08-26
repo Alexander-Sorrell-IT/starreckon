@@ -1,0 +1,18 @@
+{
+ "tokens": 3073371,
+ "sessions": 1,
+ "turns": 51,
+ "minutes": 20.9,
+ "by_cli": {
+  "antigravity": 3073371
+ },
+ "by_machine": {
+  "ASUS Laptop Linux": 3073371
+ },
+ "by_model": {
+  "gemini-3-flash-preview": 3073371
+ },
+ "first": "2026-08-03T03:33:29Z",
+ "last": "2026-08-06T05:50:41Z",
+ "month": "2026-08"
+}

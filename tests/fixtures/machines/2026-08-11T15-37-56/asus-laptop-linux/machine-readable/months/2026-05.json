@@ -1,0 +1,21 @@
+{
+ "tokens": 129040271,
+ "sessions": 26,
+ "turns": 591,
+ "minutes": 600.9,
+ "by_cli": {
+  "claude": 124674827,
+  "gemini": 4365444
+ },
+ "by_machine": {
+  "ASUS Laptop Linux": 129040271
+ },
+ "by_model": {
+  "claude-opus-4-7": 123287729,
+  "claude-haiku-4-5-20251001": 1387098,
+  "gemini-3-flash-preview": 4365444
+ },
+ "first": "2026-05-01T01:26:00.701Z",
+ "last": "2026-05-05T21:21:00.834Z",
+ "month": "2026-05"
+}

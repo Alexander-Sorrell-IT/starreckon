@@ -1,0 +1,33 @@
+{
+ "tokens": 1018559461,
+ "sessions": 33,
+ "turns": 5775,
+ "minutes": 3011.5,
+ "by_cli": {
+  "claude": 956724251,
+  "antigravity": 18895515,
+  "gemini": 121155,
+  "copilot": 42818540
+ },
+ "by_machine": {
+  "HP Laptop Linux": 391403320,
+  "MacBook Air M1": 627156141
+ },
+ "by_model": {
+  "claude-fable-5": 141210,
+  "claude-sonnet-4-6": 615865167,
+  "claude-opus-4-8": 340717874,
+  "gemini-3-flash-a": 3362293,
+  "<synthetic>": 0,
+  "gemini-3.5-flash-low": 2949376,
+  "gemini-2.5-flash": 89091,
+  "gemini-2.5-pro": 32064,
+  "claude-sonnet-4.6": 14911900,
+  "gemini_coder": 3368524,
+  "gemini-3-flash-agent": 9215322,
+  "claude-opus-4.8": 27906640
+ },
+ "first": "2026-06-01T15:42:23.984Z",
+ "last": "2026-07-02T20:27:40.393Z",
+ "month": "2026-06"
+}

@@ -1,0 +1,205 @@
+{
+  "machine": "ASUS Laptop Linux",
+  "generated_at": "2026-08-06T00:50:35-05:00",
+  "scanner_version": "a8105fb5e7a5",
+  "anthropic_only_tokens": 266146676,
+  "by_provider": {
+    "anthropic": 266146676,
+    "synthetic": 0
+  },
+  "other_tools": [
+    {
+      "vendor": "gemini",
+      "label": "Gemini CLI",
+      "dir": "/home/phantom-eternal/.gemini",
+      "files": 627,
+      "records_usage": false
+    },
+    {
+      "vendor": "copilot",
+      "label": "GitHub Copilot CLI",
+      "dir": "/home/phantom-eternal/.copilot",
+      "files": 64,
+      "records_usage": false
+    },
+    {
+      "vendor": "openai",
+      "label": "OpenAI Codex CLI",
+      "dir": "/home/phantom-eternal/.codex",
+      "files": 2,
+      "records_usage": true
+    }
+  ],
+  "grand_total_tokens": 266146676,
+  "accounts": [
+    {
+      "config_dir": "/home/phantom-eternal/.claude",
+      "sessions": 28,
+      "files": {
+        "subagent": 28,
+        "main": 28
+      },
+      "turns": 1574,
+      "totals": {
+        "input_tokens": 96220,
+        "cache_creation_input_tokens": 19572427,
+        "cache_read_input_tokens": 244592453,
+        "output_tokens": 1885576
+      },
+      "by_kind": {
+        "subagent": {
+          "input_tokens": 87273,
+          "cache_creation_input_tokens": 3314565,
+          "cache_read_input_tokens": 10607985,
+          "output_tokens": 103174
+        },
+        "main": {
+          "input_tokens": 8947,
+          "cache_creation_input_tokens": 16257862,
+          "cache_read_input_tokens": 233984468,
+          "output_tokens": 1782402
+        }
+      },
+      "by_provider": {
+        "anthropic": {
+          "input_tokens": 96220,
+          "cache_creation_input_tokens": 19572427,
+          "cache_read_input_tokens": 244592453,
+          "output_tokens": 1885576
+        },
+        "synthetic": {
+          "input_tokens": 0,
+          "cache_creation_input_tokens": 0,
+          "cache_read_input_tokens": 0,
+          "output_tokens": 0
+        }
+      },
+      "by_model": {
+        "claude-haiku-4-5-20251001": {
+          "input_tokens": 14175,
+          "cache_creation_input_tokens": 3382694,
+          "cache_read_input_tokens": 5936622,
+          "output_tokens": 133010
+        },
+        "claude-opus-4-5-20251101": {
+          "input_tokens": 36028,
+          "cache_creation_input_tokens": 305986,
+          "cache_read_input_tokens": 654142,
+          "output_tokens": 778
+        },
+        "claude-opus-4-7": {
+          "input_tokens": 46017,
+          "cache_creation_input_tokens": 15883747,
+          "cache_read_input_tokens": 238001689,
+          "output_tokens": 1751788
+        },
+        "<synthetic>": {
+          "input_tokens": 0,
+          "cache_creation_input_tokens": 0,
+          "cache_read_input_tokens": 0,
+          "output_tokens": 0
+        }
+      },
+      "by_day": {
+        "2026-01-23": {
+          "input_tokens": 468,
+          "cache_creation_input_tokens": 741551,
+          "cache_read_input_tokens": 1501027,
+          "output_tokens": 153
+        },
+        "2026-01-18": {
+          "input_tokens": 38463,
+          "cache_creation_input_tokens": 855441,
+          "cache_read_input_tokens": 2425032,
+          "output_tokens": 891
+        },
+        "2026-01-19": {
+          "input_tokens": 6,
+          "cache_creation_input_tokens": 33396,
+          "cache_read_input_tokens": 0,
+          "output_tokens": 3
+        },
+        "2026-01-17": {
+          "input_tokens": 240,
+          "cache_creation_input_tokens": 375390,
+          "cache_read_input_tokens": 1002983,
+          "output_tokens": 95
+        },
+        "2026-04-30": {
+          "input_tokens": 10696,
+          "cache_creation_input_tokens": 699286,
+          "cache_read_input_tokens": 1909205,
+          "output_tokens": 28603
+        },
+        "2026-05-01": {
+          "input_tokens": 6884,
+          "cache_creation_input_tokens": 1738616,
+          "cache_read_input_tokens": 39638727,
+          "output_tokens": 371134
+        },
+        "2026-05-04": {
+          "input_tokens": 9322,
+          "cache_creation_input_tokens": 3973014,
+          "cache_read_input_tokens": 101869400,
+          "output_tokens": 914266
+        },
+        "2026-05-03": {
+          "input_tokens": 29517,
+          "cache_creation_input_tokens": 8001106,
+          "cache_read_input_tokens": 39816385,
+          "output_tokens": 232409
+        },
+        "2026-05-02": {
+          "input_tokens": 606,
+          "cache_creation_input_tokens": 3154627,
+          "cache_read_input_tokens": 56050878,
+          "output_tokens": 337288
+        },
+        "2026-05-05": {
+          "input_tokens": 18,
+          "cache_creation_input_tokens": 0,
+          "cache_read_input_tokens": 378816,
+          "output_tokens": 734
+        }
+      },
+      "by_project": {
+        "-home-phantom-eternal": {
+          "input_tokens": 468,
+          "cache_creation_input_tokens": 741551,
+          "cache_read_input_tokens": 1501027,
+          "output_tokens": 153
+        },
+        "-media-phantom-eternal-Games---Mods1-Project-ai-shit-5-model-system": {
+          "input_tokens": 38709,
+          "cache_creation_input_tokens": 1264227,
+          "cache_read_input_tokens": 3428015,
+          "output_tokens": 989
+        },
+        "-media-phantom-eternal-GamesAndMods-Project-ai-shit-5-model-system": {
+          "input_tokens": 56629,
+          "cache_creation_input_tokens": 16136979,
+          "cache_read_input_tokens": 238450475,
+          "output_tokens": 1753258
+        },
+        "-tmp": {
+          "input_tokens": 414,
+          "cache_creation_input_tokens": 1429670,
+          "cache_read_input_tokens": 1212936,
+          "output_tokens": 131176
+        }
+      },
+      "account": "broodierchip@gmail.com",
+      "user_id": "7fbbc8d797e00cb20a8a68001f1ddb9c3c575dd4af0d085a235e62e5af7a364d",
+      "identity": {
+        "auth": "oauth",
+        "email": "broodierchip@gmail.com",
+        "org_uuid": "6bfc754e-a205-41c3-9dac-80e593f494e0",
+        "org_name": "broodierchip@gmail.com's Organization",
+        "account_uuid": "a9fec27d-ab5d-48bb-9679-a9bf60bfb97e",
+        "user_id": "7fbbc8d797e00cb20a8a68001f1ddb9c3c575dd4af0d085a235e62e5af7a364d",
+        "approved_api_keys": []
+      },
+      "grand_total": 266146676
+    }
+  ]
+}

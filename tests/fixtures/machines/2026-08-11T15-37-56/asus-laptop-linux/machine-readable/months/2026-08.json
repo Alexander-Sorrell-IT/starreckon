@@ -1,0 +1,18 @@
+{
+ "tokens": 8278412,
+ "sessions": 1,
+ "turns": 92,
+ "minutes": 29.5,
+ "by_cli": {
+  "antigravity": 8278412
+ },
+ "by_machine": {
+  "ASUS Laptop Linux": 8278412
+ },
+ "by_model": {
+  "gemini-antigravity-brain": 8278412
+ },
+ "first": "2026-08-03T03:33:29Z",
+ "last": "2026-08-09T07:32:10Z",
+ "month": "2026-08"
+}

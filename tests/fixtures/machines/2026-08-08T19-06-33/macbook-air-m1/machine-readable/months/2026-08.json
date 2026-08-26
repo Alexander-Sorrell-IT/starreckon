@@ -1,0 +1,22 @@
+{
+ "tokens": 3504970252,
+ "sessions": 8,
+ "turns": 7561,
+ "minutes": 3348.6,
+ "by_cli": {
+  "claude": 3491485796,
+  "grok": 13484456
+ },
+ "by_machine": {
+  "MacBook Air M1": 3504970252
+ },
+ "by_model": {
+  "claude-opus-5": 3414624600,
+  "<synthetic>": 0,
+  "claude-fable-5": 76861196,
+  "grok-4.5-build": 13484456
+ },
+ "first": "2026-08-01T03:13:38.874Z",
+ "last": "2026-08-06T08:31:22.475Z",
+ "month": "2026-08"
+}

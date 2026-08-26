@@ -1,0 +1,27 @@
+account,model,input_tokens,cache_creation_input_tokens,cache_read_input_tokens,output_tokens,total
+codehunterextreme@gmail.com,claude-opus-5,78761,34236544,2151412803,7740024,2193468132
+codehunterextreme@gmail.com,claude-fable-5,33176,27425411,536238136,4298324,567995047
+codehunterextreme@gmail.com,claude-opus-4-8,434753,14868817,175672834,2472830,193449234
+codehunterextreme@gmail.com,claude-sonnet-5,6,24766,95787,27,120586
+broodierchip@gmail.com,claude-opus-4-7,512505,57323331,2485425633,9024658,2552286127
+broodierchip@gmail.com,deepseek-v4-pro,951993,0,13077248,133118,14162359
+broodierchip@gmail.com,claude-sonnet-4-6,9767,552819,9690651,76884,10330121
+broodierchip@gmail.com,claude-opus-4-8,58970,230635,4495931,67855,4853391
+broodierchip@gmail.com,claude-haiku-4-5-20251001,112,155308,3146271,13160,3314851
+broodierchip@gmail.com,deepseek-v4-flash,10983,0,0,18,11001
+user:73ae64bf180b,deepseek-v4-pro,19297608,0,463029376,4190083,486517067
+user:73ae64bf180b,deepseek-v4-flash,2498833,0,30677120,804773,33980726
+unknown (Desktop_standout_clean_.claude),claude-opus-4-8,399757,12769215,259378406,1522180,274069558
+unknown (Desktop_standout_clean_.claude),claude-fable-5,157260,1498930,44999169,376810,47032169
+unknown (Desktop_standout_full_.claude),claude-opus-4-8,691036,15450287,145888460,2501852,164531635
+unknown (Desktop_standout_full_.claude),claude-haiku-4-5-20251001,404,99264,2113923,11509,2225100
+unknown (Desktop_standout_full_.claude),claude-fable-5,36988,85849,939086,11146,1073069
+alexander.sorrell.it@gmail.com,claude-sonnet-4-6,2212,957809,41912649,213625,43086295
+alexander.sorrell.it@gmail.com,claude-haiku-4-5-20251001,9330,91087,636540,8569,745526
+unknown (Desktop_standout_max_.claude),claude-opus-4-7,552,21020,3666987,20051,3708610
+unknown (Desktop_standout_max_.claude),claude-opus-4-8,3966,26919,434336,7736,472957
+unknown (Desktop_standout_max_.claude),claude-sonnet-4-6,4,847,278106,634,279591
+unknown (Desktop_standout_max_.claude),claude-fable-5,6,3567,202715,1913,208201
+unknown (.claude-alt),claude-opus-5,2,669,912290,295,913256
+user:4be462f3a2f9,claude-opus-4-8,6,2325,71532,2289,76152
+user:4be462f3a2f9,claude-fable-5,1916,8539,53666,937,65058

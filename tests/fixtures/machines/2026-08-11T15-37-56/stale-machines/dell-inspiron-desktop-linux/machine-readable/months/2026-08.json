@@ -1,0 +1,21 @@
+{
+ "tokens": 10065305,
+ "sessions": 4,
+ "turns": 192,
+ "minutes": 68.1,
+ "by_cli": {
+  "antigravity": 10065305,
+  "claude": 0
+ },
+ "by_machine": {
+  "Dell Inspiron Desktop Linux": 10065305
+ },
+ "by_model": {
+  "gemini-3.6-flash-high": 3982905,
+  "<synthetic>": 0,
+  "gemini-antigravity-brain": 6082400
+ },
+ "first": "2026-08-04T06:54:45Z",
+ "last": "2026-08-09T07:26:57Z",
+ "month": "2026-08"
+}

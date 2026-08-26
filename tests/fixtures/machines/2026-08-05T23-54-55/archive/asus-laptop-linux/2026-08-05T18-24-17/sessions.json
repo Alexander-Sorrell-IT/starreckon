@@ -1,0 +1,880 @@
+{
+ "machine": "ASUS Laptop Linux",
+ "generated_at": "2026-08-04T01:46:32-05:00",
+ "uncountable_tools": [],
+ "readers": [
+  {
+   "cli": "claude",
+   "sessions": 29,
+   "tokens": 266146676,
+   "active_min": 639.0,
+   "installed": true,
+   "looked_in": [
+    "~/.claude*/projects"
+   ],
+   "error": null
+  },
+  {
+   "cli": "copilot",
+   "sessions": 0,
+   "tokens": 0,
+   "active_min": 0,
+   "installed": true,
+   "looked_in": [
+    "~/.copilot/session-state"
+   ],
+   "error": null
+  },
+  {
+   "cli": "codex",
+   "sessions": 1,
+   "tokens": 670073,
+   "active_min": 18.8,
+   "installed": true,
+   "looked_in": [
+    "~/.codex/sessions"
+   ],
+   "error": null
+  },
+  {
+   "cli": "gemini",
+   "sessions": 5,
+   "tokens": 4837000,
+   "active_min": 140.6,
+   "installed": true,
+   "looked_in": [
+    "~/.gemini/tmp"
+   ],
+   "error": null
+  },
+  {
+   "cli": "kilocode",
+   "sessions": 0,
+   "tokens": 0,
+   "active_min": 0,
+   "installed": false,
+   "looked_in": [
+    "~/.config/Code/User/globalStorage/kilocode.kilo-code/tasks",
+    "~/.config/Code - Insiders/User/globalStorage/kilocode.kilo-code/tasks"
+   ],
+   "error": null
+  },
+  {
+   "cli": "grok",
+   "sessions": 0,
+   "tokens": 0,
+   "active_min": 0,
+   "installed": false,
+   "looked_in": [
+    "~/.grok/sessions",
+    "~/.grok/archived_sessions"
+   ],
+   "error": null
+  },
+  {
+   "cli": "antigravity",
+   "sessions": 1,
+   "tokens": 1593022,
+   "active_min": 7.2,
+   "installed": true,
+   "looked_in": [
+    "~/.gemini/antigravity-cli/conversations"
+   ],
+   "error": null
+  }
+ ],
+ "sessions": [
+  {
+   "cli": "codex",
+   "session_id": "2025-12-21T13-23-38-019b425e-0c73-7a73-9aed-29210f77d9e3",
+   "account": "codex (local)",
+   "project": "-",
+   "start": "2025-12-21T19:23:38.486Z",
+   "end": "2025-12-21T19:42:28.952Z",
+   "turns": 36,
+   "tokens": {
+    "input_tokens": 68512,
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 595840,
+    "output_tokens": 5721
+   },
+   "duration_min": 18.8,
+   "elapsed_min": 18.8,
+   "total": 670073,
+   "sent": 664352,
+   "received": 5721,
+   "model": "gpt-5.1-codex-max",
+   "provider": "openai"
+  },
+  {
+   "cli": "gemini",
+   "session_id": "0bb2597e-6d38-4189-850b-16a86ea7fc07",
+   "account": "gemini (local)",
+   "project": "dabaa762c486f538eb53835920f3684ccb3819e71a4f9bc9f91d4b0b506a037a",
+   "start": "2025-12-28T19:20:30.962Z",
+   "end": "2025-12-28T20:07:36.062Z",
+   "turns": 6,
+   "tokens": {
+    "input_tokens": 24286,
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 17806,
+    "output_tokens": 703
+   },
+   "duration_min": 21.1,
+   "elapsed_min": 47.1,
+   "total": 42795,
+   "sent": 42092,
+   "received": 703,
+   "model": "gemini-3-flash-preview",
+   "provider": "google"
+  },
+  {
+   "cli": "gemini",
+   "session_id": "55f92a4f-1b1b-44c6-b009-101adcc912b6",
+   "account": "gemini (local)",
+   "project": "2a305a613e28b9a7d7fbacf2033d00adfe539fafb692059a4c54db08d82629e8",
+   "start": "2026-01-03T18:36:31.441Z",
+   "end": "2026-01-03T18:37:31.545Z",
+   "turns": 5,
+   "tokens": {
+    "input_tokens": 43977,
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 37221,
+    "output_tokens": 3290
+   },
+   "duration_min": 1.0,
+   "elapsed_min": 1.0,
+   "total": 84488,
+   "sent": 81198,
+   "received": 3290,
+   "model": "gemini-3-pro-preview",
+   "provider": "google"
+  },
+  {
+   "cli": "gemini",
+   "session_id": "74687bfd-4cfc-4b0a-9e96-f54837db92af",
+   "account": "gemini (local)",
+   "project": "2a305a613e28b9a7d7fbacf2033d00adfe539fafb692059a4c54db08d82629e8",
+   "start": "2026-01-03T18:40:59.296Z",
+   "end": "2026-01-03T18:44:05.546Z",
+   "turns": 18,
+   "tokens": {
+    "input_tokens": 93525,
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 226570,
+    "output_tokens": 10460
+   },
+   "duration_min": 3.1,
+   "elapsed_min": 3.1,
+   "total": 330555,
+   "sent": 320095,
+   "received": 10460,
+   "model": "gemini-3-flash-preview",
+   "provider": "google"
+  },
+  {
+   "cli": "claude",
+   "session_id": "a61f002b-b049-4df3-8877-e910aaa101aa",
+   "account": "broodierchip@gmail.com",
+   "project": "-media-phantom-eternal-Games---Mods1-Project-ai-shit-5-model-system",
+   "start": "2026-01-17T20:02:45.058Z",
+   "end": "2026-01-19T04:26:41.223Z",
+   "turns": 169,
+   "tokens": {
+    "input_tokens": 38709,
+    "cache_creation_input_tokens": 1264227,
+    "cache_read_input_tokens": 3428015,
+    "output_tokens": 989
+   },
+   "duration_min": 67.1,
+   "elapsed_min": 1943.9,
+   "total": 4731940,
+   "sent": 4730951,
+   "received": 989,
+   "model": "claude-haiku-4-5-20251001",
+   "provider": "anthropic"
+  },
+  {
+   "cli": "gemini",
+   "session_id": "7c7ecc79-4ca5-418f-94f5-af6d4c8a9e5b",
+   "account": "gemini (local)",
+   "project": "cdcd3e2033658db58aaaa48606218967c728799fc64ee8f6a01f6b66c7a1d0e2",
+   "start": "2026-01-21T18:38:52.225Z",
+   "end": "2026-01-21T18:38:57.340Z",
+   "turns": 1,
+   "tokens": {
+    "input_tokens": 13268,
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 0,
+    "output_tokens": 450
+   },
+   "duration_min": 0.1,
+   "elapsed_min": 0.1,
+   "total": 13718,
+   "sent": 13268,
+   "received": 450,
+   "model": "gemini-3-flash-preview",
+   "provider": "google"
+  },
+  {
+   "cli": "claude",
+   "session_id": "36bdda73-1cd9-4bc8-a56a-a5ff7971268c",
+   "account": "broodierchip@gmail.com",
+   "project": "-home-phantom-eternal",
+   "start": "2026-01-23T19:07:06.074Z",
+   "end": "2026-01-23T23:09:16.881Z",
+   "turns": 90,
+   "tokens": {
+    "input_tokens": 468,
+    "cache_creation_input_tokens": 741551,
+    "cache_read_input_tokens": 1501027,
+    "output_tokens": 153
+   },
+   "duration_min": 19.5,
+   "elapsed_min": 242.2,
+   "total": 2243199,
+   "sent": 2243046,
+   "received": 153,
+   "model": "claude-haiku-4-5-20251001",
+   "provider": "anthropic"
+  },
+  {
+   "cli": "claude",
+   "session_id": "22bfc76e-294b-49ce-8f6d-6d4065caf778",
+   "account": "broodierchip@gmail.com",
+   "project": "-media-phantom-eternal-GamesAndMods-Project-ai-shit-5-model-system",
+   "start": "2026-04-30T02:31:02.368Z",
+   "end": "2026-04-30T02:32:36.832Z",
+   "turns": 30,
+   "tokens": {
+    "input_tokens": 10581,
+    "cache_creation_input_tokens": 224238,
+    "cache_read_input_tokens": 381764,
+    "output_tokens": 50
+   },
+   "duration_min": 1.6,
+   "elapsed_min": 1.6,
+   "total": 616633,
+   "sent": 616583,
+   "received": 50,
+   "model": "claude-haiku-4-5-20251001",
+   "provider": "anthropic"
+  },
+  {
+   "cli": "claude",
+   "session_id": "112d6b44-ab9c-4da2-bbaa-bed6b7980cbe",
+   "account": "broodierchip@gmail.com",
+   "project": "-media-phantom-eternal-GamesAndMods-Project-ai-shit-5-model-system",
+   "start": "2026-04-30T02:35:00.334Z",
+   "end": "2026-05-01T04:32:57.144Z",
+   "turns": 294,
+   "tokens": {
+    "input_tokens": 1468,
+    "cache_creation_input_tokens": 1409241,
+    "cache_read_input_tokens": 11741024,
+    "output_tokens": 151184
+   },
+   "duration_min": 65.2,
+   "elapsed_min": 1557.9,
+   "total": 13302917,
+   "sent": 13151733,
+   "received": 151184,
+   "model": "claude-opus-4-7",
+   "provider": "anthropic"
+  },
+  {
+   "cli": "claude",
+   "session_id": "3f92c243-4038-4acc-a639-90fc1de0601f",
+   "account": "broodierchip@gmail.com",
+   "project": "-media-phantom-eternal-GamesAndMods-Project-ai-shit-5-model-system",
+   "start": "2026-05-01T01:26:00.701Z",
+   "end": "2026-05-01T01:28:01.774Z",
+   "turns": 9,
+   "tokens": {
+    "input_tokens": 44,
+    "cache_creation_input_tokens": 21526,
+    "cache_read_input_tokens": 199480,
+    "output_tokens": 1565
+   },
+   "duration_min": 2.0,
+   "elapsed_min": 2.0,
+   "total": 222615,
+   "sent": 221050,
+   "received": 1565,
+   "model": "claude-opus-4-7",
+   "provider": "anthropic"
+  },
+  {
+   "cli": "claude",
+   "session_id": "57e25c90-431b-4bcb-ae8a-b72b792f63d0",
+   "account": "broodierchip@gmail.com",
+   "project": "-media-phantom-eternal-GamesAndMods-Project-ai-shit-5-model-system",
+   "start": "2026-05-01T04:33:34.212Z",
+   "end": "2026-05-05T00:04:38.308Z",
+   "turns": 936,
+   "tokens": {
+    "input_tokens": 44536,
+    "cache_creation_input_tokens": 14481974,
+    "cache_read_input_tokens": 226128207,
+    "output_tokens": 1600459
+   },
+   "duration_min": 483.6,
+   "elapsed_min": 5491.1,
+   "total": 242255176,
+   "sent": 240654717,
+   "received": 1600459,
+   "model": "claude-opus-4-7",
+   "provider": "anthropic"
+  },
+  {
+   "cli": "claude",
+   "session_id": "cf17eb6b-6eb2-49bf-b1dd-410bb002498e",
+   "account": "broodierchip@gmail.com",
+   "project": "-tmp",
+   "start": "2026-05-02T21:22:10.470Z",
+   "end": "2026-05-02T21:22:10.471Z",
+   "turns": 2,
+   "tokens": {
+    "input_tokens": 18,
+    "cache_creation_input_tokens": 189750,
+    "cache_read_input_tokens": 0,
+    "output_tokens": 8332
+   },
+   "duration_min": 0.0,
+   "elapsed_min": 0.0,
+   "total": 198100,
+   "sent": 189768,
+   "received": 8332,
+   "model": "claude-haiku-4-5-20251001",
+   "provider": "anthropic"
+  },
+  {
+   "cli": "claude",
+   "session_id": "66f7e0dd-417b-46bd-b7e1-6586acdd69b7",
+   "account": "broodierchip@gmail.com",
+   "project": "-tmp",
+   "start": "2026-05-02T21:22:28.877Z",
+   "end": "2026-05-02T21:22:28.878Z",
+   "turns": 2,
+   "tokens": {
+    "input_tokens": 18,
+    "cache_creation_input_tokens": 18136,
+    "cache_read_input_tokens": 55608,
+    "output_tokens": 4290
+   },
+   "duration_min": 0.0,
+   "elapsed_min": 0.0,
+   "total": 78052,
+   "sent": 73762,
+   "received": 4290,
+   "model": "claude-haiku-4-5-20251001",
+   "provider": "anthropic"
+  },
+  {
+   "cli": "claude",
+   "session_id": "463078bd-fe6a-4bb9-84d7-c4ab0d08f72a",
+   "account": "broodierchip@gmail.com",
+   "project": "-tmp",
+   "start": "2026-05-02T21:29:21.253Z",
+   "end": "2026-05-02T21:29:21.254Z",
+   "turns": 2,
+   "tokens": {
+    "input_tokens": 18,
+    "cache_creation_input_tokens": 131768,
+    "cache_read_input_tokens": 55608,
+    "output_tokens": 6534
+   },
+   "duration_min": 0.0,
+   "elapsed_min": 0.0,
+   "total": 193928,
+   "sent": 187394,
+   "received": 6534,
+   "model": "claude-haiku-4-5-20251001",
+   "provider": "anthropic"
+  },
+  {
+   "cli": "claude",
+   "session_id": "3f4cbbd8-d35a-478d-9be3-fc9a55fc5b80",
+   "account": "broodierchip@gmail.com",
+   "project": "-tmp",
+   "start": "2026-05-02T21:44:09.064Z",
+   "end": "2026-05-02T21:44:09.073Z",
+   "turns": 2,
+   "tokens": {
+    "input_tokens": 18,
+    "cache_creation_input_tokens": 64850,
+    "cache_read_input_tokens": 55608,
+    "output_tokens": 5970
+   },
+   "duration_min": 0.0,
+   "elapsed_min": 0.0,
+   "total": 126446,
+   "sent": 120476,
+   "received": 5970,
+   "model": "claude-haiku-4-5-20251001",
+   "provider": "anthropic"
+  },
+  {
+   "cli": "gemini",
+   "session_id": "55be799c-f797-421f-ac02-9bc08d08456b",
+   "account": "gemini (local)",
+   "project": "2a305a613e28b9a7d7fbacf2033d00adfe539fafb692059a4c54db08d82629e8",
+   "start": "2026-05-03T16:24:31.042Z",
+   "end": "2026-05-05T21:21:00.834Z",
+   "turns": 67,
+   "tokens": {
+    "input_tokens": 453900,
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 3840445,
+    "output_tokens": 71099
+   },
+   "duration_min": 115.3,
+   "elapsed_min": 3176.5,
+   "total": 4365444,
+   "sent": 4294345,
+   "received": 71099,
+   "model": "gemini-3-flash-preview",
+   "provider": "google"
+  },
+  {
+   "cli": "claude",
+   "session_id": "c4787dfe-1070-49cf-9d3d-933b217cbb20",
+   "account": "broodierchip@gmail.com",
+   "project": "-tmp",
+   "start": "2026-05-03T17:26:43.007Z",
+   "end": "2026-05-03T17:26:43.008Z",
+   "turns": 2,
+   "tokens": {
+    "input_tokens": 18,
+    "cache_creation_input_tokens": 81390,
+    "cache_read_input_tokens": 0,
+    "output_tokens": 11398
+   },
+   "duration_min": 0.0,
+   "elapsed_min": 0.0,
+   "total": 92806,
+   "sent": 81408,
+   "received": 11398,
+   "model": "claude-haiku-4-5-20251001",
+   "provider": "anthropic"
+  },
+  {
+   "cli": "claude",
+   "session_id": "6af056ef-b961-4d95-bc13-e845c4f4d4ed",
+   "account": "broodierchip@gmail.com",
+   "project": "-tmp",
+   "start": "2026-05-03T17:27:01.117Z",
+   "end": "2026-05-03T17:27:01.134Z",
+   "turns": 2,
+   "tokens": {
+    "input_tokens": 18,
+    "cache_creation_input_tokens": 17672,
+    "cache_read_input_tokens": 55608,
+    "output_tokens": 4580
+   },
+   "duration_min": 0.0,
+   "elapsed_min": 0.0,
+   "total": 77878,
+   "sent": 73298,
+   "received": 4580,
+   "model": "claude-haiku-4-5-20251001",
+   "provider": "anthropic"
+  },
+  {
+   "cli": "claude",
+   "session_id": "28774abf-b267-4103-bc1b-ba4209456cb2",
+   "account": "broodierchip@gmail.com",
+   "project": "-tmp",
+   "start": "2026-05-03T20:10:54.455Z",
+   "end": "2026-05-03T20:10:54.459Z",
+   "turns": 2,
+   "tokens": {
+    "input_tokens": 18,
+    "cache_creation_input_tokens": 86370,
+    "cache_read_input_tokens": 0,
+    "output_tokens": 2794
+   },
+   "duration_min": 0.0,
+   "elapsed_min": 0.0,
+   "total": 89182,
+   "sent": 86388,
+   "received": 2794,
+   "model": "claude-haiku-4-5-20251001",
+   "provider": "anthropic"
+  },
+  {
+   "cli": "claude",
+   "session_id": "d893daa7-3628-4095-82d1-21a7d992e068",
+   "account": "broodierchip@gmail.com",
+   "project": "-tmp",
+   "start": "2026-05-03T20:11:11.219Z",
+   "end": "2026-05-03T20:11:11.220Z",
+   "turns": 2,
+   "tokens": {
+    "input_tokens": 18,
+    "cache_creation_input_tokens": 94494,
+    "cache_read_input_tokens": 0,
+    "output_tokens": 7954
+   },
+   "duration_min": 0.0,
+   "elapsed_min": 0.0,
+   "total": 102466,
+   "sent": 94512,
+   "received": 7954,
+   "model": "claude-haiku-4-5-20251001",
+   "provider": "anthropic"
+  },
+  {
+   "cli": "claude",
+   "session_id": "addf3221-ca0c-49e8-b086-39f32f56c359",
+   "account": "broodierchip@gmail.com",
+   "project": "-tmp",
+   "start": "2026-05-03T20:11:37.393Z",
+   "end": "2026-05-03T20:11:37.394Z",
+   "turns": 2,
+   "tokens": {
+    "input_tokens": 18,
+    "cache_creation_input_tokens": 17470,
+    "cache_read_input_tokens": 55608,
+    "output_tokens": 2934
+   },
+   "duration_min": 0.0,
+   "elapsed_min": 0.0,
+   "total": 76030,
+   "sent": 73096,
+   "received": 2934,
+   "model": "claude-haiku-4-5-20251001",
+   "provider": "anthropic"
+  },
+  {
+   "cli": "claude",
+   "session_id": "43b6d172-70f2-44bd-86bb-f646b0b763ac",
+   "account": "broodierchip@gmail.com",
+   "project": "-tmp",
+   "start": "2026-05-03T20:13:28.316Z",
+   "end": "2026-05-03T20:13:28.317Z",
+   "turns": 2,
+   "tokens": {
+    "input_tokens": 18,
+    "cache_creation_input_tokens": 199042,
+    "cache_read_input_tokens": 55608,
+    "output_tokens": 7184
+   },
+   "duration_min": 0.0,
+   "elapsed_min": 0.0,
+   "total": 261852,
+   "sent": 254668,
+   "received": 7184,
+   "model": "claude-haiku-4-5-20251001",
+   "provider": "anthropic"
+  },
+  {
+   "cli": "claude",
+   "session_id": "347662ae-b8f8-4d36-8d40-a89b5d7a76db",
+   "account": "broodierchip@gmail.com",
+   "project": "-tmp",
+   "start": "2026-05-04T16:09:42.313Z",
+   "end": "2026-05-04T16:09:42.314Z",
+   "turns": 2,
+   "tokens": {
+    "input_tokens": 18,
+    "cache_creation_input_tokens": 85736,
+    "cache_read_input_tokens": 0,
+    "output_tokens": 2848
+   },
+   "duration_min": 0.0,
+   "elapsed_min": 0.0,
+   "total": 88602,
+   "sent": 85754,
+   "received": 2848,
+   "model": "claude-haiku-4-5-20251001",
+   "provider": "anthropic"
+  },
+  {
+   "cli": "claude",
+   "session_id": "6ee511af-c9b5-4ed2-aa59-b71b85ccb40e",
+   "account": "broodierchip@gmail.com",
+   "project": "-tmp",
+   "start": "2026-05-04T16:10:11.816Z",
+   "end": "2026-05-04T16:10:11.817Z",
+   "turns": 2,
+   "tokens": {
+    "input_tokens": 18,
+    "cache_creation_input_tokens": 17642,
+    "cache_read_input_tokens": 55608,
+    "output_tokens": 8418
+   },
+   "duration_min": 0.0,
+   "elapsed_min": 0.0,
+   "total": 81686,
+   "sent": 73268,
+   "received": 8418,
+   "model": "claude-haiku-4-5-20251001",
+   "provider": "anthropic"
+  },
+  {
+   "cli": "claude",
+   "session_id": "42d21afb-c749-422a-b6d2-72cb0d2d330a",
+   "account": "broodierchip@gmail.com",
+   "project": "-tmp",
+   "start": "2026-05-04T16:33:30.841Z",
+   "end": "2026-05-04T16:33:30.850Z",
+   "turns": 2,
+   "tokens": {
+    "input_tokens": 18,
+    "cache_creation_input_tokens": 25826,
+    "cache_read_input_tokens": 55608,
+    "output_tokens": 5858
+   },
+   "duration_min": 0.0,
+   "elapsed_min": 0.0,
+   "total": 87310,
+   "sent": 81452,
+   "received": 5858,
+   "model": "claude-haiku-4-5-20251001",
+   "provider": "anthropic"
+  },
+  {
+   "cli": "claude",
+   "session_id": "2bb18908-6c70-4bf7-86a6-2cd28f2119f2",
+   "account": "broodierchip@gmail.com",
+   "project": "-tmp",
+   "start": "2026-05-04T17:06:29.349Z",
+   "end": "2026-05-04T17:06:29.351Z",
+   "turns": 2,
+   "tokens": {
+    "input_tokens": 18,
+    "cache_creation_input_tokens": 31540,
+    "cache_read_input_tokens": 55608,
+    "output_tokens": 2116
+   },
+   "duration_min": 0.0,
+   "elapsed_min": 0.0,
+   "total": 89282,
+   "sent": 87166,
+   "received": 2116,
+   "model": "claude-haiku-4-5-20251001",
+   "provider": "anthropic"
+  },
+  {
+   "cli": "claude",
+   "session_id": "21604f54-119c-4b00-8d87-adaacf738728",
+   "account": "broodierchip@gmail.com",
+   "project": "-tmp",
+   "start": "2026-05-04T22:11:12.242Z",
+   "end": "2026-05-04T22:11:12.243Z",
+   "turns": 2,
+   "tokens": {
+    "input_tokens": 18,
+    "cache_creation_input_tokens": 124160,
+    "cache_read_input_tokens": 0,
+    "output_tokens": 10134
+   },
+   "duration_min": 0.0,
+   "elapsed_min": 0.0,
+   "total": 134312,
+   "sent": 124178,
+   "received": 10134,
+   "model": "claude-haiku-4-5-20251001",
+   "provider": "anthropic"
+  },
+  {
+   "cli": "claude",
+   "session_id": "3a3a8dca-6f22-4a37-801b-a17df37b7efd",
+   "account": "broodierchip@gmail.com",
+   "project": "-tmp",
+   "start": "2026-05-04T22:11:40.883Z",
+   "end": "2026-05-04T22:11:40.884Z",
+   "turns": 2,
+   "tokens": {
+    "input_tokens": 18,
+    "cache_creation_input_tokens": 17866,
+    "cache_read_input_tokens": 55608,
+    "output_tokens": 8762
+   },
+   "duration_min": 0.0,
+   "elapsed_min": 0.0,
+   "total": 82254,
+   "sent": 73492,
+   "received": 8762,
+   "model": "claude-haiku-4-5-20251001",
+   "provider": "anthropic"
+  },
+  {
+   "cli": "claude",
+   "session_id": "d9cbc475-dc82-4e43-bc7a-54e9823f52c7",
+   "account": "broodierchip@gmail.com",
+   "project": "-tmp",
+   "start": "2026-05-04T22:33:58.823Z",
+   "end": "2026-05-04T22:33:58.824Z",
+   "turns": 2,
+   "tokens": {
+    "input_tokens": 18,
+    "cache_creation_input_tokens": 27256,
+    "cache_read_input_tokens": 55608,
+    "output_tokens": 5888
+   },
+   "duration_min": 0.0,
+   "elapsed_min": 0.0,
+   "total": 88770,
+   "sent": 82882,
+   "received": 5888,
+   "model": "claude-haiku-4-5-20251001",
+   "provider": "anthropic"
+  },
+  {
+   "cli": "claude",
+   "session_id": "5421c664-28fe-4304-8f76-34351442427e",
+   "account": "broodierchip@gmail.com",
+   "project": "-tmp",
+   "start": "2026-05-04T23:17:52.086Z",
+   "end": "2026-05-04T23:17:52.114Z",
+   "turns": 2,
+   "tokens": {
+    "input_tokens": 18,
+    "cache_creation_input_tokens": 24836,
+    "cache_read_input_tokens": 55608,
+    "output_tokens": 5164
+   },
+   "duration_min": 0.0,
+   "elapsed_min": 0.0,
+   "total": 85626,
+   "sent": 80462,
+   "received": 5164,
+   "model": "claude-haiku-4-5-20251001",
+   "provider": "anthropic"
+  },
+  {
+   "cli": "claude",
+   "session_id": "c2b485c2-25d7-4e09-a1fa-58bb431ec2bc",
+   "account": "broodierchip@gmail.com",
+   "project": "-tmp",
+   "start": "2026-05-04T23:18:12.435Z",
+   "end": "2026-05-04T23:18:12.436Z",
+   "turns": 2,
+   "tokens": {
+    "input_tokens": 18,
+    "cache_creation_input_tokens": 17616,
+    "cache_read_input_tokens": 55608,
+    "output_tokens": 4378
+   },
+   "duration_min": 0.0,
+   "elapsed_min": 0.0,
+   "total": 77620,
+   "sent": 73242,
+   "received": 4378,
+   "model": "claude-haiku-4-5-20251001",
+   "provider": "anthropic"
+  },
+  {
+   "cli": "claude",
+   "session_id": "829c743a-2110-4c65-a297-ebeb986c5bca",
+   "account": "broodierchip@gmail.com",
+   "project": "-tmp",
+   "start": "2026-05-04T23:49:42.287Z",
+   "end": "2026-05-04T23:49:42.288Z",
+   "turns": 2,
+   "tokens": {
+    "input_tokens": 18,
+    "cache_creation_input_tokens": 29502,
+    "cache_read_input_tokens": 55608,
+    "output_tokens": 4790
+   },
+   "duration_min": 0.0,
+   "elapsed_min": 0.0,
+   "total": 89918,
+   "sent": 85128,
+   "received": 4790,
+   "model": "claude-haiku-4-5-20251001",
+   "provider": "anthropic"
+  },
+  {
+   "cli": "claude",
+   "session_id": "b0f153cc-0d68-4948-b21c-a409816169ab",
+   "account": "broodierchip@gmail.com",
+   "project": "-tmp",
+   "start": "2026-05-04T23:55:29.054Z",
+   "end": "2026-05-04T23:55:29.055Z",
+   "turns": 2,
+   "tokens": {
+    "input_tokens": 18,
+    "cache_creation_input_tokens": 87704,
+    "cache_read_input_tokens": 0,
+    "output_tokens": 3830
+   },
+   "duration_min": 0.0,
+   "elapsed_min": 0.0,
+   "total": 91552,
+   "sent": 87722,
+   "received": 3830,
+   "model": "claude-haiku-4-5-20251001",
+   "provider": "anthropic"
+  },
+  {
+   "cli": "claude",
+   "session_id": "afc51bd7-641f-4c8b-8c29-5489dac2b3ed",
+   "account": "broodierchip@gmail.com",
+   "project": "-tmp",
+   "start": "2026-05-04T23:55:40.696Z",
+   "end": "2026-05-04T23:55:40.697Z",
+   "turns": 2,
+   "tokens": {
+    "input_tokens": 18,
+    "cache_creation_input_tokens": 39044,
+    "cache_read_input_tokens": 55608,
+    "output_tokens": 6286
+   },
+   "duration_min": 0.0,
+   "elapsed_min": 0.0,
+   "total": 100956,
+   "sent": 94670,
+   "received": 6286,
+   "model": "claude-haiku-4-5-20251001",
+   "provider": "anthropic"
+  },
+  {
+   "cli": "claude",
+   "session_id": "ceddada4-5e90-4988-8194-164df81cf5d1",
+   "account": "broodierchip@gmail.com",
+   "project": "-tmp",
+   "start": "2026-05-05T00:07:13.138Z",
+   "end": "2026-05-05T00:07:13.955Z",
+   "turns": 2,
+   "tokens": {
+    "input_tokens": 18,
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 378816,
+    "output_tokens": 734
+   },
+   "duration_min": 0.0,
+   "elapsed_min": 0.0,
+   "total": 379568,
+   "sent": 378834,
+   "received": 734,
+   "model": "claude-haiku-4-5-20251001",
+   "provider": "anthropic"
+  },
+  {
+   "cli": "antigravity",
+   "session_id": "3d014863-8912-440b-9ce9-a6c442801ea5",
+   "account": "antigravity (local)",
+   "project": "-",
+   "start": "2026-08-03T03:33:29Z",
+   "end": "2026-08-04T06:46:32Z",
+   "turns": 36,
+   "tokens": {
+    "input_tokens": 234024,
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 1349258,
+    "output_tokens": 9740
+   },
+   "duration_min": 7.2,
+   "elapsed_min": 1633.0,
+   "total": 1593022,
+   "sent": 1583282,
+   "received": 9740,
+   "model": "antigravity",
+   "provider": "other"
+  }
+ ]
+}

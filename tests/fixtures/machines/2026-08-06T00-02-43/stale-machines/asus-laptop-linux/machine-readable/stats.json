@@ -1,0 +1,68 @@
+{
+ "scope": "ASUS Laptop Linux",
+ "generated_at": "2026-08-05T23:58:10-05:00",
+ "total_tokens": 273246771,
+ "sessions": 36,
+ "fields": {
+  "input_tokens": 96220,
+  "cache_creation_input_tokens": 19572427,
+  "cache_read_input_tokens": 244592453,
+  "output_tokens": 1885576
+ },
+ "new_content_tokens": 21554223,
+ "hours": 13.4,
+ "by_cli": {
+  "codex": {
+   "sessions": 1,
+   "tokens": 670073,
+   "minutes": 18.8
+  },
+  "gemini": {
+   "sessions": 5,
+   "tokens": 4837000,
+   "minutes": 140.6
+  },
+  "claude": {
+   "sessions": 29,
+   "tokens": 266146676,
+   "minutes": 639.0
+  },
+  "antigravity": {
+   "sessions": 1,
+   "tokens": 1593022,
+   "minutes": 7.2
+  }
+ },
+ "by_model": {
+  "claude-opus-4-7": 255780708,
+  "claude-haiku-4-5-20251001": 10365968,
+  "gemini-3-flash-preview": 4752512,
+  "antigravity": 1593022,
+  "gpt-5.1-codex-max": 670073,
+  "gemini-3-pro-preview": 84488
+ },
+ "records": {
+  "longest_session": {
+   "id": "57e25c90-431b-4bcb-ae8a-b72b792f63d0",
+   "cli": "claude",
+   "machine": "ASUS Laptop Linux",
+   "minutes": 483.6
+  },
+  "most_tokens": {
+   "id": "57e25c90-431b-4bcb-ae8a-b72b792f63d0",
+   "cli": "claude",
+   "machine": "ASUS Laptop Linux",
+   "tokens": 242255176
+  },
+  "most_turns": {
+   "id": "57e25c90-431b-4bcb-ae8a-b72b792f63d0",
+   "cli": "claude",
+   "machine": "ASUS Laptop Linux",
+   "turns": 936
+  }
+ },
+ "scans": {
+  "ASUS Laptop Linux": "2026-08-04T01:46:32-05:00"
+ },
+ "first_last_seen": {}
+}

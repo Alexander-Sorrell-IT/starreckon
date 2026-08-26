@@ -1,0 +1,43 @@
+{
+ "tokens": 33816380952,
+ "sessions": 16734,
+ "turns": 203294,
+ "minutes": 29762.899999999776,
+ "by_cli": {
+  "claude": 31991875521,
+  "antigravity": 114519716,
+  "gemini": 56900,
+  "codex": 1633203953,
+  "grok": 76724862
+ },
+ "by_machine": {
+  "Dell Latitude 7480 Linux": 3640344109,
+  "HP Laptop Linux": 3227130600,
+  "MacBook Air M1": 26948906243
+ },
+ "by_model": {
+  "claude-opus-4-8": 17224766712,
+  "claude-opus-4-6": 390367,
+  "claude-fable-5": 2014476378,
+  "claude-opus-4-7": 11927694,
+  "<synthetic>": 0,
+  "gemini-3.5-flash-low": 39462940,
+  "gemini-2.5-flash-native-audio-prev": 2201176,
+  "gemini-3.6-flash-high": 7325662,
+  "claude-haiku-4-5-20251001": 2005080,
+  "claude-opus-5": 12533662772,
+  "deepseek-v4-pro": 204646518,
+  "gemini-2.5-flash": 56900,
+  "gemini-3-flash-agent": 39176734,
+  "codex": 0,
+  "gpt-5.6-sol": 1450778440,
+  "gpt-5.6-luna": 180826644,
+  "codex-auto-review": 1598869,
+  "gemini-3.1-flash-image": 25696363,
+  "grok-4.5-build": 76724862,
+  "gemini-3.6-flash-medium": 656841
+ },
+ "first": "2026-07-01T21:10:18.083Z",
+ "last": "2026-08-06T04:37:10.195Z",
+ "month": "2026-07"
+}

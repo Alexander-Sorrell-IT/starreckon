@@ -1,0 +1,28 @@
+{
+ "tokens": 3524645881,
+ "sessions": 37,
+ "turns": 9860,
+ "minutes": 3203.6,
+ "by_cli": {
+  "antigravity": 4671253,
+  "claude": 3519974628
+ },
+ "by_machine": {
+  "ASUS Laptop Linux": 1593022,
+  "Dell Inspiron Desktop Linux": 3078231,
+  "Dell Latitude 7480 Linux": 129382330,
+  "HP Laptop Linux": 563833538,
+  "MacBook Air M1": 2826758760
+ },
+ "by_model": {
+  "antigravity": 4671253,
+  "<synthetic>": 0,
+  "claude-opus-5": 2959385220,
+  "claude-opus-4-7": 5550661,
+  "claude-haiku-4-5-20251001": 397022,
+  "claude-fable-5": 554641725
+ },
+ "first": "2026-08-01T03:13:38.874Z",
+ "last": "2026-08-05T20:05:55.217Z",
+ "month": "2026-08"
+}

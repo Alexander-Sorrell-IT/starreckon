@@ -1,0 +1,60 @@
+{
+ "scope": "Dell Inspiron Desktop Linux",
+ "generated_at": "2026-08-05T23:43:53-05:00",
+ "total_tokens": 5610873,
+ "sessions": 6,
+ "fields": {
+  "input_tokens": 15200,
+  "cache_creation_input_tokens": 476572,
+  "cache_read_input_tokens": 1638589,
+  "output_tokens": 252
+ },
+ "new_content_tokens": 492024,
+ "hours": 0.7,
+ "by_cli": {
+  "gemini": {
+   "sessions": 2,
+   "tokens": 402029,
+   "minutes": 15.9
+  },
+  "claude": {
+   "sessions": 2,
+   "tokens": 2130613,
+   "minutes": 15.9
+  },
+  "antigravity": {
+   "sessions": 2,
+   "tokens": 3078231,
+   "minutes": 8.7
+  }
+ },
+ "by_model": {
+  "antigravity": 3078231,
+  "claude-haiku-4-5-20251001": 2130613,
+  "gemini-3-pro-preview": 402029
+ },
+ "records": {
+  "longest_session": {
+   "id": "6d43a9c2-8c86-4368-8630-804e5d0a2666",
+   "cli": "gemini",
+   "machine": "Dell Inspiron Desktop Linux",
+   "minutes": 12.6
+  },
+  "most_tokens": {
+   "id": "9256965d-a4e8-4360-9fa3-5acdcd1dc86d",
+   "cli": "antigravity",
+   "machine": "Dell Inspiron Desktop Linux",
+   "tokens": 2132004
+  },
+  "most_turns": {
+   "id": "9256965d-a4e8-4360-9fa3-5acdcd1dc86d",
+   "cli": "antigravity",
+   "machine": "Dell Inspiron Desktop Linux",
+   "turns": 48
+  }
+ },
+ "scans": {
+  "Dell Inspiron Desktop Linux": "2026-08-04T02:05:53-05:00"
+ },
+ "first_last_seen": {}
+}

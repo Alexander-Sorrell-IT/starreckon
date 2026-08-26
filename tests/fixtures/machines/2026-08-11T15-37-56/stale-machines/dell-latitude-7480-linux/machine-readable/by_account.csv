@@ -1,0 +1,13 @@
+account,config_dir,sessions,turns,input_tokens,cache_creation_input_tokens,cache_read_input_tokens,output_tokens,total
+alexander.sorrell.it@gmail.com,/home/phantom-orchestrator/.claude-it,62,3677,167644,33423463,869715782,4572105,907878994
+broodierchip@gmail.com,/home/phantom-orchestrator/.claude,16441,17594,159912561,122817736,433359328,8666775,724756400
+unknown (old_.claude),/home/phantom-orchestrator/.ai-logs-archive/claude/old_.claude,31,8254,513098,49638562,654431591,1378099,705961350
+codehunterextreme@gmail.com,/home/phantom-orchestrator/.claude-alt,2,99,3556,1435644,10271582,75344,11786126
+user:2d4777822844,/home/phantom-orchestrator/.claude-alt-api,1,50,174,506204,2927342,52283,3486003
+user:283b8e5b8e48,/home/phantom-orchestrator/.claude-api,1,3,0,0,0,0,0
+unknown (claude),/home/phantom-orchestrator/.ai-logs-archive/claude/claude,16441,0,0,0,0,0,0
+unknown (claude-alt),/home/phantom-orchestrator/.ai-logs-archive/claude/claude-alt,2,0,0,0,0,0,0
+unknown (claude-alt-api),/home/phantom-orchestrator/.ai-logs-archive/claude/claude-alt-api,1,0,0,0,0,0,0
+unknown (claude-api),/home/phantom-orchestrator/.ai-logs-archive/claude/claude-api,1,0,0,0,0,0,0
+unknown (claude-it),/home/phantom-orchestrator/.ai-logs-archive/claude/claude-it,62,0,0,0,0,0,0
+broodierchip@gmail.com,/home/phantom-orchestrator/old/.claude,31,0,0,0,0,0,0

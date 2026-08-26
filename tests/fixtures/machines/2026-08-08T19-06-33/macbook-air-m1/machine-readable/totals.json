@@ -1,0 +1,810 @@
+{
+  "machine": "MacBook Air M1",
+  "generated_at": "2026-08-06T03:30:07-05:00",
+  "scanner_version": "a8105fb5e7a5",
+  "anthropic_only_tokens": 29170327621,
+  "by_provider": {
+    "anthropic": 29170327621,
+    "synthetic": 0
+  },
+  "other_tools": [
+    {
+      "vendor": "gemini",
+      "label": "Gemini CLI",
+      "dir": "/Users/broodierchip-m1air/.gemini",
+      "files": 238,
+      "records_usage": false
+    },
+    {
+      "vendor": "copilot",
+      "label": "GitHub Copilot CLI",
+      "dir": "/Users/broodierchip-m1air/.copilot",
+      "files": 215,
+      "records_usage": false
+    },
+    {
+      "vendor": "antigravity",
+      "label": "Antigravity CLI",
+      "dir": "/Users/broodierchip-m1air/.antigravitycli",
+      "files": 1,
+      "records_usage": false
+    },
+    {
+      "vendor": "openai",
+      "label": "OpenAI Codex CLI",
+      "dir": "/Users/broodierchip-m1air/.codex",
+      "files": 983,
+      "records_usage": true
+    },
+    {
+      "vendor": "xai",
+      "label": "Grok CLI",
+      "dir": "/Users/broodierchip-m1air/.grok",
+      "files": 495,
+      "records_usage": false
+    }
+  ],
+  "grand_total_tokens": 29170327621,
+  "accounts": [
+    {
+      "config_dir": "/Users/broodierchip-m1air/.claude-main",
+      "sessions": 29,
+      "files": {
+        "main": 29,
+        "subagent": 20,
+        "workflow": 2656
+      },
+      "turns": 107067,
+      "totals": {
+        "input_tokens": 9913187,
+        "cache_creation_input_tokens": 645967793,
+        "cache_read_input_tokens": 16837748665,
+        "output_tokens": 63953054
+      },
+      "by_kind": {
+        "main": {
+          "input_tokens": 1272608,
+          "cache_creation_input_tokens": 250921720,
+          "cache_read_input_tokens": 11164143527,
+          "output_tokens": 30637213
+        },
+        "subagent": {
+          "input_tokens": 231488,
+          "cache_creation_input_tokens": 4158152,
+          "cache_read_input_tokens": 29473305,
+          "output_tokens": 354325
+        },
+        "workflow": {
+          "input_tokens": 8409091,
+          "cache_creation_input_tokens": 390887921,
+          "cache_read_input_tokens": 5644131833,
+          "output_tokens": 32961516
+        }
+      },
+      "by_provider": {
+        "anthropic": {
+          "input_tokens": 9913187,
+          "cache_creation_input_tokens": 645967793,
+          "cache_read_input_tokens": 16837748665,
+          "output_tokens": 63953054
+        },
+        "synthetic": {
+          "input_tokens": 0,
+          "cache_creation_input_tokens": 0,
+          "cache_read_input_tokens": 0,
+          "output_tokens": 0
+        }
+      },
+      "by_model": {
+        "claude-opus-4-8": {
+          "input_tokens": 4498793,
+          "cache_creation_input_tokens": 229856100,
+          "cache_read_input_tokens": 5786520169,
+          "output_tokens": 23319537
+        },
+        "claude-fable-5": {
+          "input_tokens": 4011052,
+          "cache_creation_input_tokens": 90407801,
+          "cache_read_input_tokens": 1539671062,
+          "output_tokens": 8059453
+        },
+        "<synthetic>": {
+          "input_tokens": 0,
+          "cache_creation_input_tokens": 0,
+          "cache_read_input_tokens": 0,
+          "output_tokens": 0
+        },
+        "claude-opus-5": {
+          "input_tokens": 1399071,
+          "cache_creation_input_tokens": 325565089,
+          "cache_read_input_tokens": 9509973540,
+          "output_tokens": 32567199
+        },
+        "claude-haiku-4-5-20251001": {
+          "input_tokens": 4271,
+          "cache_creation_input_tokens": 138803,
+          "cache_read_input_tokens": 1583894,
+          "output_tokens": 6865
+        }
+      },
+      "by_day": {
+        "2026-07-20": {
+          "input_tokens": 139377,
+          "cache_creation_input_tokens": 15432982,
+          "cache_read_input_tokens": 254545057,
+          "output_tokens": 2226113
+        },
+        "2026-07-06": {
+          "input_tokens": 34951,
+          "cache_creation_input_tokens": 10588650,
+          "cache_read_input_tokens": 512840298,
+          "output_tokens": 1091125
+        },
+        "2026-07-24": {
+          "input_tokens": 2697,
+          "cache_creation_input_tokens": 7687469,
+          "cache_read_input_tokens": 198565309,
+          "output_tokens": 1218375
+        },
+        "2026-07-25": {
+          "input_tokens": 61,
+          "cache_creation_input_tokens": 2100436,
+          "cache_read_input_tokens": 9616500,
+          "output_tokens": 23141
+        },
+        "2026-07-26": {
+          "input_tokens": 8003,
+          "cache_creation_input_tokens": 15179251,
+          "cache_read_input_tokens": 415737310,
+          "output_tokens": 1312260
+        },
+        "2026-07-11": {
+          "input_tokens": 1117902,
+          "cache_creation_input_tokens": 34830121,
+          "cache_read_input_tokens": 934172950,
+          "output_tokens": 3521429
+        },
+        "2026-07-12": {
+          "input_tokens": 3341214,
+          "cache_creation_input_tokens": 47242534,
+          "cache_read_input_tokens": 644122066,
+          "output_tokens": 4615426
+        },
+        "2026-07-09": {
+          "input_tokens": 250160,
+          "cache_creation_input_tokens": 9735568,
+          "cache_read_input_tokens": 652362939,
+          "output_tokens": 1557175
+        },
+        "2026-07-05": {
+          "input_tokens": 89360,
+          "cache_creation_input_tokens": 4645508,
+          "cache_read_input_tokens": 231483226,
+          "output_tokens": 820321
+        },
+        "2026-07-07": {
+          "input_tokens": 331978,
+          "cache_creation_input_tokens": 13156428,
+          "cache_read_input_tokens": 852294046,
+          "output_tokens": 2228454
+        },
+        "2026-07-08": {
+          "input_tokens": 134122,
+          "cache_creation_input_tokens": 11364838,
+          "cache_read_input_tokens": 587803238,
+          "output_tokens": 1282933
+        },
+        "2026-07-10": {
+          "input_tokens": 2781545,
+          "cache_creation_input_tokens": 45980419,
+          "cache_read_input_tokens": 822823146,
+          "output_tokens": 4194924
+        },
+        "2026-07-13": {
+          "input_tokens": 7876,
+          "cache_creation_input_tokens": 5491437,
+          "cache_read_input_tokens": 63933074,
+          "output_tokens": 208647
+        },
+        "2026-07-21": {
+          "input_tokens": 14019,
+          "cache_creation_input_tokens": 5764183,
+          "cache_read_input_tokens": 62189740,
+          "output_tokens": 417274
+        },
+        "2026-07-22": {
+          "input_tokens": 43132,
+          "cache_creation_input_tokens": 23134743,
+          "cache_read_input_tokens": 337167941,
+          "output_tokens": 2129778
+        },
+        "2026-07-28": {
+          "input_tokens": 69430,
+          "cache_creation_input_tokens": 35012447,
+          "cache_read_input_tokens": 1110010295,
+          "output_tokens": 3662781
+        },
+        "2026-08-04": {
+          "input_tokens": 33,
+          "cache_creation_input_tokens": 53686,
+          "cache_read_input_tokens": 693038,
+          "output_tokens": 4471
+        },
+        "2026-08-05": {
+          "input_tokens": 200,
+          "cache_creation_input_tokens": 318963,
+          "cache_read_input_tokens": 8366786,
+          "output_tokens": 41500
+        },
+        "2026-08-06": {
+          "input_tokens": 44267,
+          "cache_creation_input_tokens": 5929600,
+          "cache_read_input_tokens": 58319640,
+          "output_tokens": 633644
+        },
+        "2026-07-18": {
+          "input_tokens": 2230,
+          "cache_creation_input_tokens": 7705815,
+          "cache_read_input_tokens": 210392727,
+          "output_tokens": 1071999
+        },
+        "2026-07-19": {
+          "input_tokens": 4,
+          "cache_creation_input_tokens": 1154308,
+          "cache_read_input_tokens": 42092,
+          "output_tokens": 4352
+        },
+        "2026-07-27": {
+          "input_tokens": 33441,
+          "cache_creation_input_tokens": 23292678,
+          "cache_read_input_tokens": 1539247227,
+          "output_tokens": 3496166
+        },
+        "2026-07-31": {
+          "input_tokens": 293190,
+          "cache_creation_input_tokens": 85737493,
+          "cache_read_input_tokens": 1955844667,
+          "output_tokens": 8081194
+        },
+        "2026-08-01": {
+          "input_tokens": 274534,
+          "cache_creation_input_tokens": 61463635,
+          "cache_read_input_tokens": 866776311,
+          "output_tokens": 5605269
+        },
+        "2026-07-29": {
+          "input_tokens": 69969,
+          "cache_creation_input_tokens": 17719557,
+          "cache_read_input_tokens": 374062558,
+          "output_tokens": 1796247
+        },
+        "2026-07-30": {
+          "input_tokens": 112144,
+          "cache_creation_input_tokens": 40629732,
+          "cache_read_input_tokens": 1595435100,
+          "output_tokens": 4365987
+        },
+        "2026-08-02": {
+          "input_tokens": 714800,
+          "cache_creation_input_tokens": 104869890,
+          "cache_read_input_tokens": 2328398614,
+          "output_tokens": 7476867
+        },
+        "2026-08-03": {
+          "input_tokens": 1024,
+          "cache_creation_input_tokens": 3686734,
+          "cache_read_input_tokens": 52646385,
+          "output_tokens": 205335
+        },
+        "2026-07-23": {
+          "input_tokens": 1524,
+          "cache_creation_input_tokens": 6058688,
+          "cache_read_input_tokens": 157856385,
+          "output_tokens": 659867
+        }
+      },
+      "by_project": {
+        "-Users-broodierchip-m1air": {
+          "input_tokens": 9765185,
+          "cache_creation_input_tokens": 511725117,
+          "cache_read_input_tokens": 13275783004,
+          "output_tokens": 50340594
+        },
+        "-Users-broodierchip-m1air-Desktop-vulcan-delta-tests": {
+          "input_tokens": 148002,
+          "cache_creation_input_tokens": 134242676,
+          "cache_read_input_tokens": 3561965661,
+          "output_tokens": 13612460
+        }
+      },
+      "account": "broodierchip@gmail.com",
+      "user_id": "f2c6d8a64f23fdea16f037b8edd329f7f3f592a0f7cadfcdb2dbf51d256502f7",
+      "identity": {
+        "auth": "oauth",
+        "email": "broodierchip@gmail.com",
+        "org_uuid": "6bfc754e-a205-41c3-9dac-80e593f494e0",
+        "org_name": "broodierchip@gmail.com's Organization",
+        "account_uuid": "a9fec27d-ab5d-48bb-9679-a9bf60bfb97e",
+        "user_id": "f2c6d8a64f23fdea16f037b8edd329f7f3f592a0f7cadfcdb2dbf51d256502f7",
+        "approved_api_keys": []
+      },
+      "grand_total": 17557582699
+    },
+    {
+      "config_dir": "/Users/broodierchip-m1air/.claude",
+      "sessions": 21,
+      "files": {
+        "subagent": 87,
+        "main": 21
+      },
+      "turns": 24773,
+      "totals": {
+        "input_tokens": 1219176,
+        "cache_creation_input_tokens": 383137597,
+        "cache_read_input_tokens": 10614056485,
+        "output_tokens": 33148959
+      },
+      "by_kind": {
+        "subagent": {
+          "input_tokens": 920810,
+          "cache_creation_input_tokens": 21530527,
+          "cache_read_input_tokens": 138462166,
+          "output_tokens": 634375
+        },
+        "main": {
+          "input_tokens": 298366,
+          "cache_creation_input_tokens": 361607070,
+          "cache_read_input_tokens": 10475594319,
+          "output_tokens": 32514584
+        }
+      },
+      "by_provider": {
+        "anthropic": {
+          "input_tokens": 1219176,
+          "cache_creation_input_tokens": 383137597,
+          "cache_read_input_tokens": 10614056485,
+          "output_tokens": 33148959
+        },
+        "synthetic": {
+          "input_tokens": 0,
+          "cache_creation_input_tokens": 0,
+          "cache_read_input_tokens": 0,
+          "output_tokens": 0
+        }
+      },
+      "by_model": {
+        "claude-opus-5": {
+          "input_tokens": 25732,
+          "cache_creation_input_tokens": 99369496,
+          "cache_read_input_tokens": 3327541052,
+          "output_tokens": 6727659
+        },
+        "claude-opus-4-8": {
+          "input_tokens": 1152040,
+          "cache_creation_input_tokens": 283348925,
+          "cache_read_input_tokens": 7285043923,
+          "output_tokens": 26388738
+        },
+        "<synthetic>": {
+          "input_tokens": 0,
+          "cache_creation_input_tokens": 0,
+          "cache_read_input_tokens": 0,
+          "output_tokens": 0
+        },
+        "claude-sonnet-5": {
+          "input_tokens": 41332,
+          "cache_creation_input_tokens": 221382,
+          "cache_read_input_tokens": 1300510,
+          "output_tokens": 20768
+        },
+        "claude-opus-4-7": {
+          "input_tokens": 72,
+          "cache_creation_input_tokens": 197794,
+          "cache_read_input_tokens": 171000,
+          "output_tokens": 11794
+        }
+      },
+      "by_day": {
+        "2026-08-03": {
+          "input_tokens": 5408,
+          "cache_creation_input_tokens": 2780229,
+          "cache_read_input_tokens": 552174988,
+          "output_tokens": 1207773
+        },
+        "2026-08-01": {
+          "input_tokens": 9653,
+          "cache_creation_input_tokens": 8280990,
+          "cache_read_input_tokens": 582415050,
+          "output_tokens": 1324282
+        },
+        "2026-08-02": {
+          "input_tokens": 3038,
+          "cache_creation_input_tokens": 8935404,
+          "cache_read_input_tokens": 915225021,
+          "output_tokens": 1745344
+        },
+        "2026-08-04": {
+          "input_tokens": 2375,
+          "cache_creation_input_tokens": 28651103,
+          "cache_read_input_tokens": 680482798,
+          "output_tokens": 1103963
+        },
+        "2026-07-09": {
+          "input_tokens": 52317,
+          "cache_creation_input_tokens": 1187067,
+          "cache_read_input_tokens": 21409954,
+          "output_tokens": 207950
+        },
+        "2026-07-10": {
+          "input_tokens": 4,
+          "cache_creation_input_tokens": 0,
+          "cache_read_input_tokens": 375464,
+          "output_tokens": 3510
+        },
+        "2026-07-17": {
+          "input_tokens": 9144,
+          "cache_creation_input_tokens": 11634409,
+          "cache_read_input_tokens": 613814243,
+          "output_tokens": 2157433
+        },
+        "2026-07-18": {
+          "input_tokens": 13320,
+          "cache_creation_input_tokens": 87223402,
+          "cache_read_input_tokens": 1215703196,
+          "output_tokens": 3540793
+        },
+        "2026-07-15": {
+          "input_tokens": 1781,
+          "cache_creation_input_tokens": 8987291,
+          "cache_read_input_tokens": 488328803,
+          "output_tokens": 2159091
+        },
+        "2026-07-16": {
+          "input_tokens": 1681,
+          "cache_creation_input_tokens": 5715219,
+          "cache_read_input_tokens": 470064721,
+          "output_tokens": 1964001
+        },
+        "2026-07-19": {
+          "input_tokens": 2085,
+          "cache_creation_input_tokens": 61860378,
+          "cache_read_input_tokens": 554868791,
+          "output_tokens": 1760705
+        },
+        "2026-07-20": {
+          "input_tokens": 106488,
+          "cache_creation_input_tokens": 10892955,
+          "cache_read_input_tokens": 976957863,
+          "output_tokens": 3406308
+        },
+        "2026-07-31": {
+          "input_tokens": 323,
+          "cache_creation_input_tokens": 1053780,
+          "cache_read_input_tokens": 17810180,
+          "output_tokens": 175056
+        },
+        "2026-07-14": {
+          "input_tokens": 97895,
+          "cache_creation_input_tokens": 12038455,
+          "cache_read_input_tokens": 307156650,
+          "output_tokens": 1908570
+        },
+        "2026-08-05": {
+          "input_tokens": 1987,
+          "cache_creation_input_tokens": 48109310,
+          "cache_read_input_tokens": 472621374,
+          "output_tokens": 1000089
+        },
+        "2026-08-06": {
+          "input_tokens": 2948,
+          "cache_creation_input_tokens": 1558680,
+          "cache_read_input_tokens": 106811641,
+          "output_tokens": 171152
+        },
+        "2026-07-21": {
+          "input_tokens": 2177,
+          "cache_creation_input_tokens": 8249610,
+          "cache_read_input_tokens": 626086379,
+          "output_tokens": 2070192
+        },
+        "2026-07-22": {
+          "input_tokens": 18927,
+          "cache_creation_input_tokens": 2997723,
+          "cache_read_input_tokens": 213466037,
+          "output_tokens": 784467
+        },
+        "2026-07-23": {
+          "input_tokens": 4106,
+          "cache_creation_input_tokens": 26895476,
+          "cache_read_input_tokens": 517317372,
+          "output_tokens": 1693855
+        },
+        "2026-07-24": {
+          "input_tokens": 1752,
+          "cache_creation_input_tokens": 13352400,
+          "cache_read_input_tokens": 341110237,
+          "output_tokens": 1486730
+        },
+        "2026-07-25": {
+          "input_tokens": 1944,
+          "cache_creation_input_tokens": 10862607,
+          "cache_read_input_tokens": 517348001,
+          "output_tokens": 1721027
+        },
+        "2026-07-26": {
+          "input_tokens": 6325,
+          "cache_creation_input_tokens": 7146217,
+          "cache_read_input_tokens": 315430789,
+          "output_tokens": 842010
+        },
+        "2026-07-27": {
+          "input_tokens": 34,
+          "cache_creation_input_tokens": 3588496,
+          "cache_read_input_tokens": 8856663,
+          "output_tokens": 26876
+        },
+        "2026-07-13": {
+          "input_tokens": 242,
+          "cache_creation_input_tokens": 444767,
+          "cache_read_input_tokens": 13892368,
+          "output_tokens": 150431
+        },
+        "2026-07-07": {
+          "input_tokens": 858791,
+          "cache_creation_input_tokens": 9734147,
+          "cache_read_input_tokens": 83520007,
+          "output_tokens": 523339
+        },
+        "2026-07-11": {
+          "input_tokens": 14359,
+          "cache_creation_input_tokens": 759688,
+          "cache_read_input_tokens": 636895,
+          "output_tokens": 2218
+        },
+        "2026-05-26": {
+          "input_tokens": 72,
+          "cache_creation_input_tokens": 197794,
+          "cache_read_input_tokens": 171000,
+          "output_tokens": 11794
+        }
+      },
+      "by_project": {
+        "-Users-broodierchip-m1air": {
+          "input_tokens": 345950,
+          "cache_creation_input_tokens": 372406150,
+          "cache_read_input_tokens": 10529686155,
+          "output_tokens": 32610002
+        },
+        "-Users-broodierchip-m1air-Documents-Hackthon": {
+          "input_tokens": 873222,
+          "cache_creation_input_tokens": 10691629,
+          "cache_read_input_tokens": 84327902,
+          "output_tokens": 537351
+        },
+        "-Users-broodierchip-m1air-Documents-tools": {
+          "input_tokens": 4,
+          "cache_creation_input_tokens": 39818,
+          "cache_read_input_tokens": 42428,
+          "output_tokens": 1606
+        }
+      },
+      "account": "codehunterextreme@gmail.com",
+      "user_id": "c6ce9918ed51217d1701e1b6217b35699f346b95e2d17fec3b261d9ea2bea739",
+      "identity": {
+        "auth": "oauth",
+        "email": "codehunterextreme@gmail.com",
+        "org_uuid": "ba511861-53b4-4599-8019-93db6389d991",
+        "org_name": "codehunterextreme@gmail.com's Organization",
+        "account_uuid": "cf12fe66-594f-449a-b951-c9bb2ce5db76",
+        "user_id": "c6ce9918ed51217d1701e1b6217b35699f346b95e2d17fec3b261d9ea2bea739",
+        "approved_api_keys": []
+      },
+      "grand_total": 11031562217
+    },
+    {
+      "config_dir": "/Users/broodierchip-m1air/.claude-it",
+      "sessions": 4,
+      "files": {
+        "main": 4,
+        "subagent": 1
+      },
+      "turns": 2331,
+      "totals": {
+        "input_tokens": 75203,
+        "cache_creation_input_tokens": 13238593,
+        "cache_read_input_tokens": 556042764,
+        "output_tokens": 2397195
+      },
+      "by_kind": {
+        "main": {
+          "input_tokens": 67242,
+          "cache_creation_input_tokens": 12968558,
+          "cache_read_input_tokens": 555717789,
+          "output_tokens": 2392090
+        },
+        "subagent": {
+          "input_tokens": 7961,
+          "cache_creation_input_tokens": 270035,
+          "cache_read_input_tokens": 324975,
+          "output_tokens": 5105
+        }
+      },
+      "by_provider": {
+        "synthetic": {
+          "input_tokens": 0,
+          "cache_creation_input_tokens": 0,
+          "cache_read_input_tokens": 0,
+          "output_tokens": 0
+        },
+        "anthropic": {
+          "input_tokens": 75203,
+          "cache_creation_input_tokens": 13238593,
+          "cache_read_input_tokens": 556042764,
+          "output_tokens": 2397195
+        }
+      },
+      "by_model": {
+        "<synthetic>": {
+          "input_tokens": 0,
+          "cache_creation_input_tokens": 0,
+          "cache_read_input_tokens": 0,
+          "output_tokens": 0
+        },
+        "claude-opus-4-8": {
+          "input_tokens": 71316,
+          "cache_creation_input_tokens": 10829512,
+          "cache_read_input_tokens": 427882454,
+          "output_tokens": 1526026
+        },
+        "claude-sonnet-4-6": {
+          "input_tokens": 3887,
+          "cache_creation_input_tokens": 2409081,
+          "cache_read_input_tokens": 128160310,
+          "output_tokens": 871169
+        }
+      },
+      "by_day": {
+        "2026-06-28": {
+          "input_tokens": 0,
+          "cache_creation_input_tokens": 0,
+          "cache_read_input_tokens": 0,
+          "output_tokens": 0
+        },
+        "2026-08-06": {
+          "input_tokens": 0,
+          "cache_creation_input_tokens": 0,
+          "cache_read_input_tokens": 0,
+          "output_tokens": 0
+        },
+        "2026-08-04": {
+          "input_tokens": 0,
+          "cache_creation_input_tokens": 0,
+          "cache_read_input_tokens": 0,
+          "output_tokens": 0
+        },
+        "2026-06-20": {
+          "input_tokens": 26624,
+          "cache_creation_input_tokens": 6302651,
+          "cache_read_input_tokens": 290711119,
+          "output_tokens": 785355
+        },
+        "2026-06-18": {
+          "input_tokens": 3887,
+          "cache_creation_input_tokens": 2409081,
+          "cache_read_input_tokens": 128160310,
+          "output_tokens": 871169
+        },
+        "2026-06-19": {
+          "input_tokens": 44692,
+          "cache_creation_input_tokens": 4526861,
+          "cache_read_input_tokens": 137171335,
+          "output_tokens": 740671
+        }
+      },
+      "by_project": {
+        "-Users-broodierchip-m1air": {
+          "input_tokens": 0,
+          "cache_creation_input_tokens": 0,
+          "cache_read_input_tokens": 0,
+          "output_tokens": 0
+        },
+        "-Users-broodierchip-m1air-Desktop-Bug": {
+          "input_tokens": 75203,
+          "cache_creation_input_tokens": 13238593,
+          "cache_read_input_tokens": 556042764,
+          "output_tokens": 2397195
+        }
+      },
+      "account": "alexander.sorrell.it@gmail.com",
+      "user_id": "a842a0db1ce2f3e19742aa78893f10cf921a9d7e15a1412fec7c7cc4cf09525a",
+      "identity": {
+        "auth": "oauth",
+        "email": "alexander.sorrell.it@gmail.com",
+        "org_uuid": "66565064-263e-4d54-b06f-15cae4b2febc",
+        "org_name": "alexander.sorrell.it@gmail.com's Organization",
+        "account_uuid": "55c75c9e-b932-41e8-a80c-e3abf56861d8",
+        "user_id": "a842a0db1ce2f3e19742aa78893f10cf921a9d7e15a1412fec7c7cc4cf09525a",
+        "approved_api_keys": []
+      },
+      "grand_total": 571753755
+    },
+    {
+      "config_dir": "/Users/broodierchip-m1air/Desktop/standout_sandbox/.claude",
+      "sessions": 2126,
+      "files": {
+        "main": 2126
+      },
+      "turns": 174,
+      "totals": {
+        "input_tokens": 58730,
+        "cache_creation_input_tokens": 957959,
+        "cache_read_input_tokens": 8304902,
+        "output_tokens": 107359
+      },
+      "by_kind": {
+        "main": {
+          "input_tokens": 58730,
+          "cache_creation_input_tokens": 957959,
+          "cache_read_input_tokens": 8304902,
+          "output_tokens": 107359
+        }
+      },
+      "by_provider": {
+        "anthropic": {
+          "input_tokens": 58730,
+          "cache_creation_input_tokens": 957959,
+          "cache_read_input_tokens": 8304902,
+          "output_tokens": 107359
+        }
+      },
+      "by_model": {
+        "claude-opus-4-8": {
+          "input_tokens": 58730,
+          "cache_creation_input_tokens": 957959,
+          "cache_read_input_tokens": 8304902,
+          "output_tokens": 107359
+        }
+      },
+      "by_day": {
+        "2026-07-05": {
+          "input_tokens": 19724,
+          "cache_creation_input_tokens": 323556,
+          "cache_read_input_tokens": 499332,
+          "output_tokens": 6426
+        },
+        "2026-07-02": {
+          "input_tokens": 24137,
+          "cache_creation_input_tokens": 256446,
+          "cache_read_input_tokens": 7205548,
+          "output_tokens": 94979
+        },
+        "2026-07-04": {
+          "input_tokens": 14869,
+          "cache_creation_input_tokens": 377957,
+          "cache_read_input_tokens": 600022,
+          "output_tokens": 5954
+        }
+      },
+      "by_project": {
+        "work": {
+          "input_tokens": 58730,
+          "cache_creation_input_tokens": 957959,
+          "cache_read_input_tokens": 8304902,
+          "output_tokens": 107359
+        }
+      },
+      "account": "codehunterextreme@gmail.com",
+      "user_id": "c6ce9918ed51217d1701e1b6217b35699f346b95e2d17fec3b261d9ea2bea739",
+      "identity": {
+        "auth": "oauth",
+        "email": "codehunterextreme@gmail.com",
+        "org_uuid": "ba511861-53b4-4599-8019-93db6389d991",
+        "org_name": "codehunterextreme@gmail.com's Organization",
+        "account_uuid": "cf12fe66-594f-449a-b951-c9bb2ce5db76",
+        "user_id": "c6ce9918ed51217d1701e1b6217b35699f346b95e2d17fec3b261d9ea2bea739",
+        "approved_api_keys": []
+      },
+      "grand_total": 9428950
+    }
+  ]
+}

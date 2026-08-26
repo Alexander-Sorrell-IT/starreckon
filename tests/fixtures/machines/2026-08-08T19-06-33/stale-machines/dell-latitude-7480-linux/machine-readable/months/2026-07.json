@@ -1,0 +1,28 @@
+{
+ "tokens": 3638103918,
+ "sessions": 16471,
+ "turns": 40875,
+ "minutes": 3487.9999999997713,
+ "by_cli": {
+  "claude": 3589511784,
+  "antigravity": 48592134
+ },
+ "by_machine": {
+  "Dell Latitude 7480 Linux": 3638103918
+ },
+ "by_model": {
+  "claude-opus-4-8": 2827458084,
+  "claude-opus-4-6": 390367,
+  "claude-fable-5": 175126453,
+  "claude-opus-4-7": 11927694,
+  "<synthetic>": 0,
+  "gemini-3.5-flash-low": 39462940,
+  "gemini-2.5-flash-native-audio-prev": 2201176,
+  "gemini-3.6-flash-high": 6928018,
+  "claude-haiku-4-5-20251001": 2005080,
+  "claude-opus-5": 572604106
+ },
+ "first": "2026-07-03T15:00:07.770Z",
+ "last": "2026-08-01T03:32:14.360Z",
+ "month": "2026-07"
+}

@@ -55,7 +55,8 @@
       "kind": "editor",
       "paths": [".cursor", ".config/Cursor"],
       "binary": "cursor",
-      "reader": null,
+      "reader": "cursor",
+      "store_labels": ["cursor"],
       "no_tokens_because": "editor — usage not located on disk",
       "tracks": ["install_date", "launches", "workspaces", "active_days"]
     },
@@ -105,7 +106,8 @@
         ".config/Code - Insiders/User/globalStorage/saoudrizwan.claude-dev"
       ],
       "binary": null,
-      "reader": null,
+      "reader": "cline",
+      "store_labels": ["cline"],
       "no_tokens_because": "usage not located on disk",
       "tracks": ["install_date"]
     },
@@ -117,7 +119,8 @@
         ".config/Code - Insiders/User/globalStorage/rooveterinaryinc.roo-cline"
       ],
       "binary": null,
-      "reader": null,
+      "reader": "roocode",
+      "store_labels": ["roocode"],
       "no_tokens_because": "usage not located on disk",
       "tracks": ["install_date"]
     },
@@ -126,7 +129,8 @@
       "kind": "agent",
       "paths": [".continue"],
       "binary": "continue",
-      "reader": null,
+      "reader": "continue",
+      "store_labels": ["continue"],
       "no_tokens_because": "usage not located on disk",
       "tracks": ["install_date"]
     },
@@ -135,7 +139,8 @@
       "kind": "agent",
       "paths": [".aider.conf.yml", ".aider"],
       "binary": "aider",
-      "reader": null,
+      "reader": "aider",
+      "store_labels": ["aider"],
       "no_tokens_because": "usage not located on disk",
       "tracks": ["install_date"]
     },
@@ -144,7 +149,8 @@
       "kind": "runtime",
       "paths": [".ollama"],
       "binary": "ollama",
-      "reader": null,
+      "reader": "ollama",
+      "store_labels": ["ollama"],
       "no_tokens_because": "local runtime — models run on this machine, nothing is billed",
       "tracks": ["install_date"]
     },

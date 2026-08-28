@@ -83,7 +83,8 @@
       "name": "Jules CLI",
       "paths": [".jules", ".config/jules"],
       "binary": "jules",
-      "reader": null,
+      "reader": "jules",
+      "store_labels": ["jules"],
       "no_tokens_because": "cloud agent — work runs on Google's servers, no local token record"
     },
     {

@@ -1,4 +1,9 @@
 ```
-# Documentation
-FINISH-PLAN.md
+# Logs and temporary files
+starreckon/logs/
+
+# Coverage and test reports
+starreckon/reports/
+
+# Build artifacts and dependencies would go here if present
 ```

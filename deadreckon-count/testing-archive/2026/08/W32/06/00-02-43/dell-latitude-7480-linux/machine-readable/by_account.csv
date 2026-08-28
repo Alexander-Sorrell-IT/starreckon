@@ -1,0 +1,6 @@
+account,config_dir,sessions,turns,input_tokens,cache_creation_input_tokens,cache_read_input_tokens,output_tokens,total
+alexander.sorrell.it@gmail.com,/home/phantom-orchestrator/.claude-it,70,8697,479829,94679746,2073330096,12281400,2180771071
+broodierchip@gmail.com,/home/phantom-orchestrator/.claude,16441,32475,321495214,252692654,919526763,17632348,1511346979
+codehunterextreme@gmail.com,/home/phantom-orchestrator/.claude-alt,2,223,11074,3398458,23159635,206897,26776064
+user:2d4777822844,/home/phantom-orchestrator/.claude-alt-api,1,111,457,1210774,5935628,135007,7281866
+user:283b8e5b8e48,/home/phantom-orchestrator/.claude-api,1,3,0,0,0,0,0

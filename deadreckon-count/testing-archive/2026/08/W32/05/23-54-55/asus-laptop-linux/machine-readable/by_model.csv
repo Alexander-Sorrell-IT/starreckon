@@ -1,0 +1,5 @@
+account,model,input_tokens,cache_creation_input_tokens,cache_read_input_tokens,output_tokens,total
+broodierchip@gmail.com,claude-opus-4-7,46017,15883747,238001689,1751788,255683241
+broodierchip@gmail.com,claude-haiku-4-5-20251001,14175,3382694,5936622,133010,9466501
+broodierchip@gmail.com,claude-opus-4-5-20251101,36028,305986,654142,778,996934
+broodierchip@gmail.com,<synthetic>,0,0,0,0,0

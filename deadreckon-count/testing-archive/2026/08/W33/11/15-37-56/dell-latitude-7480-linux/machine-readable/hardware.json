@@ -1,0 +1,117 @@
+{
+  "machine": "Dell Latitude 7480 Linux",
+  "hostname": "phantom-orchestrator",
+  "hardware": {
+    "model_identifier": "x86_64",
+    "chip": "x86_64",
+    "cpu_logical": 4,
+    "memory_gb": 31.0,
+    "os": "Linux 7.0.0-28-generic"
+  },
+  "disk": {
+    "volume": "/home/phantom-orchestrator",
+    "total_gb": 1687.8,
+    "used_gb": 169.5,
+    "free_gb": 1518.3
+  },
+  "python": "3.12.3",
+  "accounts": [
+    {
+      "account": "broodierchip@gmail.com",
+      "config_dir": "/home/phantom-orchestrator/.claude",
+      "profile_env": "unset (default)",
+      "sessions": 16441,
+      "transcript_files": 16456,
+      "projects": 17
+    },
+    {
+      "account": "unknown (claude)",
+      "config_dir": "/home/phantom-orchestrator/.ai-logs-archive/claude/claude",
+      "profile_env": "CLAUDE_CONFIG_DIR=/home/phantom-orchestrator/.ai-logs-archive/claude/claude",
+      "sessions": 16441,
+      "transcript_files": 16456,
+      "projects": 17
+    },
+    {
+      "account": "unknown (old_.claude)",
+      "config_dir": "/home/phantom-orchestrator/.ai-logs-archive/claude/old_.claude",
+      "profile_env": "CLAUDE_CONFIG_DIR=/home/phantom-orchestrator/.ai-logs-archive/claude/old_.claude",
+      "sessions": 31,
+      "transcript_files": 306,
+      "projects": 16
+    },
+    {
+      "account": "broodierchip@gmail.com",
+      "config_dir": "/home/phantom-orchestrator/old/.claude",
+      "profile_env": "unset (default)",
+      "sessions": 31,
+      "transcript_files": 306,
+      "projects": 16
+    },
+    {
+      "account": "alexander.sorrell.it@gmail.com",
+      "config_dir": "/home/phantom-orchestrator/.claude-it",
+      "profile_env": "CLAUDE_CONFIG_DIR=/home/phantom-orchestrator/.claude-it",
+      "sessions": 62,
+      "transcript_files": 72,
+      "projects": 7
+    },
+    {
+      "account": "unknown (claude-it)",
+      "config_dir": "/home/phantom-orchestrator/.ai-logs-archive/claude/claude-it",
+      "profile_env": "CLAUDE_CONFIG_DIR=/home/phantom-orchestrator/.ai-logs-archive/claude/claude-it",
+      "sessions": 62,
+      "transcript_files": 72,
+      "projects": 7
+    },
+    {
+      "account": "codehunterextreme@gmail.com",
+      "config_dir": "/home/phantom-orchestrator/.claude-alt",
+      "profile_env": "CLAUDE_CONFIG_DIR=/home/phantom-orchestrator/.claude-alt",
+      "sessions": 2,
+      "transcript_files": 2,
+      "projects": 19
+    },
+    {
+      "account": "unknown (claude-alt)",
+      "config_dir": "/home/phantom-orchestrator/.ai-logs-archive/claude/claude-alt",
+      "profile_env": "CLAUDE_CONFIG_DIR=/home/phantom-orchestrator/.ai-logs-archive/claude/claude-alt",
+      "sessions": 2,
+      "transcript_files": 2,
+      "projects": 19
+    },
+    {
+      "account": "user:2d4777822844",
+      "config_dir": "/home/phantom-orchestrator/.claude-alt-api",
+      "profile_env": "CLAUDE_CONFIG_DIR=/home/phantom-orchestrator/.claude-alt-api",
+      "sessions": 1,
+      "transcript_files": 1,
+      "projects": 1
+    },
+    {
+      "account": "user:283b8e5b8e48",
+      "config_dir": "/home/phantom-orchestrator/.claude-api",
+      "profile_env": "CLAUDE_CONFIG_DIR=/home/phantom-orchestrator/.claude-api",
+      "sessions": 1,
+      "transcript_files": 1,
+      "projects": 1
+    },
+    {
+      "account": "unknown (claude-alt-api)",
+      "config_dir": "/home/phantom-orchestrator/.ai-logs-archive/claude/claude-alt-api",
+      "profile_env": "CLAUDE_CONFIG_DIR=/home/phantom-orchestrator/.ai-logs-archive/claude/claude-alt-api",
+      "sessions": 1,
+      "transcript_files": 1,
+      "projects": 1
+    },
+    {
+      "account": "unknown (claude-api)",
+      "config_dir": "/home/phantom-orchestrator/.ai-logs-archive/claude/claude-api",
+      "profile_env": "CLAUDE_CONFIG_DIR=/home/phantom-orchestrator/.ai-logs-archive/claude/claude-api",
+      "sessions": 1,
+      "transcript_files": 1,
+      "projects": 1
+    }
+  ],
+  "scanner_version": "2e512dc55519"
+}

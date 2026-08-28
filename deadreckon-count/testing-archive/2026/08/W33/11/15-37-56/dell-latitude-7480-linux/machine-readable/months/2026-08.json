@@ -1,0 +1,21 @@
+{
+ "tokens": 94372102,
+ "sessions": 30,
+ "turns": 724,
+ "minutes": 331.49999999999994,
+ "by_cli": {
+  "claude": 94372102
+ },
+ "by_machine": {
+  "Dell Latitude 7480 Linux": 94372102
+ },
+ "by_model": {
+  "<synthetic>": 0,
+  "claude-opus-5": 89634291,
+  "claude-opus-4-7": 4539300,
+  "claude-haiku-4-5-20251001": 198511
+ },
+ "first": "2026-08-01T03:31:16.694Z",
+ "last": "2026-08-09T07:48:12.669Z",
+ "month": "2026-08"
+}

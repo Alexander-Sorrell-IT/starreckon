@@ -1,0 +1,25 @@
+{
+ "tokens": 1132364559,
+ "sessions": 18,
+ "turns": 3136,
+ "minutes": 2274.2,
+ "by_cli": {
+  "codex": 687636,
+  "gemini": 1131676923
+ },
+ "by_machine": {
+  "ASUS Laptop Linux": 712868,
+  "Dell Latitude 7480 Linux": 127949561,
+  "HP Laptop Linux": 1003702130
+ },
+ "by_model": {
+  "gpt-5.1-codex-max": 670073,
+  "gemini-3-flash-preview": 1064261367,
+  "gpt-5.1-codex": 17563,
+  "gemini-2.5-pro": 66577977,
+  "gemini-3-pro-preview": 837579
+ },
+ "first": "2025-12-21T07:51:12.181Z",
+ "last": "2026-01-02T06:54:33.622Z",
+ "month": "2025-12"
+}

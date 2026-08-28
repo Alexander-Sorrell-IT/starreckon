@@ -1,0 +1,19 @@
+{
+ "tokens": 991649,
+ "sessions": 2,
+ "turns": 709,
+ "minutes": 340.6,
+ "by_cli": {
+  "copilot": 991649
+ },
+ "by_machine": {
+  "Dell Latitude 7480 Linux": 745237,
+  "HP Laptop Linux": 246412
+ },
+ "by_model": {
+  "unknown": 991649
+ },
+ "first": "2026-02-24T18:55:46.166Z",
+ "last": "2026-03-01T15:17:59.341Z",
+ "month": "2026-02"
+}

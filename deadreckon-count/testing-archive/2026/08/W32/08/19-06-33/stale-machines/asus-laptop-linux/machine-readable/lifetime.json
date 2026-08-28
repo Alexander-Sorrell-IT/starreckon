@@ -1,0 +1,32 @@
+{
+ "tokens": 274727120,
+ "sessions": 36,
+ "turns": 1758,
+ "minutes": 819.3,
+ "by_cli": {
+  "codex": 670073,
+  "gemini": 4837000,
+  "claude": 266146676,
+  "antigravity": 3073371
+ },
+ "by_machine": {
+  "ASUS Laptop Linux": 274727120
+ },
+ "by_model": {
+  "gpt-5.1-codex-max": 670073,
+  "gemini-3-flash-preview": 7825883,
+  "gemini-3-pro-preview": 84488,
+  "claude-haiku-4-5-20251001": 10365968,
+  "claude-opus-4-7": 255780708
+ },
+ "fields": {
+  "input_tokens": 96220,
+  "cache_creation_input_tokens": 19572427,
+  "cache_read_input_tokens": 244592453,
+  "output_tokens": 1885576
+ },
+ "first": "2025-12-21T19:23:38.486Z",
+ "last": "2026-08-06T05:50:41Z",
+ "machines": {},
+ "scanner_version": "1108dc477b34"
+}

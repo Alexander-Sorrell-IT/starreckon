@@ -1,0 +1,220 @@
+{
+ "machine": "Dell Inspiron Desktop Linux",
+ "generated_at": "2026-08-04T02:05:53-05:00",
+ "uncountable_tools": [],
+ "readers": [
+  {
+   "cli": "claude",
+   "sessions": 2,
+   "tokens": 2130613,
+   "active_min": 15.9,
+   "installed": true,
+   "looked_in": [
+    "~/.claude*/projects"
+   ],
+   "error": null
+  },
+  {
+   "cli": "copilot",
+   "sessions": 0,
+   "tokens": 0,
+   "active_min": 0,
+   "installed": true,
+   "looked_in": [
+    "~/.copilot/session-state"
+   ],
+   "error": null
+  },
+  {
+   "cli": "codex",
+   "sessions": 0,
+   "tokens": 0,
+   "active_min": 0,
+   "installed": false,
+   "looked_in": [
+    "~/.codex/sessions"
+   ],
+   "error": null
+  },
+  {
+   "cli": "gemini",
+   "sessions": 2,
+   "tokens": 402029,
+   "active_min": 15.9,
+   "installed": true,
+   "looked_in": [
+    "~/.gemini/tmp"
+   ],
+   "error": null
+  },
+  {
+   "cli": "kilocode",
+   "sessions": 0,
+   "tokens": 0,
+   "active_min": 0,
+   "installed": false,
+   "looked_in": [
+    "~/.config/Code/User/globalStorage/kilocode.kilo-code/tasks",
+    "~/.config/Code - Insiders/User/globalStorage/kilocode.kilo-code/tasks"
+   ],
+   "error": null
+  },
+  {
+   "cli": "grok",
+   "sessions": 0,
+   "tokens": 0,
+   "active_min": 0,
+   "installed": false,
+   "looked_in": [
+    "~/.grok/sessions",
+    "~/.grok/archived_sessions"
+   ],
+   "error": null
+  },
+  {
+   "cli": "antigravity",
+   "sessions": 2,
+   "tokens": 3078231,
+   "active_min": 8.7,
+   "installed": true,
+   "looked_in": [
+    "~/.gemini/antigravity-cli/conversations"
+   ],
+   "error": null
+  }
+ ],
+ "sessions": [
+  {
+   "cli": "gemini",
+   "session_id": "6f60054b-8327-4987-94e1-a50f3022faa1",
+   "account": "gemini (local)",
+   "project": "79b0348a9decba1cdb1129f383af7ab14f13ca64c8a789fc096fd908ce765ad2",
+   "start": "2026-01-13T21:39:45.839Z",
+   "end": "2026-01-13T21:43:04.383Z",
+   "turns": 10,
+   "tokens": {
+    "input_tokens": 57105,
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 100231,
+    "output_tokens": 5849
+   },
+   "duration_min": 3.3,
+   "elapsed_min": 3.3,
+   "total": 163185,
+   "sent": 157336,
+   "received": 5849,
+   "model": "gemini-3-pro-preview",
+   "provider": "google"
+  },
+  {
+   "cli": "gemini",
+   "session_id": "6d43a9c2-8c86-4368-8630-804e5d0a2666",
+   "account": "gemini (local)",
+   "project": "79b0348a9decba1cdb1129f383af7ab14f13ca64c8a789fc096fd908ce765ad2",
+   "start": "2026-01-13T21:48:06.055Z",
+   "end": "2026-01-13T22:00:44.619Z",
+   "turns": 15,
+   "tokens": {
+    "input_tokens": 57079,
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 173325,
+    "output_tokens": 8440
+   },
+   "duration_min": 12.6,
+   "elapsed_min": 12.6,
+   "total": 238844,
+   "sent": 230404,
+   "received": 8440,
+   "model": "gemini-3-pro-preview",
+   "provider": "google"
+  },
+  {
+   "cli": "claude",
+   "session_id": "ebda40ef-5ab3-4b9c-b0eb-8e72030efb52",
+   "account": "broodierchip@gmail.com",
+   "project": "-media-phantom-gramps-2TB-Storage-VS-code-projects-custom-wifi-router-mesh-The-Un-Ending",
+   "start": "2026-01-21T05:40:03.887Z",
+   "end": "2026-01-21T07:04:43.681Z",
+   "turns": 33,
+   "tokens": {
+    "input_tokens": 15167,
+    "cache_creation_input_tokens": 294498,
+    "cache_read_input_tokens": 627608,
+    "output_tokens": 63
+   },
+   "duration_min": 10.5,
+   "elapsed_min": 84.7,
+   "total": 937336,
+   "sent": 937273,
+   "received": 63,
+   "model": "claude-haiku-4-5-20251001",
+   "provider": "anthropic"
+  },
+  {
+   "cli": "claude",
+   "session_id": "f692bc74-ee1f-4ec2-a5ce-338cd9bc6d9c",
+   "account": "broodierchip@gmail.com",
+   "project": "-media-phantom-gramps-2TB-Storage-VS-code-projects-custom-wifi-router-mesh-The-Un-Ending",
+   "start": "2026-01-21T20:10:09.897Z",
+   "end": "2026-01-21T20:15:35.691Z",
+   "turns": 34,
+   "tokens": {
+    "input_tokens": 33,
+    "cache_creation_input_tokens": 182074,
+    "cache_read_input_tokens": 1010981,
+    "output_tokens": 189
+   },
+   "duration_min": 5.4,
+   "elapsed_min": 5.4,
+   "total": 1193277,
+   "sent": 1193088,
+   "received": 189,
+   "model": "claude-haiku-4-5-20251001",
+   "provider": "anthropic"
+  },
+  {
+   "cli": "antigravity",
+   "session_id": "9256965d-a4e8-4360-9fa3-5acdcd1dc86d",
+   "account": "antigravity (local)",
+   "project": "-",
+   "start": "2026-08-04T06:54:45Z",
+   "end": "2026-08-04T07:01:29Z",
+   "turns": 48,
+   "tokens": {
+    "input_tokens": 253650,
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 1861435,
+    "output_tokens": 16919
+   },
+   "duration_min": 6.7,
+   "elapsed_min": 6.7,
+   "total": 2132004,
+   "sent": 2115085,
+   "received": 16919,
+   "model": "antigravity",
+   "provider": "other"
+  },
+  {
+   "cli": "antigravity",
+   "session_id": "b2b6e2d9-f57d-434b-bc55-e55e0b8f8c53",
+   "account": "antigravity (local)",
+   "project": "-",
+   "start": "2026-08-04T07:03:51Z",
+   "end": "2026-08-04T07:05:52Z",
+   "turns": 29,
+   "tokens": {
+    "input_tokens": 148074,
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 792801,
+    "output_tokens": 5352
+   },
+   "duration_min": 2.0,
+   "elapsed_min": 2.0,
+   "total": 946227,
+   "sent": 940875,
+   "received": 5352,
+   "model": "antigravity",
+   "provider": "other"
+  }
+ ]
+}

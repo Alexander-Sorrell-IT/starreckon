@@ -1,0 +1,41 @@
+{
+ "tokens": 5302458909,
+ "sessions": 182,
+ "turns": 25285,
+ "minutes": 16683.400000000005,
+ "by_cli": {
+  "claude": 3280835729,
+  "gemini": 1110527927,
+  "copilot": 704520118,
+  "codex": 129359151,
+  "antigravity": 77215984
+ },
+ "by_machine": {
+  "ASUS Laptop Linux": 249617431,
+  "Dell Latitude 7480 Linux": 137010234,
+  "HP Laptop Linux": 3453995627,
+  "MacBook Air M1": 1461835617
+ },
+ "by_model": {
+  "claude-opus-4-7": 2684012283,
+  "claude-haiku-4-5-20251001": 2774196,
+  "gemini-3-flash-preview": 941967115,
+  "unknown": 14668458,
+  "gpt-5.5": 350670656,
+  "codex-auto-review": 4002548,
+  "claude-haiku-4.5": 41032946,
+  "deepseek-v4-pro": 461108501,
+  "gpt-5.4-mini": 64578662,
+  "gemini-3-pro-preview": 108681584,
+  "claude-sonnet-4-6": 128485877,
+  "gemini-3-flash-d": 74439389,
+  "claude-opus-4-8": 4454872,
+  "gpt-5.4": 660827,
+  "claude-sonnet-4.6": 264206868,
+  "gemini-3.1-pro-preview": 62655823,
+  "claude-opus-4.7": 94058304
+ },
+ "first": "2026-05-01T01:26:00.701Z",
+ "last": "2026-06-01T03:30:04Z",
+ "month": "2026-05"
+}

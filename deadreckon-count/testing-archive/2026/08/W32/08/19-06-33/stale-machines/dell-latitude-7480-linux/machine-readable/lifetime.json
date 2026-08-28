@@ -1,0 +1,50 @@
+{
+ "tokens": 7434311190,
+ "sessions": 16614,
+ "turns": 79826,
+ "minutes": 17513.90000000141,
+ "by_cli": {
+  "gemini": 320741667,
+  "claude": 5324825684,
+  "copilot": 1062300519,
+  "codex": 677851186,
+  "antigravity": 48592134
+ },
+ "by_machine": {
+  "Dell Latitude 7480 Linux": 7434311190
+ },
+ "by_model": {
+  "gemini-3-flash-preview": 256769016,
+  "gemini-3-pro-preview": 63953140,
+  "claude-haiku-4-5-20251001": 31833944,
+  "claude-sonnet-4-5-20250929": 16532785,
+  "claude-opus-4-5-20251101": 585926324,
+  "claude-opus-4-6": 908228165,
+  "unknown": 1057847408,
+  "<synthetic>": 0,
+  "claude-sonnet-4-6": 7281866,
+  "gpt-5.4-mini": 289062995,
+  "gpt-5.5": 379804407,
+  "gemini-3.1-pro-preview": 19511,
+  "gpt-5.3-codex": 4981236,
+  "codex-auto-review": 4002548,
+  "claude-haiku-4.5": 4453111,
+  "claude-opus-4-8": 2827458084,
+  "claude-fable-5": 175126453,
+  "claude-opus-4-7": 18466244,
+  "gemini-3.5-flash-low": 39462940,
+  "gemini-2.5-flash-native-audio-prev": 2201176,
+  "gemini-3.6-flash-high": 6928018,
+  "claude-opus-5": 753971819
+ },
+ "fields": {
+  "input_tokens": 323732629,
+  "cache_creation_input_tokens": 498078727,
+  "cache_read_input_tokens": 4470568005,
+  "output_tokens": 32231195
+ },
+ "first": "2025-12-30T03:18:15.409Z",
+ "last": "2026-08-06T11:17:29.515Z",
+ "machines": {},
+ "scanner_version": "1108dc477b34"
+}

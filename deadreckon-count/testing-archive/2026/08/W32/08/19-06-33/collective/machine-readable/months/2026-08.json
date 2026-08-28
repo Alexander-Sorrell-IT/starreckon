@@ -1,0 +1,32 @@
+{
+ "tokens": 4137585963,
+ "sessions": 52,
+ "turns": 11919,
+ "minutes": 4727.8,
+ "by_cli": {
+  "antigravity": 12090763,
+  "claude": 4112010744,
+  "grok": 13484456
+ },
+ "by_machine": {
+  "ASUS Laptop Linux": 3073371,
+  "Dell Inspiron Desktop Linux": 9017392,
+  "Dell Latitude 7480 Linux": 188303285,
+  "HP Laptop Linux": 432221663,
+  "MacBook Air M1": 3504970252
+ },
+ "by_model": {
+  "gemini-3-flash-preview": 3073371,
+  "gemini-3.6-flash-high": 9017392,
+  "<synthetic>": 0,
+  "claude-opus-5": 3739089502,
+  "claude-opus-4-7": 6538550,
+  "claude-haiku-4-5-20251001": 397022,
+  "claude-fable-5": 365865084,
+  "claude-sonnet-5": 120586,
+  "grok-4.5-build": 13484456
+ },
+ "first": "2026-08-01T03:13:38.874Z",
+ "last": "2026-08-08T05:17:25.515Z",
+ "month": "2026-08"
+}

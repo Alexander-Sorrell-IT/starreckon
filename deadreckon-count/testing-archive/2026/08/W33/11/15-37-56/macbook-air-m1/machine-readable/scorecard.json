@@ -1,0 +1,92 @@
+{
+ "machine": "MacBook Air M1",
+ "generated_at": "2026-08-09T03:41:05-05:00",
+ "failed": 1,
+ "warned": 0,
+ "checks": [
+  {
+   "area": "scan",
+   "check": "totals.json written",
+   "status": "ok",
+   "detail": ""
+  },
+  {
+   "area": "scan",
+   "check": "sessions.json written",
+   "status": "ok",
+   "detail": ""
+  },
+  {
+   "area": "scan",
+   "check": "hardware.json written",
+   "status": "ok",
+   "detail": ""
+  },
+  {
+   "area": "scan",
+   "check": "scan is recent",
+   "status": "ok",
+   "detail": "1.1h old"
+  },
+  {
+   "area": "scan",
+   "check": "both scanners same version",
+   "status": "ok",
+   "detail": "2e512dc55519 / 2e512dc55519"
+  },
+  {
+   "area": "readers",
+   "check": "every CLI has a row",
+   "status": "ok",
+   "detail": "8 rows"
+  },
+  {
+   "area": "readers",
+   "check": "no CLI is installed-but-silent",
+   "status": "ok",
+   "detail": "none"
+  },
+  {
+   "area": "readers",
+   "check": "no reader raised",
+   "status": "ok",
+   "detail": "none"
+  },
+  {
+   "area": "agreement",
+   "check": "analyze_tokens == sessions",
+   "status": "ok",
+   "detail": "13,955,323,225 vs 13,986,083,796 \u2014 30,760,571 apart (0.22%)"
+  },
+  {
+   "area": "corpus",
+   "check": "export exists",
+   "status": "ok",
+   "detail": "/Users/broodierchip-m1air/token-corpus/macbook-air-m1"
+  },
+  {
+   "area": "corpus",
+   "check": "export is recent",
+   "status": "ok",
+   "detail": "2026-08-09T03:38:04-05:00"
+  },
+  {
+   "area": "corpus",
+   "check": "profiles match the scan",
+   "status": "FAIL",
+   "detail": "8 exported / 10 scanned"
+  },
+  {
+   "area": "corpus",
+   "check": "redaction ran",
+   "status": "ok",
+   "detail": "topic 209,000, span 16,710, path 704,209, email 13,853"
+  },
+  {
+   "area": "archive",
+   "check": "a dated snapshot exists",
+   "status": "ok",
+   "detail": "1 snapshot(s), newest 2026-08-09T02-49-00"
+  }
+ ]
+}

@@ -1,0 +1,14 @@
+{
+ "machine": "hp-laptop-linux",
+ "generated_at": "2026-08-05T06:11:06-05:00",
+ "source": "corpus",
+ "window_days": 30,
+ "epoch": "2026-01-01",
+ "windows": [
+  "2026-05-01",
+  "2026-05-31",
+  "2026-06-30",
+  "2026-07-30"
+ ],
+ "total_tokens": 11014008662
+}

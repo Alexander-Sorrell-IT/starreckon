@@ -1,0 +1,65 @@
+{
+ "tokens": 8693210554,
+ "sessions": 315,
+ "turns": 45501,
+ "minutes": 25509.100000000002,
+ "by_cli": {
+  "codex": 2123691,
+  "gemini": 1473601578,
+  "claude": 6869187767,
+  "antigravity": 45271276,
+  "lmstudio": 119774,
+  "kilocode": 7074501,
+  "copilot": 295831967
+ },
+ "by_machine": {
+  "ASUS Laptop Linux": 146981095,
+  "Dell Inspiron Desktop Linux": 11292220,
+  "HP Laptop Linux": 8534937239
+ },
+ "by_model": {
+  "gpt-5.1-codex-max": 2106128,
+  "gemini-3-flash-preview": 1205173033,
+  "gemini-3-pro-preview": 201521906,
+  "claude-haiku-4-5-20251001": 4472617,
+  "claude-opus-4-7": 2570701711,
+  "gemini-antigravity-brain": 14360812,
+  "gemini-3.6-flash-high": 4380549,
+  "<synthetic>": 49995,
+  "Mixtral-8x7B-Instruct-v0.1.Q6_K.gguf": 116185,
+  "deepseek-coder-6.7b-instruct.Q6_K.gguf": 3530,
+  "Llama-3-13B-Instruct-v0.1.Q4_K_S.gguf": 59,
+  "gemini-2.5-pro-preview": 7025122,
+  "gpt-5.1-codex": 17563,
+  "gemini-2.5-pro": 66610041,
+  "grok-code-fast-1": 10646,
+  "devstral-2512:free": 38733,
+  "unknown": 5939252,
+  "gemini-2.5-flash": 296598,
+  "deepseek-v4-pro": 534671153,
+  "gpt-5.5": 225314053,
+  "gpt-5.4-mini": 64578662,
+  "claude-sonnet-4-6": 172597289,
+  "gemini-3-flash-d": 20218246,
+  "claude-opus-4-8": 604554104,
+  "claude-fable-5": 651414232,
+  "gemini-3-flash-a": 3362293,
+  "gemini-3.5-flash-low": 2949376,
+  "claude-opus-5": 2330606080,
+  "claude-sonnet-5": 120586
+ },
+ "fields": {
+  "input_tokens": 25232699,
+  "cache_creation_input_tokens": 175161382,
+  "cache_read_input_tokens": 6633333362,
+  "output_tokens": 34594007
+ },
+ "first": "2025-07-01T06:58:19.695000Z",
+ "last": "2026-08-09T07:32:10Z",
+ "machines": {
+  "ASUS Laptop Linux": "2026-08-09T02:32:12-05:00",
+  "Dell Inspiron Desktop Linux": "2026-08-09T02:27:00-05:00",
+  "HP Laptop Linux": "2026-08-09T00:54:49-05:00"
+ },
+ "scanner_version": "2e512dc55519"
+}

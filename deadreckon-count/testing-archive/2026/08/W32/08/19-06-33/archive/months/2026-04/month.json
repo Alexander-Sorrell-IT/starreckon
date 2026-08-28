@@ -1,0 +1,19 @@
+{
+ "tokens": 13919550,
+ "sessions": 2,
+ "turns": 324,
+ "minutes": 66.8,
+ "by_cli": {
+  "claude": 13919550
+ },
+ "by_machine": {
+  "ASUS Laptop Linux": 13919550
+ },
+ "by_model": {
+  "claude-haiku-4-5-20251001": 616633,
+  "claude-opus-4-7": 13302917
+ },
+ "first": "2026-04-30T02:31:02.368Z",
+ "last": "2026-05-01T04:32:57.144Z",
+ "month": "2026-04"
+}

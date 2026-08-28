@@ -1,0 +1,97 @@
+{
+ "scope": "MacBook Air M1",
+ "generated_at": "2026-08-05T23:43:53-05:00",
+ "total_tokens": 31910491627,
+ "sessions": 258,
+ "fields": {
+  "input_tokens": 11179038,
+  "cache_creation_input_tokens": 988563627,
+  "cache_read_input_tokens": 27394892250,
+  "output_tokens": 97700650
+ },
+ "new_content_tokens": 1097443315,
+ "hours": 533.0,
+ "by_cli": {
+  "lmstudio": {
+   "sessions": 3,
+   "tokens": 53159,
+   "minutes": 0.0
+  },
+  "copilot": {
+   "sessions": 36,
+   "tokens": 497696783,
+   "minutes": 4786.3
+  },
+  "gemini": {
+   "sessions": 4,
+   "tokens": 995360683,
+   "minutes": 578.4
+  },
+  "claude": {
+   "sessions": 50,
+   "tokens": 28572340665,
+   "minutes": 23553.6
+  },
+  "antigravity": {
+   "sessions": 35,
+   "tokens": 135111522,
+   "minutes": 818.4
+  },
+  "codex": {
+   "sessions": 125,
+   "tokens": 1633203953,
+   "minutes": 1782.2
+  },
+  "grok": {
+   "sessions": 5,
+   "tokens": 76724862,
+   "minutes": 459.9
+  }
+ },
+ "by_model": {
+  "claude-opus-4-8": 13707598393,
+  "claude-opus-5": 13330843578,
+  "gpt-5.6-sol": 1450778440,
+  "claude-fable-5": 961764279,
+  "gemini-3-flash-preview": 935481455,
+  "claude-sonnet-4-6": 571753755,
+  "claude-sonnet-4.6": 279118768,
+  "gpt-5.6-luna": 180826644,
+  "claude-opus-4.7": 94058304,
+  "grok-4.5-build": 76724862,
+  "gemini-3.1-pro-preview": 62655823,
+  "unknown": 59372409,
+  "gemini-3-flash-d": 54221143,
+  "gemini-3-flash-agent": 48392056,
+  "claude-haiku-4.5": 36579835,
+  "claude-opus-4.8": 27906640,
+  "gemini-3.1-flash-image": 25696363,
+  "gemini_coder": 3368524,
+  "codex-auto-review": 1598869,
+  "gpt-5.4": 660827
+ },
+ "records": {
+  "longest_session": {
+   "id": "37aba660-0aef-4454-8384-d58e31c238c8",
+   "cli": "claude",
+   "machine": "MacBook Air M1",
+   "minutes": 3652.8
+  },
+  "most_tokens": {
+   "id": "f4b9b473-5470-452b-baaf-a70f6ad029e2",
+   "cli": "claude",
+   "machine": "MacBook Air M1",
+   "tokens": 5968942051
+  },
+  "most_turns": {
+   "id": "f4b9b473-5470-452b-baaf-a70f6ad029e2",
+   "cli": "claude",
+   "machine": "MacBook Air M1",
+   "turns": 45141
+  }
+ },
+ "scans": {
+  "MacBook Air M1": "2026-08-04T20:44:43-05:00"
+ },
+ "first_last_seen": {}
+}

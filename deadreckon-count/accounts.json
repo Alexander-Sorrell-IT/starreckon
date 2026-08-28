@@ -1,0 +1,103 @@
+{
+  "_comment": [
+    "The known accounts, and which service each one signs into.",
+    "",
+    "Only Claude Code records its account email on disk. Every other CLI writes",
+    "sessions with no identity at all, so without this file 11.9% of measured",
+    "tokens - 5.56 billion - sit under placeholders like 'grok (local)' and are",
+    "missing from every per-account total. `services` is what lets that usage be",
+    "attributed to the person who paid for it.",
+    "",
+    "EVIDENCE is recorded per mapping and is not decoration:",
+    "  file    read out of the tool's own account file on disk, verifiable",
+    "  owner   stated by the account holder; true, but not checkable from disk",
+    "A mapping with neither is a guess and does not belong here. This project has",
+    "already been wrong once by inferring identity from a directory name.",
+    "",
+    "A tool with no mapping stays unattributed on purpose. Spreading it across",
+    "accounts by proportion would invent numbers that look like measurements."
+  ],
+  "accounts": [
+    {
+      "email": "broodierchip@gmail.com",
+      "note": "seen on hp-laptop-linux (~/.claude), and on the M1 and Dell",
+      "services": [
+        { "cli": "claude", "evidence": "file",
+          "where": "oauthAccount.emailAddress in each config dir's .claude.json" },
+        { "cli": "gemini", "evidence": "file",
+          "where": "~/.gemini/google_accounts.json" }
+      ]
+    },
+    {
+      "email": "codehunterextreme@gmail.com",
+      "note": "seen on hp-laptop-linux (~/.claude-alt)",
+      "services": [
+        { "cli": "claude", "evidence": "file",
+          "where": "oauthAccount.emailAddress in ~/.claude-alt/.claude.json" }
+      ]
+    },
+    {
+      "email": "alexander.sorrell.it@gmail.com",
+      "note": "seen on hp-laptop-linux (~/.claude-it)",
+      "services": [
+        { "cli": "claude", "evidence": "file",
+          "where": "oauthAccount.emailAddress in ~/.claude-it/.claude.json" }
+      ]
+    },
+    {
+      "email": "alexsorrellit@gmail.com",
+      "note": "separate account from alexander.sorrell.it@gmail.com; not yet seen on any scanned machine",
+      "services": [
+        { "cli": "claude",      "evidence": "owner", "where": "stated by the account holder" },
+        { "cli": "gemini",      "evidence": "owner", "where": "stated by the account holder" },
+        { "cli": "copilot",     "evidence": "owner", "where": "stated by the account holder" },
+        { "cli": "codex",       "evidence": "owner", "where": "stated by the account holder" },
+        { "cli": "grok",        "evidence": "owner", "where": "stated by the account holder" },
+        { "cli": "antigravity", "evidence": "owner", "where": "stated by the account holder" },
+        { "cli": "kilocode",    "evidence": "owner", "where": "stated by the account holder" }
+      ]
+    },
+    {
+      "email": "alexsorrellyan@gmail.com",
+      "note": "separate account; not yet seen on any scanned machine",
+      "services": [
+        { "cli": "claude",      "evidence": "owner", "where": "stated by the account holder" },
+        { "cli": "gemini",      "evidence": "owner", "where": "stated by the account holder" },
+        { "cli": "copilot",     "evidence": "owner", "where": "stated by the account holder" },
+        { "cli": "codex",       "evidence": "owner", "where": "stated by the account holder" },
+        { "cli": "grok",        "evidence": "owner", "where": "stated by the account holder" },
+        { "cli": "antigravity", "evidence": "owner", "where": "stated by the account holder" },
+        { "cli": "kilocode",    "evidence": "owner", "where": "stated by the account holder" }
+      ]
+    },
+    {
+      "email": "nefabious@gmail.com",
+      "note": "the xAI account. Not signed into Claude Code anywhere, which is why no scan found it - it was never a missing account, it is a Grok account and Grok records no email on disk.",
+      "services": [
+        { "cli": "grok", "evidence": "owner",
+          "where": "stated by the account holder; xAI's CLI writes no identity to disk" }
+      ]
+    }
+  ],
+  "profiles": [
+    {
+      "userID": "4be462f3a2f9620e",
+      "label": "API key (org 15a93e14-aabb-4293-8228-8c56a803d972)",
+      "why": "API-key profile in ~/.claude-alt-api. Keys carry no email. The billing org came from the anthropic-organization-id response header, and it is NOT an org any of the logged-in accounts own - the directory name suggests it belongs to ~/.claude-alt and it does not."
+    },
+    {
+      "userID": "73ae64bf180bd1e9",
+      "label": "DeepSeek backend (~/.my-claude)",
+      "why": "A 0.0.0-leaked build pointed at DeepSeek: 12,959 deepseek-v4-pro and 2,727 deepseek-v4-flash calls, zero Claude models. Transcripts are byte-identical to Claude Code's, which is why its 1.41B was counted as Anthropic usage before totals were split on model id. Not an Anthropic account and has no email to find."
+    }
+  ],
+  "_unattributed": [
+    "Tools whose usage has no owner declared yet, and stays under a placeholder:",
+    "  copilot      GitHub - which login is not recorded on disk",
+    "  codex        OpenAI - same",
+    "  antigravity  Google - a separate product from Gemini, so broodierchip is",
+    "               not assumed even though Gemini is confirmed as theirs",
+    "  kilocode     billed to whatever provider key the extension was given",
+    "Add a services entry to the right account to fold any of these in."
+  ]
+}

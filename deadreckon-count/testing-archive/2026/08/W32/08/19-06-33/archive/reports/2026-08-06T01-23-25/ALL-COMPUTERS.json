@@ -1,0 +1,225 @@
+{
+  "generated_at": "2026-08-06T01:23:13-05:00",
+  "grand_total_tokens": 11845102826,
+  "machines": [
+    {
+      "machine": "HP Laptop Linux",
+      "folder": "hp-laptop-linux",
+      "total": 11576825537,
+      "scanned": "2026-08-06T00:06:37-05:00",
+      "sessions_scanned": true
+    },
+    {
+      "machine": "ASUS Laptop Linux",
+      "folder": "asus-laptop-linux",
+      "total": 266146676,
+      "scanned": "2026-08-06T00:50:35-05:00",
+      "sessions_scanned": true
+    },
+    {
+      "machine": "Dell Inspiron Desktop Linux",
+      "folder": "dell-inspiron-desktop-linux",
+      "total": 2130613,
+      "scanned": "2026-08-06T01:00:55-05:00",
+      "sessions_scanned": true
+    }
+  ],
+  "accounts": [
+    {
+      "account": "broodierchip@gmail.com",
+      "total": 6633845521,
+      "sessions": 2719,
+      "turns": 26748,
+      "by_machine": {
+        "HP Laptop Linux": 6365568232,
+        "ASUS Laptop Linux": 266146676,
+        "Dell Inspiron Desktop Linux": 2130613
+      },
+      "totals": {
+        "input_tokens": 6776747,
+        "cache_creation_input_tokens": 240033437,
+        "cache_read_input_tokens": 6355418240,
+        "output_tokens": 31617097
+      }
+    },
+    {
+      "account": "codehunterextreme@gmail.com",
+      "total": 3717819380,
+      "sessions": 40,
+      "turns": 22543,
+      "by_machine": {
+        "HP Laptop Linux": 3717819380
+      },
+      "totals": {
+        "input_tokens": 3443408,
+        "cache_creation_input_tokens": 168102251,
+        "cache_read_input_tokens": 3527671492,
+        "output_tokens": 18602229
+      }
+    },
+    {
+      "account": "DeepSeek backend (~/.my-claude)",
+      "total": 1409787623,
+      "sessions": 6,
+      "turns": 14797,
+      "by_machine": {
+        "HP Laptop Linux": 1409787623
+      },
+      "totals": {
+        "input_tokens": 61324095,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 1343468672,
+        "output_tokens": 4994856
+      }
+    },
+    {
+      "account": "alexander.sorrell.it@gmail.com",
+      "total": 83212683,
+      "sessions": 2,
+      "turns": 885,
+      "by_machine": {
+        "HP Laptop Linux": 83212683
+      },
+      "totals": {
+        "input_tokens": 25878,
+        "cache_creation_input_tokens": 2434605,
+        "cache_read_input_tokens": 80236487,
+        "output_tokens": 515713
+      }
+    },
+    {
+      "account": "API key (org 15a93e14-aabb-4293-8228-8c56a803d972)",
+      "total": 437619,
+      "sessions": 1,
+      "turns": 18,
+      "by_machine": {
+        "HP Laptop Linux": 437619
+      },
+      "totals": {
+        "input_tokens": 3856,
+        "cache_creation_input_tokens": 28703,
+        "cache_read_input_tokens": 394815,
+        "output_tokens": 10245
+      }
+    }
+  ],
+  "by_cli": {
+    "claude": {
+      "sessions": 187,
+      "tokens": 11845102826,
+      "active_min": 15724.4
+    },
+    "gemini": {
+      "sessions": 53,
+      "tokens": 1473601578,
+      "active_min": 4374.2
+    },
+    "copilot": {
+      "sessions": 31,
+      "tokens": 295831967,
+      "active_min": 3280.7
+    },
+    "antigravity": {
+      "sessions": 23,
+      "tokens": 39018322,
+      "active_min": 170.1
+    },
+    "kilocode": {
+      "sessions": 4,
+      "tokens": 7074501,
+      "active_min": 79.3
+    },
+    "codex": {
+      "sessions": 3,
+      "tokens": 2123691,
+      "active_min": 42.1
+    },
+    "lmstudio": {
+      "sessions": 7,
+      "tokens": 119774,
+      "active_min": 0.0
+    },
+    "grok": {
+      "sessions": 0,
+      "tokens": 0,
+      "active_min": 0.0
+    }
+  },
+  "by_provider": {
+    "anthropic": 10399150810,
+    "deepseek": 1445952016
+  },
+  "by_machine_provider": {
+    "HP Laptop Linux": {
+      "anthropic": 10130873521,
+      "synthetic": 0,
+      "deepseek": 1445952016
+    },
+    "ASUS Laptop Linux": {
+      "anthropic": 266146676,
+      "synthetic": 0
+    },
+    "Dell Inspiron Desktop Linux": {
+      "synthetic": 0,
+      "anthropic": 2130613
+    }
+  },
+  "cli_by_provider": {
+    "anthropic": {
+      "sessions": 137,
+      "tokens": 10399150810,
+      "active_min": 11161.1
+    },
+    "google": {
+      "sessions": 78,
+      "tokens": 1519645022,
+      "active_min": 4622.9
+    },
+    "deepseek": {
+      "sessions": 48,
+      "tokens": 1445955546,
+      "active_min": 4563.3
+    },
+    "openai": {
+      "sessions": 29,
+      "tokens": 292016406,
+      "active_min": 2049.8
+    },
+    "synthetic": {
+      "sessions": 8,
+      "tokens": 5939252,
+      "active_min": 1273.0
+    },
+    "mistral": {
+      "sessions": 5,
+      "tokens": 116185,
+      "active_min": 0.0
+    },
+    "other": {
+      "sessions": 1,
+      "tokens": 38733,
+      "active_min": 0.6
+    },
+    "xai": {
+      "sessions": 1,
+      "tokens": 10646,
+      "active_min": 0.1
+    },
+    "meta": {
+      "sessions": 1,
+      "tokens": 59,
+      "active_min": 0.0
+    }
+  },
+  "uncountable_tools": [
+    {
+      "tool": "grok-cli (@vibe-kit)",
+      "dir": "/home/phantomcore/.npm-global/bin/grok",
+      "files": 1,
+      "records_token_usage": false,
+      "counted_here": false,
+      "why": "community npm CLI, distinct from xAI's official Grok Build CLI; stores no usage of any kind",
+      "machine": "HP Laptop Linux"
+    }
+  ]
+}

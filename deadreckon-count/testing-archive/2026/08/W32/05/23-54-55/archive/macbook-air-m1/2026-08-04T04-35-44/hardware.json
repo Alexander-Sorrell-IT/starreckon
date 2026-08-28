@@ -1,0 +1,50 @@
+{
+  "machine": "MacBook Air M1",
+  "hostname": "MacBookAir.attlocal.net",
+  "hardware": {
+    "model_identifier": "MacBookAir10,1",
+    "chip": "Apple M1",
+    "cpu_logical": 8,
+    "cpu_performance_cores": 4,
+    "cpu_efficiency_cores": 4,
+    "memory_gb": 16.0,
+    "gpu": "Apple M1",
+    "gpu_cores": 8,
+    "metal": "spdisplays_metal3",
+    "os": "macOS 15.7.8",
+    "os_build": "24G806"
+  },
+  "disk": {
+    "volume": "/Users/broodierchip-m1air",
+    "total_gb": 1858.2,
+    "used_gb": 1713.9,
+    "free_gb": 144.3
+  },
+  "python": "3.11.3",
+  "accounts": [
+    {
+      "account": "broodierchip@gmail.com",
+      "config_dir": "/Users/broodierchip-m1air/.claude-main",
+      "profile_env": "CLAUDE_CONFIG_DIR=/Users/broodierchip-m1air/.claude-main",
+      "sessions": 29,
+      "transcript_files": 2682,
+      "projects": 25
+    },
+    {
+      "account": "codehunterextreme@gmail.com",
+      "config_dir": "/Users/broodierchip-m1air/.claude",
+      "profile_env": "unset (default)",
+      "sessions": 21,
+      "transcript_files": 108,
+      "projects": 8
+    },
+    {
+      "account": "alexander.sorrell.it@gmail.com",
+      "config_dir": "/Users/broodierchip-m1air/.claude-it",
+      "profile_env": "CLAUDE_CONFIG_DIR=/Users/broodierchip-m1air/.claude-it",
+      "sessions": 3,
+      "transcript_files": 4,
+      "projects": 2
+    }
+  ]
+}

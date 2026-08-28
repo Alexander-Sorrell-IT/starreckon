@@ -1,0 +1,127 @@
+{
+ "tokens": 109863590176,
+ "sessions": 3572,
+ "turns": 300190,
+ "minutes": 233387.10000000015,
+ "by_cli": {
+  "claude": 103420756272,
+  "lmstudio": 53159,
+  "copilot": 1144892178,
+  "gemini": 1990721366,
+  "antigravity": 1197949353,
+  "codex": 1633604881,
+  "grok": 200444644,
+  "bob": 275168323
+ },
+ "by_machine": {
+  "MacBookAir": 55141443346,
+  "MacBook Air M1 (Darwin ARM64)": 54722146830
+ },
+ "by_model": {
+  "claude-opus-4-8": 19390023278,
+  "claude-sonnet-5": 1583992,
+  "claude-opus-4-7": 533784,
+  "claude-opus-5": 38611588236,
+  "claude-sonnet-4-6": 815094848,
+  "proj-475024d6": 0,
+  "claude-fable-5": 1703702926,
+  "claude-haiku-4-5-20251001": 1733833,
+  "Wizard-Vicuna-7B-Uncensored.Q4_K_S.gguf": 37497,
+  "nomic-ai-gpt4all-falcon-Q4_K_S.gguf": 15662,
+  "unknown": 59372409,
+  "gpt-5.4": 660827,
+  "gemini-3-flash-preview": 932704860,
+  "claude-haiku-4.5": 36619082,
+  "claude-sonnet-4.6": 279118768,
+  "gemini-3.1-pro-preview": 62655823,
+  "claude-opus-4.7": 94058304,
+  "gemini-3-flash-agent": 48392056,
+  "claude-opus-4.8": 27906640,
+  "<synthetic>": 0,
+  "codex": 0,
+  "gpt-5.6-sol": 1451179368,
+  "gpt-5.6-luna": 180826644,
+  "codex-auto-review": 1598869,
+  "gemini-3.1-flash-image": 25696363,
+  "grok-4.5-build": 100222322,
+  "gemini-3.6-flash-medium": 8855564,
+  "gemini-3.7-flash-low": 63791884,
+  "gemini-3.7-flash-safety-le": 930363796,
+  "gpt-5.6-terra": 74710059
+ },
+ "fields": {
+  "input_tokens": 16177345,
+  "cache_creation_input_tokens": 1836236581,
+  "cache_read_input_tokens": 58462227153,
+  "output_tokens": 209619818
+ },
+ "first": "2025-07-03T07:40:02.682000Z",
+ "last": "2026-08-26T21:59:26Z",
+ "machines": {
+  "MacBookAir": "2026-08-27T05:06:36-05:00",
+  "MacBook Air M1 (Darwin ARM64)": "2026-08-26T17:03:53-05:00"
+ },
+ "undated": {
+  "tokens": 2905488487,
+  "sessions": 78,
+  "by_cli": {
+   "gemini": 995360683,
+   "copilot": 572446089,
+   "antigravity": 60483428,
+   "bob": 2550988,
+   "grok": 100222322,
+   "claude": 1174424977
+  },
+  "by_machine": {
+   "MacBookAir": 1731063510,
+   "MacBook Air M1 (Darwin ARM64)": 1174424977
+  }
+ },
+ "scanned_tokens": 65175665029,
+ "scanned_by_cli": {
+  "claude": 60524260897,
+  "lmstudio": 53159,
+  "copilot": 572446089,
+  "gemini": 995360683,
+  "antigravity": 1077099663,
+  "codex": 1633604881,
+  "grok": 100222322,
+  "bob": 272617335
+ },
+ "scanned_by_machine": {
+  "MacBookAir": 42036497160,
+  "MacBook Air M1 (Darwin ARM64)": 23139167869
+ },
+ "ledger_unread_cli": 0,
+ "ledger": {
+  "MacBookAir": {
+   "present": false,
+   "total": 0,
+   "sessions": 0,
+   "scanned": 43767560670,
+   "beyond_scan": 0,
+   "unread_cli_tokens": 0,
+   "unread_clis": [],
+   "beyond_by_cli": {}
+  },
+  "MacBook Air M1 (Darwin ARM64)": {
+   "present": true,
+   "total": 24373959108,
+   "sessions": 280,
+   "scanned": 24313592846,
+   "beyond_scan": 60366262,
+   "unread_cli_tokens": 0,
+   "unread_clis": [],
+   "beyond_by_cli": {
+    "antigravity": 60366262
+   }
+  }
+ },
+ "ledger_beyond_scan": 60366262,
+ "ledger_beyond_scan_total": 60366262,
+ "undated_in_headline": true,
+ "statscache_floor_delta": 41722070398,
+ "statscache_claude_floor_delta": 41722070398,
+ "scanner_version": "d6a764c4fac5",
+ "hardware_uuid": "0088B2C6-9198-52C3-A51B-5D0E5CD4B596"
+}

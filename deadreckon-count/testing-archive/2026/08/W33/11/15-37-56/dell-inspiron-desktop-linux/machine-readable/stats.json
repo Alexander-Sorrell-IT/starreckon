@@ -1,0 +1,92 @@
+{
+ "scope": "Dell Inspiron Desktop Linux",
+ "generated_at": "2026-08-09T02:52:23-05:00",
+ "total_tokens": 11292220,
+ "sessions": 8,
+ "fields": {
+  "input_tokens": 3815,
+  "cache_creation_input_tokens": 148543,
+  "cache_read_input_tokens": 672383,
+  "output_tokens": 145
+ },
+ "new_content_tokens": 152503,
+ "hours": 1.7,
+ "by_cli": {
+  "gemini": {
+   "sessions": 2,
+   "tokens": 402029,
+   "minutes": 15.9
+  },
+  "claude": {
+   "sessions": 3,
+   "tokens": 824886,
+   "minutes": 15.9
+  },
+  "antigravity": {
+   "sessions": 3,
+   "tokens": 10065305,
+   "minutes": 68.1
+  }
+ },
+ "by_model": {
+  "gemini-antigravity-brain": 6082400,
+  "gemini-3.6-flash-high": 3982905,
+  "claude-haiku-4-5-20251001": 824886,
+  "gemini-3-pro-preview": 402029,
+  "<synthetic>": 0
+ },
+ "records": {
+  "longest_session": {
+   "id": "cd528b1f-815b-48de-a6eb-07d7d931a8be",
+   "cli": "antigravity",
+   "machine": "Dell Inspiron Desktop Linux",
+   "minutes": 56.6
+  },
+  "most_tokens": {
+   "id": "cd528b1f-815b-48de-a6eb-07d7d931a8be",
+   "cli": "antigravity",
+   "machine": "Dell Inspiron Desktop Linux",
+   "tokens": 6082400
+  },
+  "most_turns": {
+   "id": "cd528b1f-815b-48de-a6eb-07d7d931a8be",
+   "cli": "antigravity",
+   "machine": "Dell Inspiron Desktop Linux",
+   "turns": 98
+  }
+ },
+ "scans": {
+  "Dell Inspiron Desktop Linux": "2026-08-09T02:27:00-05:00"
+ },
+ "first_last_seen": {
+  "gemini": {
+   "first": "2026-01-13T21:39:45.839Z",
+   "last": "2026-01-13T22:00:44.619Z",
+   "sources": [
+    "transcripts"
+   ]
+  },
+  "claude": {
+   "first": "2026-01-21T05:40:03.887Z",
+   "last": "2026-08-04T07:06:14.954Z",
+   "sources": [
+    "transcripts"
+   ]
+  },
+  "antigravity": {
+   "first": "2026-08-04T06:54:45Z",
+   "last": "2026-08-09T07:26:57Z",
+   "sources": [
+    "transcripts"
+   ]
+  },
+  "copilot": {
+   "first": "2026-01-14T16:20:50.755000Z",
+   "last": "2026-01-14T16:20:50.755000Z",
+   "sources": [
+    "vscode:Code - Insiders"
+   ]
+  }
+ },
+ "scanner_version": "2e512dc55519"
+}

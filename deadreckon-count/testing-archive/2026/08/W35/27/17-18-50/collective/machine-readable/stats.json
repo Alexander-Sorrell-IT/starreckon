@@ -1,0 +1,163 @@
+{
+ "scope": "The fleet",
+ "generated_at": "2026-08-27T15:11:24-05:00",
+ "total_tokens": 68081153516,
+ "sessions": 3650,
+ "fields": {
+  "input_tokens": 16177345,
+  "cache_creation_input_tokens": 1836236581,
+  "cache_read_input_tokens": 58462227153,
+  "output_tokens": 209619818
+ },
+ "new_content_tokens": 2062033744,
+ "hours": 3999.0,
+ "by_cli": {
+  "claude": {
+   "sessions": 3364,
+   "tokens": 61698685874,
+   "minutes": 221797.0
+  },
+  "gemini": {
+   "sessions": 8,
+   "tokens": 1990721366,
+   "minutes": 1156.8
+  },
+  "copilot": {
+   "sessions": 76,
+   "tokens": 1144892178,
+   "minutes": 9828.8
+  },
+  "antigravity": {
+   "sessions": 51,
+   "tokens": 1137583091,
+   "minutes": 4154.7
+  },
+  "bob": {
+   "sessions": 7,
+   "tokens": 275168323,
+   "minutes": 0.0
+  },
+  "grok": {
+   "sessions": 16,
+   "tokens": 200444644,
+   "minutes": 1218.8
+  },
+  "lmstudio": {
+   "sessions": 3,
+   "tokens": 53159,
+   "minutes": 0.0
+  },
+  "codex": {
+   "sessions": 125,
+   "tokens": 1633604881,
+   "minutes": 1783.2
+  }
+ },
+ "by_model": {
+  "claude-opus-5": 38611588236,
+  "claude-opus-4-8": 19696884720,
+  "gemini-3-flash-preview": 1868186315,
+  "claude-fable-5": 1703702926,
+  "gpt-5.6-sol": 1451179368,
+  "gemini-3.7-flash-safety-le": 930363796,
+  "claude-sonnet-4-6": 817645836,
+  "claude-sonnet-4.6": 558237536,
+  "claude-opus-4-8[1m]": 467059378,
+  "claude-haiku-4-5-20251001": 402237990,
+  "grok-4.5-build": 200444644,
+  "claude-opus-4.7": 188116608,
+  "gpt-5.6-luna": 180826644,
+  "gpt-5.6-terra": 149420118,
+  "gemini-3.1-pro-preview": 125311646,
+  "unknown": 118744818,
+  "claude-haiku-4.5": 73238164,
+  "gemini-3.7-flash-low": 63791884,
+  "claude-opus-4.8": 55813280,
+  "gemini-3-flash-d": 54221143
+ },
+ "records": {
+  "longest_session": {
+   "id": "e6a561e5-cd81-4607-8c08-54726687021f",
+   "cli": "claude",
+   "machine": "MacBookAir",
+   "minutes": 17381.3
+  },
+  "most_tokens": {
+   "id": "8804d304-0502-4582-b1d7-90862d0bcd08",
+   "cli": "claude",
+   "machine": "MacBookAir",
+   "tokens": 6126048910
+  },
+  "most_turns": {
+   "id": "f4b9b473-5470-452b-baaf-a70f6ad029e2",
+   "cli": "claude",
+   "machine": "MacBook Air M1 (Darwin ARM64)",
+   "turns": 18198
+  }
+ },
+ "scans": {
+  "MacBookAir": "2026-08-27T05:06:36-05:00",
+  "MacBook Air M1 (Darwin ARM64)": "2026-08-26T17:03:53-05:00"
+ },
+ "first_last_seen": {
+  "claude": {
+   "first": "2026-05-26T01:30:36.298Z",
+   "last": "2026-08-26T03:59:37.782Z",
+   "sources": [
+    "transcripts"
+   ]
+  },
+  "lmstudio": {
+   "first": "2025-07-03T07:40:02.682000Z",
+   "last": "2025-07-04T07:49:17.357000Z",
+   "sources": [
+    "transcripts"
+   ]
+  },
+  "copilot": {
+   "first": "1976-04-01T06:00:44.237000Z",
+   "last": "2026-08-24T22:37:26.415Z",
+   "sources": [
+    "transcripts",
+    "vscode:Code - Insiders"
+   ]
+  },
+  "gemini": {
+   "first": "2026-05-20T03:56:40.330Z",
+   "last": "2026-05-23T14:44:33.216Z",
+   "sources": [
+    "transcripts"
+   ]
+  },
+  "antigravity": {
+   "first": "2026-06-02T08:34:18Z",
+   "last": "2026-08-26T21:59:26Z",
+   "sources": [
+    "transcripts"
+   ]
+  },
+  "codex": {
+   "first": "2026-07-13T02:27:15.629Z",
+   "last": "2026-08-05T20:31:10.368Z",
+   "sources": [
+    "transcripts"
+   ]
+  },
+  "grok": {
+   "first": "2026-07-21T19:00:59Z",
+   "last": "2026-08-15T20:01:52Z",
+   "sources": [
+    "transcripts"
+   ]
+  },
+  "bob": {
+   "first": "2026-08-11T17:54:15.103000Z",
+   "last": "2026-08-12T21:45:46.482000Z",
+   "sources": [
+    "transcripts"
+   ]
+  }
+ },
+ "scanner_version": "d6a764c4fac5",
+ "hardware_uuid": "0088B2C6-9198-52C3-A51B-5D0E5CD4B596"
+}

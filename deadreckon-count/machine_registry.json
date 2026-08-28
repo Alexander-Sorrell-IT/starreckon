@@ -1,0 +1,16 @@
+{
+  "version": "1.0.0",
+  "description": "Registry of unique hardware identities and machine folders",
+  "machines": {
+    "0088B2C6-9198-52C3-A51B-5D0E5CD4B596": {
+      "folder": "macbook-air-m1",
+      "label": "MacBook Air M1 (Darwin ARM64)",
+      "hardware_uuid": "0088B2C6-9198-52C3-A51B-5D0E5CD4B596",
+      "hostname": "MacBookAir.attlocal.net",
+      "system": "darwin",
+      "arch": "arm64",
+      "registered_at": "2026-08-26T15:52:40Z",
+      "last_scanned": "2026-08-26T15:31:32Z"
+    }
+  }
+}

@@ -1,0 +1,23 @@
+{
+ "tokens": 294545819,
+ "sessions": 33,
+ "turns": 3204,
+ "minutes": 3433.4000000000005,
+ "by_cli": {
+  "gemini": 53366203,
+  "claude": 241179616
+ },
+ "by_machine": {
+  "Dell Latitude 7480 Linux": 294545819
+ },
+ "by_model": {
+  "gemini-3-flash-preview": 140320,
+  "gemini-3-pro-preview": 53225883,
+  "claude-haiku-4-5-20251001": 3339504,
+  "claude-sonnet-4-5-20250929": 7670002,
+  "claude-opus-4-5-20251101": 230170110
+ },
+ "first": "2026-01-02T16:12:48.162Z",
+ "last": "2026-01-31T21:33:05.288Z",
+ "month": "2026-01"
+}

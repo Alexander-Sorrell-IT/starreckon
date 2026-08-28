@@ -1,0 +1,28 @@
+{
+ "tokens": 1738340588,
+ "sessions": 51,
+ "turns": 15316,
+ "minutes": 6355.200000000002,
+ "by_cli": {
+  "copilot": 1056024415,
+  "claude": 7281866,
+  "gemini": 126542272,
+  "codex": 548492035
+ },
+ "by_machine": {
+  "Dell Latitude 7480 Linux": 1738340588
+ },
+ "by_model": {
+  "unknown": 1056024415,
+  "<synthetic>": 0,
+  "claude-sonnet-4-6": 7281866,
+  "gemini-3-flash-preview": 126522761,
+  "gpt-5.4-mini": 289062995,
+  "gpt-5.5": 254447804,
+  "gemini-3.1-pro-preview": 19511,
+  "gpt-5.3-codex": 4981236
+ },
+ "first": "2026-04-04T07:46:03.602Z",
+ "last": "2026-05-02T01:15:16.872Z",
+ "month": "2026-04"
+}

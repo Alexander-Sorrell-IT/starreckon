@@ -1,0 +1,85 @@
+{
+ "tokens": 32030529227,
+ "sessions": 16644,
+ "turns": 42124,
+ "minutes": 13067.500000001402,
+ "by_cli": {
+  "gemini": 320741667,
+  "copilot": 1062300519,
+  "claude": 29868745106,
+  "codex": 677851186,
+  "antigravity": 63895537,
+  "bob": 36995212
+ },
+ "by_machine": {
+  "Dell Latitude 7480 Linux": 32030529227
+ },
+ "by_model": {
+  "gemini-3-flash-preview": 256769016,
+  "gemini-3-pro-preview": 63953140,
+  "unknown": 1057847408,
+  "<synthetic>": 0,
+  "claude-sonnet-4-6": 3486003,
+  "gpt-5.4-mini": 289062995,
+  "gpt-5.5": 379804407,
+  "gemini-3.1-pro-preview": 19511,
+  "gpt-5.3-codex": 4981236,
+  "codex-auto-review": 4002548,
+  "claude-haiku-4.5": 4453111,
+  "claude-opus-4-8": 1261579052,
+  "claude-opus-4-6": 223246,
+  "claude-fable-5": 86273259,
+  "gemini-3.5-flash-low": 39462940,
+  "claude-opus-4-7": 16429203,
+  "gemini-2.5-flash-native-audio-prev": 2201176,
+  "gemini-3.6-flash-high": 6928018,
+  "claude-haiku-4-5-20251001": 2482144,
+  "claude-opus-5": 856243027,
+  "gemini_model": 11561079,
+  "gemini-3.7-flash-tiered": 1533325,
+  "gemini-3.1-pro-low": 174636,
+  "gemini-3.7-flash-low": 123334,
+  "gemini-antigravity-root": 1911029
+ },
+ "fields": {
+  "input_tokens": 160090468,
+  "cache_creation_input_tokens": 177309501,
+  "cache_read_input_tokens": 1872808572,
+  "output_tokens": 15020156
+ },
+ "first": "2025-12-30T03:18:15.409Z",
+ "last": "2026-08-25T06:58:02.986Z",
+ "machines": {},
+ "undated": {
+  "tokens": 2324208273,
+  "sessions": 48,
+  "by_cli": {
+   "claude": 2324208273
+  },
+  "by_machine": {
+   "Dell Latitude 7480 Linux": 2324208273
+  }
+ },
+ "scanned_tokens": 4388500055,
+ "ledger_unread_cli": 0,
+ "ledger": {
+  "Dell Latitude 7480 Linux": {
+   "present": true,
+   "total": 23864801604,
+   "sessions": 13741,
+   "scanned": 6712708328,
+   "beyond_scan": 17152754320,
+   "unread_cli_tokens": 0,
+   "unread_clis": [],
+   "beyond_by_cli": {
+    "claude": 17152754320
+   }
+  }
+ },
+ "ledger_beyond_scan": 17152754320,
+ "undated_in_headline": true,
+ "statscache_floor_delta": 8165066579,
+ "statscache_claude_floor_delta": 8165066579,
+ "scanner_version": "c8bf2d838dde",
+ "hardware_uuid": "1efc7639-c560-4eba-ab79-8c0df5834550"
+}

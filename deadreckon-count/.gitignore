@@ -1,0 +1,38 @@
+__pycache__/
+*.pyc
+
+# Redacted transcripts from export_corpus.py. Large, and belongs in its own
+# private repo — this one stays small enough to read and safe to share.
+corpus/
+
+# Output of merge_corpus.py — rebuilt from deadreckon-record on demand.
+merged/
+
+# digests/ are small and ARE committed — see digest.py
+
+# Archives built by corpus_ship.py — they live on the release, not in git.
+dist/
+
+# What the profile tool would UPLOAD, recorded by docker/sink.js. This is
+# corpus content — 4 MB of prompts and samples derived from the transcripts —
+# just in a different shape. It is written to be READ and then thrown away, and
+# committing it would put the private corpus in the repository that exists
+# precisely so it stays out.
+capture/
+
+# The vendored CLI and its dependency tree, downloaded by submit_gate.sh so the
+# capture run can happen with --network none. Reproducible, and not ours.
+vendor/
+*.lock
+
+# The optional forecaster environment. 1.5 GB of CPU torch, created by
+# `install.py --apply` and reproducible from it in one command. A blanket
+# `git add -A` would have committed it -- into a repository whose sibling
+# already takes 25 minutes on a git operation because of what is in its history.
+.venv-forecast/
+.venv*/
+
+# raw transcript archives — release assets, never git
+raw-dist/
+raw-pulled/
+raw-unpacked/

@@ -1,0 +1,2199 @@
+{
+ "machine": "hp-laptop-linux",
+ "generated_at": "2026-08-05T03:20:21-05:00",
+ "profiles": [
+  ".claude",
+  ".claude-alt",
+  ".claude-alt-api",
+  ".claude-it",
+  ".my-claude",
+  "Desktop/standout_clean/.claude",
+  "Desktop/standout_full/.claude",
+  "Desktop/standout_max/.claude",
+  "Desktop/standout_sandbox/.claude"
+ ],
+ "projects": 362,
+ "files": 2898,
+ "lines_kept": 119129,
+ "bytes": 480196301,
+ "redactions": {
+  "topic": 227122,
+  "span": 1543,
+  "path": 92878,
+  "email": 2453
+ },
+ "mapping": [
+  {
+   "profile": ".claude",
+   "source_project": "-home-phantomcore",
+   "exported_as": "-workspace-p001",
+   "files": 5
+  },
+  {
+   "profile": ".claude",
+   "source_project": "-media-phantomcore-AI-DRIVE-AI-Shit-mining-Quest-coder-Claude-Code",
+   "exported_as": "-workspace-p002",
+   "files": 3
+  },
+  {
+   "profile": ".claude",
+   "source_project": "-media-phantomcore-AI-DRIVE-Contra",
+   "exported_as": "-workspace-p003",
+   "files": 4
+  },
+  {
+   "profile": ".claude",
+   "source_project": "-media-phantomcore-AI-DRIVE-DeepSeek-work",
+   "exported_as": "-workspace-p004",
+   "files": 2
+  },
+  {
+   "profile": ".claude",
+   "source_project": "-media-phantomcore-AI-DRIVE-DeepSeek-work-Test",
+   "exported_as": "-workspace-p005",
+   "files": 1
+  },
+  {
+   "profile": ".claude",
+   "source_project": "-media-phantomcore-AI-DRIVE-DeepSeek-work-deepseek-bug-finder",
+   "exported_as": "-workspace-p006",
+   "files": 1
+  },
+  {
+   "profile": ".claude",
+   "source_project": "-media-phantomcore-AI-DRIVE-DeepSeek-work-deepseek-claude-code",
+   "exported_as": "-workspace-p007",
+   "files": 4
+  },
+  {
+   "profile": ".claude",
+   "source_project": "-media-phantomcore-AI-DRIVE-DeepSeek-work-deepseek-claude-code-my-claude",
+   "exported_as": "-workspace-p008",
+   "files": 28
+  },
+  {
+   "profile": ".claude",
+   "source_project": "-media-phantomcore-AI-DRIVE-DeepSeek-work-math",
+   "exported_as": "-workspace-p009",
+   "files": 1
+  },
+  {
+   "profile": ".claude",
+   "source_project": "-media-phantomcore-AI-DRIVE-DeepSeek-work-my-claude-seek",
+   "exported_as": "-workspace-p010",
+   "files": 4
+  },
+  {
+   "profile": ".claude",
+   "source_project": "-media-phantomcore-AI-DRIVE-DeepSeek-work-my-claude-seek-claude",
+   "exported_as": "-workspace-p011",
+   "files": 2
+  },
+  {
+   "profile": ".claude",
+   "source_project": "-media-phantomcore-AI-DRIVE-DeepSeek-work-my-claude-seek-deepseek-bug-finder",
+   "exported_as": "-workspace-p012",
+   "files": 2
+  },
+  {
+   "profile": ".claude",
+   "source_project": "-media-phantomcore-AI-DRIVE-DeepSeek-work-my-claude-seek-reddit",
+   "exported_as": "-workspace-p013",
+   "files": 2
+  },
+  {
+   "profile": ".claude",
+   "source_project": "-media-phantomcore-AI-DRIVE-DeepSeek-work-reddit",
+   "exported_as": "-workspace-p014",
+   "files": 3
+  },
+  {
+   "profile": ".claude",
+   "source_project": "-media-phantomcore-AI-DRIVE-DeepSeek-work-reddit-logistis",
+   "exported_as": "-workspace-p015",
+   "files": 13
+  },
+  {
+   "profile": ".claude",
+   "source_project": "-media-phantomcore-AI-DRIVE-DeepSeek-work-testing-modle-structure",
+   "exported_as": "-workspace-p016",
+   "files": 1
+  },
+  {
+   "profile": ".claude",
+   "source_project": "-media-phantomcore-AI-DRIVE-fable",
+   "exported_as": "-workspace-p017",
+   "files": 1
+  },
+  {
+   "profile": ".claude",
+   "source_project": "-media-phantomcore-AI-DRIVE-hackathons-CodeCrusher",
+   "exported_as": "-workspace-p018",
+   "files": 1
+  },
+  {
+   "profile": ".claude",
+   "source_project": "-media-phantomcore-AI-DRIVE-hackathons-Reddit-Mod-Tools-and-Migrated-Apps-Hackathon",
+   "exported_as": "-workspace-p019",
+   "files": 1
+  },
+  {
+   "profile": ".claude",
+   "source_project": "-media-phantomcore-AI-DRIVE-hackathons-Slack",
+   "exported_as": "-workspace-p020",
+   "files": 1
+  },
+  {
+   "profile": ".claude",
+   "source_project": "-media-phantomcore-AI-DRIVE-hackathons-UiPath-AgentHack",
+   "exported_as": "-workspace-p021",
+   "files": 1
+  },
+  {
+   "profile": ".claude",
+   "source_project": "-media-phantomcore-AI-DRIVE-hackathons-evil",
+   "exported_as": "-workspace-p022",
+   "files": 1
+  },
+  {
+   "profile": ".claude",
+   "source_project": "-media-phantomcore-AI-DRIVE-hackathons-mantle",
+   "exported_as": "-workspace-p023",
+   "files": 1
+  },
+  {
+   "profile": ".claude",
+   "source_project": "-media-phantomcore-AI-DRIVE-hackathons-mind",
+   "exported_as": "-workspace-p024",
+   "files": 1
+  },
+  {
+   "profile": ".claude-alt",
+   "source_project": "-home-phantomcore",
+   "exported_as": "-workspace-p025",
+   "files": 10
+  },
+  {
+   "profile": ".claude-alt",
+   "source_project": "-media-phantomcore-AI-DRIVE",
+   "exported_as": "-workspace-p026",
+   "files": 1
+  },
+  {
+   "profile": ".claude-alt",
+   "source_project": "-media-phantomcore-AI-DRIVE-AI-Shit-mining-Quest-coder",
+   "exported_as": "-workspace-p027",
+   "files": 2
+  },
+  {
+   "profile": ".claude-alt",
+   "source_project": "-media-phantomcore-AI-DRIVE-AI-Shit-mining-Quest-coder-Claude-Code",
+   "exported_as": "-workspace-p028",
+   "files": 5
+  },
+  {
+   "profile": ".claude-alt",
+   "source_project": "-media-phantomcore-AI-DRIVE-DeepSeek-work-deepseek-claude-code",
+   "exported_as": "-workspace-p029",
+   "files": 1
+  },
+  {
+   "profile": ".claude-alt",
+   "source_project": "-media-phantomcore-AI-DRIVE-Transcribing",
+   "exported_as": "-workspace-p030",
+   "files": 2
+  },
+  {
+   "profile": ".claude-alt",
+   "source_project": "-media-phantomcore-AI-DRIVE-VORTEX-SYSTEM",
+   "exported_as": "-workspace-p031",
+   "files": 8
+  },
+  {
+   "profile": ".claude-alt",
+   "source_project": "-media-phantomcore-AI-DRIVE-hackathons-Pacto-secto",
+   "exported_as": "-workspace-p032",
+   "files": 1
+  },
+  {
+   "profile": ".claude-alt",
+   "source_project": "-media-phantomcore-AI-DRIVE-hackathons-mantle",
+   "exported_as": "-workspace-p033",
+   "files": 3
+  },
+  {
+   "profile": ".claude-alt",
+   "source_project": "-media-phantomcore-AI-DRIVE-hackathons-tierva",
+   "exported_as": "-workspace-p034",
+   "files": 3
+  },
+  {
+   "profile": ".claude-alt",
+   "source_project": "-media-phantomcore-AI-DRIVE-pip",
+   "exported_as": "-workspace-p035",
+   "files": 4
+  },
+  {
+   "profile": ".claude-alt-api",
+   "source_project": "-media-phantomcore-AI-DRIVE-DeepSeek-work-my-claude-seek-fable",
+   "exported_as": "-workspace-p036",
+   "files": 1
+  },
+  {
+   "profile": ".claude-it",
+   "source_project": "-home-phantomcore",
+   "exported_as": "-workspace-p037",
+   "files": 1
+  },
+  {
+   "profile": ".claude-it",
+   "source_project": "-media-phantomcore-AI-DRIVE-hackathons-DeveloperWeek-New-York-2026-Hackathon",
+   "exported_as": "-workspace-p038",
+   "files": 1
+  },
+  {
+   "profile": ".my-claude",
+   "source_project": "-media-phantomcore-AI-DRIVE-DeepSeek-work",
+   "exported_as": "-workspace-p039",
+   "files": 1
+  },
+  {
+   "profile": ".my-claude",
+   "source_project": "-media-phantomcore-AI-DRIVE-DeepSeek-work-deepseek-claude-code",
+   "exported_as": "-workspace-p040",
+   "files": 1
+  },
+  {
+   "profile": ".my-claude",
+   "source_project": "-media-phantomcore-AI-DRIVE-VORTEX-SYSTEM-deepseek",
+   "exported_as": "-workspace-p041",
+   "files": 3
+  },
+  {
+   "profile": ".my-claude",
+   "source_project": "-media-phantomcore-AI-DRIVE-pip",
+   "exported_as": "-workspace-p042",
+   "files": 1
+  },
+  {
+   "profile": "Desktop/standout_clean/.claude",
+   "source_project": "alt__-home-phantomcore",
+   "exported_as": "-workspace-p043",
+   "files": 10
+  },
+  {
+   "profile": "Desktop/standout_clean/.claude",
+   "source_project": "alt__-home-phantomcore--claude-meta-teams-smoke-mixed-workdirs-t-claude",
+   "exported_as": "-workspace-p044",
+   "files": 2
+  },
+  {
+   "profile": "Desktop/standout_clean/.claude",
+   "source_project": "alt__-media-phantomcore-AI-DRIVE",
+   "exported_as": "-workspace-p045",
+   "files": 1
+  },
+  {
+   "profile": "Desktop/standout_clean/.claude",
+   "source_project": "alt__-media-phantomcore-AI-DRIVE-DeepSeek-work-deepseek-claude-code",
+   "exported_as": "-workspace-p046",
+   "files": 1
+  },
+  {
+   "profile": "Desktop/standout_clean/.claude",
+   "source_project": "alt__-media-phantomcore-AI-DRIVE-fable",
+   "exported_as": "-workspace-p047",
+   "files": 1
+  },
+  {
+   "profile": "Desktop/standout_clean/.claude",
+   "source_project": "alt__-media-phantomcore-AI-DRIVE-hackathons-mantle",
+   "exported_as": "-workspace-p048",
+   "files": 3
+  },
+  {
+   "profile": "Desktop/standout_clean/.claude",
+   "source_project": "alt__-media-phantomcore-AI-DRIVE-hackathons-tierva",
+   "exported_as": "-workspace-p049",
+   "files": 3
+  },
+  {
+   "profile": "Desktop/standout_clean/.claude",
+   "source_project": "alt__-media-phantomcore-AI-DRIVE-pip",
+   "exported_as": "-workspace-p050",
+   "files": 9
+  },
+  {
+   "profile": "Desktop/standout_clean/.claude",
+   "source_project": "alt__-media-phantomcore-AI-DRIVE-pip__314e21c5-cdf8-4a5b-a667-2d2f2b44eb05__subagents",
+   "exported_as": "-workspace-p051",
+   "files": 12
+  },
+  {
+   "profile": "Desktop/standout_clean/.claude",
+   "source_project": "alt__-media-phantomcore-AI-DRIVE-pip__3798c011-49df-47f2-b36d-6d2aaa0a1b5f__subagents",
+   "exported_as": "-workspace-p052",
+   "files": 1
+  },
+  {
+   "profile": "Desktop/standout_clean/.claude",
+   "source_project": "alt__-media-phantomcore-AI-DRIVE-pip__3798c011-49df-47f2-b36d-6d2aaa0a1b5f__subagents__workflows__wf_cbc5d1d2-689",
+   "exported_as": "-workspace-p053",
+   "files": 114
+  },
+  {
+   "profile": "Desktop/standout_clean/.claude",
+   "source_project": "alt__-media-phantomcore-AI-DRIVE-pip__3798c011-49df-47f2-b36d-6d2aaa0a1b5f__subagents__workflows__wf_ed3c65d7-9b4",
+   "exported_as": "-workspace-p054",
+   "files": 15
+  },
+  {
+   "profile": "Desktop/standout_clean/.claude",
+   "source_project": "alt__-media-phantomcore-AI-DRIVE-pip__c9b9dba0-12af-4bbc-975b-6a4dc2996eaa__subagents",
+   "exported_as": "-workspace-p055",
+   "files": 25
+  },
+  {
+   "profile": "Desktop/standout_clean/.claude",
+   "source_project": "alt__-tmp-claude-1000--media-phantomcore-AI-DRIVE-pip-c9b9dba0-12af-4bbc-975b-6a4dc2996eaa-scratchpad",
+   "exported_as": "-workspace-p056",
+   "files": 2
+  },
+  {
+   "profile": "Desktop/standout_clean/.claude",
+   "source_project": "alt__-tmp-claude-1000--media-phantomcore-AI-DRIVE-pip-c9b9dba0-12af-4bbc-975b-6a4dc2996eaa-scratchpad-live-schema-check",
+   "exported_as": "-workspace-p057",
+   "files": 2
+  },
+  {
+   "profile": "Desktop/standout_clean/.claude",
+   "source_project": "api__-media-phantomcore-AI-DRIVE-DeepSeek-work-my-claude-seek-fable",
+   "exported_as": "-workspace-p058",
+   "files": 1
+  },
+  {
+   "profile": "Desktop/standout_clean/.claude",
+   "source_project": "it__-home-phantomcore",
+   "exported_as": "-workspace-p059",
+   "files": 1
+  },
+  {
+   "profile": "Desktop/standout_clean/.claude",
+   "source_project": "it__-home-phantomcore__b5879b68-8046-49cc-a597-d2869425bd78__subagents",
+   "exported_as": "-workspace-p060",
+   "files": 1
+  },
+  {
+   "profile": "Desktop/standout_clean/.claude",
+   "source_project": "it__-media-phantomcore-AI-DRIVE-hackathons-DeveloperWeek-New-York-2026-Hackathon",
+   "exported_as": "-workspace-p061",
+   "files": 1
+  },
+  {
+   "profile": "Desktop/standout_clean/.claude",
+   "source_project": "main__-home-phantomcore",
+   "exported_as": "-workspace-p062",
+   "files": 5
+  },
+  {
+   "profile": "Desktop/standout_clean/.claude",
+   "source_project": "main__-media-phantomcore-AI-DRIVE-DeepSeek-work",
+   "exported_as": "-workspace-p063",
+   "files": 2
+  },
+  {
+   "profile": "Desktop/standout_clean/.claude",
+   "source_project": "main__-media-phantomcore-AI-DRIVE-DeepSeek-work-Test",
+   "exported_as": "-workspace-p064",
+   "files": 1
+  },
+  {
+   "profile": "Desktop/standout_clean/.claude",
+   "source_project": "main__-media-phantomcore-AI-DRIVE-DeepSeek-work-deepseek-claude-code",
+   "exported_as": "-workspace-p065",
+   "files": 4
+  },
+  {
+   "profile": "Desktop/standout_clean/.claude",
+   "source_project": "main__-media-phantomcore-AI-DRIVE-DeepSeek-work-deepseek-claude-code-my-claude",
+   "exported_as": "-workspace-p066",
+   "files": 28
+  },
+  {
+   "profile": "Desktop/standout_clean/.claude",
+   "source_project": "main__-media-phantomcore-AI-DRIVE-DeepSeek-work-deepseek-claude-code-my-claude__5b7c79c7-283a-439e-99e6-944194ecf4c3__subagents",
+   "exported_as": "-workspace-p067",
+   "files": 1
+  },
+  {
+   "profile": "Desktop/standout_clean/.claude",
+   "source_project": "main__-media-phantomcore-AI-DRIVE-DeepSeek-work-math",
+   "exported_as": "-workspace-p068",
+   "files": 1
+  },
+  {
+   "profile": "Desktop/standout_clean/.claude",
+   "source_project": "main__-media-phantomcore-AI-DRIVE-DeepSeek-work-my-claude-seek",
+   "exported_as": "-workspace-p069",
+   "files": 4
+  },
+  {
+   "profile": "Desktop/standout_clean/.claude",
+   "source_project": "main__-media-phantomcore-AI-DRIVE-DeepSeek-work-my-claude-seek-claude",
+   "exported_as": "-workspace-p070",
+   "files": 2
+  },
+  {
+   "profile": "Desktop/standout_clean/.claude",
+   "source_project": "main__-media-phantomcore-AI-DRIVE-DeepSeek-work-my-claude-seek-claude__6f014173-33bc-41bb-b76e-e3a0106ef17c__subagents",
+   "exported_as": "-workspace-p071",
+   "files": 5
+  },
+  {
+   "profile": "Desktop/standout_clean/.claude",
+   "source_project": "main__-media-phantomcore-AI-DRIVE-DeepSeek-work-my-claude-seek-reddit",
+   "exported_as": "-workspace-p072",
+   "files": 2
+  },
+  {
+   "profile": "Desktop/standout_clean/.claude",
+   "source_project": "main__-media-phantomcore-AI-DRIVE-DeepSeek-work-reddit",
+   "exported_as": "-workspace-p073",
+   "files": 3
+  },
+  {
+   "profile": "Desktop/standout_clean/.claude",
+   "source_project": "main__-media-phantomcore-AI-DRIVE-DeepSeek-work-reddit-logistis",
+   "exported_as": "-workspace-p074",
+   "files": 13
+  },
+  {
+   "profile": "Desktop/standout_clean/.claude",
+   "source_project": "main__-media-phantomcore-AI-DRIVE-DeepSeek-work-reddit__0411762d-d029-4ac3-9aa0-c85b410b18cd__subagents",
+   "exported_as": "-workspace-p075",
+   "files": 4
+  },
+  {
+   "profile": "Desktop/standout_clean/.claude",
+   "source_project": "main__-media-phantomcore-AI-DRIVE-fable",
+   "exported_as": "-workspace-p076",
+   "files": 1
+  },
+  {
+   "profile": "Desktop/standout_clean/.claude",
+   "source_project": "main__-media-phantomcore-AI-DRIVE-hackathons-Reddit-Mod-Tools-and-Migrated-Apps-Hackathon",
+   "exported_as": "-workspace-p077",
+   "files": 1
+  },
+  {
+   "profile": "Desktop/standout_clean/.claude",
+   "source_project": "main__-media-phantomcore-AI-DRIVE-hackathons-Reddit-Mod-Tools-and-Migrated-Apps-Hackathon__76d53e0e-bc20-4909-aa47-d0cec4a1f67e__subagents",
+   "exported_as": "-workspace-p078",
+   "files": 7
+  },
+  {
+   "profile": "Desktop/standout_clean/.claude",
+   "source_project": "main__-media-phantomcore-AI-DRIVE-hackathons-Slack",
+   "exported_as": "-workspace-p079",
+   "files": 1
+  },
+  {
+   "profile": "Desktop/standout_clean/.claude",
+   "source_project": "main__-media-phantomcore-AI-DRIVE-hackathons-Slack__f2d1ffa0-8c0a-410c-a737-8fbce76763e4__subagents",
+   "exported_as": "-workspace-p080",
+   "files": 10
+  },
+  {
+   "profile": "Desktop/standout_clean/.claude",
+   "source_project": "main__-media-phantomcore-AI-DRIVE-hackathons-UiPath-AgentHack",
+   "exported_as": "-workspace-p081",
+   "files": 1
+  },
+  {
+   "profile": "Desktop/standout_clean/.claude",
+   "source_project": "main__-media-phantomcore-AI-DRIVE-hackathons-UiPath-AgentHack__1555a597-8ee2-4cde-8156-5a4b8bceaeba__subagents",
+   "exported_as": "-workspace-p082",
+   "files": 5
+  },
+  {
+   "profile": "Desktop/standout_clean/.claude",
+   "source_project": "main__-media-phantomcore-AI-DRIVE-hackathons-evil",
+   "exported_as": "-workspace-p083",
+   "files": 1
+  },
+  {
+   "profile": "Desktop/standout_clean/.claude",
+   "source_project": "main__-media-phantomcore-AI-DRIVE-hackathons-mantle",
+   "exported_as": "-workspace-p084",
+   "files": 1
+  },
+  {
+   "profile": "Desktop/standout_clean/.claude",
+   "source_project": "my__-media-phantomcore-AI-DRIVE-DeepSeek-work",
+   "exported_as": "-workspace-p085",
+   "files": 1
+  },
+  {
+   "profile": "Desktop/standout_clean/.claude",
+   "source_project": "my__-media-phantomcore-AI-DRIVE-DeepSeek-work-deepseek-claude-code",
+   "exported_as": "-workspace-p086",
+   "files": 1
+  },
+  {
+   "profile": "Desktop/standout_clean/.claude",
+   "source_project": "my__-media-phantomcore-AI-DRIVE-DeepSeek-work-my-claude-seek-claude__0da92731-e98d-4b6f-bfa9-24b369981562__subagents",
+   "exported_as": "-workspace-p087",
+   "files": 25
+  },
+  {
+   "profile": "Desktop/standout_clean/.claude",
+   "source_project": "my__-media-phantomcore-AI-DRIVE-DeepSeek-work-my-claude-seek-claude__8e53934e-6a58-45be-9c7f-a0dd49fabad7__subagents",
+   "exported_as": "-workspace-p088",
+   "files": 1
+  },
+  {
+   "profile": "Desktop/standout_clean/.claude",
+   "source_project": "my__-media-phantomcore-AI-DRIVE-DeepSeek-work-my-claude-seek-claude__a7e17171-cedb-4655-a0b2-18c177d4ce63__subagents",
+   "exported_as": "-workspace-p089",
+   "files": 8
+  },
+  {
+   "profile": "Desktop/standout_clean/.claude",
+   "source_project": "my__-media-phantomcore-AI-DRIVE-DeepSeek-work-my-claude-seek-claude__df9522ca-2586-4c83-b5b0-c54d872d5b5c__subagents",
+   "exported_as": "-workspace-p090",
+   "files": 38
+  },
+  {
+   "profile": "Desktop/standout_clean/.claude",
+   "source_project": "my__-media-phantomcore-AI-DRIVE-DeepSeek-work-my-claude-seek-just-agents__7fc1f14a-e075-46d7-92f4-e62e2997aea9__subagents",
+   "exported_as": "-workspace-p091",
+   "files": 23
+  },
+  {
+   "profile": "Desktop/standout_clean/.claude",
+   "source_project": "my__-media-phantomcore-AI-DRIVE-DeepSeek-work-my-claude-seek-math__ca9470f2-98eb-4886-846b-e2728a5633d0__subagents",
+   "exported_as": "-workspace-p092",
+   "files": 1
+  },
+  {
+   "profile": "Desktop/standout_clean/.claude",
+   "source_project": "my__-media-phantomcore-AI-DRIVE-DeepSeek-work-my-claude-seek-reddit__0e860cd5-a00c-43c9-b2b7-fdc2188ac10d__subagents",
+   "exported_as": "-workspace-p093",
+   "files": 2
+  },
+  {
+   "profile": "Desktop/standout_clean/.claude",
+   "source_project": "my__-media-phantomcore-AI-DRIVE-hackathons-ai-ml-hack-2026__1b456d28-8875-46df-b1dc-fa4676ba748b__subagents",
+   "exported_as": "-workspace-p094",
+   "files": 3
+  },
+  {
+   "profile": "Desktop/standout_clean/.claude",
+   "source_project": "my__-media-phantomcore-AI-DRIVE-hackathons-ai-ml-hack-2026__f5bfeccf-0c3b-4068-b1a2-59b240585497__subagents",
+   "exported_as": "-workspace-p095",
+   "files": 5
+  },
+  {
+   "profile": "Desktop/standout_clean/.claude",
+   "source_project": "my__-media-phantomcore-AI-DRIVE-pip",
+   "exported_as": "-workspace-p096",
+   "files": 1
+  },
+  {
+   "profile": "Desktop/standout_clean/.claude",
+   "source_project": "my__-media-phantomcore-AI-DRIVE-pip__1dbe383c-3444-4959-a3a8-80f30751fed0__subagents",
+   "exported_as": "-workspace-p097",
+   "files": 3
+  },
+  {
+   "profile": "Desktop/standout_full/.claude",
+   "source_project": "alt__-home-phantomcore",
+   "exported_as": "-workspace-p098",
+   "files": 10
+  },
+  {
+   "profile": "Desktop/standout_full/.claude",
+   "source_project": "alt__-home-phantomcore--claude-meta-teams-smoke-mixed-workdirs-t-claude",
+   "exported_as": "-workspace-p099",
+   "files": 2
+  },
+  {
+   "profile": "Desktop/standout_full/.claude",
+   "source_project": "alt__-media-phantomcore-AI-DRIVE",
+   "exported_as": "-workspace-p100",
+   "files": 1
+  },
+  {
+   "profile": "Desktop/standout_full/.claude",
+   "source_project": "alt__-media-phantomcore-AI-DRIVE-AI-Shit-mining-Quest-coder-Claude-Code",
+   "exported_as": "-workspace-p101",
+   "files": 4
+  },
+  {
+   "profile": "Desktop/standout_full/.claude",
+   "source_project": "alt__-media-phantomcore-AI-DRIVE-AI-Shit-mining-Quest-coder-Claude-Code__88a85aaf-16c2-4648-8b72-9a5a65f518cd__subagents",
+   "exported_as": "-workspace-p102",
+   "files": 4
+  },
+  {
+   "profile": "Desktop/standout_full/.claude",
+   "source_project": "alt__-media-phantomcore-AI-DRIVE-AI-Shit-mining-Quest-coder-Claude-Code__88a85aaf-16c2-4648-8b72-9a5a65f518cd__subagents__workflows__wf_1a978393-0d5",
+   "exported_as": "-workspace-p103",
+   "files": 5
+  },
+  {
+   "profile": "Desktop/standout_full/.claude",
+   "source_project": "alt__-media-phantomcore-AI-DRIVE-AI-Shit-mining-Quest-coder-Claude-Code__88a85aaf-16c2-4648-8b72-9a5a65f518cd__subagents__workflows__wf_6d783e22-0e1",
+   "exported_as": "-workspace-p104",
+   "files": 3
+  },
+  {
+   "profile": "Desktop/standout_full/.claude",
+   "source_project": "alt__-media-phantomcore-AI-DRIVE-AI-Shit-mining-Quest-coder-Claude-Code__88a85aaf-16c2-4648-8b72-9a5a65f518cd__subagents__workflows__wf_7716f96f-b21",
+   "exported_as": "-workspace-p105",
+   "files": 4
+  },
+  {
+   "profile": "Desktop/standout_full/.claude",
+   "source_project": "alt__-media-phantomcore-AI-DRIVE-AI-Shit-mining-Quest-coder-Claude-Code__88a85aaf-16c2-4648-8b72-9a5a65f518cd__subagents__workflows__wf_98cc64ca-2a8",
+   "exported_as": "-workspace-p106",
+   "files": 3
+  },
+  {
+   "profile": "Desktop/standout_full/.claude",
+   "source_project": "alt__-media-phantomcore-AI-DRIVE-AI-Shit-mining-Quest-coder-Claude-Code__88a85aaf-16c2-4648-8b72-9a5a65f518cd__subagents__workflows__wf_a50c77a1-112",
+   "exported_as": "-workspace-p107",
+   "files": 4
+  },
+  {
+   "profile": "Desktop/standout_full/.claude",
+   "source_project": "alt__-media-phantomcore-AI-DRIVE-AI-Shit-mining-Quest-coder-Claude-Code__88a85aaf-16c2-4648-8b72-9a5a65f518cd__subagents__workflows__wf_ab168fb9-a13",
+   "exported_as": "-workspace-p108",
+   "files": 7
+  },
+  {
+   "profile": "Desktop/standout_full/.claude",
+   "source_project": "alt__-media-phantomcore-AI-DRIVE-AI-Shit-mining-Quest-coder-Claude-Code__88a85aaf-16c2-4648-8b72-9a5a65f518cd__subagents__workflows__wf_b474cc63-ffa",
+   "exported_as": "-workspace-p109",
+   "files": 5
+  },
+  {
+   "profile": "Desktop/standout_full/.claude",
+   "source_project": "alt__-media-phantomcore-AI-DRIVE-AI-Shit-mining-Quest-coder-Claude-Code__88a85aaf-16c2-4648-8b72-9a5a65f518cd__subagents__workflows__wf_d0eb88c2-d3a",
+   "exported_as": "-workspace-p110",
+   "files": 4
+  },
+  {
+   "profile": "Desktop/standout_full/.claude",
+   "source_project": "alt__-media-phantomcore-AI-DRIVE-AI-Shit-mining-Quest-coder-Claude-Code__88a85aaf-16c2-4648-8b72-9a5a65f518cd__subagents__workflows__wf_d97336f1-49f",
+   "exported_as": "-workspace-p111",
+   "files": 5
+  },
+  {
+   "profile": "Desktop/standout_full/.claude",
+   "source_project": "alt__-media-phantomcore-AI-DRIVE-AI-Shit-mining-Quest-coder-Claude-Code__88a85aaf-16c2-4648-8b72-9a5a65f518cd__subagents__workflows__wf_e5bfb71a-9d1",
+   "exported_as": "-workspace-p112",
+   "files": 5
+  },
+  {
+   "profile": "Desktop/standout_full/.claude",
+   "source_project": "alt__-media-phantomcore-AI-DRIVE-AI-Shit-mining-Quest-coder-Claude-Code__88a85aaf-16c2-4648-8b72-9a5a65f518cd__subagents__workflows__wf_febc10a7-3df",
+   "exported_as": "-workspace-p113",
+   "files": 5
+  },
+  {
+   "profile": "Desktop/standout_full/.claude",
+   "source_project": "alt__-media-phantomcore-AI-DRIVE-DeepSeek-work-deepseek-claude-code",
+   "exported_as": "-workspace-p114",
+   "files": 1
+  },
+  {
+   "profile": "Desktop/standout_full/.claude",
+   "source_project": "alt__-media-phantomcore-AI-DRIVE-VORTEX-SYSTEM",
+   "exported_as": "-workspace-p115",
+   "files": 13
+  },
+  {
+   "profile": "Desktop/standout_full/.claude",
+   "source_project": "alt__-media-phantomcore-AI-DRIVE-VORTEX-SYSTEM-deepseek",
+   "exported_as": "-workspace-p116",
+   "files": 1
+  },
+  {
+   "profile": "Desktop/standout_full/.claude",
+   "source_project": "alt__-media-phantomcore-AI-DRIVE-VORTEX-SYSTEM-fable",
+   "exported_as": "-workspace-p117",
+   "files": 1
+  },
+  {
+   "profile": "Desktop/standout_full/.claude",
+   "source_project": "alt__-media-phantomcore-AI-DRIVE-VORTEX-SYSTEM__012d2f2c-57af-4d62-b1a7-1c18b995fb18__subagents",
+   "exported_as": "-workspace-p118",
+   "files": 14
+  },
+  {
+   "profile": "Desktop/standout_full/.claude",
+   "source_project": "alt__-media-phantomcore-AI-DRIVE-VORTEX-SYSTEM__012d2f2c-57af-4d62-b1a7-1c18b995fb18__subagents__workflows__wf_de6d9a2d-561",
+   "exported_as": "-workspace-p119",
+   "files": 35
+  },
+  {
+   "profile": "Desktop/standout_full/.claude",
+   "source_project": "alt__-media-phantomcore-AI-DRIVE-VORTEX-SYSTEM__08fcdf9e-fc1a-4ffa-97c3-d5824fb46ebb__subagents__workflows__wf_ffcebfc9-744",
+   "exported_as": "-workspace-p120",
+   "files": 10
+  },
+  {
+   "profile": "Desktop/standout_full/.claude",
+   "source_project": "alt__-media-phantomcore-AI-DRIVE-VORTEX-SYSTEM__6654441f-f666-4ae3-8b50-b26874641598__subagents__workflows__wf_a0d5f578-598",
+   "exported_as": "-workspace-p121",
+   "files": 7
+  },
+  {
+   "profile": "Desktop/standout_full/.claude",
+   "source_project": "alt__-media-phantomcore-AI-DRIVE-VORTEX-SYSTEM__6654441f-f666-4ae3-8b50-b26874641598__subagents__workflows__wf_f62f9f19-f41",
+   "exported_as": "-workspace-p122",
+   "files": 6
+  },
+  {
+   "profile": "Desktop/standout_full/.claude",
+   "source_project": "alt__-media-phantomcore-AI-DRIVE-VORTEX-SYSTEM__6e61c0f7-6283-4005-b056-8aacc175c5d3__subagents__workflows__wf_0a13dde3-04a",
+   "exported_as": "-workspace-p123",
+   "files": 6
+  },
+  {
+   "profile": "Desktop/standout_full/.claude",
+   "source_project": "alt__-media-phantomcore-AI-DRIVE-VORTEX-SYSTEM__6e61c0f7-6283-4005-b056-8aacc175c5d3__subagents__workflows__wf_3470e2d8-ac5",
+   "exported_as": "-workspace-p124",
+   "files": 5
+  },
+  {
+   "profile": "Desktop/standout_full/.claude",
+   "source_project": "alt__-media-phantomcore-AI-DRIVE-VORTEX-SYSTEM__6e61c0f7-6283-4005-b056-8aacc175c5d3__subagents__workflows__wf_480a8ff7-e32",
+   "exported_as": "-workspace-p125",
+   "files": 21
+  },
+  {
+   "profile": "Desktop/standout_full/.claude",
+   "source_project": "alt__-media-phantomcore-AI-DRIVE-VORTEX-SYSTEM__6e61c0f7-6283-4005-b056-8aacc175c5d3__subagents__workflows__wf_a8836b68-c52",
+   "exported_as": "-workspace-p126",
+   "files": 5
+  },
+  {
+   "profile": "Desktop/standout_full/.claude",
+   "source_project": "alt__-media-phantomcore-AI-DRIVE-VORTEX-SYSTEM__7af0a3f7-9e8d-4ef5-9d40-6dc9ef375b5d__subagents",
+   "exported_as": "-workspace-p127",
+   "files": 3
+  },
+  {
+   "profile": "Desktop/standout_full/.claude",
+   "source_project": "alt__-media-phantomcore-AI-DRIVE-VORTEX-SYSTEM__b58af732-5182-4185-bd65-189cb02caeb2__subagents",
+   "exported_as": "-workspace-p128",
+   "files": 1
+  },
+  {
+   "profile": "Desktop/standout_full/.claude",
+   "source_project": "alt__-media-phantomcore-AI-DRIVE-VORTEX-SYSTEM__b58af732-5182-4185-bd65-189cb02caeb2__subagents__workflows__wf_3c315563-b2e",
+   "exported_as": "-workspace-p129",
+   "files": 6
+  },
+  {
+   "profile": "Desktop/standout_full/.claude",
+   "source_project": "alt__-media-phantomcore-AI-DRIVE-VORTEX-SYSTEM__b58af732-5182-4185-bd65-189cb02caeb2__subagents__workflows__wf_7f06d68a-dcd",
+   "exported_as": "-workspace-p130",
+   "files": 4
+  },
+  {
+   "profile": "Desktop/standout_full/.claude",
+   "source_project": "alt__-media-phantomcore-AI-DRIVE-VORTEX-SYSTEM__b58af732-5182-4185-bd65-189cb02caeb2__subagents__workflows__wf_93c2324a-987",
+   "exported_as": "-workspace-p131",
+   "files": 6
+  },
+  {
+   "profile": "Desktop/standout_full/.claude",
+   "source_project": "alt__-media-phantomcore-AI-DRIVE-VORTEX-SYSTEM__b58af732-5182-4185-bd65-189cb02caeb2__subagents__workflows__wf_e71eebc4-301",
+   "exported_as": "-workspace-p132",
+   "files": 5
+  },
+  {
+   "profile": "Desktop/standout_full/.claude",
+   "source_project": "alt__-media-phantomcore-AI-DRIVE-VORTEX-SYSTEM__c2b6343a-e599-421c-8d80-0c91fff7a15d__subagents",
+   "exported_as": "-workspace-p133",
+   "files": 5
+  },
+  {
+   "profile": "Desktop/standout_full/.claude",
+   "source_project": "alt__-media-phantomcore-AI-DRIVE-VORTEX-SYSTEM__db6723e4-a658-4a0e-8977-7e7758b27be5__subagents",
+   "exported_as": "-workspace-p134",
+   "files": 1
+  },
+  {
+   "profile": "Desktop/standout_full/.claude",
+   "source_project": "alt__-media-phantomcore-AI-DRIVE-VORTEX-SYSTEM__db6723e4-a658-4a0e-8977-7e7758b27be5__subagents__workflows__wf_1ba5b953-248",
+   "exported_as": "-workspace-p135",
+   "files": 10
+  },
+  {
+   "profile": "Desktop/standout_full/.claude",
+   "source_project": "alt__-media-phantomcore-AI-DRIVE-VORTEX-SYSTEM__db6723e4-a658-4a0e-8977-7e7758b27be5__subagents__workflows__wf_4f331da5-c25",
+   "exported_as": "-workspace-p136",
+   "files": 36
+  },
+  {
+   "profile": "Desktop/standout_full/.claude",
+   "source_project": "alt__-media-phantomcore-AI-DRIVE-fable",
+   "exported_as": "-workspace-p137",
+   "files": 1
+  },
+  {
+   "profile": "Desktop/standout_full/.claude",
+   "source_project": "alt__-media-phantomcore-AI-DRIVE-hackathons-CodeCrusher",
+   "exported_as": "-workspace-p138",
+   "files": 2
+  },
+  {
+   "profile": "Desktop/standout_full/.claude",
+   "source_project": "alt__-media-phantomcore-AI-DRIVE-hackathons-CodeCrusher__00e1fa7b-fc1e-48a9-b4a6-1f1eff13e305__subagents",
+   "exported_as": "-workspace-p139",
+   "files": 1
+  },
+  {
+   "profile": "Desktop/standout_full/.claude",
+   "source_project": "alt__-media-phantomcore-AI-DRIVE-hackathons-CodeCrusher__00e1fa7b-fc1e-48a9-b4a6-1f1eff13e305__subagents__workflows__wf_c2496bae-446",
+   "exported_as": "-workspace-p140",
+   "files": 45
+  },
+  {
+   "profile": "Desktop/standout_full/.claude",
+   "source_project": "alt__-media-phantomcore-AI-DRIVE-hackathons-CodeCrusher__bcd58245-691e-490c-950b-c2bc992ebe2a__subagents",
+   "exported_as": "-workspace-p141",
+   "files": 1
+  },
+  {
+   "profile": "Desktop/standout_full/.claude",
+   "source_project": "alt__-media-phantomcore-AI-DRIVE-hackathons-CodeCrusher__bcd58245-691e-490c-950b-c2bc992ebe2a__subagents__workflows__wf_30d16dcc-5ca",
+   "exported_as": "-workspace-p142",
+   "files": 19
+  },
+  {
+   "profile": "Desktop/standout_full/.claude",
+   "source_project": "alt__-media-phantomcore-AI-DRIVE-hackathons-mantle",
+   "exported_as": "-workspace-p143",
+   "files": 3
+  },
+  {
+   "profile": "Desktop/standout_full/.claude",
+   "source_project": "alt__-media-phantomcore-AI-DRIVE-hackathons-tierva",
+   "exported_as": "-workspace-p144",
+   "files": 3
+  },
+  {
+   "profile": "Desktop/standout_full/.claude",
+   "source_project": "alt__-media-phantomcore-AI-DRIVE-pip",
+   "exported_as": "-workspace-p145",
+   "files": 9
+  },
+  {
+   "profile": "Desktop/standout_full/.claude",
+   "source_project": "alt__-media-phantomcore-AI-DRIVE-pip__314e21c5-cdf8-4a5b-a667-2d2f2b44eb05__subagents",
+   "exported_as": "-workspace-p146",
+   "files": 12
+  },
+  {
+   "profile": "Desktop/standout_full/.claude",
+   "source_project": "alt__-media-phantomcore-AI-DRIVE-pip__3798c011-49df-47f2-b36d-6d2aaa0a1b5f__subagents",
+   "exported_as": "-workspace-p147",
+   "files": 1
+  },
+  {
+   "profile": "Desktop/standout_full/.claude",
+   "source_project": "alt__-media-phantomcore-AI-DRIVE-pip__3798c011-49df-47f2-b36d-6d2aaa0a1b5f__subagents__workflows__wf_cbc5d1d2-689",
+   "exported_as": "-workspace-p148",
+   "files": 114
+  },
+  {
+   "profile": "Desktop/standout_full/.claude",
+   "source_project": "alt__-media-phantomcore-AI-DRIVE-pip__3798c011-49df-47f2-b36d-6d2aaa0a1b5f__subagents__workflows__wf_ed3c65d7-9b4",
+   "exported_as": "-workspace-p149",
+   "files": 15
+  },
+  {
+   "profile": "Desktop/standout_full/.claude",
+   "source_project": "alt__-media-phantomcore-AI-DRIVE-pip__c9b9dba0-12af-4bbc-975b-6a4dc2996eaa__subagents",
+   "exported_as": "-workspace-p150",
+   "files": 25
+  },
+  {
+   "profile": "Desktop/standout_full/.claude",
+   "source_project": "alt__-tmp-claude-1000--media-phantomcore-AI-DRIVE-pip-c9b9dba0-12af-4bbc-975b-6a4dc2996eaa-scratchpad",
+   "exported_as": "-workspace-p151",
+   "files": 2
+  },
+  {
+   "profile": "Desktop/standout_full/.claude",
+   "source_project": "alt__-tmp-claude-1000--media-phantomcore-AI-DRIVE-pip-c9b9dba0-12af-4bbc-975b-6a4dc2996eaa-scratchpad-live-schema-check",
+   "exported_as": "-workspace-p152",
+   "files": 2
+  },
+  {
+   "profile": "Desktop/standout_full/.claude",
+   "source_project": "api__-media-phantomcore-AI-DRIVE-DeepSeek-work-my-claude-seek-fable",
+   "exported_as": "-workspace-p153",
+   "files": 1
+  },
+  {
+   "profile": "Desktop/standout_full/.claude",
+   "source_project": "it__-home-phantomcore",
+   "exported_as": "-workspace-p154",
+   "files": 1
+  },
+  {
+   "profile": "Desktop/standout_full/.claude",
+   "source_project": "it__-home-phantomcore__b5879b68-8046-49cc-a597-d2869425bd78__subagents",
+   "exported_as": "-workspace-p155",
+   "files": 1
+  },
+  {
+   "profile": "Desktop/standout_full/.claude",
+   "source_project": "it__-media-phantomcore-AI-DRIVE-hackathons-DeveloperWeek-New-York-2026-Hackathon",
+   "exported_as": "-workspace-p156",
+   "files": 1
+  },
+  {
+   "profile": "Desktop/standout_full/.claude",
+   "source_project": "main__-home-phantomcore",
+   "exported_as": "-workspace-p157",
+   "files": 5
+  },
+  {
+   "profile": "Desktop/standout_full/.claude",
+   "source_project": "main__-media-phantomcore-AI-DRIVE-AI-Shit-mining-Quest-coder-Claude-Code",
+   "exported_as": "-workspace-p158",
+   "files": 3
+  },
+  {
+   "profile": "Desktop/standout_full/.claude",
+   "source_project": "main__-media-phantomcore-AI-DRIVE-Contra",
+   "exported_as": "-workspace-p159",
+   "files": 4
+  },
+  {
+   "profile": "Desktop/standout_full/.claude",
+   "source_project": "main__-media-phantomcore-AI-DRIVE-DeepSeek-work",
+   "exported_as": "-workspace-p160",
+   "files": 2
+  },
+  {
+   "profile": "Desktop/standout_full/.claude",
+   "source_project": "main__-media-phantomcore-AI-DRIVE-DeepSeek-work-Test",
+   "exported_as": "-workspace-p161",
+   "files": 1
+  },
+  {
+   "profile": "Desktop/standout_full/.claude",
+   "source_project": "main__-media-phantomcore-AI-DRIVE-DeepSeek-work-deepseek-bug-finder",
+   "exported_as": "-workspace-p162",
+   "files": 1
+  },
+  {
+   "profile": "Desktop/standout_full/.claude",
+   "source_project": "main__-media-phantomcore-AI-DRIVE-DeepSeek-work-deepseek-bug-finder__24a90cbf-3c26-4a9c-925b-ebade5230ccc__subagents",
+   "exported_as": "-workspace-p163",
+   "files": 4
+  },
+  {
+   "profile": "Desktop/standout_full/.claude",
+   "source_project": "main__-media-phantomcore-AI-DRIVE-DeepSeek-work-deepseek-claude-code",
+   "exported_as": "-workspace-p164",
+   "files": 4
+  },
+  {
+   "profile": "Desktop/standout_full/.claude",
+   "source_project": "main__-media-phantomcore-AI-DRIVE-DeepSeek-work-deepseek-claude-code-my-claude",
+   "exported_as": "-workspace-p165",
+   "files": 28
+  },
+  {
+   "profile": "Desktop/standout_full/.claude",
+   "source_project": "main__-media-phantomcore-AI-DRIVE-DeepSeek-work-deepseek-claude-code-my-claude__5b7c79c7-283a-439e-99e6-944194ecf4c3__subagents",
+   "exported_as": "-workspace-p166",
+   "files": 1
+  },
+  {
+   "profile": "Desktop/standout_full/.claude",
+   "source_project": "main__-media-phantomcore-AI-DRIVE-DeepSeek-work-math",
+   "exported_as": "-workspace-p167",
+   "files": 1
+  },
+  {
+   "profile": "Desktop/standout_full/.claude",
+   "source_project": "main__-media-phantomcore-AI-DRIVE-DeepSeek-work-my-claude-seek",
+   "exported_as": "-workspace-p168",
+   "files": 4
+  },
+  {
+   "profile": "Desktop/standout_full/.claude",
+   "source_project": "main__-media-phantomcore-AI-DRIVE-DeepSeek-work-my-claude-seek-claude",
+   "exported_as": "-workspace-p169",
+   "files": 2
+  },
+  {
+   "profile": "Desktop/standout_full/.claude",
+   "source_project": "main__-media-phantomcore-AI-DRIVE-DeepSeek-work-my-claude-seek-claude__6f014173-33bc-41bb-b76e-e3a0106ef17c__subagents",
+   "exported_as": "-workspace-p170",
+   "files": 5
+  },
+  {
+   "profile": "Desktop/standout_full/.claude",
+   "source_project": "main__-media-phantomcore-AI-DRIVE-DeepSeek-work-my-claude-seek-deepseek-bug-finder",
+   "exported_as": "-workspace-p171",
+   "files": 2
+  },
+  {
+   "profile": "Desktop/standout_full/.claude",
+   "source_project": "main__-media-phantomcore-AI-DRIVE-DeepSeek-work-my-claude-seek-deepseek-bug-finder__bf53dd94-ba3b-4ab0-a591-9b809a21b080__subagents",
+   "exported_as": "-workspace-p172",
+   "files": 2
+  },
+  {
+   "profile": "Desktop/standout_full/.claude",
+   "source_project": "main__-media-phantomcore-AI-DRIVE-DeepSeek-work-my-claude-seek-reddit",
+   "exported_as": "-workspace-p173",
+   "files": 2
+  },
+  {
+   "profile": "Desktop/standout_full/.claude",
+   "source_project": "main__-media-phantomcore-AI-DRIVE-DeepSeek-work-reddit",
+   "exported_as": "-workspace-p174",
+   "files": 3
+  },
+  {
+   "profile": "Desktop/standout_full/.claude",
+   "source_project": "main__-media-phantomcore-AI-DRIVE-DeepSeek-work-reddit-logistis",
+   "exported_as": "-workspace-p175",
+   "files": 13
+  },
+  {
+   "profile": "Desktop/standout_full/.claude",
+   "source_project": "main__-media-phantomcore-AI-DRIVE-DeepSeek-work-reddit__0411762d-d029-4ac3-9aa0-c85b410b18cd__subagents",
+   "exported_as": "-workspace-p176",
+   "files": 4
+  },
+  {
+   "profile": "Desktop/standout_full/.claude",
+   "source_project": "main__-media-phantomcore-AI-DRIVE-DeepSeek-work-testing-modle-structure",
+   "exported_as": "-workspace-p177",
+   "files": 1
+  },
+  {
+   "profile": "Desktop/standout_full/.claude",
+   "source_project": "main__-media-phantomcore-AI-DRIVE-fable",
+   "exported_as": "-workspace-p178",
+   "files": 1
+  },
+  {
+   "profile": "Desktop/standout_full/.claude",
+   "source_project": "main__-media-phantomcore-AI-DRIVE-hackathons-CodeCrusher",
+   "exported_as": "-workspace-p179",
+   "files": 1
+  },
+  {
+   "profile": "Desktop/standout_full/.claude",
+   "source_project": "main__-media-phantomcore-AI-DRIVE-hackathons-Reddit-Mod-Tools-and-Migrated-Apps-Hackathon",
+   "exported_as": "-workspace-p180",
+   "files": 1
+  },
+  {
+   "profile": "Desktop/standout_full/.claude",
+   "source_project": "main__-media-phantomcore-AI-DRIVE-hackathons-Reddit-Mod-Tools-and-Migrated-Apps-Hackathon__76d53e0e-bc20-4909-aa47-d0cec4a1f67e__subagents",
+   "exported_as": "-workspace-p181",
+   "files": 7
+  },
+  {
+   "profile": "Desktop/standout_full/.claude",
+   "source_project": "main__-media-phantomcore-AI-DRIVE-hackathons-Slack",
+   "exported_as": "-workspace-p182",
+   "files": 1
+  },
+  {
+   "profile": "Desktop/standout_full/.claude",
+   "source_project": "main__-media-phantomcore-AI-DRIVE-hackathons-Slack__f2d1ffa0-8c0a-410c-a737-8fbce76763e4__subagents",
+   "exported_as": "-workspace-p183",
+   "files": 10
+  },
+  {
+   "profile": "Desktop/standout_full/.claude",
+   "source_project": "main__-media-phantomcore-AI-DRIVE-hackathons-UiPath-AgentHack",
+   "exported_as": "-workspace-p184",
+   "files": 1
+  },
+  {
+   "profile": "Desktop/standout_full/.claude",
+   "source_project": "main__-media-phantomcore-AI-DRIVE-hackathons-UiPath-AgentHack__1555a597-8ee2-4cde-8156-5a4b8bceaeba__subagents",
+   "exported_as": "-workspace-p185",
+   "files": 5
+  },
+  {
+   "profile": "Desktop/standout_full/.claude",
+   "source_project": "main__-media-phantomcore-AI-DRIVE-hackathons-evil",
+   "exported_as": "-workspace-p186",
+   "files": 1
+  },
+  {
+   "profile": "Desktop/standout_full/.claude",
+   "source_project": "main__-media-phantomcore-AI-DRIVE-hackathons-mantle",
+   "exported_as": "-workspace-p187",
+   "files": 1
+  },
+  {
+   "profile": "Desktop/standout_full/.claude",
+   "source_project": "main__-media-phantomcore-AI-DRIVE-hackathons-mind",
+   "exported_as": "-workspace-p188",
+   "files": 1
+  },
+  {
+   "profile": "Desktop/standout_full/.claude",
+   "source_project": "main__-media-phantomcore-AI-DRIVE-hackathons-mind__fc10d067-68bc-4142-ae37-32fe972fe65c__subagents",
+   "exported_as": "-workspace-p189",
+   "files": 21
+  },
+  {
+   "profile": "Desktop/standout_full/.claude",
+   "source_project": "my__-media-phantomcore-AI-DRIVE-DeepSeek-work",
+   "exported_as": "-workspace-p190",
+   "files": 1
+  },
+  {
+   "profile": "Desktop/standout_full/.claude",
+   "source_project": "my__-media-phantomcore-AI-DRIVE-DeepSeek-work-deepseek-claude-code",
+   "exported_as": "-workspace-p191",
+   "files": 1
+  },
+  {
+   "profile": "Desktop/standout_full/.claude",
+   "source_project": "my__-media-phantomcore-AI-DRIVE-DeepSeek-work-my-claude-seek-claude__0da92731-e98d-4b6f-bfa9-24b369981562__subagents",
+   "exported_as": "-workspace-p192",
+   "files": 25
+  },
+  {
+   "profile": "Desktop/standout_full/.claude",
+   "source_project": "my__-media-phantomcore-AI-DRIVE-DeepSeek-work-my-claude-seek-claude__8e53934e-6a58-45be-9c7f-a0dd49fabad7__subagents",
+   "exported_as": "-workspace-p193",
+   "files": 1
+  },
+  {
+   "profile": "Desktop/standout_full/.claude",
+   "source_project": "my__-media-phantomcore-AI-DRIVE-DeepSeek-work-my-claude-seek-claude__a7e17171-cedb-4655-a0b2-18c177d4ce63__subagents",
+   "exported_as": "-workspace-p194",
+   "files": 8
+  },
+  {
+   "profile": "Desktop/standout_full/.claude",
+   "source_project": "my__-media-phantomcore-AI-DRIVE-DeepSeek-work-my-claude-seek-claude__df9522ca-2586-4c83-b5b0-c54d872d5b5c__subagents",
+   "exported_as": "-workspace-p195",
+   "files": 38
+  },
+  {
+   "profile": "Desktop/standout_full/.claude",
+   "source_project": "my__-media-phantomcore-AI-DRIVE-DeepSeek-work-my-claude-seek-deepseek-bug-finder__475d397c-7e33-4682-ada1-f3cd0ebaf9b1__subagents",
+   "exported_as": "-workspace-p196",
+   "files": 5
+  },
+  {
+   "profile": "Desktop/standout_full/.claude",
+   "source_project": "my__-media-phantomcore-AI-DRIVE-DeepSeek-work-my-claude-seek-deepseek-bug-finder__5ba76683-1ae9-4f60-a1f4-78d43088108e__subagents",
+   "exported_as": "-workspace-p197",
+   "files": 3
+  },
+  {
+   "profile": "Desktop/standout_full/.claude",
+   "source_project": "my__-media-phantomcore-AI-DRIVE-DeepSeek-work-my-claude-seek-just-agents__7fc1f14a-e075-46d7-92f4-e62e2997aea9__subagents",
+   "exported_as": "-workspace-p198",
+   "files": 23
+  },
+  {
+   "profile": "Desktop/standout_full/.claude",
+   "source_project": "my__-media-phantomcore-AI-DRIVE-DeepSeek-work-my-claude-seek-math__ca9470f2-98eb-4886-846b-e2728a5633d0__subagents",
+   "exported_as": "-workspace-p199",
+   "files": 1
+  },
+  {
+   "profile": "Desktop/standout_full/.claude",
+   "source_project": "my__-media-phantomcore-AI-DRIVE-DeepSeek-work-my-claude-seek-reddit__0e860cd5-a00c-43c9-b2b7-fdc2188ac10d__subagents",
+   "exported_as": "-workspace-p200",
+   "files": 2
+  },
+  {
+   "profile": "Desktop/standout_full/.claude",
+   "source_project": "my__-media-phantomcore-AI-DRIVE-VORTEX-SYSTEM-deepseek",
+   "exported_as": "-workspace-p201",
+   "files": 3
+  },
+  {
+   "profile": "Desktop/standout_full/.claude",
+   "source_project": "my__-media-phantomcore-AI-DRIVE-VORTEX-SYSTEM-deepseek__65acdee7-f11c-4b3c-bcf0-7f7ae9af1b68__subagents",
+   "exported_as": "-workspace-p202",
+   "files": 4
+  },
+  {
+   "profile": "Desktop/standout_full/.claude",
+   "source_project": "my__-media-phantomcore-AI-DRIVE-VORTEX-SYSTEM-deepseek__7f89fc8e-1be9-4054-a675-3d64f7faa367__subagents",
+   "exported_as": "-workspace-p203",
+   "files": 3
+  },
+  {
+   "profile": "Desktop/standout_full/.claude",
+   "source_project": "my__-media-phantomcore-AI-DRIVE-hackathons-ai-ml-hack-2026__1b456d28-8875-46df-b1dc-fa4676ba748b__subagents",
+   "exported_as": "-workspace-p204",
+   "files": 3
+  },
+  {
+   "profile": "Desktop/standout_full/.claude",
+   "source_project": "my__-media-phantomcore-AI-DRIVE-hackathons-ai-ml-hack-2026__f5bfeccf-0c3b-4068-b1a2-59b240585497__subagents",
+   "exported_as": "-workspace-p205",
+   "files": 5
+  },
+  {
+   "profile": "Desktop/standout_full/.claude",
+   "source_project": "my__-media-phantomcore-AI-DRIVE-pip",
+   "exported_as": "-workspace-p206",
+   "files": 1
+  },
+  {
+   "profile": "Desktop/standout_full/.claude",
+   "source_project": "my__-media-phantomcore-AI-DRIVE-pip__1dbe383c-3444-4959-a3a8-80f30751fed0__subagents",
+   "exported_as": "-workspace-p207",
+   "files": 3
+  },
+  {
+   "profile": "Desktop/standout_max/.claude",
+   "source_project": "-workspace-p001",
+   "exported_as": "-workspace-p208",
+   "files": 10
+  },
+  {
+   "profile": "Desktop/standout_max/.claude",
+   "source_project": "-workspace-p002",
+   "exported_as": "-workspace-p209",
+   "files": 2
+  },
+  {
+   "profile": "Desktop/standout_max/.claude",
+   "source_project": "-workspace-p003",
+   "exported_as": "-workspace-p210",
+   "files": 1
+  },
+  {
+   "profile": "Desktop/standout_max/.claude",
+   "source_project": "-workspace-p004",
+   "exported_as": "-workspace-p211",
+   "files": 4
+  },
+  {
+   "profile": "Desktop/standout_max/.claude",
+   "source_project": "-workspace-p005",
+   "exported_as": "-workspace-p212",
+   "files": 4
+  },
+  {
+   "profile": "Desktop/standout_max/.claude",
+   "source_project": "-workspace-p006",
+   "exported_as": "-workspace-p213",
+   "files": 5
+  },
+  {
+   "profile": "Desktop/standout_max/.claude",
+   "source_project": "-workspace-p007",
+   "exported_as": "-workspace-p214",
+   "files": 3
+  },
+  {
+   "profile": "Desktop/standout_max/.claude",
+   "source_project": "-workspace-p008",
+   "exported_as": "-workspace-p215",
+   "files": 4
+  },
+  {
+   "profile": "Desktop/standout_max/.claude",
+   "source_project": "-workspace-p009",
+   "exported_as": "-workspace-p216",
+   "files": 3
+  },
+  {
+   "profile": "Desktop/standout_max/.claude",
+   "source_project": "-workspace-p010",
+   "exported_as": "-workspace-p217",
+   "files": 4
+  },
+  {
+   "profile": "Desktop/standout_max/.claude",
+   "source_project": "-workspace-p011",
+   "exported_as": "-workspace-p218",
+   "files": 7
+  },
+  {
+   "profile": "Desktop/standout_max/.claude",
+   "source_project": "-workspace-p012",
+   "exported_as": "-workspace-p219",
+   "files": 5
+  },
+  {
+   "profile": "Desktop/standout_max/.claude",
+   "source_project": "-workspace-p013",
+   "exported_as": "-workspace-p220",
+   "files": 4
+  },
+  {
+   "profile": "Desktop/standout_max/.claude",
+   "source_project": "-workspace-p014",
+   "exported_as": "-workspace-p221",
+   "files": 5
+  },
+  {
+   "profile": "Desktop/standout_max/.claude",
+   "source_project": "-workspace-p015",
+   "exported_as": "-workspace-p222",
+   "files": 5
+  },
+  {
+   "profile": "Desktop/standout_max/.claude",
+   "source_project": "-workspace-p016",
+   "exported_as": "-workspace-p223",
+   "files": 5
+  },
+  {
+   "profile": "Desktop/standout_max/.claude",
+   "source_project": "-workspace-p017",
+   "exported_as": "-workspace-p224",
+   "files": 1
+  },
+  {
+   "profile": "Desktop/standout_max/.claude",
+   "source_project": "-workspace-p018",
+   "exported_as": "-workspace-p225",
+   "files": 13
+  },
+  {
+   "profile": "Desktop/standout_max/.claude",
+   "source_project": "-workspace-p019",
+   "exported_as": "-workspace-p226",
+   "files": 1
+  },
+  {
+   "profile": "Desktop/standout_max/.claude",
+   "source_project": "-workspace-p020",
+   "exported_as": "-workspace-p227",
+   "files": 1
+  },
+  {
+   "profile": "Desktop/standout_max/.claude",
+   "source_project": "-workspace-p021",
+   "exported_as": "-workspace-p228",
+   "files": 14
+  },
+  {
+   "profile": "Desktop/standout_max/.claude",
+   "source_project": "-workspace-p022",
+   "exported_as": "-workspace-p229",
+   "files": 35
+  },
+  {
+   "profile": "Desktop/standout_max/.claude",
+   "source_project": "-workspace-p023",
+   "exported_as": "-workspace-p230",
+   "files": 10
+  },
+  {
+   "profile": "Desktop/standout_max/.claude",
+   "source_project": "-workspace-p024",
+   "exported_as": "-workspace-p231",
+   "files": 7
+  },
+  {
+   "profile": "Desktop/standout_max/.claude",
+   "source_project": "-workspace-p025",
+   "exported_as": "-workspace-p232",
+   "files": 6
+  },
+  {
+   "profile": "Desktop/standout_max/.claude",
+   "source_project": "-workspace-p026",
+   "exported_as": "-workspace-p233",
+   "files": 6
+  },
+  {
+   "profile": "Desktop/standout_max/.claude",
+   "source_project": "-workspace-p027",
+   "exported_as": "-workspace-p234",
+   "files": 5
+  },
+  {
+   "profile": "Desktop/standout_max/.claude",
+   "source_project": "-workspace-p028",
+   "exported_as": "-workspace-p235",
+   "files": 21
+  },
+  {
+   "profile": "Desktop/standout_max/.claude",
+   "source_project": "-workspace-p029",
+   "exported_as": "-workspace-p236",
+   "files": 5
+  },
+  {
+   "profile": "Desktop/standout_max/.claude",
+   "source_project": "-workspace-p030",
+   "exported_as": "-workspace-p237",
+   "files": 3
+  },
+  {
+   "profile": "Desktop/standout_max/.claude",
+   "source_project": "-workspace-p031",
+   "exported_as": "-workspace-p238",
+   "files": 1
+  },
+  {
+   "profile": "Desktop/standout_max/.claude",
+   "source_project": "-workspace-p032",
+   "exported_as": "-workspace-p239",
+   "files": 6
+  },
+  {
+   "profile": "Desktop/standout_max/.claude",
+   "source_project": "-workspace-p033",
+   "exported_as": "-workspace-p240",
+   "files": 4
+  },
+  {
+   "profile": "Desktop/standout_max/.claude",
+   "source_project": "-workspace-p034",
+   "exported_as": "-workspace-p241",
+   "files": 6
+  },
+  {
+   "profile": "Desktop/standout_max/.claude",
+   "source_project": "-workspace-p035",
+   "exported_as": "-workspace-p242",
+   "files": 5
+  },
+  {
+   "profile": "Desktop/standout_max/.claude",
+   "source_project": "-workspace-p036",
+   "exported_as": "-workspace-p243",
+   "files": 5
+  },
+  {
+   "profile": "Desktop/standout_max/.claude",
+   "source_project": "-workspace-p037",
+   "exported_as": "-workspace-p244",
+   "files": 1
+  },
+  {
+   "profile": "Desktop/standout_max/.claude",
+   "source_project": "-workspace-p038",
+   "exported_as": "-workspace-p245",
+   "files": 10
+  },
+  {
+   "profile": "Desktop/standout_max/.claude",
+   "source_project": "-workspace-p039",
+   "exported_as": "-workspace-p246",
+   "files": 36
+  },
+  {
+   "profile": "Desktop/standout_max/.claude",
+   "source_project": "-workspace-p040",
+   "exported_as": "-workspace-p247",
+   "files": 1
+  },
+  {
+   "profile": "Desktop/standout_max/.claude",
+   "source_project": "-workspace-p041",
+   "exported_as": "-workspace-p248",
+   "files": 2
+  },
+  {
+   "profile": "Desktop/standout_max/.claude",
+   "source_project": "-workspace-p042",
+   "exported_as": "-workspace-p249",
+   "files": 1
+  },
+  {
+   "profile": "Desktop/standout_max/.claude",
+   "source_project": "-workspace-p043",
+   "exported_as": "-workspace-p250",
+   "files": 45
+  },
+  {
+   "profile": "Desktop/standout_max/.claude",
+   "source_project": "-workspace-p044",
+   "exported_as": "-workspace-p251",
+   "files": 1
+  },
+  {
+   "profile": "Desktop/standout_max/.claude",
+   "source_project": "-workspace-p045",
+   "exported_as": "-workspace-p252",
+   "files": 19
+  },
+  {
+   "profile": "Desktop/standout_max/.claude",
+   "source_project": "-workspace-p046",
+   "exported_as": "-workspace-p253",
+   "files": 3
+  },
+  {
+   "profile": "Desktop/standout_max/.claude",
+   "source_project": "-workspace-p047",
+   "exported_as": "-workspace-p254",
+   "files": 3
+  },
+  {
+   "profile": "Desktop/standout_max/.claude",
+   "source_project": "-workspace-p048",
+   "exported_as": "-workspace-p255",
+   "files": 9
+  },
+  {
+   "profile": "Desktop/standout_max/.claude",
+   "source_project": "-workspace-p049",
+   "exported_as": "-workspace-p256",
+   "files": 12
+  },
+  {
+   "profile": "Desktop/standout_max/.claude",
+   "source_project": "-workspace-p050",
+   "exported_as": "-workspace-p257",
+   "files": 1
+  },
+  {
+   "profile": "Desktop/standout_max/.claude",
+   "source_project": "-workspace-p051",
+   "exported_as": "-workspace-p258",
+   "files": 114
+  },
+  {
+   "profile": "Desktop/standout_max/.claude",
+   "source_project": "-workspace-p052",
+   "exported_as": "-workspace-p259",
+   "files": 15
+  },
+  {
+   "profile": "Desktop/standout_max/.claude",
+   "source_project": "-workspace-p053",
+   "exported_as": "-workspace-p260",
+   "files": 25
+  },
+  {
+   "profile": "Desktop/standout_max/.claude",
+   "source_project": "-workspace-p054",
+   "exported_as": "-workspace-p261",
+   "files": 2
+  },
+  {
+   "profile": "Desktop/standout_max/.claude",
+   "source_project": "-workspace-p055",
+   "exported_as": "-workspace-p262",
+   "files": 2
+  },
+  {
+   "profile": "Desktop/standout_max/.claude",
+   "source_project": "-workspace-p056",
+   "exported_as": "-workspace-p263",
+   "files": 1
+  },
+  {
+   "profile": "Desktop/standout_max/.claude",
+   "source_project": "-workspace-p057",
+   "exported_as": "-workspace-p264",
+   "files": 1
+  },
+  {
+   "profile": "Desktop/standout_max/.claude",
+   "source_project": "-workspace-p058",
+   "exported_as": "-workspace-p265",
+   "files": 1
+  },
+  {
+   "profile": "Desktop/standout_max/.claude",
+   "source_project": "-workspace-p059",
+   "exported_as": "-workspace-p266",
+   "files": 1
+  },
+  {
+   "profile": "Desktop/standout_max/.claude",
+   "source_project": "-workspace-p060",
+   "exported_as": "-workspace-p267",
+   "files": 5
+  },
+  {
+   "profile": "Desktop/standout_max/.claude",
+   "source_project": "-workspace-p061",
+   "exported_as": "-workspace-p268",
+   "files": 3
+  },
+  {
+   "profile": "Desktop/standout_max/.claude",
+   "source_project": "-workspace-p062",
+   "exported_as": "-workspace-p269",
+   "files": 4
+  },
+  {
+   "profile": "Desktop/standout_max/.claude",
+   "source_project": "-workspace-p063",
+   "exported_as": "-workspace-p270",
+   "files": 2
+  },
+  {
+   "profile": "Desktop/standout_max/.claude",
+   "source_project": "-workspace-p064",
+   "exported_as": "-workspace-p271",
+   "files": 1
+  },
+  {
+   "profile": "Desktop/standout_max/.claude",
+   "source_project": "-workspace-p065",
+   "exported_as": "-workspace-p272",
+   "files": 1
+  },
+  {
+   "profile": "Desktop/standout_max/.claude",
+   "source_project": "-workspace-p066",
+   "exported_as": "-workspace-p273",
+   "files": 4
+  },
+  {
+   "profile": "Desktop/standout_max/.claude",
+   "source_project": "-workspace-p067",
+   "exported_as": "-workspace-p274",
+   "files": 4
+  },
+  {
+   "profile": "Desktop/standout_max/.claude",
+   "source_project": "-workspace-p068",
+   "exported_as": "-workspace-p275",
+   "files": 28
+  },
+  {
+   "profile": "Desktop/standout_max/.claude",
+   "source_project": "-workspace-p069",
+   "exported_as": "-workspace-p276",
+   "files": 1
+  },
+  {
+   "profile": "Desktop/standout_max/.claude",
+   "source_project": "-workspace-p070",
+   "exported_as": "-workspace-p277",
+   "files": 1
+  },
+  {
+   "profile": "Desktop/standout_max/.claude",
+   "source_project": "-workspace-p071",
+   "exported_as": "-workspace-p278",
+   "files": 4
+  },
+  {
+   "profile": "Desktop/standout_max/.claude",
+   "source_project": "-workspace-p072",
+   "exported_as": "-workspace-p279",
+   "files": 2
+  },
+  {
+   "profile": "Desktop/standout_max/.claude",
+   "source_project": "-workspace-p073",
+   "exported_as": "-workspace-p280",
+   "files": 5
+  },
+  {
+   "profile": "Desktop/standout_max/.claude",
+   "source_project": "-workspace-p074",
+   "exported_as": "-workspace-p281",
+   "files": 2
+  },
+  {
+   "profile": "Desktop/standout_max/.claude",
+   "source_project": "-workspace-p075",
+   "exported_as": "-workspace-p282",
+   "files": 2
+  },
+  {
+   "profile": "Desktop/standout_max/.claude",
+   "source_project": "-workspace-p076",
+   "exported_as": "-workspace-p283",
+   "files": 2
+  },
+  {
+   "profile": "Desktop/standout_max/.claude",
+   "source_project": "-workspace-p077",
+   "exported_as": "-workspace-p284",
+   "files": 3
+  },
+  {
+   "profile": "Desktop/standout_max/.claude",
+   "source_project": "-workspace-p078",
+   "exported_as": "-workspace-p285",
+   "files": 13
+  },
+  {
+   "profile": "Desktop/standout_max/.claude",
+   "source_project": "-workspace-p079",
+   "exported_as": "-workspace-p286",
+   "files": 4
+  },
+  {
+   "profile": "Desktop/standout_max/.claude",
+   "source_project": "-workspace-p080",
+   "exported_as": "-workspace-p287",
+   "files": 1
+  },
+  {
+   "profile": "Desktop/standout_max/.claude",
+   "source_project": "-workspace-p081",
+   "exported_as": "-workspace-p288",
+   "files": 1
+  },
+  {
+   "profile": "Desktop/standout_max/.claude",
+   "source_project": "-workspace-p082",
+   "exported_as": "-workspace-p289",
+   "files": 1
+  },
+  {
+   "profile": "Desktop/standout_max/.claude",
+   "source_project": "-workspace-p083",
+   "exported_as": "-workspace-p290",
+   "files": 1
+  },
+  {
+   "profile": "Desktop/standout_max/.claude",
+   "source_project": "-workspace-p084",
+   "exported_as": "-workspace-p291",
+   "files": 7
+  },
+  {
+   "profile": "Desktop/standout_max/.claude",
+   "source_project": "-workspace-p085",
+   "exported_as": "-workspace-p292",
+   "files": 1
+  },
+  {
+   "profile": "Desktop/standout_max/.claude",
+   "source_project": "-workspace-p086",
+   "exported_as": "-workspace-p293",
+   "files": 10
+  },
+  {
+   "profile": "Desktop/standout_max/.claude",
+   "source_project": "-workspace-p087",
+   "exported_as": "-workspace-p294",
+   "files": 1
+  },
+  {
+   "profile": "Desktop/standout_max/.claude",
+   "source_project": "-workspace-p088",
+   "exported_as": "-workspace-p295",
+   "files": 5
+  },
+  {
+   "profile": "Desktop/standout_max/.claude",
+   "source_project": "-workspace-p089",
+   "exported_as": "-workspace-p296",
+   "files": 1
+  },
+  {
+   "profile": "Desktop/standout_max/.claude",
+   "source_project": "-workspace-p090",
+   "exported_as": "-workspace-p297",
+   "files": 1
+  },
+  {
+   "profile": "Desktop/standout_max/.claude",
+   "source_project": "-workspace-p091",
+   "exported_as": "-workspace-p298",
+   "files": 1
+  },
+  {
+   "profile": "Desktop/standout_max/.claude",
+   "source_project": "-workspace-p092",
+   "exported_as": "-workspace-p299",
+   "files": 21
+  },
+  {
+   "profile": "Desktop/standout_max/.claude",
+   "source_project": "-workspace-p093",
+   "exported_as": "-workspace-p300",
+   "files": 1
+  },
+  {
+   "profile": "Desktop/standout_max/.claude",
+   "source_project": "-workspace-p094",
+   "exported_as": "-workspace-p301",
+   "files": 1
+  },
+  {
+   "profile": "Desktop/standout_max/.claude",
+   "source_project": "-workspace-p095",
+   "exported_as": "-workspace-p302",
+   "files": 25
+  },
+  {
+   "profile": "Desktop/standout_max/.claude",
+   "source_project": "-workspace-p096",
+   "exported_as": "-workspace-p303",
+   "files": 1
+  },
+  {
+   "profile": "Desktop/standout_max/.claude",
+   "source_project": "-workspace-p097",
+   "exported_as": "-workspace-p304",
+   "files": 8
+  },
+  {
+   "profile": "Desktop/standout_max/.claude",
+   "source_project": "-workspace-p098",
+   "exported_as": "-workspace-p305",
+   "files": 38
+  },
+  {
+   "profile": "Desktop/standout_max/.claude",
+   "source_project": "-workspace-p099",
+   "exported_as": "-workspace-p306",
+   "files": 5
+  },
+  {
+   "profile": "Desktop/standout_max/.claude",
+   "source_project": "-workspace-p100",
+   "exported_as": "-workspace-p307",
+   "files": 3
+  },
+  {
+   "profile": "Desktop/standout_max/.claude",
+   "source_project": "-workspace-p101",
+   "exported_as": "-workspace-p308",
+   "files": 23
+  },
+  {
+   "profile": "Desktop/standout_max/.claude",
+   "source_project": "-workspace-p102",
+   "exported_as": "-workspace-p309",
+   "files": 1
+  },
+  {
+   "profile": "Desktop/standout_max/.claude",
+   "source_project": "-workspace-p103",
+   "exported_as": "-workspace-p310",
+   "files": 2
+  },
+  {
+   "profile": "Desktop/standout_max/.claude",
+   "source_project": "-workspace-p104",
+   "exported_as": "-workspace-p311",
+   "files": 3
+  },
+  {
+   "profile": "Desktop/standout_max/.claude",
+   "source_project": "-workspace-p105",
+   "exported_as": "-workspace-p312",
+   "files": 4
+  },
+  {
+   "profile": "Desktop/standout_max/.claude",
+   "source_project": "-workspace-p106",
+   "exported_as": "-workspace-p313",
+   "files": 3
+  },
+  {
+   "profile": "Desktop/standout_max/.claude",
+   "source_project": "-workspace-p107",
+   "exported_as": "-workspace-p314",
+   "files": 3
+  },
+  {
+   "profile": "Desktop/standout_max/.claude",
+   "source_project": "-workspace-p108",
+   "exported_as": "-workspace-p315",
+   "files": 5
+  },
+  {
+   "profile": "Desktop/standout_max/.claude",
+   "source_project": "-workspace-p109",
+   "exported_as": "-workspace-p316",
+   "files": 1
+  },
+  {
+   "profile": "Desktop/standout_max/.claude",
+   "source_project": "-workspace-p110",
+   "exported_as": "-workspace-p317",
+   "files": 3
+  },
+  {
+   "profile": "Desktop/standout_sandbox/.claude",
+   "source_project": "-home-phantomcore",
+   "exported_as": "-workspace-p318",
+   "files": 16
+  },
+  {
+   "profile": "Desktop/standout_sandbox/.claude",
+   "source_project": "-home-phantomcore--claude-meta-teams-smoke-mixed-workdirs-t-claude",
+   "exported_as": "-workspace-p319",
+   "files": 4
+  },
+  {
+   "profile": "Desktop/standout_sandbox/.claude",
+   "source_project": "-media-phantomcore-AI-DRIVE-AI-Shit-mining-Quest-coder-Claude-Code",
+   "exported_as": "-workspace-p320",
+   "files": 2
+  },
+  {
+   "profile": "Desktop/standout_sandbox/.claude",
+   "source_project": "-media-phantomcore-AI-DRIVE-DeepSeek-work",
+   "exported_as": "-workspace-p321",
+   "files": 4
+  },
+  {
+   "profile": "Desktop/standout_sandbox/.claude",
+   "source_project": "-media-phantomcore-AI-DRIVE-DeepSeek-work-deepseek-claude-code",
+   "exported_as": "-workspace-p322",
+   "files": 4
+  },
+  {
+   "profile": "Desktop/standout_sandbox/.claude",
+   "source_project": "-media-phantomcore-AI-DRIVE-DeepSeek-work-deepseek-claude-code-my-claude",
+   "exported_as": "-workspace-p323",
+   "files": 56
+  },
+  {
+   "profile": "Desktop/standout_sandbox/.claude",
+   "source_project": "-media-phantomcore-AI-DRIVE-DeepSeek-work-reddit-logistis",
+   "exported_as": "-workspace-p324",
+   "files": 24
+  },
+  {
+   "profile": "Desktop/standout_sandbox/.claude",
+   "source_project": "-media-phantomcore-AI-DRIVE-fable",
+   "exported_as": "-workspace-p325",
+   "files": 3
+  },
+  {
+   "profile": "Desktop/standout_sandbox/.claude",
+   "source_project": "-media-phantomcore-AI-DRIVE-hackathons-CodeCrusher",
+   "exported_as": "-workspace-p326",
+   "files": 2
+  },
+  {
+   "profile": "Desktop/standout_sandbox/.claude",
+   "source_project": "-media-phantomcore-AI-DRIVE-hackathons-evil",
+   "exported_as": "-workspace-p327",
+   "files": 2
+  },
+  {
+   "profile": "Desktop/standout_sandbox/.claude",
+   "source_project": "-media-phantomcore-AI-DRIVE-hackathons-mantle",
+   "exported_as": "-workspace-p328",
+   "files": 4
+  },
+  {
+   "profile": "Desktop/standout_sandbox/.claude",
+   "source_project": "-media-phantomcore-AI-DRIVE-hackathons-tierva",
+   "exported_as": "-workspace-p329",
+   "files": 1
+  },
+  {
+   "profile": "Desktop/standout_sandbox/.claude",
+   "source_project": "-media-phantomcore-AI-DRIVE-pip",
+   "exported_as": "-workspace-p330",
+   "files": 6
+  },
+  {
+   "profile": "Desktop/standout_sandbox/.claude",
+   "source_project": "-tmp-claude-1000--media-phantomcore-AI-DRIVE-pip-c9b9dba0-12af-4bbc-975b-6a4dc2996eaa-scratchpad",
+   "exported_as": "-workspace-p331",
+   "files": 2
+  },
+  {
+   "profile": "Desktop/standout_sandbox/.claude",
+   "source_project": "-tmp-claude-1000--media-phantomcore-AI-DRIVE-pip-c9b9dba0-12af-4bbc-975b-6a4dc2996eaa-scratchpad-live-schema-check",
+   "exported_as": "-workspace-p332",
+   "files": 2
+  },
+  {
+   "profile": "Desktop/standout_sandbox/.claude",
+   "source_project": "subagents",
+   "exported_as": "-workspace-p333",
+   "files": 159
+  },
+  {
+   "profile": "Desktop/standout_sandbox/.claude",
+   "source_project": "wf_0a13dde3-04a",
+   "exported_as": "-workspace-p334",
+   "files": 2
+  },
+  {
+   "profile": "Desktop/standout_sandbox/.claude",
+   "source_project": "wf_1a978393-0d5",
+   "exported_as": "-workspace-p335",
+   "files": 6
+  },
+  {
+   "profile": "Desktop/standout_sandbox/.claude",
+   "source_project": "wf_1ba5b953-248",
+   "exported_as": "-workspace-p336",
+   "files": 20
+  },
+  {
+   "profile": "Desktop/standout_sandbox/.claude",
+   "source_project": "wf_30d16dcc-5ca",
+   "exported_as": "-workspace-p337",
+   "files": 16
+  },
+  {
+   "profile": "Desktop/standout_sandbox/.claude",
+   "source_project": "wf_3470e2d8-ac5",
+   "exported_as": "-workspace-p338",
+   "files": 2
+  },
+  {
+   "profile": "Desktop/standout_sandbox/.claude",
+   "source_project": "wf_3c315563-b2e",
+   "exported_as": "-workspace-p339",
+   "files": 4
+  },
+  {
+   "profile": "Desktop/standout_sandbox/.claude",
+   "source_project": "wf_480a8ff7-e32",
+   "exported_as": "-workspace-p340",
+   "files": 24
+  },
+  {
+   "profile": "Desktop/standout_sandbox/.claude",
+   "source_project": "wf_4f331da5-c25",
+   "exported_as": "-workspace-p341",
+   "files": 56
+  },
+  {
+   "profile": "Desktop/standout_sandbox/.claude",
+   "source_project": "wf_6d783e22-0e1",
+   "exported_as": "-workspace-p342",
+   "files": 6
+  },
+  {
+   "profile": "Desktop/standout_sandbox/.claude",
+   "source_project": "wf_7716f96f-b21",
+   "exported_as": "-workspace-p343",
+   "files": 6
+  },
+  {
+   "profile": "Desktop/standout_sandbox/.claude",
+   "source_project": "wf_7f06d68a-dcd",
+   "exported_as": "-workspace-p344",
+   "files": 6
+  },
+  {
+   "profile": "Desktop/standout_sandbox/.claude",
+   "source_project": "wf_93c2324a-987",
+   "exported_as": "-workspace-p345",
+   "files": 2
+  },
+  {
+   "profile": "Desktop/standout_sandbox/.claude",
+   "source_project": "wf_98cc64ca-2a8",
+   "exported_as": "-workspace-p346",
+   "files": 6
+  },
+  {
+   "profile": "Desktop/standout_sandbox/.claude",
+   "source_project": "wf_a0d5f578-598",
+   "exported_as": "-workspace-p347",
+   "files": 8
+  },
+  {
+   "profile": "Desktop/standout_sandbox/.claude",
+   "source_project": "wf_a50c77a1-112",
+   "exported_as": "-workspace-p348",
+   "files": 8
+  },
+  {
+   "profile": "Desktop/standout_sandbox/.claude",
+   "source_project": "wf_a8836b68-c52",
+   "exported_as": "-workspace-p349",
+   "files": 6
+  },
+  {
+   "profile": "Desktop/standout_sandbox/.claude",
+   "source_project": "wf_ab168fb9-a13",
+   "exported_as": "-workspace-p350",
+   "files": 14
+  },
+  {
+   "profile": "Desktop/standout_sandbox/.claude",
+   "source_project": "wf_b474cc63-ffa",
+   "exported_as": "-workspace-p351",
+   "files": 10
+  },
+  {
+   "profile": "Desktop/standout_sandbox/.claude",
+   "source_project": "wf_c2496bae-446",
+   "exported_as": "-workspace-p352",
+   "files": 29
+  },
+  {
+   "profile": "Desktop/standout_sandbox/.claude",
+   "source_project": "wf_cbc5d1d2-689",
+   "exported_as": "-workspace-p353",
+   "files": 87
+  },
+  {
+   "profile": "Desktop/standout_sandbox/.claude",
+   "source_project": "wf_d0eb88c2-d3a",
+   "exported_as": "-workspace-p354",
+   "files": 6
+  },
+  {
+   "profile": "Desktop/standout_sandbox/.claude",
+   "source_project": "wf_d97336f1-49f",
+   "exported_as": "-workspace-p355",
+   "files": 8
+  },
+  {
+   "profile": "Desktop/standout_sandbox/.claude",
+   "source_project": "wf_de6d9a2d-561",
+   "exported_as": "-workspace-p356",
+   "files": 64
+  },
+  {
+   "profile": "Desktop/standout_sandbox/.claude",
+   "source_project": "wf_e5bfb71a-9d1",
+   "exported_as": "-workspace-p357",
+   "files": 10
+  },
+  {
+   "profile": "Desktop/standout_sandbox/.claude",
+   "source_project": "wf_e71eebc4-301",
+   "exported_as": "-workspace-p358",
+   "files": 4
+  },
+  {
+   "profile": "Desktop/standout_sandbox/.claude",
+   "source_project": "wf_ed3c65d7-9b4",
+   "exported_as": "-workspace-p359",
+   "files": 8
+  },
+  {
+   "profile": "Desktop/standout_sandbox/.claude",
+   "source_project": "wf_f62f9f19-f41",
+   "exported_as": "-workspace-p360",
+   "files": 10
+  },
+  {
+   "profile": "Desktop/standout_sandbox/.claude",
+   "source_project": "wf_febc10a7-3df",
+   "exported_as": "-workspace-p361",
+   "files": 6
+  },
+  {
+   "profile": "Desktop/standout_sandbox/.claude",
+   "source_project": "wf_ffcebfc9-744",
+   "exported_as": "-workspace-p362",
+   "files": 10
+  }
+ ]
+}

@@ -1,0 +1,75 @@
+name: serialize-pushes
+
+# Serializes concurrent pushes from multiple machines so root-doc rebuilds
+# never race. Without this, two machines that push within the same minute
+# each see the other's commit as a fast-forward conflict on their next sync.
+#
+# HOW IT WORKS
+#   1. Any push to main triggers this workflow.
+#   2. concurrency.group = "main-push" with cancel-in-progress: false means
+#      runs QUEUE rather than cancel — the second machine waits, not loses.
+#   3. The job pulls, rebuilds the root docs (combine.py + stats), and pushes
+#      a single combine commit. Because only one run executes at a time, the
+#      combine always sees the full fleet.
+#
+# WHAT IT DOES NOT DO
+#   It does not scan any machine. Scanning is done on each machine by
+#   sync_job.py / retention_guard.py. This job only rebuilds the derived
+#   root documents from whatever machine folders are already committed.
+#
+# REQUIREMENTS
+#   The repo must grant Actions write permission:
+#   Settings → Actions → General → Workflow permissions → Read and write.
+
+on:
+  push:
+    branches: [main]
+    # Only trigger when a machine folder or the root docs change — not on
+    # .github or pure README edits, which would cause infinite loops.
+    paths:
+      - '*/machine-readable/totals.json'
+      - '*/machine-readable/sessions.json'
+      - '*/machine-readable/hardware.json'
+      - 'machine-readable/**'
+      - 'human-readable/**'
+
+concurrency:
+  group: main-push
+  cancel-in-progress: false   # queue, never cancel
+
+jobs:
+  combine:
+    name: Rebuild root documents
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0        # full history so git log works for UUID checks
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Rebuild root documents
+        run: |
+          python3 combine.py
+          python3 stats_page.py
+          python3 fun_stats.py
+          python3 by_cli_report.py
+          python3 monthly.py
+
+      - name: Commit root documents (if changed)
+        run: |
+          git config user.name  "deadreckon-bot"
+          git config user.email "bot@deadreckon-count"
+          git add human-readable/ machine-readable/ README.md || true
+          # Exit 0 if nothing changed — combine is idempotent
+          git diff --cached --quiet && echo "nothing to commit" && exit 0
+          STAMP=$(date -u +%Y-%m-%dT%H-%M-%S)
+          git commit -m "reports ${STAMP} [bot]"
+          git push

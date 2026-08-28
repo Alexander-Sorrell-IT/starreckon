@@ -1,0 +1,37 @@
+{
+  "machine": "Dell Inspiron Desktop Linux",
+  "hostname": "phantom-gramps",
+  "hardware": {
+    "model_identifier": "x86_64",
+    "chip": "x86_64",
+    "cpu_logical": 4,
+    "memory_gb": 11.6,
+    "os": "Linux 7.0.0-28-generic"
+  },
+  "disk": {
+    "volume": "/home/phantom-gramps",
+    "total_gb": 104.6,
+    "used_gb": 94.3,
+    "free_gb": 5.0
+  },
+  "python": "3.12.3",
+  "accounts": [
+    {
+      "account": "broodierchip@gmail.com",
+      "config_dir": "/home/phantom-gramps/.claude",
+      "profile_env": "unset (default)",
+      "sessions": 1,
+      "transcript_files": 3,
+      "projects": 2
+    },
+    {
+      "account": "unknown (claude)",
+      "config_dir": "/home/phantom-gramps/.ai-logs-archive/claude/claude",
+      "profile_env": "CLAUDE_CONFIG_DIR=/home/phantom-gramps/.ai-logs-archive/claude/claude",
+      "sessions": 1,
+      "transcript_files": 3,
+      "projects": 2
+    }
+  ],
+  "scanner_version": "2e512dc55519"
+}

@@ -1,0 +1,31 @@
+{
+ "tokens": 1034081112,
+ "sessions": 68,
+ "turns": 9480,
+ "minutes": 5321.700000000001,
+ "by_cli": {
+  "gemini": 409864729,
+  "claude": 622730949,
+  "kilocode": 49379,
+  "codex": 1436055
+ },
+ "by_machine": {
+  "ASUS Laptop Linux": 7403900,
+  "Dell Inspiron Desktop Linux": 2532642,
+  "Dell Latitude 7480 Linux": 666991400,
+  "HP Laptop Linux": 357153170
+ },
+ "by_model": {
+  "gemini-3-pro-preview": 145228626,
+  "gemini-3-flash-preview": 264636103,
+  "claude-haiku-4-5-20251001": 20271840,
+  "claude-sonnet-4-5-20250929": 16532785,
+  "claude-opus-4-5-20251101": 585926324,
+  "grok-code-fast-1": 10646,
+  "gpt-5.1-codex-max": 1436055,
+  "devstral-2512:free": 38733
+ },
+ "first": "2026-01-01T04:32:33.612Z",
+ "last": "2026-01-31T21:33:05.288Z",
+ "month": "2026-01"
+}

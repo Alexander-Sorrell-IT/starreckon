@@ -1,0 +1,12 @@
+account,model,input_tokens,cache_creation_input_tokens,cache_read_input_tokens,output_tokens,total
+alexander.sorrell.it@gmail.com,claude-opus-5,14799,15715512,573859949,2553760,592144020
+alexander.sorrell.it@gmail.com,claude-opus-4-8,71650,19771248,485401235,2034159,507278292
+alexander.sorrell.it@gmail.com,claude-fable-5,81647,5225879,197485284,975318,203768128
+alexander.sorrell.it@gmail.com,claude-opus-4-7,4285,3271221,12957101,196596,16429203
+alexander.sorrell.it@gmail.com,claude-opus-4-8,159907893,119339083,327500591,8116669,614864236
+alexander.sorrell.it@gmail.com,claude-opus-5,5757,8332660,242137028,842586,251318031
+alexander.sorrell.it@gmail.com,claude-sonnet-5,92,2197934,19232690,18552,21449268
+alexander.sorrell.it@gmail.com,claude-haiku-4-5-20251001,603,1291111,1035770,154660,2482144
+alexander.sorrell.it@gmail.com,claude-opus-4-6,12,223005,0,229,223246
+codehunterextreme@gmail.com,claude-opus-4-8,3556,1435644,10271582,75344,11786126
+user:2d4777822844,claude-sonnet-4-6,174,506204,2927342,52283,3486003

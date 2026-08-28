@@ -1,0 +1,6 @@
+{
+ "hostname": "phantom-gramps",
+ "folder": "dell-inspiron-desktop-linux",
+ "label": "Dell Inspiron Desktop Linux",
+ "platform": "Linux-6.17.0-19-generic-x86_64-with-glibc2.39"
+}

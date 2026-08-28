@@ -1,0 +1,224 @@
+{
+  "machine": "ASUS Laptop Linux",
+  "generated_at": "2026-08-09T02:32:05-05:00",
+  "scanner_version": "2e512dc55519",
+  "anthropic_only_tokens": 133195610,
+  "by_provider": {
+    "anthropic": 133195610
+  },
+  "other_tools": [
+    {
+      "vendor": "gemini",
+      "label": "Gemini CLI",
+      "dir": "/home/phantom-eternal/.gemini",
+      "files": 648,
+      "records_usage": false
+    },
+    {
+      "vendor": "copilot",
+      "label": "GitHub Copilot CLI",
+      "dir": "/home/phantom-eternal/.copilot",
+      "files": 64,
+      "records_usage": false
+    },
+    {
+      "vendor": "openai",
+      "label": "OpenAI Codex CLI",
+      "dir": "/home/phantom-eternal/.codex",
+      "files": 2,
+      "records_usage": true
+    }
+  ],
+  "grand_total_tokens": 133195610,
+  "accounts": [
+    {
+      "config_dir": "/home/phantom-eternal/.claude",
+      "sessions": 28,
+      "files": {
+        "subagent": 28,
+        "main": 28
+      },
+      "turns": 766,
+      "totals": {
+        "input_tokens": 37168,
+        "cache_creation_input_tokens": 7565358,
+        "cache_read_input_tokens": 124779208,
+        "output_tokens": 813876
+      },
+      "by_kind": {
+        "subagent": {
+          "input_tokens": 33525,
+          "cache_creation_input_tokens": 1257495,
+          "cache_read_input_tokens": 4938963,
+          "output_tokens": 98921
+        },
+        "main": {
+          "input_tokens": 3643,
+          "cache_creation_input_tokens": 6307863,
+          "cache_read_input_tokens": 119840245,
+          "output_tokens": 714955
+        }
+      },
+      "by_provider": {
+        "anthropic": {
+          "input_tokens": 37168,
+          "cache_creation_input_tokens": 7565358,
+          "cache_read_input_tokens": 124779208,
+          "output_tokens": 813876
+        }
+      },
+      "by_model": {
+        "claude-haiku-4-5-20251001": {
+          "input_tokens": 5337,
+          "cache_creation_input_tokens": 1238762,
+          "cache_read_input_tokens": 2020430,
+          "output_tokens": 67017
+        },
+        "claude-opus-4-5-20251101": {
+          "input_tokens": 10544,
+          "cache_creation_input_tokens": 94293,
+          "cache_read_input_tokens": 267767,
+          "output_tokens": 261
+        },
+        "claude-opus-4-7": {
+          "input_tokens": 21287,
+          "cache_creation_input_tokens": 6232303,
+          "cache_read_input_tokens": 122491011,
+          "output_tokens": 746598
+        }
+      },
+      "by_day": {
+        "2026-01-23": {
+          "input_tokens": 127,
+          "cache_creation_input_tokens": 191805,
+          "cache_read_input_tokens": 444587,
+          "output_tokens": 44
+        },
+        "2026-01-18": {
+          "input_tokens": 11337,
+          "cache_creation_input_tokens": 240027,
+          "cache_read_input_tokens": 746052,
+          "output_tokens": 289
+        },
+        "2026-01-19": {
+          "input_tokens": 2,
+          "cache_creation_input_tokens": 11132,
+          "cache_read_input_tokens": 0,
+          "output_tokens": 1
+        },
+        "2026-01-17": {
+          "input_tokens": 69,
+          "cache_creation_input_tokens": 103759,
+          "cache_read_input_tokens": 313124,
+          "output_tokens": 31
+        },
+        "2026-04-30": {
+          "input_tokens": 4177,
+          "cache_creation_input_tokens": 237418,
+          "cache_read_input_tokens": 1033868,
+          "output_tokens": 11526
+        },
+        "2026-05-01": {
+          "input_tokens": 2706,
+          "cache_creation_input_tokens": 985469,
+          "cache_read_input_tokens": 22368835,
+          "output_tokens": 168251
+        },
+        "2026-05-04": {
+          "input_tokens": 8526,
+          "cache_creation_input_tokens": 1984496,
+          "cache_read_input_tokens": 52429674,
+          "output_tokens": 352343
+        },
+        "2026-05-03": {
+          "input_tokens": 9874,
+          "cache_creation_input_tokens": 2527366,
+          "cache_read_input_tokens": 14159730,
+          "output_tokens": 100998
+        },
+        "2026-05-02": {
+          "input_tokens": 341,
+          "cache_creation_input_tokens": 1283886,
+          "cache_read_input_tokens": 33093930,
+          "output_tokens": 180026
+        },
+        "2026-05-05": {
+          "input_tokens": 9,
+          "cache_creation_input_tokens": 0,
+          "cache_read_input_tokens": 189408,
+          "output_tokens": 367
+        }
+      },
+      "by_project": {
+        "-home-phantom-eternal": {
+          "input_tokens": 127,
+          "cache_creation_input_tokens": 191805,
+          "cache_read_input_tokens": 444587,
+          "output_tokens": 44
+        },
+        "-media-phantom-eternal-Games---Mods1-Project-ai-shit-5-model-system": {
+          "input_tokens": 11408,
+          "cache_creation_input_tokens": 354918,
+          "cache_read_input_tokens": 1059176,
+          "output_tokens": 321
+        },
+        "-media-phantom-eternal-GamesAndMods-Project-ai-shit-5-model-system": {
+          "input_tokens": 25426,
+          "cache_creation_input_tokens": 6303800,
+          "cache_read_input_tokens": 122668977,
+          "output_tokens": 747923
+        },
+        "-tmp": {
+          "input_tokens": 207,
+          "cache_creation_input_tokens": 714835,
+          "cache_read_input_tokens": 606468,
+          "output_tokens": 65588
+        }
+      },
+      "account": "broodierchip@gmail.com",
+      "user_id": "7fbbc8d797e00cb20a8a68001f1ddb9c3c575dd4af0d085a235e62e5af7a364d",
+      "identity": {
+        "auth": "oauth",
+        "email": "broodierchip@gmail.com",
+        "org_uuid": "6bfc754e-a205-41c3-9dac-80e593f494e0",
+        "org_name": "broodierchip@gmail.com's Organization",
+        "account_uuid": "a9fec27d-ab5d-48bb-9679-a9bf60bfb97e",
+        "user_id": "7fbbc8d797e00cb20a8a68001f1ddb9c3c575dd4af0d085a235e62e5af7a364d",
+        "approved_api_keys": []
+      },
+      "grand_total": 133195610
+    },
+    {
+      "config_dir": "/home/phantom-eternal/.ai-logs-archive/claude/claude",
+      "sessions": 28,
+      "files": {
+        "subagent": 28,
+        "main": 28
+      },
+      "turns": 0,
+      "totals": {
+        "input_tokens": 0,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "output_tokens": 0
+      },
+      "by_kind": {},
+      "by_provider": {},
+      "by_model": {},
+      "by_day": {},
+      "by_project": {},
+      "account": "unknown (claude)",
+      "user_id": null,
+      "identity": {
+        "auth": "unknown",
+        "email": null,
+        "org_uuid": null,
+        "org_name": null,
+        "account_uuid": null,
+        "user_id": null,
+        "approved_api_keys": []
+      },
+      "grand_total": 0
+    }
+  ]
+}

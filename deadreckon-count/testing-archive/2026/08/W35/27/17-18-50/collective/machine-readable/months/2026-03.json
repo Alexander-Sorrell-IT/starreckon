@@ -1,0 +1,18 @@
+{
+ "tokens": 45781707,
+ "sessions": 7,
+ "turns": 11728,
+ "minutes": 2118.9,
+ "by_cli": {
+  "copilot": 45781707
+ },
+ "by_machine": {
+  "MacBook Air M1 (Darwin ARM64)": 45781707
+ },
+ "by_model": {
+  "unknown": 45781707
+ },
+ "first": "2026-03-03T15:49:58.687Z",
+ "last": "2026-03-09T09:13:08.834Z",
+ "month": "2026-03"
+}

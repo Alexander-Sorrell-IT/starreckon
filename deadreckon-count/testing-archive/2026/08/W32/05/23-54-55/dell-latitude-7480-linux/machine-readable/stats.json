@@ -1,0 +1,86 @@
+{
+ "scope": "Dell Latitude 7480 Linux",
+ "generated_at": "2026-08-05T23:43:53-05:00",
+ "total_tokens": 5645822498,
+ "sessions": 16552,
+ "fields": {
+  "input_tokens": 321986574,
+  "cache_creation_input_tokens": 351981632,
+  "cache_read_input_tokens": 3021952122,
+  "output_tokens": 30255652
+ },
+ "new_content_tokens": 704223858,
+ "hours": 182.5,
+ "by_cli": {
+  "copilot": {
+   "sessions": 24,
+   "tokens": 1062300519,
+   "minutes": 4836.0
+  },
+  "claude": {
+   "sessions": 16491,
+   "tokens": 3728416171,
+   "minutes": 3547.6
+  },
+  "gemini": {
+   "sessions": 12,
+   "tokens": 128662488,
+   "minutes": 644.8
+  },
+  "codex": {
+   "sessions": 20,
+   "tokens": 677851186,
+   "minutes": 1736.9
+  },
+  "antigravity": {
+   "sessions": 5,
+   "tokens": 48592134,
+   "minutes": 183.6
+  }
+ },
+ "by_model": {
+  "claude-opus-4-8": 2827458084,
+  "unknown": 1057847408,
+  "claude-opus-5": 698278944,
+  "gpt-5.5": 379804407,
+  "gpt-5.4-mini": 289062995,
+  "claude-fable-5": 175126453,
+  "gemini-3-flash-preview": 128642977,
+  "gemini-3.5-flash-low": 39462940,
+  "claude-opus-4-7": 17478355,
+  "claude-sonnet-4-6": 7281866,
+  "gemini-3.6-flash-high": 6928018,
+  "gpt-5.3-codex": 4981236,
+  "claude-haiku-4.5": 4453111,
+  "codex-auto-review": 4002548,
+  "claude-haiku-4-5-20251001": 2402102,
+  "gemini-2.5-flash-native-audio-prev": 2201176,
+  "claude-opus-4-6": 390367,
+  "gemini-3.1-pro-preview": 19511,
+  "<synthetic>": 0
+ },
+ "records": {
+  "longest_session": {
+   "id": "d503f205-dd5e-42ce-929a-c9e19173b4ba",
+   "cli": "copilot",
+   "machine": "Dell Latitude 7480 Linux",
+   "minutes": 772.2
+  },
+  "most_tokens": {
+   "id": "380c9a87-44b3-4093-8edb-0aa103fc2bbe",
+   "cli": "claude",
+   "machine": "Dell Latitude 7480 Linux",
+   "tokens": 456322438
+  },
+  "most_turns": {
+   "id": "d503f205-dd5e-42ce-929a-c9e19173b4ba",
+   "cli": "copilot",
+   "machine": "Dell Latitude 7480 Linux",
+   "turns": 2204
+  }
+ },
+ "scans": {
+  "Dell Latitude 7480 Linux": "2026-08-05T00:25:24-05:00"
+ },
+ "first_last_seen": {}
+}

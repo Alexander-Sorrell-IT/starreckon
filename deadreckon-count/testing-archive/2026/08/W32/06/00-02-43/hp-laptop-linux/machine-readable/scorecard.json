@@ -1,0 +1,92 @@
+{
+ "machine": "HP Laptop Linux",
+ "generated_at": "2026-08-06T00:00:32-05:00",
+ "failed": 0,
+ "warned": 0,
+ "checks": [
+  {
+   "area": "scan",
+   "check": "totals.json written",
+   "status": "ok",
+   "detail": ""
+  },
+  {
+   "area": "scan",
+   "check": "sessions.json written",
+   "status": "ok",
+   "detail": ""
+  },
+  {
+   "area": "scan",
+   "check": "hardware.json written",
+   "status": "ok",
+   "detail": ""
+  },
+  {
+   "area": "scan",
+   "check": "scan is recent",
+   "status": "ok",
+   "detail": "0.0h old"
+  },
+  {
+   "area": "scan",
+   "check": "both scanners same version",
+   "status": "ok",
+   "detail": "a8105fb5e7a5 / a8105fb5e7a5"
+  },
+  {
+   "area": "readers",
+   "check": "every CLI has a row",
+   "status": "ok",
+   "detail": "8 rows"
+  },
+  {
+   "area": "readers",
+   "check": "no CLI is installed-but-silent",
+   "status": "ok",
+   "detail": "none"
+  },
+  {
+   "area": "readers",
+   "check": "no reader raised",
+   "status": "ok",
+   "detail": "none"
+  },
+  {
+   "area": "agreement",
+   "check": "analyze_tokens == sessions",
+   "status": "ok",
+   "detail": "11,555,816,157 vs 11,555,816,157 \u2014 0 apart (0.00%)"
+  },
+  {
+   "area": "corpus",
+   "check": "export exists",
+   "status": "ok",
+   "detail": "/home/phantomcore/token-corpus/hp-laptop-linux"
+  },
+  {
+   "area": "corpus",
+   "check": "export is recent",
+   "status": "ok",
+   "detail": "2026-08-05T03:20:21-05:00"
+  },
+  {
+   "area": "corpus",
+   "check": "profiles match the scan",
+   "status": "ok",
+   "detail": "9 exported / 9 scanned"
+  },
+  {
+   "area": "corpus",
+   "check": "redaction ran",
+   "status": "ok",
+   "detail": "topic 227,122, span 1,543, path 92,878, email 2,453"
+  },
+  {
+   "area": "archive",
+   "check": "a dated snapshot exists",
+   "status": "ok",
+   "detail": "1 snapshot(s), newest 2026-08-05T23-58-23"
+  }
+ ]
+}

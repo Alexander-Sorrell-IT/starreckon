@@ -1,0 +1,92 @@
+{
+ "tokens": 55252475890,
+ "sessions": 327,
+ "turns": 121171,
+ "minutes": 44470.59999999999,
+ "by_cli": {
+  "lmstudio": 53159,
+  "copilot": 572446089,
+  "gemini": 995360683,
+  "claude": 50010376436,
+  "antigravity": 1137465925,
+  "codex": 1633604881,
+  "grok": 100222322,
+  "bob": 802946395
+ },
+ "by_machine": {
+  "MacBook Air M1": 55252475890
+ },
+ "by_model": {
+  "Wizard-Vicuna-7B-Uncensored.Q4_K_S.gguf": 37497,
+  "nomic-ai-gpt4all-falcon-Q4_K_S.gguf": 15662,
+  "unknown": 59372409,
+  "gpt-5.4": 660827,
+  "gemini-3-flash-preview": 932704860,
+  "claude-haiku-4.5": 36619082,
+  "claude-sonnet-4.6": 279118768,
+  "gemini-3.1-pro-preview": 62655823,
+  "claude-opus-4.7": 94058304,
+  "claude-opus-4-7": 153124,
+  "gemini-3-flash-agent": 48392056,
+  "claude-opus-4.8": 27906640,
+  "claude-sonnet-4-6": 243949169,
+  "<synthetic>": 0,
+  "claude-opus-4-8": 5363938900,
+  "claude-fable-5": 495265511,
+  "codex": 0,
+  "gpt-5.6-sol": 1451179368,
+  "gpt-5.6-luna": 180826644,
+  "codex-auto-review": 1598869,
+  "gemini-3.1-flash-image": 25696363,
+  "grok-4.5-build": 100222322,
+  "gemini-3.6-flash-medium": 656841,
+  "claude-opus-5": 12384457033,
+  "antigravity": 18115828,
+  "gemini-3.7-flash-low": 54501431,
+  "gemini-3.7-flash-high": 68400916,
+  "gemini-3.7-flash-safety-le": 258520721,
+  "gpt-5.6-terra": 74710059,
+  "gemini-antigravity-root.is_record": 123203781
+ },
+ "fields": {
+  "input_tokens": 4309593,
+  "cache_creation_input_tokens": 503101074,
+  "cache_read_input_tokens": 17903132137,
+  "output_tokens": 77220933
+ },
+ "first": "2025-07-03T07:40:02.682000Z",
+ "last": "2026-08-27T23:15:32Z",
+ "machines": {},
+ "undated": {
+  "tokens": 1174424977,
+  "sessions": 19,
+  "by_cli": {
+   "claude": 1174424977
+  },
+  "by_machine": {
+   "MacBook Air M1": 1174424977
+  }
+ },
+ "scanned_tokens": 23189885203,
+ "ledger_unread_cli": 0,
+ "ledger": {
+  "MacBook Air M1": {
+   "present": true,
+   "total": 24373959108,
+   "sessions": 280,
+   "scanned": 24364310180,
+   "beyond_scan": 539977988,
+   "unread_cli_tokens": 0,
+   "unread_clis": [],
+   "beyond_by_cli": {
+    "antigravity": 539977988
+   }
+  }
+ },
+ "ledger_beyond_scan": 539977988,
+ "undated_in_headline": true,
+ "statscache_floor_delta": 30348187722,
+ "statscache_claude_floor_delta": 30348187722,
+ "scanner_version": "159a7ead51d2",
+ "hardware_uuid": "0088B2C6-9198-52C3-A51B-5D0E5CD4B596"
+}

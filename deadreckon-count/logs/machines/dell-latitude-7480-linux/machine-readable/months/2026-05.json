@@ -1,0 +1,24 @@
+{
+ "tokens": 137010234,
+ "sessions": 6,
+ "turns": 1346,
+ "minutes": 724.1999999999999,
+ "by_cli": {
+  "gemini": 2120216,
+  "copilot": 5530867,
+  "codex": 129359151
+ },
+ "by_machine": {
+  "Dell Latitude 7480 Linux": 137010234
+ },
+ "by_model": {
+  "gemini-3-flash-preview": 2120216,
+  "unknown": 1077756,
+  "gpt-5.5": 125356603,
+  "codex-auto-review": 4002548,
+  "claude-haiku-4.5": 4453111
+ },
+ "first": "2026-05-05T01:01:39.455Z",
+ "last": "2026-05-28T07:59:00.675Z",
+ "month": "2026-05"
+}

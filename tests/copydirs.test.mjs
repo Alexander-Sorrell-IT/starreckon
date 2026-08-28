@@ -131,6 +131,8 @@ test("the literal parser reads accounts.mjs's real COPY_DIRS", () => {
 function findAnalyzeTokens() {
   const cands = [
     process.env.DEADRECKON_REPO,
+    join(ROOT, "deadreckon-count"),
+    join(ROOT, "deadreckon"),
     join(homedir(), "deadreckon-count"),
     resolve(ROOT, "..", "deadreckon-count"),
     resolve(ROOT, "..", "..", "deadreckon-count"),

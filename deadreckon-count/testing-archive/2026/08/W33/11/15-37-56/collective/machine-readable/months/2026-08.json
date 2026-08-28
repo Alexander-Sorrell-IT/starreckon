@@ -1,0 +1,26 @@
+{
+ "tokens": 450565380,
+ "sessions": 19,
+ "turns": 2929,
+ "minutes": 1109.3999999999999,
+ "by_cli": {
+  "antigravity": 18343717,
+  "claude": 432221663
+ },
+ "by_machine": {
+  "ASUS Laptop Linux": 8278412,
+  "Dell Inspiron Desktop Linux": 10065305,
+  "HP Laptop Linux": 432221663
+ },
+ "by_model": {
+  "gemini-antigravity-brain": 14360812,
+  "gemini-3.6-flash-high": 3982905,
+  "<synthetic>": 0,
+  "claude-fable-5": 289003888,
+  "claude-opus-5": 143097189,
+  "claude-sonnet-5": 120586
+ },
+ "first": "2026-08-03T02:34:23.852Z",
+ "last": "2026-08-09T07:32:10Z",
+ "month": "2026-08"
+}

@@ -1,0 +1,24 @@
+{
+ "tokens": 295983031,
+ "sessions": 8,
+ "turns": 1513,
+ "minutes": 1541.5000000000002,
+ "by_cli": {
+  "copilot": 42818540,
+  "antigravity": 9215322,
+  "claude": 243949169
+ },
+ "by_machine": {
+  "MacBook Air M1": 295983031
+ },
+ "by_model": {
+  "claude-sonnet-4.6": 14911900,
+  "gemini-3-flash-agent": 9215322,
+  "claude-opus-4.8": 27906640,
+  "claude-sonnet-4-6": 243949169,
+  "<synthetic>": 0
+ },
+ "first": "2026-06-01T15:42:23.984Z",
+ "last": "2026-06-28T17:37:38Z",
+ "month": "2026-06"
+}

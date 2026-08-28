@@ -1,0 +1,124 @@
+{
+ "scope": "Dell Latitude 7480 Linux",
+ "generated_at": "2026-08-08T15:30:54-05:00",
+ "total_tokens": 7434311190,
+ "sessions": 16615,
+ "fields": {
+  "input_tokens": 323732629,
+  "cache_creation_input_tokens": 498078727,
+  "cache_read_input_tokens": 4470568005,
+  "output_tokens": 32231195
+ },
+ "new_content_tokens": 854042551,
+ "hours": 291.9,
+ "by_cli": {
+  "claude": {
+   "sessions": 16533,
+   "tokens": 5324825684,
+   "minutes": 9105.1
+  },
+  "gemini": {
+   "sessions": 33,
+   "tokens": 320741667,
+   "minutes": 1652.3
+  },
+  "copilot": {
+   "sessions": 24,
+   "tokens": 1062300519,
+   "minutes": 4836.0
+  },
+  "codex": {
+   "sessions": 20,
+   "tokens": 677851186,
+   "minutes": 1736.9
+  },
+  "antigravity": {
+   "sessions": 5,
+   "tokens": 48592134,
+   "minutes": 183.6
+  }
+ },
+ "by_model": {
+  "claude-opus-4-8": 2827458084,
+  "unknown": 1057847408,
+  "claude-opus-4-6": 908228165,
+  "claude-opus-5": 753971819,
+  "claude-opus-4-5-20251101": 585926324,
+  "gpt-5.5": 379804407,
+  "gpt-5.4-mini": 289062995,
+  "gemini-3-flash-preview": 256769016,
+  "claude-fable-5": 175126453,
+  "gemini-3-pro-preview": 63953140,
+  "gemini-3.5-flash-low": 39462940,
+  "claude-haiku-4-5-20251001": 31833944,
+  "claude-opus-4-7": 18466244,
+  "claude-sonnet-4-5-20250929": 16532785,
+  "claude-sonnet-4-6": 7281866,
+  "gemini-3.6-flash-high": 6928018,
+  "gpt-5.3-codex": 4981236,
+  "claude-haiku-4.5": 4453111,
+  "codex-auto-review": 4002548,
+  "gemini-2.5-flash-native-audio-prev": 2201176
+ },
+ "records": {
+  "longest_session": {
+   "id": "18db778e-e4fc-4f9b-ac8d-b45b38fb2d81",
+   "cli": "claude",
+   "machine": "Dell Latitude 7480 Linux",
+   "minutes": 832.5
+  },
+  "most_tokens": {
+   "id": "380c9a87-44b3-4093-8edb-0aa103fc2bbe",
+   "cli": "claude",
+   "machine": "Dell Latitude 7480 Linux",
+   "tokens": 456322438
+  },
+  "most_turns": {
+   "id": "02bb1333-4437-43d7-8f1a-78cd9aa1d0d5",
+   "cli": "claude",
+   "machine": "Dell Latitude 7480 Linux",
+   "turns": 4021
+  }
+ },
+ "scans": {
+  "Dell Latitude 7480 Linux": "2026-08-06T06:18:06-05:00"
+ },
+ "first_last_seen": {
+  "gemini": {
+   "first": "2025-12-30T03:18:15.409Z",
+   "last": "2026-05-05T06:05:42.274Z",
+   "sources": [
+    "transcripts"
+   ]
+  },
+  "claude": {
+   "first": "2026-01-17T21:48:15.570Z",
+   "last": "2026-08-06T11:17:29.515Z",
+   "sources": [
+    "transcripts"
+   ]
+  },
+  "copilot": {
+   "first": "2026-02-26T21:47:09.602Z",
+   "last": "2026-05-28T07:59:00.675Z",
+   "sources": [
+    "transcripts"
+   ]
+  },
+  "codex": {
+   "first": "2026-04-26T00:20:31.508Z",
+   "last": "2026-05-18T22:53:36.537Z",
+   "sources": [
+    "transcripts"
+   ]
+  },
+  "antigravity": {
+   "first": "2026-07-09T06:07:55Z",
+   "last": "2026-07-24T03:30:16Z",
+   "sources": [
+    "transcripts"
+   ]
+  }
+ },
+ "scanner_version": "1108dc477b34"
+}

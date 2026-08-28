@@ -1,0 +1,6 @@
+{
+ "hostname": "phantom-eternal",
+ "folder": "asus-laptop-linux",
+ "label": "ASUS Laptop Linux",
+ "platform": "Linux-6.14.0-35-generic-x86_64-with-glibc2.39"
+}

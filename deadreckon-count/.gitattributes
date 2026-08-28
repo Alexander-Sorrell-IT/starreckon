@@ -1,0 +1,14 @@
+# Generated files. Two computers scanning around the same time both rewrite
+# these, and git cannot merge them meaningfully — the text is derived, so a
+# three-way merge produces a document that matches neither machine's data.
+#
+# `union` keeps both sides rather than leaving conflict markers, which is still
+# wrong as a document but never blocks the pull. The actual resolution is always
+# the same: run `python3 update.py --combine-only` afterwards and they are
+# rebuilt from the machine folders, which DO merge cleanly because each computer
+# only ever writes its own.
+ALL-COMPUTERS.json  merge=union
+BY-COMPUTER.md      merge=union
+BY-ACCOUNT.md       merge=union
+BY-COMPANY.md       merge=union
+README.md           merge=union

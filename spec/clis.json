@@ -1,0 +1,97 @@
+{
+  "_comment": [
+    "Every command-line AI tool that starreckon counts tokens for.",
+    "",
+    "This file mirrors deadreckon-count/clis.json for cross-validation.",
+    "If this file does not exist, the system falls back to spec/sources.json.",
+    "",
+    "Fields:",
+    "  name              display name shown in reports",
+    "  paths             home-relative paths that prove the tool is installed",
+    "  binary            command name checked with `which`, null if none",
+    "  reader            key into readers that counts this tool's tokens,",
+    "                    null if no reader exists yet",
+    "  store_labels      canonical store entries read by reader; [] if none",
+    "  no_tokens_because why this tool cannot be token-counted, null if it CAN be"
+  ],
+  "clis": [
+    {
+      "name": "Claude Code",
+      "paths": [".claude", ".claude-*", ".my-claude"],
+      "binary": "claude",
+      "reader": "claude",
+      "store_labels": ["claude"],
+      "no_tokens_because": null
+    },
+    {
+      "name": "GitHub Copilot CLI",
+      "paths": [".copilot"],
+      "binary": "copilot",
+      "reader": "copilot",
+      "store_labels": ["copilot"],
+      "no_tokens_because": null
+    },
+    {
+      "name": "OpenAI Codex CLI",
+      "paths": [".codex"],
+      "binary": "codex",
+      "reader": "codex",
+      "store_labels": ["codex"],
+      "no_tokens_because": null
+    },
+    {
+      "name": "Google Gemini CLI",
+      "paths": [".gemini"],
+      "binary": "gemini",
+      "reader": "gemini",
+      "store_labels": ["gemini"],
+      "no_tokens_because": null
+    },
+    {
+      "name": "Antigravity CLI",
+      "paths": [".gemini/antigravity-cli"],
+      "binary": "agy",
+      "reader": "antigravity",
+      "store_labels": ["gemini-antigravity"],
+      "no_tokens_because": null
+    },
+    {
+      "name": "Bob CLI",
+      "paths": [".bob/db/bob.db"],
+      "binary": "bob",
+      "reader": "bob",
+      "store_labels": ["bob"],
+      "no_tokens_because": null
+    },
+    {
+      "name": "Clawspring CLI",
+      "paths": [".clawspring/sessions"],
+      "binary": null,
+      "reader": "clawspring",
+      "store_labels": ["clawspring"],
+      "no_tokens_because": null
+    },
+    {
+      "name": "xAI Grok CLI",
+      "paths": [".grok"],
+      "binary": "grok",
+      "reader": "grok",
+      "store_labels": ["grok", "grok-archived"],
+      "no_tokens_because": null
+    },
+    {
+      "name": "Jules CLI",
+      "paths": [".jules", ".config/jules"],
+      "binary": "jules",
+      "reader": null,
+      "no_tokens_because": "cloud agent — work runs on Google's servers, no local token record"
+    },
+    {
+      "name": "grok-cli (@vibe-kit)",
+      "paths": [".npm-global/bin/grok"],
+      "binary": null,
+      "reader": null,
+      "no_tokens_because": "records no usage of any kind"
+    }
+  ]
+}

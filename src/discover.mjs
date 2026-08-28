@@ -6,9 +6,10 @@
 //
 // WHY THIS EXISTS
 //
-// This scanner knows eight hardcoded relative paths. That works exactly as far
-// as somebody thought to write one down, and no further. A CLI installed last
-// week, or a store that moved on this OS, produces:
+// This scanner reads spec/clis.json and spec/programs.json to know what tools
+// exist, then scans $PATH, /Applications, ~/.local/bin, and home directories
+// to find them. A CLI installed last week, or a store that moved on this OS,
+// produces:
 //
 //     counted tokens   0
 //     the star         drawn without it
@@ -43,15 +44,172 @@
 // directory that could not be read is a third fact; collapsing it into KNOWN
 // hides a gap, collapsing it into UNKNOWN cries wolf until nobody reads this.
 
-import { readdirSync, readFileSync, statSync, openSync, readSync, closeSync } from "node:fs";
-import { join, basename, relative, sep } from "node:path";
-import { homedir } from "node:os";
+import { readdirSync, readFileSync, statSync, openSync, readSync, closeSync, existsSync } from "node:fs";
+import { join, basename, relative, sep, dirname } from "node:path";
+import { homedir, platform } from "node:os";
 import { pathToFileURL } from "node:url";
+import { execSync } from "node:child_process";
+import { fileURLToPath } from "node:url";
+
+// Load spec files for CLIs and programs
+const __dirname = dirname(fileURLToPath(import.meta.url));
+const specDir = join(__dirname, "..", "spec");
+
+function loadSpec() {
+  const clisPath = join(specDir, "clis.json");
+  const programsPath = join(specDir, "programs.json");
+  
+  let clis = [], programs = [];
+  
+  if (existsSync(clisPath)) {
+    const clisData = JSON.parse(readFileSync(clisPath, "utf8"));
+    clis = clisData.clis || [];
+  }
+  
+  if (existsSync(programsPath)) {
+    const programsData = JSON.parse(readFileSync(programsPath, "utf8"));
+    programs = programsData.programs || [];
+  }
+  
+  return { clis, programs };
+}
 
 // Depth 4 from home. Deep enough for ~/.config/<tool>/<profile>/sessions and
 // Library/Application Support/<tool>/<x>, shallow enough not to walk a source
 // tree. Anything deeper is inside a store, not a store.
 export const MAX_DEPTH = 4;
+
+/**
+ * Scan $PATH for known CLI binaries from spec/clis.json
+ * Returns array of {name, binary, path} for each found CLI
+ */
+export function scanPathForCLIs(clis) {
+  const found = [];
+  const plat = platform();
+  
+  // Get PATH directories
+  let pathEnv = "";
+  try {
+    pathEnv = execSync(plat === "win32" ? "echo %PATH%" : "echo $PATH", { encoding: "utf8" }).trim();
+  } catch {
+    return found;
+  }
+  
+  const pathDirs = pathEnv.split(plat === "win32" ? ";" : ":");
+  
+  for (const cli of clis) {
+    if (!cli.binary) continue;
+    
+    for (const dir of pathDirs) {
+      const binPath = join(dir, cli.binary + (plat === "win32" ? ".exe" : ""));
+      if (existsSync(binPath)) {
+        found.push({
+          name: cli.name,
+          binary: cli.binary,
+          path: binPath,
+          hasReader: !!cli.reader
+        });
+        break;
+      }
+    }
+  }
+  
+  return found;
+}
+
+/**
+ * Scan OS-specific application directories for programs
+ * Returns array of {name, kind, path} for each found program
+ */
+export function scanAppDirectories(programs) {
+  const found = [];
+  const plat = platform();
+  const home = homedir();
+  
+  // OS-specific application search paths
+  const appDirs = {
+    linux: [
+      "/usr/bin", "/usr/local/bin", "~/.local/bin", "/snap/bin"
+    ],
+    macos: [
+      "/Applications", "~/Applications", "/usr/local/bin", "~/.local/bin"
+    ],
+    win32: [
+      "C:\\Program Files", "C:\\Program Files (x86)", 
+      process.env.LOCALAPPDATA || "", process.env.APPDATA || ""
+    ]
+  }[plat] || [];
+  
+  for (const prog of programs) {
+    if (!prog.binary) continue;
+    
+    const binName = prog.binary + (plat === "win32" ? ".exe" : "");
+    
+    for (const appDir of appDirs) {
+      if (!appDir) continue;
+      const expandedDir = appDir.startsWith("~") ? join(home, appDir.slice(1)) : appDir;
+      
+      if (!existsSync(expandedDir)) continue;
+      
+      // For /Applications on macOS, look for .app bundles
+      if (plat === "macos" && expandedDir.includes("Applications")) {
+        try {
+          const entries = readdirSync(expandedDir);
+          for (const entry of entries) {
+            if (entry.toLowerCase().includes(prog.name.toLowerCase()) || 
+                entry.toLowerCase().includes(prog.binary.toLowerCase())) {
+              found.push({
+                name: prog.name,
+                kind: prog.kind,
+                path: join(expandedDir, entry),
+                hasReader: !!prog.reader
+              });
+            }
+          }
+        } catch { /* skip unreadable dirs */ }
+      } else {
+        // Check for binary in path directory
+        const binPath = join(expandedDir, binName);
+        if (existsSync(binPath)) {
+          found.push({
+            name: prog.name,
+            kind: prog.kind,
+            path: binPath,
+            hasReader: !!prog.reader
+          });
+        }
+      }
+    }
+  }
+  
+  return found;
+}
+
+/**
+ * Full discovery: scan PATH, app directories, and home for all tools
+ * Returns {clis: [...], programs: [...], unknownStores: [...]}
+ */
+export function discoverAll() {
+  const { clis: specClis, programs: specPrograms } = loadSpec();
+  
+  const foundClis = scanPathForCLIs(specClis);
+  const foundPrograms = scanAppDirectories(specPrograms);
+  
+  // Also run shape-based discovery for unknown stores
+  const knownPaths = [
+    ...specClis.flatMap(c => c.paths || []),
+    ...specPrograms.flatMap(p => p.paths || [])
+  ].map(p => join(homedir(), p));
+  
+  const shapeResult = walk(homedir(), knownPaths);
+  
+  return {
+    clis: foundClis,
+    programs: foundPrograms,
+    unknownStores: shapeResult.found.filter(f => f.status === "UNKNOWN"),
+    ambiguousStores: shapeResult.found.filter(f => f.status === "AMBIGUOUS")
+  };
+}
 
 // Trees that cannot contain a tool, or that are OURS. Kept short on purpose so
 // it does not quietly become the name list this file exists to replace.

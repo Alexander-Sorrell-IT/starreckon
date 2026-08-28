@@ -1,0 +1,444 @@
+{
+ "machine": "macbook-air-m1",
+ "generated_at": "2026-08-28T19:12:25+00:00",
+ "scanner_version": "27216bf938ca",
+ "config_fingerprint": {
+  "fingerprint_version": 1,
+  "algorithm": "sha256",
+  "sha256": "20390f2eb98a2e462eb3ce6267c282f4a28352288428f58221b9c4fcc4e2e179",
+  "files": {
+   "clis.json": {
+    "state": "present",
+    "sha256": "c55c73e4a25f95840cc78ffade6a1f94e752850dc7f9c5481eec39be34fcb930"
+   },
+   "programs.json": {
+    "state": "present",
+    "sha256": "b82bd57208c690d987d9d5583bc57322c0d567712bbf2082fd8f7d76435abd86"
+   },
+   "accounts.json": {
+    "state": "present",
+    "sha256": "e664137003e775e171a69429f0d35b7cb704a0da1c8a7054b99637bec4a62344"
+   },
+   "cli-config.json": {
+    "state": "present",
+    "sha256": "1528d9389666d83604546de7c78430d75e5aedce7a25baa24c084d0b3daa7e2d"
+   }
+  }
+ },
+ "scanner_features": [
+  "antigravity",
+  "bob",
+  "claude",
+  "claude-orphans",
+  "clawspring",
+  "codex",
+  "copilot",
+  "copilot-chat",
+  "gemini",
+  "grok",
+  "kilocode",
+  "lmstudio"
+ ],
+ "uncountable_tools": [],
+ "excluded_profiles": [],
+ "unreadable_paths": [],
+ "store_state": {
+  "claude": {
+   "state": "absent",
+   "paths": [],
+   "blocked": []
+  },
+  "claude-config": {
+   "state": "absent",
+   "paths": [],
+   "blocked": []
+  },
+  "claude-config-profiles": {
+   "state": "absent",
+   "paths": [],
+   "blocked": []
+  },
+  "gemini": {
+   "state": "absent",
+   "paths": [],
+   "blocked": []
+  },
+  "gemini-antigravity": {
+   "state": "absent",
+   "paths": [],
+   "blocked": []
+  },
+  "copilot": {
+   "state": "absent",
+   "paths": [],
+   "blocked": []
+  },
+  "codex": {
+   "state": "absent",
+   "paths": [],
+   "blocked": []
+  },
+  "codex-archived": {
+   "state": "absent",
+   "paths": [],
+   "blocked": []
+  },
+  "lmstudio": {
+   "state": "absent",
+   "paths": [],
+   "blocked": []
+  },
+  "grok": {
+   "state": "absent",
+   "paths": [],
+   "blocked": []
+  },
+  "grok-archived": {
+   "state": "absent",
+   "paths": [],
+   "blocked": []
+  },
+  "kilocode": {
+   "state": "absent",
+   "paths": [],
+   "blocked": []
+  },
+  "kilocode-insiders": {
+   "state": "absent",
+   "paths": [],
+   "blocked": []
+  },
+  "gemini-antigravity-brain": {
+   "state": "absent",
+   "paths": [],
+   "blocked": []
+  },
+  "gemini-antigravity-cache": {
+   "state": "absent",
+   "paths": [],
+   "blocked": []
+  },
+  "gemini-antigravity-root": {
+   "state": "absent",
+   "paths": [],
+   "blocked": []
+  },
+  "clawspring": {
+   "state": "absent",
+   "paths": [],
+   "blocked": []
+  },
+  "copilot-chat": {
+   "state": "absent",
+   "paths": [],
+   "blocked": []
+  },
+  "copilot-chat-insiders": {
+   "state": "absent",
+   "paths": [],
+   "blocked": []
+  },
+  "copilot-chat-empty": {
+   "state": "absent",
+   "paths": [],
+   "blocked": []
+  },
+  "copilot-chat-empty-insiders": {
+   "state": "absent",
+   "paths": [],
+   "blocked": []
+  },
+  "clawspring-memory": {
+   "state": "absent",
+   "paths": [],
+   "blocked": []
+  },
+  "clawspring-root": {
+   "state": "absent",
+   "paths": [],
+   "blocked": []
+  },
+  "proteus-sessions": {
+   "state": "absent",
+   "paths": [],
+   "blocked": []
+  },
+  "proteus-memory": {
+   "state": "absent",
+   "paths": [],
+   "blocked": []
+  },
+  "proteus-root": {
+   "state": "absent",
+   "paths": [],
+   "blocked": []
+  },
+  "proteus-claude-config": {
+   "state": "absent",
+   "paths": [],
+   "blocked": []
+  },
+  "nanobot": {
+   "state": "absent",
+   "paths": [],
+   "blocked": []
+  },
+  "nanobot-history": {
+   "state": "absent",
+   "paths": [],
+   "blocked": []
+  },
+  "nanobot-workspace": {
+   "state": "absent",
+   "paths": [],
+   "blocked": []
+  },
+  "deepseek-code": {
+   "state": "absent",
+   "paths": [],
+   "blocked": []
+  },
+  "codex-root": {
+   "state": "absent",
+   "paths": [],
+   "blocked": []
+  },
+  "copilot-root": {
+   "state": "absent",
+   "paths": [],
+   "blocked": []
+  },
+  "gemini-root": {
+   "state": "absent",
+   "paths": [],
+   "blocked": []
+  },
+  "jules": {
+   "state": "absent",
+   "paths": [],
+   "blocked": []
+  },
+  "ollama": {
+   "state": "absent",
+   "paths": [],
+   "blocked": []
+  },
+  "bob": {
+   "state": "absent",
+   "paths": [],
+   "blocked": []
+  },
+  "deepseek": {
+   "state": "absent",
+   "paths": [],
+   "blocked": []
+  },
+  "cursor": {
+   "state": "absent",
+   "paths": [],
+   "blocked": []
+  },
+  "aider": {
+   "state": "absent",
+   "paths": [],
+   "blocked": []
+  },
+  "cline": {
+   "state": "absent",
+   "paths": [],
+   "blocked": []
+  },
+  "roo": {
+   "state": "absent",
+   "paths": [],
+   "blocked": []
+  },
+  "continue": {
+   "state": "absent",
+   "paths": [],
+   "blocked": []
+  },
+  "opencode": {
+   "state": "absent",
+   "paths": [],
+   "blocked": []
+  },
+  "goose": {
+   "state": "absent",
+   "paths": [],
+   "blocked": []
+  },
+  "openhands": {
+   "state": "absent",
+   "paths": [],
+   "blocked": []
+  },
+  "qwen": {
+   "state": "absent",
+   "paths": [],
+   "blocked": []
+  },
+  "amp": {
+   "state": "absent",
+   "paths": [],
+   "blocked": []
+  }
+ },
+ "readers": [
+  {
+   "cli": "claude",
+   "sessions": 0,
+   "tokens": 0,
+   "active_min": 0,
+   "installed": false,
+   "looked_in": [
+    "~/.*claude*/projects"
+   ],
+   "unreadable": [],
+   "error": null
+  },
+  {
+   "cli": "copilot",
+   "sessions": 0,
+   "tokens": 0,
+   "active_min": 0,
+   "installed": false,
+   "looked_in": [
+    "~/.copilot/session-state"
+   ],
+   "unreadable": [],
+   "error": null
+  },
+  {
+   "cli": "codex",
+   "sessions": 0,
+   "tokens": 0,
+   "active_min": 0,
+   "installed": false,
+   "looked_in": [
+    "~/.codex/sessions"
+   ],
+   "unreadable": [],
+   "error": null
+  },
+  {
+   "cli": "gemini",
+   "sessions": 0,
+   "tokens": 0,
+   "active_min": 0,
+   "installed": false,
+   "looked_in": [
+    "~/.gemini/tmp"
+   ],
+   "unreadable": [],
+   "error": null
+  },
+  {
+   "cli": "kilocode",
+   "sessions": 0,
+   "tokens": 0,
+   "active_min": 0,
+   "installed": false,
+   "looked_in": [
+    "~/.config/Code/User/globalStorage/kilocode.kilo-code/tasks",
+    "~/.config/Code - Insiders/User/globalStorage/kilocode.kilo-code/tasks"
+   ],
+   "unreadable": [],
+   "error": null
+  },
+  {
+   "cli": "grok",
+   "sessions": 0,
+   "tokens": 0,
+   "active_min": 0,
+   "installed": false,
+   "looked_in": [
+    "~/.grok/sessions",
+    "~/.grok/archived_sessions"
+   ],
+   "unreadable": [],
+   "error": null
+  },
+  {
+   "cli": "antigravity",
+   "sessions": 0,
+   "tokens": 0,
+   "active_min": 0,
+   "installed": false,
+   "looked_in": [
+    "~/.gemini/antigravity-cli/conversations"
+   ],
+   "unreadable": [],
+   "error": null
+  },
+  {
+   "cli": "lmstudio",
+   "sessions": 0,
+   "tokens": 0,
+   "active_min": 0,
+   "installed": false,
+   "looked_in": [
+    "~/.lmstudio/conversations"
+   ],
+   "unreadable": [],
+   "error": null
+  },
+  {
+   "cli": "clawspring",
+   "sessions": 0,
+   "tokens": 0,
+   "active_min": 0,
+   "installed": false,
+   "looked_in": [
+    "~/.clawspring/sessions"
+   ],
+   "unreadable": [],
+   "error": null
+  },
+  {
+   "cli": "copilot-chat",
+   "sessions": 0,
+   "tokens": 0,
+   "active_min": 0,
+   "installed": false,
+   "looked_in": [
+    "~/.config/Code/User/workspaceStorage",
+    "~/.config/Code - Insiders/User/workspaceStorage",
+    "~/.config/Code/User/globalStorage/emptyWindowChatSessions",
+    "~/.config/Code - Insiders/User/globalStorage/emptyWindowChatSessions"
+   ],
+   "unreadable": [],
+   "error": null
+  },
+  {
+   "cli": "bob",
+   "sessions": 0,
+   "tokens": 0,
+   "active_min": 0,
+   "installed": false,
+   "looked_in": [
+    "~/.bob/db"
+   ],
+   "unreadable": [],
+   "error": null
+  },
+  {
+   "cli": "claude-orphans",
+   "sessions": 0,
+   "tokens": 0,
+   "active_min": 0,
+   "installed": false,
+   "looked_in": [
+    "~/.claude.json",
+    "~/.claude*/.claude.json"
+   ],
+   "unreadable": [],
+   "error": null
+  }
+ ],
+ "first_last_seen": {},
+ "inventory": [],
+ "history_ledger": [],
+ "stats_cache": [],
+ "sessions": []
+}

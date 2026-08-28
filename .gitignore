@@ -1,62 +1,53 @@
-# Environment
+```
+# Logs and data files
+*.log
+*.jsonl
+*.csv
+
+# Generated reports and machine-readable files
+validation_test/logs/
+
+# Temporary and cache files
+*.tmp
+*.swp
+*.swo
+
+# Environment files
 .env
 .env.local
-.env.*
+*.env.*
 
-# Logs and temp files
-*.log
-*.tmp
-
-# Dependencies
-node_modules/
-.julia/
-.zig-cache/
-zig-cache/
+# OS generated files
+.DS_Store
+Thumbs.db
 
 # Build artifacts
-dist/
-build/
-target/
 *.o
 *.obj
+*.out
 *.exe
 *.dll
 *.so
 *.a
-*.out
 
-# Python specific
+# Dependencies
+node_modules/
 __pycache__/
-*.pyc
-*.pyo
-*.pyd
-.Python
-*.egg-info/
-.eggs/
-.coverage
-coverage/
-htmlcov/
-
-# JavaScript/Node specific
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-
-# Editors
-.vscode/
-.idea/
-*.swp
-*.swo
-
-# OS generated
-.DS_Store
-Thumbs.db
-
-# Testing
+.venv/
+venv/
 .mypy_cache/
 .pytest_cache/
-.nyc_output/
+target/
+.gradle/
+
+# Coverage reports
 coverage/
+htmlcov/
+.coverage
+
+# IDE files
+.vscode/
+.idea/
 
 # Compressed files
 *.zip
@@ -81,3 +72,4 @@ coverage/
 *.tar.bz2
 *.tar.xz
 *.tar.zst
+```

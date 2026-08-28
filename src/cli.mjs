@@ -2153,6 +2153,52 @@ async function main() {
   const stamp = new Date().toISOString().slice(0, 10);
   const name = displayName();
 
+  // Generate Markdown reports matching deadreckon-count format
+  try {
+    const { generateMarkdownReports } = await import("./reporter-md.mjs");
+    const mdPaths = generateMarkdownReports({
+      lifetime: {
+        total: agg.total_input_tokens + agg.total_output_tokens + agg.total_cache_read_tokens + agg.total_cache_write_tokens,
+        input: agg.total_input_tokens,
+        cache_creation: agg.total_cache_write_tokens,
+        cache_read: agg.total_cache_read_tokens,
+        output: agg.total_output_tokens
+      },
+      sessionCount: agg.total_sessions,
+      byComputer: providers?.providers ? Object.fromEntries(
+        Object.entries(providers.providers).map(([provider, data]) => [
+          provider,
+          {
+            total: (data.input ?? 0) + (data.output ?? 0) + (data.cacheRead ?? 0) + (data.cacheWrite ?? 0),
+            input: data.input ?? 0,
+            cache_creation: data.cacheWrite ?? 0,
+            cache_read: data.cacheRead ?? 0,
+            output: data.output ?? 0,
+            sessions: data.sessions ?? 0,
+            byAccount: {}
+          }
+        ])
+      ) : {},
+      byAccount: accounts ? (() => {
+        const byAcct = {};
+        for (const row of accounts) {
+          if (!byAcct[row.account]) byAcct[row.account] = {};
+          byAcct[row.account]['anthropic'] = {
+            total: row.onDisk.input + row.onDisk.output + row.onDisk.cacheRead + row.onDisk.cacheWrite,
+            input: row.onDisk.input,
+            cache_creation: row.onDisk.cacheWrite,
+            cache_read: row.onDisk.cacheRead,
+            output: row.onDisk.output
+          };
+        }
+        return byAcct;
+      })() : {}
+    }, process.cwd());
+    console.log(`\nmarkdown reports: ${maskPath(mdPaths.byComputer)}\n                ${maskPath(mdPaths.byAccount)}\n                ${maskPath(mdPaths.lifetime)}`);
+  } catch (e) {
+    console.log(`${DIM}markdown reports failed: ${maskText(e.message)}${RESET}`);
+  }
+
   if (flag("--json")) {
     mkdirSync(outDir, { recursive: true });
     const baseline = {

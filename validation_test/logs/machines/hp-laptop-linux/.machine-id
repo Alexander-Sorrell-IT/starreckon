@@ -1,0 +1,7 @@
+{
+ "hostname": "HP-Phantom-Core",
+ "folder": "hp-laptop-linux",
+ "label": "HP Laptop Linux",
+ "platform": "Linux-7.0.0-28-generic-x86_64-with-glibc2.39",
+ "hardware_uuid": "4a5b5dc6-8401-43cb-b62b-45fa5d974c11"
+}

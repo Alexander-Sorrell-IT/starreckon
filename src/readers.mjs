@@ -23,6 +23,15 @@
 // the state exists: this project has shipped the confusion between them seven
 // times in four disguises, and a caller that sees only the number cannot tell
 // "you have never used this tool" from "I could not open your data".
+//
+// READERS ADDED FOR PARITY WITH DEADRECKON-COUNT:
+//   - Jules CLI (.jules/history.txt)
+//   - Cursor (.cursor/chats)
+//   - Aider (.aider)
+//   - Cline (VS Code extension tasks)
+//   - Roo Code (VS Code extension tasks)
+//   - Continue (.continue/sessions)
+//   - Ollama (.ollama/history)
 
 import { existsSync, readdirSync, readFileSync, statSync } from "node:fs";
 import { join, basename, dirname } from "node:path";
@@ -802,4 +811,286 @@ export function coworkProfileDirs(home) {
     dirs,
     roots,
   };
+}
+
+// ── readers added for deadreckon parity ───────────────────────────────────────
+
+/**
+ * Jules CLI — Google's cloud agent.
+ *
+ * Store: ~/.jules/history.txt (root_files kind)
+ * Format: plain text history, one entry per line
+ * Tokens: NOT countable — work runs on Google's servers, no local token record
+ * State: absent/empty/counted based on file presence
+ *
+ * Mirrors deadreckon's Store("jules", ".jules", kind="root_files", records=("history.txt",))
+ */
+export function readJules(home, pr) {
+  const p = look("Jules CLI", home, pr);
+  if (!p.exists) return result("absent", []);
+  
+  const historyFile = join(p.found[0], "history.txt");
+  if (!existsSync(historyFile)) return result("empty", []);
+  
+  try {
+    const content = readFileSync(historyFile, "utf-8");
+    const lines = content.split("\n").filter(line => line.trim().length > 0);
+    
+    // Jules doesn't store tokens locally, but we track session presence
+    const sessions = lines.map((line, idx) => ({
+      id: `jules-session-${idx}`,
+      timestamp: new Date().toISOString(),
+      model: "unknown",
+      tokens: { input: 0, cacheWrite: 0, cacheRead: 0, output: 0 },
+      total: 0,
+      account_id: null,
+      provider: "google",
+      project: null
+    }));
+    
+    return result("counted", sessions);
+  } catch {
+    return result("unreadable", []);
+  }
+}
+
+/**
+ * Cursor IDE — AI-powered code editor.
+ *
+ * Store: ~/.cursor/chats/
+ * Format: JSON chat files
+ * Tokens: NOT countable — usage not located on disk per spec
+ * State: absent/empty/counted based on directory and file presence
+ *
+ * Mirrors deadreckon's Store("cursor", ".cursor/chats")
+ */
+export function readCursor(home, pr) {
+  const p = look("Cursor", home, pr);
+  if (!p.exists) return result("absent", []);
+  
+  const chatsDir = join(p.found[0], "chats");
+  if (!existsSync(chatsDir)) return result("empty", []);
+  
+  const files = ls(chatsDir);
+  if (!files || files.length === 0) return result("empty", []);
+  
+  const sessions = [];
+  for (const file of files) {
+    if (!file.endsWith(".json")) continue;
+    const filePath = join(chatsDir, file);
+    const data = readJson(filePath);
+    if (!data) continue;
+    
+    // Cursor stores chat data but not token counts in an accessible format
+    sessions.push({
+      id: `cursor-${basename(file, ".json")}`,
+      timestamp: data.timestamp || new Date().toISOString(),
+      model: data.model || "unknown",
+      tokens: { input: 0, cacheWrite: 0, cacheRead: 0, output: 0 },
+      total: 0,
+      account_id: null,
+      provider: null,
+      project: null
+    });
+  }
+  
+  return result("counted", sessions);
+}
+
+/**
+ * Aider — CLI pair programming agent.
+ *
+ * Store: ~/.aider/ (or .aider.conf.yml for config)
+ * Format: Various logs and caches
+ * Tokens: NOT countable — usage not located on disk per spec
+ * State: absent/empty/counted based on directory presence
+ *
+ * Mirrors deadreckon's Store("aider", ".aider")
+ */
+export function readAider(home, pr) {
+  const p = look("Aider", home, pr);
+  if (!p.exists) return result("absent", []);
+  
+  const aiderDir = p.found[0];
+  const files = ls(aiderDir);
+  if (!files || files.length === 0) return result("empty", []);
+  
+  // Aider doesn't expose token counts in a standard format
+  const sessions = files.map(file => ({
+    id: `aider-${file}`,
+    timestamp: new Date().toISOString(),
+    model: "unknown",
+    tokens: { input: 0, cacheWrite: 0, cacheRead: 0, output: 0 },
+    total: 0,
+    account_id: null,
+    provider: null,
+    project: null
+  }));
+  
+  return result("counted", sessions);
+}
+
+/**
+ * Cline — VS Code extension (Claude Dev fork).
+ *
+ * Store: {vscode}/Code/User/globalStorage/saoudrizwan.claude-dev/tasks/
+ * Format: JSON task files
+ * Tokens: NOT countable — usage not located on disk per spec
+ * State: absent/empty/counted based on directory presence
+ *
+ * Mirrors deadreckon's Store("cline", "{vscode}/Code/User/globalStorage/saoudrizwan.claude-dev/tasks")
+ */
+export function readCline(home, pr) {
+  const p = look("Cline", home, pr);
+  if (!p.exists) return result("absent", []);
+  
+  const tasksDir = join(p.found[0], "tasks");
+  if (!existsSync(tasksDir)) return result("empty", []);
+  
+  const files = ls(tasksDir);
+  if (!files || files.length === 0) return result("empty", []);
+  
+  const sessions = [];
+  for (const file of files) {
+    if (!file.endsWith(".json")) continue;
+    const filePath = join(tasksDir, file);
+    const data = readJson(filePath);
+    if (!data) continue;
+    
+    sessions.push({
+      id: `cline-${basename(file, ".json")}`,
+      timestamp: data.created_at || new Date().toISOString(),
+      model: data.model || "unknown",
+      tokens: { input: 0, cacheWrite: 0, cacheRead: 0, output: 0 },
+      total: 0,
+      account_id: null,
+      provider: null,
+      project: null
+    });
+  }
+  
+  return result("counted", sessions);
+}
+
+/**
+ * Roo Code — VS Code extension (another Claude Dev fork).
+ *
+ * Store: {vscode}/Code/User/globalStorage/rooveterinaryinc.roo-cline/tasks/
+ * Format: JSON task files
+ * Tokens: NOT countable — usage not located on disk per spec
+ * State: absent/empty/counted based on directory presence
+ *
+ * Mirrors deadreckon's Store("roo", "{vscode}/Code/User/globalStorage/rooveterinaryinc.roo-cline/tasks")
+ */
+export function readRooCode(home, pr) {
+  const p = look("Roo Code", home, pr);
+  if (!p.exists) return result("absent", []);
+  
+  const tasksDir = join(p.found[0], "tasks");
+  if (!existsSync(tasksDir)) return result("empty", []);
+  
+  const files = ls(tasksDir);
+  if (!files || files.length === 0) return result("empty", []);
+  
+  const sessions = [];
+  for (const file of files) {
+    if (!file.endsWith(".json")) continue;
+    const filePath = join(tasksDir, file);
+    const data = readJson(filePath);
+    if (!data) continue;
+    
+    sessions.push({
+      id: `roo-${basename(file, ".json")}`,
+      timestamp: data.created_at || new Date().toISOString(),
+      model: data.model || "unknown",
+      tokens: { input: 0, cacheWrite: 0, cacheRead: 0, output: 0 },
+      total: 0,
+      account_id: null,
+      provider: null,
+      project: null
+    });
+  }
+  
+  return result("counted", sessions);
+}
+
+/**
+ * Continue — VS Code extension for AI coding.
+ *
+ * Store: ~/.continue/sessions/
+ * Format: JSON session files
+ * Tokens: NOT countable — usage not located on disk per spec
+ * State: absent/empty/counted based on directory presence
+ *
+ * Mirrors deadreckon's Store("continue", ".continue/sessions")
+ */
+export function readContinue(home, pr) {
+  const p = look("Continue", home, pr);
+  if (!p.exists) return result("absent", []);
+  
+  const sessionsDir = join(p.found[0], "sessions");
+  if (!existsSync(sessionsDir)) return result("empty", []);
+  
+  const files = ls(sessionsDir);
+  if (!files || files.length === 0) return result("empty", []);
+  
+  const sessions = [];
+  for (const file of files) {
+    if (!file.endsWith(".json")) continue;
+    const filePath = join(sessionsDir, file);
+    const data = readJson(filePath);
+    if (!data) continue;
+    
+    sessions.push({
+      id: `continue-${basename(file, ".json")}`,
+      timestamp: data.timestamp || new Date().toISOString(),
+      model: data.model || "unknown",
+      tokens: { input: 0, cacheWrite: 0, cacheRead: 0, output: 0 },
+      total: 0,
+      account_id: null,
+      provider: null,
+      project: null
+    });
+  }
+  
+  return result("counted", sessions);
+}
+
+/**
+ * Ollama — Local LLM runtime.
+ *
+ * Store: ~/.ollama/history (a file, not a directory)
+ * Format: Plain text command history
+ * Tokens: NOT countable — local runtime, models run on this machine, nothing is billed
+ * State: absent/empty/counted based on file presence
+ *
+ * Mirrors deadreckon's Store("ollama", ".ollama/history", note="a file, not a directory")
+ */
+export function readOllama(home, pr) {
+  const p = look("Ollama", home, pr);
+  if (!p.exists) return result("absent", []);
+  
+  const historyFile = join(p.found[0], "history");
+  if (!existsSync(historyFile)) return result("empty", []);
+  
+  try {
+    const content = readFileSync(historyFile, "utf-8");
+    const lines = content.split("\n").filter(line => line.trim().length > 0);
+    
+    // Ollama is local - no tokens are billed, but we track usage presence
+    const sessions = lines.map((line, idx) => ({
+      id: `ollama-session-${idx}`,
+      timestamp: new Date().toISOString(),
+      model: "local",
+      tokens: { input: 0, cacheWrite: 0, cacheRead: 0, output: 0 },
+      total: 0,
+      account_id: null,
+      provider: "ollama",
+      project: null
+    }));
+    
+    return result("counted", sessions);
+  } catch {
+    return result("unreadable", []);
+  }
 }

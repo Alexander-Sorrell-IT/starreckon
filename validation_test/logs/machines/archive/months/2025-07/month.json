@@ -1,0 +1,19 @@
+{
+ "tokens": 53159,
+ "sessions": 3,
+ "turns": 49,
+ "minutes": 0.0,
+ "by_cli": {
+  "lmstudio": 53159
+ },
+ "by_machine": {
+  "MacBook Air M1": 53159
+ },
+ "by_model": {
+  "Wizard-Vicuna-7B-Uncensored.Q4_K_S.gguf": 37497,
+  "nomic-ai-gpt4all-falcon-Q4_K_S.gguf": 15662
+ },
+ "first": "2025-07-03T07:40:02.682000Z",
+ "last": "2025-07-04T07:49:17.357000Z",
+ "month": "2025-07"
+}

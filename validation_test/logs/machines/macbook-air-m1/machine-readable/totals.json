@@ -1,0 +1,1098 @@
+{
+  "machine": "MacBook Air M1",
+  "generated_at": "2026-08-12T03:46:33-05:00",
+  "scanner_version": "103c20d12f3a",
+  "hardware_uuid": "0088B2C6-9198-52C3-A51B-5D0E5CD4B596",
+  "anthropic_only_tokens": 14817998601,
+  "by_provider": {
+    "anthropic": 14817998601
+  },
+  "other_tools": [
+    {
+      "vendor": "gemini",
+      "label": "Gemini CLI",
+      "dir": "/Users/broodierchip-m1air/.gemini",
+      "files": 238,
+      "records_usage": false
+    },
+    {
+      "vendor": "copilot",
+      "label": "GitHub Copilot CLI",
+      "dir": "/Users/broodierchip-m1air/.copilot",
+      "files": 215,
+      "records_usage": false
+    },
+    {
+      "vendor": "antigravity",
+      "label": "Antigravity CLI",
+      "dir": "/Users/broodierchip-m1air/.antigravitycli",
+      "files": 1,
+      "records_usage": false
+    },
+    {
+      "vendor": "openai",
+      "label": "OpenAI Codex CLI",
+      "dir": "/Users/broodierchip-m1air/.codex",
+      "files": 983,
+      "records_usage": true
+    },
+    {
+      "vendor": "xai",
+      "label": "Grok CLI",
+      "dir": "/Users/broodierchip-m1air/.grok",
+      "files": 572,
+      "records_usage": false
+    }
+  ],
+  "grand_total_tokens": 14817998601,
+  "excluded_profiles": [
+    {
+      "path": "/Users/broodierchip-m1air/.ai-logs-archive/claude/Desktop_standout_sandbox_.claude",
+      "reason": "no config file of its own"
+    },
+    {
+      "path": "/Users/broodierchip-m1air/Desktop/standout_sandbox/.claude",
+      "reason": "no config file of its own"
+    },
+    {
+      "path": "/Users/broodierchip-m1air/token-corpus/asus-laptop-linux/.claude",
+      "reason": "no config file of its own"
+    },
+    {
+      "path": "/Users/broodierchip-m1air/token-corpus/dell-inspiron-desktop-linux/.claude",
+      "reason": "no config file of its own"
+    },
+    {
+      "path": "/Users/broodierchip-m1air/token-corpus/dell-latitude-7480-linux/.claude",
+      "reason": "no config file of its own"
+    },
+    {
+      "path": "/Users/broodierchip-m1air/token-corpus/hp-laptop-linux/.claude",
+      "reason": "no config file of its own"
+    },
+    {
+      "path": "/Users/broodierchip-m1air/token-corpus/macbook-air-m1/.claude",
+      "reason": "no config file of its own"
+    }
+  ],
+  "accounts": [
+    {
+      "config_dir": "/Users/broodierchip-m1air/.claude-main",
+      "sessions": 32,
+      "files": {
+        "main": 32,
+        "subagent": 20,
+        "workflow": 2953
+      },
+      "unreadable": [],
+      "turns": 50306,
+      "totals": {
+        "input_tokens": 3778705,
+        "cache_creation_input_tokens": 279116708,
+        "cache_read_input_tokens": 8923801373,
+        "output_tokens": 50894358
+      },
+      "by_kind": {
+        "main": {
+          "input_tokens": 480205,
+          "cache_creation_input_tokens": 118015985,
+          "cache_read_input_tokens": 6066367983,
+          "output_tokens": 14077289
+        },
+        "subagent": {
+          "input_tokens": 77731,
+          "cache_creation_input_tokens": 1493299,
+          "cache_read_input_tokens": 11687833,
+          "output_tokens": 311838
+        },
+        "workflow": {
+          "input_tokens": 3220769,
+          "cache_creation_input_tokens": 159607424,
+          "cache_read_input_tokens": 2845745557,
+          "output_tokens": 36505231
+        }
+      },
+      "by_provider": {
+        "anthropic": {
+          "input_tokens": 3778705,
+          "cache_creation_input_tokens": 279116708,
+          "cache_read_input_tokens": 8923801373,
+          "output_tokens": 50894358
+        }
+      },
+      "by_model": {
+        "claude-opus-4-8": {
+          "input_tokens": 1680527,
+          "cache_creation_input_tokens": 80139288,
+          "cache_read_input_tokens": 2269072374,
+          "output_tokens": 13622272
+        },
+        "claude-fable-5": {
+          "input_tokens": 1478211,
+          "cache_creation_input_tokens": 34184177,
+          "cache_read_input_tokens": 766598339,
+          "output_tokens": 5819354
+        },
+        "claude-opus-5": {
+          "input_tokens": 618895,
+          "cache_creation_input_tokens": 164761847,
+          "cache_read_input_tokens": 5887689162,
+          "output_tokens": 31445973
+        },
+        "claude-haiku-4-5-20251001": {
+          "input_tokens": 1072,
+          "cache_creation_input_tokens": 31396,
+          "cache_read_input_tokens": 441498,
+          "output_tokens": 6759
+        }
+      },
+      "by_day": {
+        "2026-07-20": {
+          "input_tokens": 34084,
+          "cache_creation_input_tokens": 4400123,
+          "cache_read_input_tokens": 88671386,
+          "output_tokens": 1295557
+        },
+        "2026-07-24": {
+          "input_tokens": 1204,
+          "cache_creation_input_tokens": 2925668,
+          "cache_read_input_tokens": 91756021,
+          "output_tokens": 631890
+        },
+        "2026-07-25": {
+          "input_tokens": 31,
+          "cache_creation_input_tokens": 896636,
+          "cache_read_input_tokens": 4966080,
+          "output_tokens": 10785
+        },
+        "2026-07-26": {
+          "input_tokens": 3795,
+          "cache_creation_input_tokens": 5331042,
+          "cache_read_input_tokens": 184317804,
+          "output_tokens": 697279
+        },
+        "2026-07-11": {
+          "input_tokens": 382074,
+          "cache_creation_input_tokens": 12587509,
+          "cache_read_input_tokens": 347129169,
+          "output_tokens": 1747042
+        },
+        "2026-07-12": {
+          "input_tokens": 1194306,
+          "cache_creation_input_tokens": 17413872,
+          "cache_read_input_tokens": 278022689,
+          "output_tokens": 3468618
+        },
+        "2026-07-09": {
+          "input_tokens": 69591,
+          "cache_creation_input_tokens": 4250862,
+          "cache_read_input_tokens": 260583924,
+          "output_tokens": 576505
+        },
+        "2026-07-05": {
+          "input_tokens": 44930,
+          "cache_creation_input_tokens": 2141176,
+          "cache_read_input_tokens": 123389402,
+          "output_tokens": 350502
+        },
+        "2026-07-06": {
+          "input_tokens": 9858,
+          "cache_creation_input_tokens": 3977892,
+          "cache_read_input_tokens": 202767508,
+          "output_tokens": 415159
+        },
+        "2026-07-07": {
+          "input_tokens": 125837,
+          "cache_creation_input_tokens": 5285264,
+          "cache_read_input_tokens": 354002415,
+          "output_tokens": 878064
+        },
+        "2026-07-08": {
+          "input_tokens": 62940,
+          "cache_creation_input_tokens": 4603915,
+          "cache_read_input_tokens": 258966690,
+          "output_tokens": 518180
+        },
+        "2026-07-10": {
+          "input_tokens": 1036230,
+          "cache_creation_input_tokens": 16606649,
+          "cache_read_input_tokens": 334361700,
+          "output_tokens": 2784180
+        },
+        "2026-07-13": {
+          "input_tokens": 5296,
+          "cache_creation_input_tokens": 2027118,
+          "cache_read_input_tokens": 26765356,
+          "output_tokens": 76488
+        },
+        "2026-07-21": {
+          "input_tokens": 3594,
+          "cache_creation_input_tokens": 2490210,
+          "cache_read_input_tokens": 25986218,
+          "output_tokens": 302365
+        },
+        "2026-07-22": {
+          "input_tokens": 22454,
+          "cache_creation_input_tokens": 8974531,
+          "cache_read_input_tokens": 159027859,
+          "output_tokens": 1801951
+        },
+        "2026-07-28": {
+          "input_tokens": 36714,
+          "cache_creation_input_tokens": 13610429,
+          "cache_read_input_tokens": 490837678,
+          "output_tokens": 2329623
+        },
+        "2026-08-04": {
+          "input_tokens": 21,
+          "cache_creation_input_tokens": 28632,
+          "cache_read_input_tokens": 462357,
+          "output_tokens": 2666
+        },
+        "2026-08-05": {
+          "input_tokens": 114,
+          "cache_creation_input_tokens": 160077,
+          "cache_read_input_tokens": 4881930,
+          "output_tokens": 18922
+        },
+        "2026-08-06": {
+          "input_tokens": 51770,
+          "cache_creation_input_tokens": 4934442,
+          "cache_read_input_tokens": 149353527,
+          "output_tokens": 1325117
+        },
+        "2026-08-09": {
+          "input_tokens": 3803,
+          "cache_creation_input_tokens": 4797778,
+          "cache_read_input_tokens": 338840355,
+          "output_tokens": 855425
+        },
+        "2026-08-08": {
+          "input_tokens": 40711,
+          "cache_creation_input_tokens": 12637417,
+          "cache_read_input_tokens": 406677462,
+          "output_tokens": 2150203
+        },
+        "2026-08-11": {
+          "input_tokens": 63654,
+          "cache_creation_input_tokens": 13152069,
+          "cache_read_input_tokens": 198051960,
+          "output_tokens": 1320356
+        },
+        "2026-08-10": {
+          "input_tokens": 1949,
+          "cache_creation_input_tokens": 5886389,
+          "cache_read_input_tokens": 356351577,
+          "output_tokens": 948557
+        },
+        "2026-08-12": {
+          "input_tokens": 116,
+          "cache_creation_input_tokens": 2616051,
+          "cache_read_input_tokens": 31468765,
+          "output_tokens": 55818
+        },
+        "2026-07-18": {
+          "input_tokens": 859,
+          "cache_creation_input_tokens": 2833173,
+          "cache_read_input_tokens": 86736060,
+          "output_tokens": 527382
+        },
+        "2026-07-19": {
+          "input_tokens": 2,
+          "cache_creation_input_tokens": 577154,
+          "cache_read_input_tokens": 21046,
+          "output_tokens": 2176
+        },
+        "2026-07-27": {
+          "input_tokens": 12068,
+          "cache_creation_input_tokens": 8692135,
+          "cache_read_input_tokens": 699700832,
+          "output_tokens": 1662096
+        },
+        "2026-08-01": {
+          "input_tokens": 143694,
+          "cache_creation_input_tokens": 21820861,
+          "cache_read_input_tokens": 383859276,
+          "output_tokens": 5457156
+        },
+        "2026-07-31": {
+          "input_tokens": 118654,
+          "cache_creation_input_tokens": 31784207,
+          "cache_read_input_tokens": 872319413,
+          "output_tokens": 6796667
+        },
+        "2026-07-29": {
+          "input_tokens": 16734,
+          "cache_creation_input_tokens": 5928686,
+          "cache_read_input_tokens": 174604048,
+          "output_tokens": 1167792
+        },
+        "2026-07-30": {
+          "input_tokens": 32685,
+          "cache_creation_input_tokens": 14524558,
+          "cache_read_input_tokens": 791726509,
+          "output_tokens": 3168780
+        },
+        "2026-08-02": {
+          "input_tokens": 257855,
+          "cache_creation_input_tokens": 37656956,
+          "cache_read_input_tokens": 1102724267,
+          "output_tokens": 6992137
+        },
+        "2026-08-03": {
+          "input_tokens": 448,
+          "cache_creation_input_tokens": 1308935,
+          "cache_read_input_tokens": 24741387,
+          "output_tokens": 192832
+        },
+        "2026-07-23": {
+          "input_tokens": 630,
+          "cache_creation_input_tokens": 2254292,
+          "cache_read_input_tokens": 69728703,
+          "output_tokens": 366088
+        }
+      },
+      "by_project": {
+        "-Users-broodierchip-m1air": {
+          "input_tokens": 3720478,
+          "cache_creation_input_tokens": 228447313,
+          "cache_read_input_tokens": 7321552082,
+          "output_tokens": 41547068
+        },
+        "-Users-broodierchip-m1air-Desktop-vulcan-delta-tests": {
+          "input_tokens": 58227,
+          "cache_creation_input_tokens": 50669395,
+          "cache_read_input_tokens": 1602249291,
+          "output_tokens": 9347290
+        }
+      },
+      "account": "broodierchip@gmail.com",
+      "user_id": "f2c6d8a64f23fdea16f037b8edd329f7f3f592a0f7cadfcdb2dbf51d256502f7",
+      "identity": {
+        "auth": "oauth",
+        "email": "broodierchip@gmail.com",
+        "org_uuid": "6bfc754e-a205-41c3-9dac-80e593f494e0",
+        "org_name": "broodierchip@gmail.com's Organization",
+        "account_uuid": "a9fec27d-ab5d-48bb-9679-a9bf60bfb97e",
+        "user_id": "f2c6d8a64f23fdea16f037b8edd329f7f3f592a0f7cadfcdb2dbf51d256502f7",
+        "approved_api_keys": []
+      },
+      "grand_total": 9257591144
+    },
+    {
+      "config_dir": "/Users/broodierchip-m1air/.claude",
+      "sessions": 25,
+      "files": {
+        "subagent": 95,
+        "workflow": 60,
+        "main": 25
+      },
+      "unreadable": [],
+      "turns": 13188,
+      "totals": {
+        "input_tokens": 434156,
+        "cache_creation_input_tokens": 160223280,
+        "cache_read_input_tokens": 5129666503,
+        "output_tokens": 16119435
+      },
+      "by_kind": {
+        "subagent": {
+          "input_tokens": 290370,
+          "cache_creation_input_tokens": 7819707,
+          "cache_read_input_tokens": 64886223,
+          "output_tokens": 851049
+        },
+        "workflow": {
+          "input_tokens": 29104,
+          "cache_creation_input_tokens": 8591457,
+          "cache_read_input_tokens": 133944951,
+          "output_tokens": 1483851
+        },
+        "main": {
+          "input_tokens": 114682,
+          "cache_creation_input_tokens": 143812116,
+          "cache_read_input_tokens": 4930835329,
+          "output_tokens": 13784535
+        }
+      },
+      "by_provider": {
+        "anthropic": {
+          "input_tokens": 434156,
+          "cache_creation_input_tokens": 160223280,
+          "cache_read_input_tokens": 5129666503,
+          "output_tokens": 16119435
+        }
+      },
+      "by_model": {
+        "claude-opus-5": {
+          "input_tokens": 44858,
+          "cache_creation_input_tokens": 59954595,
+          "cache_read_input_tokens": 2326118238,
+          "output_tokens": 5978206
+        },
+        "claude-opus-4-8": {
+          "input_tokens": 380887,
+          "cache_creation_input_tokens": 100120778,
+          "cache_read_input_tokens": 2802745781,
+          "output_tokens": 10115400
+        },
+        "claude-sonnet-5": {
+          "input_tokens": 8384,
+          "cache_creation_input_tokens": 85736,
+          "cache_read_input_tokens": 716984,
+          "output_tokens": 20403
+        },
+        "claude-opus-4-7": {
+          "input_tokens": 27,
+          "cache_creation_input_tokens": 62171,
+          "cache_read_input_tokens": 85500,
+          "output_tokens": 5426
+        }
+      },
+      "by_day": {
+        "2026-08-07": {
+          "input_tokens": 31719,
+          "cache_creation_input_tokens": 14140837,
+          "cache_read_input_tokens": 493354149,
+          "output_tokens": 2249377
+        },
+        "2026-08-08": {
+          "input_tokens": 628,
+          "cache_creation_input_tokens": 3733806,
+          "cache_read_input_tokens": 83761089,
+          "output_tokens": 325642
+        },
+        "2026-08-06": {
+          "input_tokens": 2785,
+          "cache_creation_input_tokens": 4828724,
+          "cache_read_input_tokens": 235082163,
+          "output_tokens": 557403
+        },
+        "2026-08-03": {
+          "input_tokens": 2214,
+          "cache_creation_input_tokens": 1514976,
+          "cache_read_input_tokens": 288496429,
+          "output_tokens": 549694
+        },
+        "2026-08-01": {
+          "input_tokens": 3677,
+          "cache_creation_input_tokens": 3256073,
+          "cache_read_input_tokens": 249909585,
+          "output_tokens": 522790
+        },
+        "2026-08-02": {
+          "input_tokens": 1356,
+          "cache_creation_input_tokens": 3893752,
+          "cache_read_input_tokens": 407802738,
+          "output_tokens": 702346
+        },
+        "2026-08-04": {
+          "input_tokens": 1223,
+          "cache_creation_input_tokens": 10219914,
+          "cache_read_input_tokens": 338489169,
+          "output_tokens": 499006
+        },
+        "2026-07-09": {
+          "input_tokens": 18022,
+          "cache_creation_input_tokens": 614762,
+          "cache_read_input_tokens": 9401209,
+          "output_tokens": 80801
+        },
+        "2026-07-10": {
+          "input_tokens": 2,
+          "cache_creation_input_tokens": 0,
+          "cache_read_input_tokens": 187732,
+          "output_tokens": 1755
+        },
+        "2026-07-17": {
+          "input_tokens": 2996,
+          "cache_creation_input_tokens": 3391322,
+          "cache_read_input_tokens": 221323425,
+          "output_tokens": 861321
+        },
+        "2026-07-18": {
+          "input_tokens": 5969,
+          "cache_creation_input_tokens": 29669423,
+          "cache_read_input_tokens": 456556661,
+          "output_tokens": 1295683
+        },
+        "2026-07-15": {
+          "input_tokens": 896,
+          "cache_creation_input_tokens": 3588345,
+          "cache_read_input_tokens": 218571839,
+          "output_tokens": 969678
+        },
+        "2026-07-16": {
+          "input_tokens": 631,
+          "cache_creation_input_tokens": 2156041,
+          "cache_read_input_tokens": 173596472,
+          "output_tokens": 710605
+        },
+        "2026-07-19": {
+          "input_tokens": 818,
+          "cache_creation_input_tokens": 21701589,
+          "cache_read_input_tokens": 215613600,
+          "output_tokens": 646070
+        },
+        "2026-07-20": {
+          "input_tokens": 23023,
+          "cache_creation_input_tokens": 3777691,
+          "cache_read_input_tokens": 367836183,
+          "output_tokens": 1294530
+        },
+        "2026-07-31": {
+          "input_tokens": 270,
+          "cache_creation_input_tokens": 611355,
+          "cache_read_input_tokens": 15438553,
+          "output_tokens": 136372
+        },
+        "2026-07-14": {
+          "input_tokens": 27751,
+          "cache_creation_input_tokens": 4128754,
+          "cache_read_input_tokens": 119545498,
+          "output_tokens": 777958
+        },
+        "2026-08-05": {
+          "input_tokens": 855,
+          "cache_creation_input_tokens": 17384243,
+          "cache_read_input_tokens": 208041682,
+          "output_tokens": 388999
+        },
+        "2026-07-21": {
+          "input_tokens": 802,
+          "cache_creation_input_tokens": 2846224,
+          "cache_read_input_tokens": 231440750,
+          "output_tokens": 747872
+        },
+        "2026-07-22": {
+          "input_tokens": 5690,
+          "cache_creation_input_tokens": 1133938,
+          "cache_read_input_tokens": 86464712,
+          "output_tokens": 310113
+        },
+        "2026-07-23": {
+          "input_tokens": 1876,
+          "cache_creation_input_tokens": 9303672,
+          "cache_read_input_tokens": 207429172,
+          "output_tokens": 643447
+        },
+        "2026-07-24": {
+          "input_tokens": 711,
+          "cache_creation_input_tokens": 6034519,
+          "cache_read_input_tokens": 138773380,
+          "output_tokens": 571413
+        },
+        "2026-07-25": {
+          "input_tokens": 743,
+          "cache_creation_input_tokens": 4123778,
+          "cache_read_input_tokens": 193740826,
+          "output_tokens": 623541
+        },
+        "2026-07-26": {
+          "input_tokens": 2515,
+          "cache_creation_input_tokens": 2721120,
+          "cache_read_input_tokens": 118942249,
+          "output_tokens": 304703
+        },
+        "2026-08-11": {
+          "input_tokens": 73,
+          "cache_creation_input_tokens": 120564,
+          "cache_read_input_tokens": 2645478,
+          "output_tokens": 22481
+        },
+        "2026-08-12": {
+          "input_tokens": 58,
+          "cache_creation_input_tokens": 250351,
+          "cache_read_input_tokens": 3097203,
+          "output_tokens": 24096
+        },
+        "2026-07-27": {
+          "input_tokens": 16,
+          "cache_creation_input_tokens": 1433879,
+          "cache_read_input_tokens": 4423524,
+          "output_tokens": 11373
+        },
+        "2026-07-13": {
+          "input_tokens": 86,
+          "cache_creation_input_tokens": 147846,
+          "cache_read_input_tokens": 4919577,
+          "output_tokens": 50286
+        },
+        "2026-07-07": {
+          "input_tokens": 291937,
+          "cache_creation_input_tokens": 3177982,
+          "cache_read_input_tokens": 34391512,
+          "output_tokens": 233914
+        },
+        "2026-07-11": {
+          "input_tokens": 4787,
+          "cache_creation_input_tokens": 255629,
+          "cache_read_input_tokens": 304444,
+          "output_tokens": 740
+        },
+        "2026-05-26": {
+          "input_tokens": 27,
+          "cache_creation_input_tokens": 62171,
+          "cache_read_input_tokens": 85500,
+          "output_tokens": 5426
+        }
+      },
+      "by_project": {
+        "-Users-broodierchip-m1air": {
+          "input_tokens": 137403,
+          "cache_creation_input_tokens": 156707589,
+          "cache_read_input_tokens": 5094863833,
+          "output_tokens": 15878552
+        },
+        "-Users-broodierchip-m1air-Documents-Hackthon": {
+          "input_tokens": 296751,
+          "cache_creation_input_tokens": 3495782,
+          "cache_read_input_tokens": 34781456,
+          "output_tokens": 240080
+        },
+        "-Users-broodierchip-m1air-Documents-tools": {
+          "input_tokens": 2,
+          "cache_creation_input_tokens": 19909,
+          "cache_read_input_tokens": 21214,
+          "output_tokens": 803
+        }
+      },
+      "account": "codehunterextreme@gmail.com",
+      "user_id": "c6ce9918ed51217d1701e1b6217b35699f346b95e2d17fec3b261d9ea2bea739",
+      "identity": {
+        "auth": "oauth",
+        "email": "codehunterextreme@gmail.com",
+        "org_uuid": "ba511861-53b4-4599-8019-93db6389d991",
+        "org_name": "codehunterextreme@gmail.com's Organization",
+        "account_uuid": "cf12fe66-594f-449a-b951-c9bb2ce5db76",
+        "user_id": "c6ce9918ed51217d1701e1b6217b35699f346b95e2d17fec3b261d9ea2bea739",
+        "approved_api_keys": []
+      },
+      "grand_total": 5306443374
+    },
+    {
+      "config_dir": "/Users/broodierchip-m1air/.claude-it",
+      "sessions": 4,
+      "files": {
+        "main": 4,
+        "subagent": 1
+      },
+      "unreadable": [],
+      "turns": 1124,
+      "totals": {
+        "input_tokens": 28533,
+        "cache_creation_input_tokens": 5274501,
+        "cache_read_input_tokens": 237710186,
+        "output_tokens": 935949
+      },
+      "by_kind": {
+        "subagent": {
+          "input_tokens": 2757,
+          "cache_creation_input_tokens": 125008,
+          "cache_read_input_tokens": 192751,
+          "output_tokens": 5050
+        },
+        "main": {
+          "input_tokens": 25776,
+          "cache_creation_input_tokens": 5149493,
+          "cache_read_input_tokens": 237517435,
+          "output_tokens": 930899
+        }
+      },
+      "by_provider": {
+        "anthropic": {
+          "input_tokens": 28533,
+          "cache_creation_input_tokens": 5274501,
+          "cache_read_input_tokens": 237710186,
+          "output_tokens": 935949
+        }
+      },
+      "by_model": {
+        "claude-opus-4-8": {
+          "input_tokens": 26239,
+          "cache_creation_input_tokens": 4128488,
+          "cache_read_input_tokens": 166514006,
+          "output_tokens": 571679
+        },
+        "claude-sonnet-4-6": {
+          "input_tokens": 2294,
+          "cache_creation_input_tokens": 1146013,
+          "cache_read_input_tokens": 71196180,
+          "output_tokens": 364270
+        }
+      },
+      "by_day": {
+        "2026-06-20": {
+          "input_tokens": 9928,
+          "cache_creation_input_tokens": 2180353,
+          "cache_read_input_tokens": 110976371,
+          "output_tokens": 298009
+        },
+        "2026-06-18": {
+          "input_tokens": 2294,
+          "cache_creation_input_tokens": 1146013,
+          "cache_read_input_tokens": 71196180,
+          "output_tokens": 364270
+        },
+        "2026-06-19": {
+          "input_tokens": 16311,
+          "cache_creation_input_tokens": 1948135,
+          "cache_read_input_tokens": 55537635,
+          "output_tokens": 273670
+        }
+      },
+      "by_project": {
+        "-Users-broodierchip-m1air-Desktop-Bug": {
+          "input_tokens": 28533,
+          "cache_creation_input_tokens": 5274501,
+          "cache_read_input_tokens": 237710186,
+          "output_tokens": 935949
+        }
+      },
+      "account": "alexander.sorrell.it@gmail.com",
+      "user_id": "a842a0db1ce2f3e19742aa78893f10cf921a9d7e15a1412fec7c7cc4cf09525a",
+      "identity": {
+        "auth": "oauth",
+        "email": "alexander.sorrell.it@gmail.com",
+        "org_uuid": "66565064-263e-4d54-b06f-15cae4b2febc",
+        "org_name": "alexander.sorrell.it@gmail.com's Organization",
+        "account_uuid": "55c75c9e-b932-41e8-a80c-e3abf56861d8",
+        "user_id": "a842a0db1ce2f3e19742aa78893f10cf921a9d7e15a1412fec7c7cc4cf09525a",
+        "approved_api_keys": []
+      },
+      "grand_total": 243949169
+    },
+    {
+      "config_dir": "/Users/broodierchip-m1air/.ai-logs-archive/claude/Documents",
+      "sessions": 2180,
+      "files": {
+        "main": 2180
+      },
+      "unreadable": [],
+      "turns": 106,
+      "totals": {
+        "input_tokens": 25899,
+        "cache_creation_input_tokens": 483893,
+        "cache_read_input_tokens": 9441167,
+        "output_tokens": 63955
+      },
+      "by_kind": {
+        "main": {
+          "input_tokens": 25899,
+          "cache_creation_input_tokens": 483893,
+          "cache_read_input_tokens": 9441167,
+          "output_tokens": 63955
+        }
+      },
+      "by_provider": {
+        "anthropic": {
+          "input_tokens": 25899,
+          "cache_creation_input_tokens": 483893,
+          "cache_read_input_tokens": 9441167,
+          "output_tokens": 63955
+        }
+      },
+      "by_model": {
+        "claude-opus-5": {
+          "input_tokens": 32,
+          "cache_creation_input_tokens": 47903,
+          "cache_read_input_tokens": 3648678,
+          "output_tokens": 8776
+        },
+        "claude-opus-4-8": {
+          "input_tokens": 20643,
+          "cache_creation_input_tokens": 399337,
+          "cache_read_input_tokens": 5066032,
+          "output_tokens": 47661
+        },
+        "claude-fable-5": {
+          "input_tokens": 5224,
+          "cache_creation_input_tokens": 36653,
+          "cache_read_input_tokens": 726457,
+          "output_tokens": 7518
+        }
+      },
+      "by_day": {
+        "2026-08-03": {
+          "input_tokens": 2,
+          "cache_creation_input_tokens": 3097,
+          "cache_read_input_tokens": 648159,
+          "output_tokens": 758
+        },
+        "2026-07-20": {
+          "input_tokens": 4,
+          "cache_creation_input_tokens": 39721,
+          "cache_read_input_tokens": 818904,
+          "output_tokens": 599
+        },
+        "2026-08-05": {
+          "input_tokens": 2,
+          "cache_creation_input_tokens": 1016,
+          "cache_read_input_tokens": 553256,
+          "output_tokens": 620
+        },
+        "2026-07-21": {
+          "input_tokens": 2,
+          "cache_creation_input_tokens": 2467,
+          "cache_read_input_tokens": 606132,
+          "output_tokens": 483
+        },
+        "2026-07-23": {
+          "input_tokens": 4,
+          "cache_creation_input_tokens": 1531,
+          "cache_read_input_tokens": 223066,
+          "output_tokens": 780
+        },
+        "2026-07-06": {
+          "input_tokens": 5212,
+          "cache_creation_input_tokens": 26328,
+          "cache_read_input_tokens": 332100,
+          "output_tokens": 3217
+        },
+        "2026-07-07": {
+          "input_tokens": 2,
+          "cache_creation_input_tokens": 3053,
+          "cache_read_input_tokens": 158922,
+          "output_tokens": 1133
+        },
+        "2026-07-28": {
+          "input_tokens": 6,
+          "cache_creation_input_tokens": 2950,
+          "cache_read_input_tokens": 514800,
+          "output_tokens": 1818
+        },
+        "2026-07-29": {
+          "input_tokens": 4,
+          "cache_creation_input_tokens": 5543,
+          "cache_read_input_tokens": 245216,
+          "output_tokens": 2779
+        },
+        "2026-07-30": {
+          "input_tokens": 6,
+          "cache_creation_input_tokens": 3174,
+          "cache_read_input_tokens": 1088919,
+          "output_tokens": 1382
+        },
+        "2026-07-05": {
+          "input_tokens": 9860,
+          "cache_creation_input_tokens": 122853,
+          "cache_read_input_tokens": 260676,
+          "output_tokens": 2721
+        },
+        "2026-07-02": {
+          "input_tokens": 6598,
+          "cache_creation_input_tokens": 88823,
+          "cache_read_input_tokens": 2784652,
+          "output_tokens": 32643
+        },
+        "2026-07-04": {
+          "input_tokens": 4169,
+          "cache_creation_input_tokens": 140349,
+          "cache_read_input_tokens": 176585,
+          "output_tokens": 5369
+        },
+        "2026-07-27": {
+          "input_tokens": 4,
+          "cache_creation_input_tokens": 5931,
+          "cache_read_input_tokens": 297545,
+          "output_tokens": 381
+        },
+        "2026-07-10": {
+          "input_tokens": 6,
+          "cache_creation_input_tokens": 2616,
+          "cache_read_input_tokens": 125706,
+          "output_tokens": 4304
+        },
+        "2026-07-31": {
+          "input_tokens": 4,
+          "cache_creation_input_tokens": 8922,
+          "cache_read_input_tokens": 238561,
+          "output_tokens": 1439
+        },
+        "2026-07-12": {
+          "input_tokens": 4,
+          "cache_creation_input_tokens": 6867,
+          "cache_read_input_tokens": 53494,
+          "output_tokens": 1512
+        },
+        "2026-08-02": {
+          "input_tokens": 4,
+          "cache_creation_input_tokens": 17389,
+          "cache_read_input_tokens": 165831,
+          "output_tokens": 1345
+        },
+        "2026-07-11": {
+          "input_tokens": 2,
+          "cache_creation_input_tokens": 673,
+          "cache_read_input_tokens": 27826,
+          "output_tokens": 141
+        },
+        "2026-07-22": {
+          "input_tokens": 2,
+          "cache_creation_input_tokens": 113,
+          "cache_read_input_tokens": 26524,
+          "output_tokens": 187
+        },
+        "2026-08-01": {
+          "input_tokens": 2,
+          "cache_creation_input_tokens": 477,
+          "cache_read_input_tokens": 94293,
+          "output_tokens": 344
+        }
+      },
+      "by_project": {
+        "token-usage": {
+          "input_tokens": 25899,
+          "cache_creation_input_tokens": 483893,
+          "cache_read_input_tokens": 9441167,
+          "output_tokens": 63955
+        }
+      },
+      "account": "unknown (Documents)",
+      "user_id": null,
+      "identity": {
+        "auth": "unknown",
+        "email": null,
+        "org_uuid": null,
+        "org_name": null,
+        "account_uuid": null,
+        "user_id": null,
+        "approved_api_keys": []
+      },
+      "grand_total": 10014914
+    },
+    {
+      "config_dir": "/Users/broodierchip-m1air/.ai-logs-archive/claude/claude",
+      "sessions": 25,
+      "files": {
+        "subagent": 95,
+        "workflow": 60,
+        "main": 25
+      },
+      "unreadable": [],
+      "turns": 0,
+      "totals": {
+        "input_tokens": 0,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "output_tokens": 0
+      },
+      "by_kind": {},
+      "by_provider": {},
+      "by_model": {},
+      "by_day": {},
+      "by_project": {},
+      "account": "codehunterextreme@gmail.com",
+      "user_id": "c6ce9918ed51217d1701e1b6217b35699f346b95e2d17fec3b261d9ea2bea739",
+      "identity": {
+        "auth": "oauth",
+        "email": "codehunterextreme@gmail.com",
+        "org_uuid": "ba511861-53b4-4599-8019-93db6389d991",
+        "org_name": "codehunterextreme@gmail.com's Organization",
+        "account_uuid": "cf12fe66-594f-449a-b951-c9bb2ce5db76",
+        "user_id": "c6ce9918ed51217d1701e1b6217b35699f346b95e2d17fec3b261d9ea2bea739",
+        "approved_api_keys": []
+      },
+      "grand_total": 0
+    },
+    {
+      "config_dir": "/Users/broodierchip-m1air/.ai-logs-archive/claude/claude-it",
+      "sessions": 4,
+      "files": {
+        "main": 4,
+        "subagent": 1
+      },
+      "unreadable": [],
+      "turns": 0,
+      "totals": {
+        "input_tokens": 0,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "output_tokens": 0
+      },
+      "by_kind": {},
+      "by_provider": {},
+      "by_model": {},
+      "by_day": {},
+      "by_project": {},
+      "account": "alexander.sorrell.it@gmail.com",
+      "user_id": "a842a0db1ce2f3e19742aa78893f10cf921a9d7e15a1412fec7c7cc4cf09525a",
+      "identity": {
+        "auth": "oauth",
+        "email": "alexander.sorrell.it@gmail.com",
+        "org_uuid": "66565064-263e-4d54-b06f-15cae4b2febc",
+        "org_name": "alexander.sorrell.it@gmail.com's Organization",
+        "account_uuid": "55c75c9e-b932-41e8-a80c-e3abf56861d8",
+        "user_id": "a842a0db1ce2f3e19742aa78893f10cf921a9d7e15a1412fec7c7cc4cf09525a",
+        "approved_api_keys": []
+      },
+      "grand_total": 0
+    },
+    {
+      "config_dir": "/Users/broodierchip-m1air/.ai-logs-archive/claude/claude-main",
+      "sessions": 32,
+      "files": {
+        "main": 32,
+        "subagent": 20,
+        "workflow": 2953
+      },
+      "unreadable": [],
+      "turns": 0,
+      "totals": {
+        "input_tokens": 0,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "output_tokens": 0
+      },
+      "by_kind": {},
+      "by_provider": {},
+      "by_model": {},
+      "by_day": {},
+      "by_project": {},
+      "account": "broodierchip@gmail.com",
+      "user_id": "f2c6d8a64f23fdea16f037b8edd329f7f3f592a0f7cadfcdb2dbf51d256502f7",
+      "identity": {
+        "auth": "oauth",
+        "email": "broodierchip@gmail.com",
+        "org_uuid": "6bfc754e-a205-41c3-9dac-80e593f494e0",
+        "org_name": "broodierchip@gmail.com's Organization",
+        "account_uuid": "a9fec27d-ab5d-48bb-9679-a9bf60bfb97e",
+        "user_id": "f2c6d8a64f23fdea16f037b8edd329f7f3f592a0f7cadfcdb2dbf51d256502f7",
+        "approved_api_keys": []
+      },
+      "grand_total": 0
+    },
+    {
+      "config_dir": "/Users/broodierchip-m1air/Documents",
+      "sessions": 2180,
+      "files": {
+        "main": 2180
+      },
+      "unreadable": [],
+      "turns": 0,
+      "totals": {
+        "input_tokens": 0,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "output_tokens": 0
+      },
+      "by_kind": {},
+      "by_provider": {},
+      "by_model": {},
+      "by_day": {},
+      "by_project": {},
+      "account": "unknown (Documents)",
+      "user_id": null,
+      "identity": {
+        "auth": "unknown",
+        "email": null,
+        "org_uuid": null,
+        "org_name": null,
+        "account_uuid": null,
+        "user_id": null,
+        "approved_api_keys": []
+      },
+      "grand_total": 0
+    }
+  ]
+}

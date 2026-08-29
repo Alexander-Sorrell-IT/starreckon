@@ -163,11 +163,19 @@ export async function installLayer(layer, { home, python = "python3", onStep = (
     .find((p) => existsSync(p));
   if (!pip) return { ok: false, state: "failed", why: "venv has no pip" };
 
-  // torch first and from the CPU index, so the forecaster does not drag a CUDA
-  // build onto a laptop that will never use it.
+  // torch first and preferring the CPU index, so the forecaster does not drag a
+  // CUDA build onto a laptop that will never use it.
+  //
+  // --extra-index-url, NOT --index-url. The exclusive form makes that host the
+  // ONLY place pip may look, and download.pytorch.org/whl/cpu publishes no
+  // macOS arm64 wheel — there is no CUDA build to avoid on Apple silicon, so
+  // the CPU index has nothing to serve it. Every Apple silicon install failed
+  // with "no matching distribution", which is indistinguishable from a network
+  // error in the caller's log. The extra form keeps the CPU index preferred
+  // where it has wheels and falls back to PyPI where it does not.
   if (layer.pipTorch) {
     onStep("installing torch (cpu wheels)");
-    r = await run(pip, ["install", "--quiet", "torch", "--index-url", pytorchCpuIndex()], 3_600_000);
+    r = await run(pip, ["install", "--quiet", "torch", "--extra-index-url", pytorchCpuIndex()], 3_600_000);
     if (!r.ok) return { ok: false, state: "failed", why: r.why };
   }
   onStep(`installing ${layer.pip.join(", ")}`);

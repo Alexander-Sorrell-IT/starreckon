@@ -11,7 +11,7 @@
 // visible. This test pins the DECISION so nobody "fixes" it by adding --full.
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { launchdPlist, systemdUnits } from "../src/daemon.mjs";
+import { launchdPlist, systemdUnits, windowsTaskXml } from "../src/daemon.mjs";
 
 test("the launchd scan job never passes --full", () => {
   const plist = launchdPlist({});
@@ -26,3 +26,11 @@ test("the systemd scan job never passes --full", () => {
   assert.ok(!blob.includes("--full"),
     "--full runs the separately-consented model layer on a timer");
 });
+
+test("the windows task scan job never passes --full", () => {
+  const xml = windowsTaskXml({});
+  assert.ok(xml.includes("--ledger"), "the scan argv changed shape entirely");
+  assert.ok(!xml.includes("--full"),
+    "--full runs the separately-consented model layer on a timer");
+});
+

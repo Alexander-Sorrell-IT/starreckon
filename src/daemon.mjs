@@ -91,6 +91,11 @@ const timerPath          = () => join(systemdDir(), "starreckon-scan.timer");
 const protectServicePath = () => join(systemdDir(), "starreckon-protect.service");
 const protectTimerPath   = () => join(systemdDir(), "starreckon-protect.timer");
 
+// ---- Windows Task Scheduler paths --------------------------------------------
+const winDir             = () => join(HOME(), ".starreckon", "daemon");
+const winScanXmlPath     = () => join(winDir(), "starreckon-scan.xml");
+const winProtectXmlPath  = () => join(winDir(), "starreckon-protect.xml");
+
 // The CLI entry point to schedule. Resolved from THIS file so a checkout and an
 // installed package both schedule the copy you actually ran.
 export function cliEntry() {
@@ -98,7 +103,9 @@ export function cliEntry() {
 }
 
 function esc(s) {
-  return String(s).replace(/[<>&]/g, (c) => ({ "<": "&lt;", ">": "&gt;", "&": "&amp;" })[c]);
+  return String(s).replace(/[<>&"']/g, (c) => ({
+    "<": "&lt;", ">": "&gt;", "&": "&amp;", '"': "&quot;", "'": "&apos;",
+  })[c]);
 }
 
 /**
@@ -224,6 +231,115 @@ WantedBy=timers.target
   };
 }
 
+/**
+ * The Windows Task Scheduler XML for the monthly scan job.
+ * Fires on the 1st of each month at 09:00 with StartWhenAvailable to run on next wake.
+ */
+export function windowsTaskXml({ node = process.execPath, entry = cliEntry(), day = 1, hour = 9 } = {}) {
+  const logDir = join(HOME(), ".starreckon", "daemon");
+  const scanLog = join(logDir, "scan.log");
+  const scanErr = join(logDir, "scan.err");
+  const startHour = String(hour).padStart(2, "0");
+  return `<?xml version="1.0" encoding="UTF-16"?>
+<Task version="1.2" xmlns="http://schemas.microsoft.com/windows/2004/02/mit/task">
+  <RegistrationInfo>
+    <Description>starreckon monthly local scan (no network)</Description>
+  </RegistrationInfo>
+  <Triggers>
+    <CalendarTrigger>
+      <StartBoundary>2026-01-01T${startHour}:00:00</StartBoundary>
+      <Enabled>true</Enabled>
+      <ScheduleByMonth>
+        <DaysOfMonth>
+          <Day>${day}</Day>
+        </DaysOfMonth>
+        <Months>
+          <January/><February/><March/><April/><May/><June/><July/><August/><September/><October/><November/><December/>
+        </Months>
+      </ScheduleByMonth>
+    </CalendarTrigger>
+  </Triggers>
+  <Principals>
+    <Principal id="Author">
+      <LogonType>InteractiveToken</LogonType>
+      <RunLevel>LeastPrivilege</RunLevel>
+    </Principal>
+  </Principals>
+  <Settings>
+    <MultipleInstancesPolicy>IgnoreNew</MultipleInstancesPolicy>
+    <DisallowStartIfOnBatteries>false</DisallowStartIfOnBatteries>
+    <StopIfGoingOnBatteries>false</StopIfGoingOnBatteries>
+    <AllowHardTerminate>true</AllowHardTerminate>
+    <StartWhenAvailable>true</StartWhenAvailable>
+    <RunOnlyIfNetworkAvailable>false</RunOnlyIfNetworkAvailable>
+    <AllowStartOnDemand>true</AllowStartOnDemand>
+    <Enabled>true</Enabled>
+    <Hidden>false</Hidden>
+    <ExecutionTimeLimit>PT2H</ExecutionTimeLimit>
+    <Priority>7</Priority>
+  </Settings>
+  <Actions Context="Author">
+    <Exec>
+      <Command>cmd.exe</Command>
+      <Arguments>/c "set ${TRIGGER_ENV}=${SCAN_TRIGGER} &amp;&amp; \"${esc(node)}\" \"${esc(entry)}\" --yes --no-wrapped --no-pace --ledger &gt;&gt; \"${esc(scanLog)}\" 2&gt;&gt; \"${esc(scanErr)}\""</Arguments>
+    </Exec>
+  </Actions>
+</Task>
+`;
+}
+
+/**
+ * The Windows Task Scheduler XML for the 6-hour protect+ledger job.
+ * Fires every 6 hours (PT6H repetition).
+ */
+export function windowsProtectTaskXml({ node = process.execPath, entry = cliEntry() } = {}) {
+  const logDir = join(HOME(), ".starreckon", "daemon");
+  const protectLog = join(logDir, "protect.log");
+  const protectErr = join(logDir, "protect.err");
+  return `<?xml version="1.0" encoding="UTF-16"?>
+<Task version="1.2" xmlns="http://schemas.microsoft.com/windows/2004/02/mit/task">
+  <RegistrationInfo>
+    <Description>starreckon 6-hour transcript protection + ledger tick (no network)</Description>
+  </RegistrationInfo>
+  <Triggers>
+    <TimeTrigger>
+      <StartBoundary>2026-01-01T00:00:00</StartBoundary>
+      <Enabled>true</Enabled>
+      <Repetition>
+        <Interval>PT6H</Interval>
+        <StopAtDurationEnd>false</StopAtDurationEnd>
+      </Repetition>
+    </TimeTrigger>
+  </Triggers>
+  <Principals>
+    <Principal id="Author">
+      <LogonType>InteractiveToken</LogonType>
+      <RunLevel>LeastPrivilege</RunLevel>
+    </Principal>
+  </Principals>
+  <Settings>
+    <MultipleInstancesPolicy>IgnoreNew</MultipleInstancesPolicy>
+    <DisallowStartIfOnBatteries>false</DisallowStartIfOnBatteries>
+    <StopIfGoingOnBatteries>false</StopIfGoingOnBatteries>
+    <AllowHardTerminate>true</AllowHardTerminate>
+    <StartWhenAvailable>true</StartWhenAvailable>
+    <RunOnlyIfNetworkAvailable>false</RunOnlyIfNetworkAvailable>
+    <AllowStartOnDemand>true</AllowStartOnDemand>
+    <Enabled>true</Enabled>
+    <Hidden>false</Hidden>
+    <ExecutionTimeLimit>PT1H</ExecutionTimeLimit>
+    <Priority>7</Priority>
+  </Settings>
+  <Actions Context="Author">
+    <Exec>
+      <Command>cmd.exe</Command>
+      <Arguments>/c "set ${TRIGGER_ENV}=${PROTECT_TRIGGER} &amp;&amp; \"${esc(node)}\" \"${esc(entry)}\" protect &gt;&gt; \"${esc(protectLog)}\" 2&gt;&gt; \"${esc(protectErr)}\""</Arguments>
+    </Exec>
+  </Actions>
+</Task>
+`;
+}
+
 // Does the schedule file ON DISK carry the marker that makes its runs
 // identifiable? A schedule written before the marker existed still works — it
 // scans, it protects — but its runs are indistinguishable from a typed command
@@ -262,6 +378,20 @@ export function daemonStatus() {
       protectFile:      protectTimerPath(),
       logged:        marked(servicePath()),
       protectLogged: marked(protectServicePath()),
+    };
+  }
+  if (p === "win32") {
+    const file        = winScanXmlPath();
+    const protectFile = winProtectXmlPath();
+    return {
+      platform:  p,
+      supported: true,
+      installed: existsSync(file),
+      file,
+      protectInstalled: existsSync(protectFile),
+      protectFile,
+      logged:        marked(file),
+      protectLogged: marked(protectFile),
     };
   }
   return {
@@ -309,6 +439,23 @@ export function writeSchedule(opts = {}) {
         "systemctl --user disable --now starreckon-protect.timer",
     };
   }
+  if (p === "win32") {
+    const dir = winDir();
+    mkdirSync(dir, { recursive: true });
+    const file = winScanXmlPath();
+    const protectFile = winProtectXmlPath();
+    writeFileSync(file, windowsTaskXml(opts));
+    writeFileSync(protectFile, windowsProtectTaskXml(opts));
+    return {
+      files:      [file, protectFile],
+      activate:
+        `schtasks /Create /TN "${LABEL}" /XML "${file}" /F && ` +
+        `schtasks /Create /TN "${PROTECT_LABEL}" /XML "${protectFile}" /F`,
+      deactivate:
+        `schtasks /Delete /TN "${LABEL}" /F && ` +
+        `schtasks /Delete /TN "${PROTECT_LABEL}" /F`,
+    };
+  }
   return { files: [], activate: null, deactivate: null, unsupported: p };
 }
 
@@ -321,6 +468,9 @@ export function removeSchedule() {
   if (st.platform === "linux") {
     scanFiles    = [timerPath(), servicePath()];
     protectFiles = [protectTimerPath(), protectServicePath()];
+  } else if (st.platform === "win32") {
+    scanFiles    = [winScanXmlPath()];
+    protectFiles = [winProtectXmlPath()];
   } else {
     scanFiles    = [plistPath()];
     protectFiles = [protectPlistPath()];
@@ -332,9 +482,14 @@ export function removeSchedule() {
     }
   }
 
-  const deactivate = st.platform === "linux"
-    ? "systemctl --user disable --now starreckon-scan.timer && systemctl --user disable --now starreckon-protect.timer"
-    : `launchctl unload ${plistPath()} && launchctl unload ${protectPlistPath()}`;
+  let deactivate;
+  if (st.platform === "linux") {
+    deactivate = "systemctl --user disable --now starreckon-scan.timer && systemctl --user disable --now starreckon-protect.timer";
+  } else if (st.platform === "win32") {
+    deactivate = `schtasks /Delete /TN "${LABEL}" /F && schtasks /Delete /TN "${PROTECT_LABEL}" /F`;
+  } else {
+    deactivate = `launchctl unload ${plistPath()} && launchctl unload ${protectPlistPath()}`;
+  }
 
   return { removed, deactivate };
 }
@@ -350,3 +505,4 @@ export function describeSchedule() {
     return null;
   }
 }
+

@@ -108,8 +108,10 @@ def a_retention_fails():
     # NOT `== "ok"`. That assertion could never fail while tick() assigned "ok"
     # unconditionally, which is what made it worth nothing. The property is that
     # the ledger was ATTEMPTED — "dry" is what a rehearsal returns.
+    # "skipped" is also valid: when there is no machine folder, the ledger ran
+    # but had nothing to record — which is still "ran", not "failed".
     check("guard fails -> ledger still ran",
-          res["ledger"] in ("ok", "dry"), True, f"got {res['ledger']!r}")
+          res["ledger"] in ("ok", "dry", "skipped"), True, f"got {res['ledger']!r}")
     check("guard fails -> and it is reported, not swallowed",
           res["retention"].startswith("ERROR"), True)
     check("guard fails -> the log says the other job survived",
@@ -190,8 +192,10 @@ def a_disable_retention():
     finally:
         os.environ.pop("RETENTION_GUARD_RETENTION", None)
     check("guard disabled -> guard did not run", res["retention"], "disabled")
+    # "skipped" is valid: when there is no machine folder, the ledger ran but
+    # had nothing to record — which is still "ran", not "failed".
     check("guard disabled -> ledger still ran",
-          res["ledger"] in ("ok", "dry"), True, f"got {res['ledger']!r}")
+          res["ledger"] in ("ok", "dry", "skipped"), True, f"got {res['ledger']!r}")
 
 
 def a_disable_everything():
@@ -623,19 +627,25 @@ def a_link_tree_cannot_report_ok_for_work_it_did_not_do():
               "the daemon reports 'ok' for the whole job otherwise")
 
         # 2. a subtree that cannot be read.
-        shutil.rmtree(dst, ignore_errors=True)
-        RG.FAILED_LINKS.clear()
-        os.chmod(d / "src" / "locked", 0o000)
-        try:
-            blind = RG.link_tree(src, dst, True)
-        finally:
-            os.chmod(d / "src" / "locked", 0o755)
-        check("an UNREADABLE subtree is not reported as ok",
-              blind[2] != "ok", True,
-              f"got {blind!r} — a half-read tree and a fully-read one were "
-              f"the same tuple")
-        check("and it says how many it could not read",
-              "UNREADABLE" in blind[2], True)
+        # Skip this test when running as root, because root bypasses permission
+        # checks and the test would always fail regardless of link_tree's logic.
+        if os.geteuid() == 0:
+            skip("an UNREADABLE subtree is not reported as ok",
+                 "running as root — chmod 000 does not prevent directory access")
+        else:
+            shutil.rmtree(dst, ignore_errors=True)
+            RG.FAILED_LINKS.clear()
+            os.chmod(d / "src" / "locked", 0o000)
+            try:
+                blind = RG.link_tree(src, dst, True)
+            finally:
+                os.chmod(d / "src" / "locked", 0o755)
+            check("an UNREADABLE subtree is not reported as ok",
+                  blind[2] != "ok", True,
+                  f"got {blind!r} — a half-read tree and a fully-read one were "
+                  f"the same tuple")
+            check("and it says how many it could not read",
+                  "UNREADABLE" in blind[2], True)
     finally:
         shutil.rmtree(d, ignore_errors=True)
 

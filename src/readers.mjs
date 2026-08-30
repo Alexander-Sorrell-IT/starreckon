@@ -31,6 +31,7 @@ import { constants as BUFFER_CONSTANTS } from "node:buffer";
 import { vscodeRoots } from "./scanners.mjs";
 import { probe, stateOf, loadSources } from "./sources.mjs";
 import { addSourceEvidence } from "./evidence.mjs";
+import { readDeadreckonCorpus } from "./deadreckon-reader.mjs";
 
 // Node cannot hold a string longer than this, so readFileSync throws rather
 // than returning a short read. Checked before opening anything, because the
@@ -802,4 +803,46 @@ export function coworkProfileDirs(home) {
     dirs,
     roots,
   };
+}
+
+/**
+ * Reader for Deadreckon-Count machine-readable corpus files.
+ * Allows Starreckon to import and verify totals from existing Deadreckon outputs
+ * when raw session logs are unavailable or archived.
+ *
+ * This reader is used when a folder contains machine-readable/sessions.json
+ * but no raw .claude or other session folders - typical for archived data.
+ */
+export async function readDeadreckonArchive(corpusPath, pr) {
+  try {
+    const result = await readDeadreckonCorpus(corpusPath);
+    
+    if (!result.sessions || result.sessions.length === 0) {
+      return { state: "empty", sessions: [], totals: result.totals };
+    }
+    
+    // Add evidence for the imported source
+    if (pr && result.sourceFile) {
+      addSourceEvidence(pr, {
+        source: 'deadreckon-archive',
+        path: result.sourceFile,
+        sessionCount: result.sessions.length
+      });
+    }
+    
+    return {
+      state: "counted",
+      sessions: result.sessions,
+      totals: result.totals,
+      source: result.source,
+      importedAt: result.importedAt
+    };
+  } catch (error) {
+    return {
+      state: "unreadable",
+      error: error.message,
+      sessions: [],
+      totals: null
+    };
+  }
 }

@@ -1,0 +1,6 @@
+{
+  "contents": [
+    {"role": "user", "parts": [{"text": "Count these tokens"}]},
+    {"role": "model", "parts": [{"text": "Okay I will"}]}
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "id": "msg_12345",
+  "object": "chat.completion",
+  "created": 1700000000,
+  "model": "claude-sonnet-4-20250514",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "I cannot help you with that request as it violates my safety guidelines. However, I can help you with other programming tasks. Let me know what you need!",
+        "refusal": null
+      },
+      "finish_reason": "stop"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 50,
+    "completion_tokens": 30,
+    "total_tokens": 80,
+    "cache_creation_input_tokens": 100,
+    "cache_read_input_tokens": 200
+  }
+}

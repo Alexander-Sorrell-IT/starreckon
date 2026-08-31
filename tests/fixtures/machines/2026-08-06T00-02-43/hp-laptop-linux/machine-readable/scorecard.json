@@ -62,7 +62,7 @@
    "area": "corpus",
    "check": "export exists",
    "status": "ok",
-   "detail": "/home/phantomcore/token-corpus/hp-laptop-linux"
+   "detail": "/home/testuser/token-corpus/hp-laptop-linux"
   },
   {
    "area": "corpus",

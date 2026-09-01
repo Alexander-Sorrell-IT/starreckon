@@ -320,18 +320,12 @@ def render(sessions, fields, machines, scope, seen=None, claude_only_cc=None):
             L.append("")
             L.append("| CLI | tokens | share |")
             L.append("|---|---:|---:|")
-            # EVERY CLI THIS MACHINE USED, not the top eight. The slice was
-            # [:8], which silently dropped any tool past the eighth — on
-            # hp-laptop-linux that was copilot-chat (1,214,160 over 11
-            # sessions) and lmstudio (119,774 over 7). The gate certifies
-            # every CLI in the tree against this table, so the truncation
-            # showed up as "copilot-chat is missing — not found" and was read
-            # for weeks as a fault in HP's scan rather than in this renderer.
-            # A per-machine breakdown that omits a machine's tools is the
-            # shape of undercount this repository exists to catch.
+            # NOT [:8]. A hard cap silently dropped copilot-chat and lmstudio
+            # off HP Laptop Linux's table — real, nonzero, just small — and
+            # check_consistency.py caught it as "figure not found", which is
+            # this repository's own signature bug: absent reads exactly like
+            # zero. Every CLI a machine actually has gets a row.
             for k, v in sorted(clis.items(), key=lambda x: -x[1]):
-                if not v:
-                    continue
                 L.append(f"| {k} | {v:,} | {v/max(1,t_)*100:5.1f}% |")
             L.append("")
 

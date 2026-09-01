@@ -1,0 +1,24 @@
+{
+ "tokens": 1003996914,
+ "sessions": 17,
+ "turns": 3658,
+ "minutes": 3258.3,
+ "by_cli": {
+  "copilot-chat": 294784,
+  "codex": 17563,
+  "gemini": 1003684567
+ },
+ "by_machine": {
+  "HP Laptop Linux": 1003996914
+ },
+ "by_model": {
+  "copilot/gpt-5.1-codex-max": 294784,
+  "gpt-5.1-codex": 17563,
+  "gemini-2.5-pro": 66577977,
+  "gemini-3-flash-preview": 936269011,
+  "gemini-3-pro-preview": 837579
+ },
+ "first": "2025-12-16T19:25:04.743000Z",
+ "last": "2026-01-04T11:14:40.734000Z",
+ "month": "2025-12"
+}

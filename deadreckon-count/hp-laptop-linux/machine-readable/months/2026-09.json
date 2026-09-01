@@ -1,0 +1,18 @@
+{
+ "tokens": 532113,
+ "sessions": 3,
+ "turns": 20,
+ "minutes": 1.9000000000000001,
+ "by_cli": {
+  "claude": 532113
+ },
+ "by_machine": {
+  "HP Laptop Linux": 532113
+ },
+ "by_model": {
+  "claude-opus-4-7": 532113
+ },
+ "first": "2026-09-01T06:07:31.635Z",
+ "last": "2026-09-01T08:13:08.244Z",
+ "month": "2026-09"
+}

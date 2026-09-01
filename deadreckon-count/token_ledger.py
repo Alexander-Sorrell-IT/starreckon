@@ -47,20 +47,15 @@ would make a CORRECTION permanent: fixing the dedup rule cut this machine from
 re-writes as separate calls. A naive max would hold that wrong 14.5 billion
 forever and call it "lifetime".
 
-So every row carries the scanner_version that produced it, plus the normalized
-path, byte count and SHA-256 of every input file that supplied the session. A
-session's value is still the maximum among rows from the NEWEST scanner that has
-ever seen it. A newer scanner may lower an older value only when one of its own
-observations proves every previously observed source still exists unchanged (or
-has grown). An older scanner's number is used only for sessions the current one
-cannot see at all — which is exactly the case this file exists for: the
-transcript is gone, so no newer scanner will ever read it again, and the last
-observation is the only evidence left.
+So every row carries the scanner_version that produced it, and a session's value
+is the maximum among rows from the NEWEST scanner that has ever seen it. An older
+scanner's number is used only for sessions the current one cannot see at all —
+which is exactly the case this file exists for: the transcript is gone, so no
+newer scanner will ever read it again, and the last observation is the only
+evidence left.
 
-That rule gives both properties at once. Deleting or truncating a transcript
-cannot lower the total. Fixing the counter can. Rows written before source
-evidence was added deliberately retain the legacy scanner-ranking behavior:
-their missing evidence does not freeze later corrections.
+That rule gives both properties at once. Deleting a transcript cannot lower the
+total. Fixing the counter can.
 """
 
 import argparse
@@ -78,71 +73,6 @@ import paths
 LEDGER = "token_ledger.jsonl"
 FIELDS = ("input_tokens", "cache_creation_input_tokens",
           "cache_read_input_tokens", "output_tokens")
-
-
-def _sources(value):
-    """Return only complete source evidence from a session or ledger row."""
-    out = []
-    for item in value or []:
-        if not isinstance(item, dict):
-            continue
-        path, size, digest = item.get("path"), item.get("bytes"), item.get("sha256")
-        if (not isinstance(path, str) or not path or isinstance(size, bool)
-                or not isinstance(size, int) or size < 0
-                or not isinstance(digest, str) or len(digest) != 64):
-            continue
-        try:
-            int(digest, 16)
-        except ValueError:
-            continue
-        item = {"path": path, "bytes": size, "sha256": digest.lower()}
-        if item not in out:
-            out.append(item)
-    return sorted(out, key=lambda item: (item["path"], item["bytes"], item["sha256"]))
-
-
-def _merge_sources(*groups):
-    """Keep every source identity at its largest observed size.
-
-    Equal-size, different-hash observations are deliberately both retained: a
-    same-sized rewrite is evidence of a changed contributor, not a replacement
-    that may erase the earlier evidence.
-    """
-    largest, hashes = {}, {}
-    for group in groups:
-        for item in _sources(group):
-            path, size = item["path"], item["bytes"]
-            if size > largest.get(path, -1):
-                largest[path], hashes[path] = size, {item["sha256"]}
-            elif size == largest.get(path):
-                hashes.setdefault(path, set()).add(item["sha256"])
-    return [{"path": path, "bytes": size, "sha256": digest}
-           for path, size in sorted(largest.items())
-           for digest in sorted(hashes[path])]
-
-
-def _evidence_matches(current, previous):
-    """Whether one observation proves every earlier contributing file survived."""
-    current, previous = _sources(current), _merge_sources(previous)
-    if not previous:
-        return True
-    for old in previous:
-        if not any(new["path"] == old["path"]
-                  and (new["bytes"] > old["bytes"]
-                       or (new["bytes"] == old["bytes"]
-                           and new["sha256"] == old["sha256"]))
-                  for new in current):
-            return False
-    return True
-
-
-def _max_row(rows):
-    """Maximum per field, matching the historical same-scanner behavior."""
-    out = {}
-    for row in rows:
-        for key in FIELDS + ("total",):
-            out[key] = max(int(out.get(key, 0) or 0), int(row.get(key, 0) or 0))
-    return out
 
 
 def _rows(mdir):
@@ -199,9 +129,6 @@ def observe(mdir, scan_dir=None):
         row["total"] = int(s.get("total") or sum(row.values()))
         row["start"] = (s.get("start") or "")[:10]
         row["model"] = s.get("model") or "unknown"
-        sources = _sources(s.get("sources"))
-        if sources:
-            row["sources"] = sources
         out[(cli, sid)] = row
     return out, ver
 
@@ -240,8 +167,6 @@ def lifetime(mdir):
 
     For each session: among every observation of it, keep only those from the
     newest scanner_version that ever saw it, and take the maximum per field.
-    A lower result from that newest scanner needs one complete source-evidence
-    observation; legacy rows without evidence retain the earlier behavior.
 
     Returns:
         total           int — grand total across all CLIs
@@ -262,45 +187,22 @@ def lifetime(mdir):
     # is what a rollback intends. Verified a no-op on the real ledger, where no
     # version has ever reappeared.
     order = {}                  # version -> last-seen index
-    rows = _rows(mdir)
-    for i, r in enumerate(rows):
+    for i, r in enumerate(_rows(mdir)):
         v = r.get("scanner") or "pre-versioning"
         order[v] = i
-    grouped = {}
-    for r in rows:
+    for r in _rows(mdir):
         key = (r.get("cli"), r.get("session_id"))
         if None in key:
             continue
         rank = order.get(r.get("scanner") or "pre-versioning", -1)
-        grouped.setdefault(key, []).append((rank, r))
-
-    for key, observed in grouped.items():
-        newest = max(rank for rank, _row in observed)
-        current = [row for rank, row in observed if rank == newest]
-        older = [row for rank, row in observed if rank < newest]
-        historic = _max_row(older)
-        historic_total = int(historic.get("total", 0) or 0)
-
-        # A higher total is always additive. For a lower result, one *single*
-        # current observation must account for every old contributing file. Do
-        # not union separate partial observations here: A-only plus B-only must
-        # never masquerade as one scan that read A and B together.
-        allowed = current
-        prior_sources = _merge_sources(*(row.get("sources") for row in older))
-        if (older and int(_max_row(current).get("total", 0) or 0) < historic_total
-                and prior_sources):
-            allowed = [
-                row for row in current
-                if (int(row.get("total", 0) or 0) >= historic_total
-                    or _evidence_matches(row.get("sources"), prior_sources))
-            ]
-        if allowed:
-            best[key] = (newest, _max_row(allowed))
-        else:
-            # Existing source evidence makes the lower observation unsafe. Keep
-            # the historic high-water value; rejected-row evidence remains
-            # append-only for a later scanner to inspect.
-            best[key] = (newest, historic)
+        cur = best.get(key)
+        if cur is None or rank > cur[0]:
+            best[key] = (rank, dict(r))
+        elif rank == cur[0]:
+            # Same scanner saw it twice — a re-scan after more turns. Take the
+            # larger, so a run interrupted mid-write cannot shrink a session.
+            for k in FIELDS + ("total",):
+                cur[1][k] = max(int(cur[1].get(k, 0) or 0), int(r.get(k, 0) or 0))
     per_cli, total = {}, 0
     for (cli, _sid), (_rank, row) in best.items():
         n = int(row.get("total") or 0)
@@ -389,32 +291,21 @@ def _record_locked(mdir, apply=True, scan_dir=None):
     seen, ver = observe(mdir, scan_dir)
     if ver is None:
         return 0, 0, "no sessions.json — nothing to observe"
-    known, known_evidence = {}, {}
+    known = {}
     for r in _rows(mdir):
         key = (r.get("cli"), r.get("session_id"))
         if r.get("scanner") == ver:
-            prior = known.get(key)
-            if prior is None:
-                known[key] = dict(r)
-            else:
-                known[key] = _max_row((prior, r))
-            evidence = _sources(r.get("sources"))
-            if evidence not in known_evidence.setdefault(key, []):
-                known_evidence[key].append(evidence)
+            known[key] = r
 
     new = []
     stamp = datetime.datetime.now().astimezone().isoformat(timespec="seconds")
     hw_uuid = _machine_uuid_from_mid(mdir)
     for (cli, sid), row in sorted(seen.items()):
         was = known.get((cli, sid))
-        sources = _sources(row.get("sources"))
-        if (was and all(int(was.get(k, 0) or 0) >= row[k] for k in FIELDS)
-                and sources in known_evidence.get((cli, sid), [])):
-            continue            # this scanner already recorded this exact evidence
+        if was and all(int(was.get(k, 0) or 0) >= row[k] for k in FIELDS):
+            continue            # this scanner already recorded it, no larger
         entry = {"observed": stamp, "scanner": ver, "machine": mdir.name,
                  "cli": cli, "session_id": sid, **row}
-        if sources:
-            entry["sources"] = sources
         if hw_uuid:
             entry["hardware_uuid"] = hw_uuid
         new.append(entry)

@@ -132,58 +132,6 @@ def load_accounts(root):
     return (d.get("accounts") or []), labels
 
 
-def load_ledger_only(root, scanned):
-    """Machine folders holding a ledger and no scan — the state between the two.
-
-    Every ledger figure in this file was read inside the loop over
-    `iter_machine_files(root, "totals.json")`, and that function — like
-    `paths.machine_folders` under it — decides what a machine folder IS by
-    asking for totals.json. So a folder whose scan has not been committed, has
-    been retired, or was pulled from a computer mid-export carried its
-    append-only ledger and contributed nothing at all. Measured on this tree:
-
-        asus-laptop-linux                 146,981,095      36 sessions
-        dell-inspiron-desktop-linux        11,292,220       7 sessions
-        dell-latitude-7480-linux        4,464,394,318  13,378 sessions
-                                        -------------
-                                        4,622,667,633   read as zero
-
-    and all three printed "❌ never scanned" on the front page — the one state
-    they are demonstrably not in. At one HEAD hp-laptop-linux was here too,
-    with a committed ledger of 13,367,051,701 across 374 sessions, and the
-    front page called it never scanned for the same reason.
-
-    Existence is tested by the ledger being on disk, not by totals.json being
-    on disk: the content-for-existence mistake `corpus_machine_folders` was
-    written to undo. `total` and `scanned` come back None, never 0 — there is
-    no scan, which is not a scan that found nothing.
-    """
-    out = []
-    for d in sorted(p for p in pathlib.Path(root).iterdir() if p.is_dir()):
-        if (d.name in paths.NOT_A_MACHINE or d.name.startswith(".")
-                or d.name in scanned):
-            continue
-        if paths.find(d, token_ledger.LEDGER) is None:
-            continue
-        # The name every other table uses is the LABEL — totals.json's
-        # "machine" key is "HP Laptop Linux", not "hp-laptop-linux". Without a
-        # scan the label is only in .machine-id, so a ledger-only row would
-        # otherwise be the one row in the report named by its folder.
-        label = d.name
-        mid = d / ".machine-id"
-        if mid.is_file():
-            try:
-                label = json.loads(mid.read_text(encoding="utf-8")).get("label") or d.name
-            except Exception:
-                pass
-        lt = token_ledger.lifetime(d)
-        out.append({"machine": label, "folder": d.name, "state": "ledger-only",
-                    "total": None, "scanned": None, "sessions_scanned": False,
-                    "ledger_total": lt["total"], "ledger_sessions": lt["sessions"],
-                    "ledger_present": True, "ledger_beyond_scan": None})
-    return out
-
-
 def main():
     root = pathlib.Path(__file__).parent
     machines = []
@@ -210,19 +158,8 @@ def main():
                 pass
         machines.append(m)
 
-    # A ledger is read wherever one EXISTS. The loop above can only reach a
-    # folder that has totals.json, so this is the rest of them.
-    ledger_only = load_ledger_only(root, {m["folder"] for m in machines})
-
     if not machines:
-        sys.exit("no <machine>/totals.json found — run analyze_tokens.py first"
-                 + ("" if not ledger_only else
-                    "\n\n  A token ledger IS present on "
-                    + ", ".join(f"{e['folder']} ({e['ledger_total']:,})"
-                                for e in ledger_only)
-                    + f"\n  — {sum(e['ledger_total'] for e in ledger_only):,} recorded "
-                      "tokens this run wrote nothing about, because the report\n"
-                      "  needs one scanned machine to be built at all."))
+        sys.exit("no <machine>/totals.json found — run analyze_tokens.py first")
 
     # TWO FOLDERS CLAIMING ONE COMPUTER WERE ADDED TOGETHER.
     #
@@ -262,19 +199,17 @@ def main():
     known_accounts, profile_labels = load_accounts(root)
     machines.sort(key=lambda m: -m["grand_total_tokens"])
 
-    # Replace bare user:<uid> rows with what that profile actually is.
-    #
-    # Sessions are loaded here rather than further down so they can be renamed in
-    # the same pass. This file had its own copy of the rename that touched
-    # machines only, and stats_page.machine_floor — called below for the README's
-    # Floor column — then looked "DeepSeek backend (~/.my-claude)" up in a
-    # session map still keyed "user:73ae64bf180b", missed, and fell back to
-    # grand_total: 520,497,793 published for a profile whose sessions measure
-    # 529,474,038. Imported rather than copied for the same reason provider_of
-    # is; the rename and the lookup that depends on it now live in one file.
-    import stats_page as _sp
-    S, uncountable, scanned, all_clis = load_sessions(root)
-    _sp.relabel_profiles(machines, S, profile_labels)
+    # Replace bare user:<uid> rows with what that profile actually is. The uid in
+    # the account string is truncated, so match on prefix.
+    for m in machines:
+        for a in m["accounts"]:
+            if not a["account"].startswith("user:"):
+                continue
+            uid = a["account"][5:]
+            for full, label in profile_labels.items():
+                if full.startswith(uid):
+                    a["account"] = label
+                    break
 
     # Per-account totals across every machine. Sessions on different computers
     # are disjoint, so these add without any risk of double-counting.
@@ -448,6 +383,8 @@ def main():
             if tot:
                 L.append(f"| {name} | {model} | {human(tot)} |")
 
+    S, uncountable, scanned, all_clis = load_sessions(root)
+
     # WHAT THE LEDGER HOLDS BEYOND THE SCAN, AGAINST THE SAME BASIS.
     #
     # The ledger is keyed by session and covers every CLI. `grand_total_tokens`
@@ -470,15 +407,6 @@ def main():
                      for m in machines}
     beyond_total = sum(v for v in ledger_beyond.values() if v)
     beyond_unknown = sorted(k for k, v in ledger_beyond.items() if v is None)
-
-    # Every ledger there is, not every ledger that happens to sit beside a scan.
-    # The scanned machines hold 35,054,910,068; the three ledger-only folders
-    # hold 4,622,667,633 more, and that 4.62 B appeared in no published figure.
-    # Their share of `beyond_total` is not added: that quantity is the ledger
-    # minus the every-CLI scan, and a machine with no scan has no such
-    # subtraction — unknown, not the whole ledger and not zero.
-    ledger_only_total = sum(e["ledger_total"] for e in ledger_only)
-    ledger_fleet = sum(m["ledger_total"] for m in machines) + ledger_only_total
 
     cli_rows, prov_rows = [], []
     if S:
@@ -609,25 +537,8 @@ def main():
                     f"{human(m['grand_total_tokens'])} | "
                     f"{human(cli) if cli else '_not scanned_'} | "
                     f"{(m.get('generated_at') or '⚠️ stale')[:10]} |")
-            # "❌ never" and "📒 ledger only" are different facts, and every
-            # roster entry without a scan was printed as the first one.
-            # dell-latitude-7480-linux carried 4,464,394,318 tokens over 13,378
-            # sessions under that ❌; dell-latitude-7480-windows has no folder
-            # at all and is the only one of the four the word is true of.
-            lo_by_folder = {e["folder"]: e for e in ledger_only}
             for e in unscanned:
-                lo = lo_by_folder.pop(e.get("folder"), None)
-                rows.append(f"| `{e.get('folder')}/` | — | — | — | — | — | "
-                            + (f"📒 **ledger only** — {human(lo['ledger_total'])}, "
-                               f"{lo['ledger_sessions']:,} sessions |" if lo
-                               else "❌ never |"))
-            # A ledger folder nobody added to machines.json. It is in no other
-            # list this file builds, so without this row it is in no document.
-            for lo in lo_by_folder.values():
-                rows.append(f"| `{lo['folder']}/` | — | — | — | — | — | "
-                            f"📒 **ledger only, off-roster** — "
-                            f"{human(lo['ledger_total'])}, "
-                            f"{lo['ledger_sessions']:,} sessions |")
+                rows.append(f"| `{e.get('folder')}/` | — | — | — | — | — | ❌ never |")
             _tf = sum(v for v in floors.values() if v)
             rows += ["| **All computers** | | | **" + human(_tf) + "** | **"
                      + human(grand) + "** | | |", "",
@@ -646,19 +557,11 @@ def main():
                      # document wrong. Published as its own sentence instead, and
                      # in full in machine-readable/ALL-COMPUTERS.json.
                      f"The append-only token ledgers stand behind "
-                     f"**{human(ledger_fleet)}** across the fleet, of which "
-                     f"**{human(beyond_total)}** is usage "
+                     f"**{human(sum(m['ledger_total'] for m in machines))}** across "
+                     f"these machines, of which **{human(beyond_total)}** is usage "
                      "no scan can still see, because the transcripts behind it "
                      "have been deleted. `LIFETIME.md` counts it; the columns "
                      "above do not."
-                     + ("" if not ledger_only else
-                        f" **{human(ledger_only_total)}** of that is on machines "
-                        "with a ledger and no scan at all — "
-                        + ", ".join(f"`{e['folder']}`" for e in ledger_only)
-                        + " — which is not the state above and not never scanned: "
-                          "the tokens are recorded, they are in no column here, and "
-                          "how much of them a scan could still see is unknown "
-                          "rather than zero.")
                      + ("" if not beyond_unknown else
                         " Not included in that figure: "
                         + ", ".join(f"`{b}`" for b in beyond_unknown)
@@ -719,28 +622,17 @@ def main():
         "generated_at": generated_at,
         "grand_total_tokens": grand,
         # grand_total_tokens and machines[].total stay exactly what they were:
-        # the scan. No ledger figure is folded into either, so nothing that
-        # already reads this file starts comparing a floor against a scan
-        # without being changed to say so.
-        # Every ledger on disk, which is a CHANGE of this key: it summed only
-        # the folders that also had a totals.json, so on this tree it published
-        # 35,054,910,068 where the ledgers hold 39,677,577,701. Both partitions
-        # are still derivable — machines[] and ledger_only_machines[] each carry
-        # their own ledger_total — so nothing has to trust this sum.
-        "ledger_total": ledger_fleet,
+        # the scan. The ledger figures are additional keys, not a redefinition
+        # of an existing one, so nothing that already reads this file starts
+        # comparing a floor against a scan without being changed to say so.
+        "ledger_total": sum(m["ledger_total"] for m in machines),
         "ledger_beyond_scan": beyond_total,
-        # Ledger, no scan. A separate list rather than extra machines[] rows:
-        # machines[].total is a scan figure and these have none, and publishing
-        # 0 there would say the computer did nothing. Every row carries
-        # "state", so the two lists can be concatenated without losing which.
-        "ledger_only_machines": ledger_only,
         # null, not 0. A machine with no session scan has no comparable figure,
         # and publishing 0 there would say its ledger recovers nothing.
         "ledger_beyond_scan_unknown_on": beyond_unknown,
         "machines_without_ledger": [m["folder"] for m in machines
                                     if not m["ledger_present"]],
         "machines": [{"machine": m["machine"], "folder": m["folder"],
-                      "state": "scanned",
                       "total": m["grand_total_tokens"],
                       "ledger_total": m["ledger_total"],
                       "ledger_sessions": m["ledger_sessions"],
@@ -775,15 +667,6 @@ def main():
             "  not comparable on: " + ", ".join(beyond_unknown)
             + " — no sessions.py scan there, so how much of their ledger is\n"
               "  lost history is UNKNOWN, not zero\n")
-    if ledger_only:
-        sys.stderr.write(
-            "  LEDGER ONLY — a ledger and no scan on: "
-            + ", ".join(f"{e['folder']} ({e['ledger_total']:,} over "
-                        f"{e['ledger_sessions']:,} sessions)"
-                        for e in ledger_only)
-            + f"\n  {ledger_only_total:,} tokens. Read as zero by every run before "
-              "this line existed, and\n"
-              "  printed on the front page as never scanned, which they are not.\n")
     if summary["machines_without_ledger"]:
         sys.stderr.write(
             "  NO token_ledger.jsonl at all on: "

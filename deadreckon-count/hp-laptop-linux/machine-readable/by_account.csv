@@ -1,0 +1,16 @@
+account,config_dir,sessions,turns,input_tokens,cache_creation_input_tokens,cache_read_input_tokens,output_tokens,total
+codehunterextreme@gmail.com,/home/phantomcore/.claude-alt,47,46318,839584,190910151,7828393925,42332401,8062476061
+broodierchip@gmail.com,/home/phantomcore/.claude,87,9891,1652292,68751028,2662338461,11708656,2744450437
+user:73ae64bf180b,/home/phantomcore/.my-claude,6,5101,21796441,0,493706496,4994856,520497793
+alexander.sorrell.it@gmail.com,/home/phantomcore/.claude-it,10,1164,12933,6736704,216417529,683937,223851103
+user:4be462f3a2f9,/home/phantomcore/.claude-alt-api,1,6,1922,10864,125198,3226,141210
+broodierchip@gmail.com,/home/phantomcore/.ai-logs-archive/claude/.claude,84,0,0,0,0,0,0
+codehunterextreme@gmail.com,/home/phantomcore/.ai-logs-archive/claude/.claude-alt,27,0,0,0,0,0,0
+user:4be462f3a2f9,/home/phantomcore/.ai-logs-archive/claude/.claude-alt-api,1,0,0,0,0,0,0
+alexander.sorrell.it@gmail.com,/home/phantomcore/.ai-logs-archive/claude/.claude-it,2,0,0,0,0,0,0
+user:73ae64bf180b,/home/phantomcore/.ai-logs-archive/claude/.my-claude,6,0,0,0,0,0,0
+broodierchip@gmail.com,/home/phantomcore/.ai-logs-archive/claude/claude,87,0,0,0,0,0,0
+codehunterextreme@gmail.com,/home/phantomcore/.ai-logs-archive/claude/claude-alt,47,0,0,0,0,0,0
+user:4be462f3a2f9,/home/phantomcore/.ai-logs-archive/claude/claude-alt-api,1,0,0,0,0,0,0
+alexander.sorrell.it@gmail.com,/home/phantomcore/.ai-logs-archive/claude/claude-it,10,0,0,0,0,0,0
+user:73ae64bf180b,/home/phantomcore/.ai-logs-archive/claude/my-claude,6,0,0,0,0,0,0

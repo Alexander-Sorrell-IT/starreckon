@@ -1,16 +1,13 @@
 #!/usr/bin/env python3
-"""One command with eight verbs. Acts on BOTH repositories.
+"""One command with five verbs. Acts on BOTH repositories.
 
     python3 run.py update      scan this computer, export, rebuild everything
     python3 run.py rebuild     no scan — delete every derived file and recompute
     python3 run.py archive     snapshot today into archive/, then rescan
     python3 run.py retire      move everything to testing-archive/, start clean
-    python3 run.py reset       retire, PLUS the working directories — production start
     python3 run.py status      what state is all of this in
-    python3 run.py sync        pull, scan, rebuild, commit, push — the daemon's verb
-    python3 run.py combine     rebuild the rollups from the folders already here
 
-Twelve scripts is not an interface. These are the things anyone actually
+Twelve scripts is not an interface. These are the five things anyone actually
 does, and each one does the whole job across `deadreckon-count` and `deadreckon-record`
 rather than leaving half of it for you to remember.
 
@@ -28,12 +25,10 @@ anything under a machine's own scan output that a rebuild cannot recreate.
 
 import argparse
 import datetime
-import os
 import pathlib
 import shutil
 import subprocess
 import sys
-import tempfile
 
 ROOT = pathlib.Path(__file__).parent
 sys.path.insert(0, str(ROOT))
@@ -193,101 +188,24 @@ def sh(cmd, where=ROOT, quiet=False):
     return r.stdout
 
 
-def wipe_derived(root, label, hold=None):
-    """Remove every derived file. With `hold`, move rather than delete.
-
-    WHY `hold` EXISTS
-
-    `rebuild` deletes before it regenerates, for the reason at the top of this
-    file. What was never true is that it finishes. The gate can FAIL between the
-    delete and the write, and when it does the run aborts having removed twelve
-    per-machine documents and written none — a tree in a state no verb produced
-    and no verb repairs. That happened, and the recovery was `git checkout` on a
-    list of paths read out of `git status`, by hand.
-
-    So the files are moved into a holding directory instead of unlinked, and
-    `rebuild` puts them back if the regenerate step raises. Deleting first is
-    still what the tree sees; it is only the failure path that changed.
-    """
+def wipe_derived(root, label):
     n = 0
-
-    def take(p):
-        nonlocal n
-        if hold is None:
-            if p.is_dir():
-                shutil.rmtree(p)
-            else:
-                p.unlink()
-        else:
-            dest = hold / p.relative_to(root)
-            dest.parent.mkdir(parents=True, exist_ok=True)
-            shutil.move(str(p), str(dest))
-        n += 1
-
     for name in DERIVED_ROOT:
         p = paths.find(root, name)
         if p and p.is_file():
-            take(p)
-    # DO NOT WIPE WHAT THIS MACHINE CANNOT REGENERATE. PLAN.md P4.
-    #
-    # DERIVED_MACHINE holds SCORECARD.md and scorecard.json, and `rebuild`
-    # regenerates by running `update.py --combine-only` — which never runs
-    # scorecard.py at all, because that call sits behind `if not
-    # args.combine_only`. So every machine's scorecard was moved aside and put
-    # back by nobody. On SUCCESS the hold directory is rmtree'd in the
-    # `finally`, so the held copies went with it: `rebuild` deleted four other
-    # computers' tracked scorecards permanently and regenerated none.
-    #
-    # A scorecard reads ITS OWN machine's scan outputs, so this computer could
-    # not regenerate another's even if it tried. The fix is therefore not "run
-    # scorecard.py afterwards" — it is the repo's own rule, applied here:
-    # a machine may clear its own folder and nobody else's.
-    #
-    # STATS.md and stats.json stay fleet-wide: fun_stats.py DOES rewrite those
-    # for every machine from each folder's own totals.json, so wiping them is
-    # matched by something that puts them back.
-    # this_machine(), NOT paths.machine(). paths.machine(root) returns
-    # root/"machine-readable" — the directory NAME, not the folder this
-    # computer owns. Using it made `mdir.name != mine` true for every folder,
-    # so the guard below skipped EVERY scorecard including this machine's own,
-    # and the ownership test passed for entirely the wrong reason: it reported
-    # "0 taken from other machines" because it took none from anywhere.
-    try:
-        _m = this_machine()
-        mine = _m.name if _m is not None else None
-    except Exception:      # noqa: BLE001 - unenrolled machine owns nothing
-        mine = None
+            p.unlink()
+            n += 1
     for mdir in paths.machine_folders(root):
         for name in DERIVED_MACHINE:
-            if name in ("SCORECARD.md", "scorecard.json") and mdir.name != mine:
-                continue
             p = paths.find(mdir, name)
             if p and p.is_file():
-                take(p)
+                p.unlink()
+                n += 1
     md = paths.machine(root) / "months"
     if md.is_dir():
-        take(md)
-    print(f"  {label:14} removed {n} derived file(s)")
-    return n
-
-
-def restore_held(hold, root, label):
-    """Put back what `wipe_derived` moved aside.
-
-    Every held path is a file under the same relative path it came from —
-    `months/` was moved as a directory, but its contents arrive here as files,
-    so recreating the parents restores it too. A file the regenerate step
-    already wrote is NOT overwritten: that one is newer than what we hold.
-    """
-    n = 0
-    for src in sorted(p for p in hold.rglob("*") if p.is_file()):
-        dest = root / src.relative_to(hold)
-        if dest.exists():
-            continue
-        dest.parent.mkdir(parents=True, exist_ok=True)
-        shutil.move(str(src), str(dest))
+        shutil.rmtree(md)
         n += 1
-    print(f"  {label:14} restored {n} derived file(s) — the tree is as it was")
+    print(f"  {label:14} removed {n} derived file(s)")
     return n
 
 
@@ -304,179 +222,13 @@ def rebuild(scan=False, machine=None, label=None):
                                        "of 5", "lifetime", "corpus holds")):
                 print("  " + line.strip())
     else:
-        # Held aside rather than deleted, so a gate FAIL leaves the tree as it
-        # was found instead of stripped. See wipe_derived().
-        hold = pathlib.Path(tempfile.mkdtemp(prefix="deadreckon-rebuild-"))
-        # THE HOLD SURVIVES AN EXCEPTION. IT DID NOT SURVIVE A KILL.
-        #
-        # `except BaseException` catches a gate failure and puts the files
-        # back. It does not run when the process is SIGTERMed — a `timeout`,
-        # a Ctrl-C from a shell that sends TERM, an OOM kill. Measured:
-        # `timeout 540 python3 run.py rebuild` exited 124 with every machine's
-        # SCORECARD.md still sitting in /tmp/deadreckon-rebuild-*, the working
-        # tree stripped of 14 tracked files, and nothing on screen saying so.
-        #
-        # A rebuild takes minutes and people wrap long commands in timeouts.
-        # Turning TERM and HUP into an exception routes them into the same
-        # restore path the gate failure already uses, so the tree is put back
-        # whichever way the run ends. SIGKILL still cannot be caught — nothing
-        # can — which is why restore_held() is also safe to run again by hand
-        # against a leftover /tmp/deadreckon-rebuild-* directory.
-        import signal as _signal
-
-        def _term(signum, _frame):
-            raise KeyboardInterrupt(f"signal {signum}")
-
-        _old = {}
-        for _sig in (_signal.SIGTERM, _signal.SIGHUP):
-            try:
-                _old[_sig] = _signal.signal(_sig, _term)
-            except (ValueError, OSError):   # not the main thread, or no such signal
-                pass
-        try:
-            wipe_derived(ROOT, "deadreckon-count", hold / "count")
-            if CORPUS.is_dir():
-                wipe_derived(CORPUS, "deadreckon-record", hold / "record")
-            out = sh(["update.py", "--combine-only"])
-        except BaseException:
-            print("\n  rebuild did not finish — putting the derived files back\n")
-            if (hold / "count").is_dir():
-                restore_held(hold / "count", ROOT, "deadreckon-count")
-            if (hold / "record").is_dir():
-                restore_held(hold / "record", CORPUS, "deadreckon-record")
-            raise
-        finally:
-            for _sig, _h in _old.items():
-                try:
-                    _signal.signal(_sig, _h)
-                except (ValueError, OSError):
-                    pass
-            shutil.rmtree(hold, ignore_errors=True)
+        wipe_derived(ROOT, "deadreckon-count")
+        if CORPUS.is_dir():
+            wipe_derived(CORPUS, "deadreckon-record")
+        out = sh(["update.py", "--combine-only"])
         for line in out.strip().splitlines():
             if any(k in line for k in ("checks", "wrote", "lifetime", "corpus holds")):
                 print("  " + line.strip())
-
-
-# WORKING DIRECTORIES — regenerable, and none of them is small.
-#
-# `retire` was written to clear the DOCUMENTS: archive/, the derived reports,
-# machine folders left on a superseded scanner. It never touched the working
-# directories, because on the machine it was written on they were empty. They
-# are not empty now — 3.8 GB on this one — and every byte of it is output that
-# some verb writes again on demand. A production start that leaves them in
-# place is a production start carrying an afternoon of development exports.
-REGENERABLE = {
-    "corpus":  "export_corpus.py output, staged for `corpus_ship.py pack`",
-    "dist":    "the .tar.zst archives `pack` builds from corpus/",
-    "merged":  "merge_corpus.py output",
-    "__pycache__": "bytecode",
-}
-
-# EVIDENCE — regenerable only by re-running the thing that produced it, and in
-# one case not at all. Moved into testing-archive/ rather than deleted.
-PRESERVED = {
-    "capture":  "payload captures — what a vendor's client WOULD have sent",
-    "digests":  "snapshot digests: what the archive compared against",
-}
-
-
-def dir_size(p):
-    return sum(f.stat().st_size for f in p.rglob("*") if f.is_file()) if p.is_dir() else 0
-
-
-def human_bytes(n):
-    for unit in ("B", "KB", "MB", "GB"):
-        if n < 1024 or unit == "GB":
-            return f"{n:.0f} {unit}" if unit == "B" else f"{n/1:.1f} {unit}"
-        n /= 1024
-    return f"{n:.1f} GB"
-
-
-def dirty_repos():
-    """Both checkouts, and whether either has uncommitted work.
-
-    `reset` deletes gigabytes and moves the rest. Doing that over uncommitted
-    work means the only copy of it was the working tree, and there is no verb
-    that brings it back. So this refuses rather than asking — a prompt answered
-    'yes' by someone who did not look is the same as no check at all.
-    """
-    out = []
-    for label, path in (("deadreckon-count", ROOT), ("deadreckon-record", CORPUS)):
-        if not (path / ".git").is_dir():
-            continue
-        n = len(_git(path, "status", "--porcelain").splitlines())
-        if n:
-            out.append((label, path, n))
-    return out
-
-
-def reset(apply=False):
-    """Clear everything development left behind, and start the operating record.
-
-    `retire` handles the documents. This handles the working directories too,
-    and refuses to run over uncommitted work. Dry by default: nothing moves
-    until --yes, because the dry run IS the review step.
-    """
-    dirty = dirty_repos()
-    if dirty:
-        print("REFUSING — uncommitted work in:\n")
-        for label, path, n in dirty:
-            print(f"  {label:20} {n} change(s)   {path}")
-        print("\nCommit or stash first. reset deletes regenerable output and moves\n"
-              "the rest into testing-archive/; neither step can recover a file that\n"
-              "only ever existed in the working tree.")
-        return 1
-
-    stamp = datetime.datetime.now().astimezone().strftime("%Y-%m-%dT%H-%M-%S")
-    from update import stamp_path
-    dest = ROOT / "testing-archive" / stamp_path(stamp)
-
-    print(f"{'DELETE — regenerable' if apply else 'WOULD DELETE — regenerable'}\n")
-    freed = 0
-    for name, why in REGENERABLE.items():
-        for root in (ROOT, CORPUS):
-            p = root / name
-            if not p.is_dir():
-                continue
-            size = dir_size(p)
-            freed += size
-            print(f"  {name:14} {human_bytes(size):>10}   {why}")
-            if apply:
-                shutil.rmtree(p, ignore_errors=True)
-
-    print(f"\n{'PRESERVE into' if apply else 'WOULD PRESERVE into'} "
-          f"testing-archive/{stamp_path(stamp)}/\n")
-    from update import write_ledgers
-    write_ledgers(ROOT / "testing-archive")
-    kept = 0
-    for name, why in PRESERVED.items():
-        p = ROOT / name
-        if not p.is_dir():
-            continue
-        size = dir_size(p)
-        kept += size
-        print(f"  {name:14} {human_bytes(size):>10}   {why}")
-        if apply:
-            dest.mkdir(parents=True, exist_ok=True)
-            shutil.move(str(p), str(dest / name))
-
-    print(f"\n  {human_bytes(freed)} freed, {human_bytes(kept)} preserved")
-    print("\nTHEN the documents — `retire`'s job, run as part of this:\n")
-    if not apply:
-        # PRINTED, not just run. sh() captures stdout and only writes it out on
-        # failure, so a dry run that succeeded showed nothing at all — the one
-        # command whose entire purpose is to show you what it would do.
-        print(sh(["retire_archive.py"]).rstrip())
-        print("\n  nothing has changed. Re-run with:  python3 run.py reset --yes")
-        return 0
-
-    sh(["retire_archive.py", "--yes"], quiet=True)
-    wipe_derived(ROOT, "deadreckon-count")
-    if CORPUS.is_dir():
-        wipe_derived(CORPUS, "deadreckon-record")
-    print("\n  reset. This tree now holds only what a scan produces.")
-    print("  Next:  python3 run.py update")
-    return 0
 
 
 def this_machine():
@@ -552,94 +304,6 @@ def foreign_staged(root, mine):
     return foreign, shared
 
 
-def component_status():
-    """Every optional component and whether it is here. ONE source.
-
-    `run.py status` and `run.py --help` both report this. They were about to be
-    written twice — the help epilog was the item, and status already computed
-    the daemon half — and two functions answering "is the daemon running" drift
-    apart, which is the fault this repository finds in its own readers over and
-    over. One function, two renderings.
-
-    Every check is a file test or a cheap subprocess. Nothing here imports a
-    model or opens a transcript: `--help` must stay instant, or people stop
-    running it and the status stops being read.
-
-    Returns [(group, name, state, detail)] where state is one of
-    "on" | "off" | "unknown".
-    """
-    import hashlib
-    import shutil as _sh
-    out = []
-
-    # -- the daemon
-    try:
-        act = subprocess.run(["systemctl", "--user", "is-active",
-                              "retention-guard.service"],
-                             capture_output=True, text=True).stdout.strip()
-        ling = subprocess.run(["loginctl", "show-user", os.environ.get("USER", ""),
-                               "-p", "Linger", "--value"],
-                              capture_output=True, text=True).stdout.strip()
-        out.append(("daemon", "retention-guard",
-                    "on" if act == "active" else "off",
-                    act + (f", linger={ling}" if ling else "")))
-    except Exception:  # noqa: BLE001
-        out.append(("daemon", "retention-guard", "unknown", "systemctl unavailable"))
-
-    def _h(p_):
-        try:
-            return hashlib.sha256(pathlib.Path(p_).read_bytes()).hexdigest()[:12]
-        except Exception:  # noqa: BLE001
-            return None
-    installed = pathlib.Path.home() / ".local" / "bin" / "retention_guard.py"
-    a, b = _h(installed), _h(ROOT / "retention_guard.py")
-    if a and b:
-        out.append(("daemon", "guard copy", "on" if a == b else "off",
-                    "matches the repo" if a == b
-                    else f"DIFFERS — daemon running stale code ({a} vs {b})"))
-    elif b and not a:
-        out.append(("daemon", "guard copy", "off",
-                    f"MISSING at {installed}"))
-
-    if _sh.which("journalctl"):
-        try:
-            j = subprocess.run(["journalctl", "--user", "-u",
-                                "retention-guard.service", "--no-pager",
-                                "--since", "-7d"],
-                               capture_output=True, text=True).stdout
-            fails = [l for l in j.splitlines() if "could NOT be archived" in l]
-            out.append(("daemon", "archive failures (7d)",
-                        "on" if not fails else "off",
-                        "none" if not fails
-                        else f"{len(fails)}, newest: "
-                             f"{fails[-1].split(':', 3)[-1].strip()[:70]}"))
-        except Exception:  # noqa: BLE001
-            pass
-
-    # -- the optional models. File-existence only; loading one would make
-    #    `--help` take minutes.
-    cache = pathlib.Path(os.environ.get(
-        "DEADRECKON_MODEL_CACHE",
-        str(pathlib.Path.home() / ".cache" / "huggingface")))
-    for repo in ("cisco-ai/cisco-time-series-model-1.0",
-                 "cisco-ai/SecureBERT2.0-biencoder",
-                 "cisco-ai/SecureBERT2.0-cross_encoder",
-                 "fdtn-ai/antares-350m"):
-        slug = "models--" + repo.replace("/", "--")
-        here = (cache / "hub" / slug).is_dir() or (cache / slug).is_dir()
-        out.append(("models", repo, "on" if here else "off",
-                    "installed" if here else "not installed (optional)"))
-
-    # -- the tool config. "custom" and "default" are different facts: a scan
-    #    run on the built-ins after someone edited a JSON badly is not the same
-    #    machine as one run on the config, and the fallback is silent by design.
-    for name in ("clis.json", "programs.json"):
-        f = ROOT / name
-        out.append(("config", name, "on" if f.is_file() else "off",
-                    "authored" if f.is_file() else "absent — using built-ins"))
-    return out
-
-
 def status():
     import json
     who_am_i()
@@ -671,22 +335,6 @@ def status():
           + (f", newest {snaps[-1]}" if snaps else " — empty"))
     ta = ROOT / "testing-archive"
     print(f"  testing      {len(list(ta.iterdir())) if ta.is_dir() else 0} retired set(s)")
-
-    # THE DAEMON, WHERE SOMEONE ALREADY LOOKS.
-    #
-    # `!! NOT ARCHIVED` fired 204 times in the journal before anyone noticed —
-    # it is one of the three lines the README says to send over rather than
-    # re-run, and it accumulated where nothing reads. And the unit runs a COPY
-    # at ~/.local/bin/retention_guard.py, so a `git pull` that changes the
-    # guard leaves the daemon on stale code silently. The guard is what
-    # protects the transcripts; both of those are worth a line here.
-    group = None
-    for g, name, state, detail in component_status():
-        if g != group:
-            print()
-            group = g
-        mark = {"on": "ok  ", "off": "--  ", "unknown": "?   "}[state]
-        print(f"  {g[:10]:11}  {mark} {name[:34]:36} {detail}")
 
     # THE DOCUMENTS, and whether they still describe this tree. PLAN P5.8.
     #
@@ -727,23 +375,8 @@ def status():
 
 
 def main():
-    # THE EPILOG IS THE SAME DATA `status` PRINTS, not a second opinion of it.
-    # Built lazily so `--help` costs one pass of file tests, and wrapped so a
-    # component probe that throws can never stop you reading the help text —
-    # help that fails to render is worse than help that says "unknown".
-    try:
-        rows = component_status()
-        widest = max((len(n) for _g, n, _s, _d in rows), default=0)
-        epilog = "optional components on this machine:\n" + "\n".join(
-            f"  {'ok' if st == 'on' else '--' if st == 'off' else '? '} "
-            f"{name:{widest}}  {detail}" for _g, name, st, detail in rows
-        ) + "\n\n`run.py status` prints this plus the fleet and the documents."
-    except Exception:  # noqa: BLE001
-        epilog = "optional components: run `python3 run.py status`"
-    ap = argparse.ArgumentParser(
-        description=__doc__.split("\n")[0], epilog=epilog,
-        formatter_class=argparse.RawDescriptionHelpFormatter)
-    ap.add_argument("verb", choices=["update", "rebuild", "archive", "retire", "reset",
+    ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
+    ap.add_argument("verb", choices=["update", "rebuild", "archive", "retire",
                                      "status", "sync", "combine"])
     ap.add_argument("--machine", help="folder for this computer, first run only")
     ap.add_argument("--label", help="display name, first run only")
@@ -754,9 +387,6 @@ def main():
 
     if args.verb == "status":
         return status()
-
-    if args.verb == "reset":
-        return reset(apply=args.yes)
 
     if args.verb == "update":
         # WHAT MACHINE IS THIS — first, before anything is measured.
@@ -932,9 +562,7 @@ def main():
                   "derived documents in both repositories. Machine folders scanned\n"
                   "by an older version are retired too — they come back when that\n"
                   "computer runs `update` again.\n")
-            # sh() only writes captured output on failure, so this dry run
-            # printed its warning and then nothing at all.
-            print(sh(["retire_archive.py"]).rstrip())
+            sh(["retire_archive.py"])
             print("\n  re-run with:  python3 run.py retire --yes")
             return
         sh(["retire_archive.py", "--yes"], quiet=True)

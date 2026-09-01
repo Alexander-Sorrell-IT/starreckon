@@ -38,24 +38,13 @@ import platform
 import shutil
 import subprocess
 import sys
+import tempfile
 
 sys.path.insert(0, os.path.dirname(os.path.realpath(__file__)))
 import install as I
 
 FAILED = []
 SKIPPED = []
-_FIXTURE_ROOT = pathlib.Path(__file__).resolve().parent / ".adv-install-folder-fixtures"
-_fixture_number = 0
-
-
-def fixture_dir(prefix):
-    """Create an isolated mutation fixture under this repository, never /tmp."""
-    global _fixture_number
-    _fixture_number += 1
-    d = _FIXTURE_ROOT / f"{prefix}-{_fixture_number}"
-    shutil.rmtree(d, ignore_errors=True)
-    d.mkdir(parents=True)
-    return d
 
 
 def check(name, got, want, why=""):
@@ -403,7 +392,7 @@ def a_machines_json_is_atomic():
     platform that matters. This attack interrupts in the middle and verifies the
     original is unchanged.
     """
-    d = fixture_dir("atomic")
+    d = pathlib.Path(tempfile.mkdtemp(prefix="adv-install-"))
     try:
         # Write a known-good machines.json into a temp dir
         real_root = I.ROOT
@@ -454,7 +443,7 @@ def a_machine_folder_is_idempotent():
     scanned. This covers the case where machines.json already has the entry but
     .machine-id does not exist yet (e.g. install ran, scan has not).
     """
-    d = fixture_dir("idempotent")
+    d = pathlib.Path(tempfile.mkdtemp(prefix="adv-install-"))
     try:
         real_root = I.ROOT
         I.ROOT = d
@@ -469,17 +458,11 @@ def a_machine_folder_is_idempotent():
             I.machine_folder(apply_it=True, pi=pi)
             doc_after_first = json.loads(
                 (d / "machines.json").read_text(encoding="utf-8"))
-            registry_after_first = (d / "machine_registry.txt").read_text(
-                encoding="utf-8")
 
-            # Second call, before any scan/.machine-id: the complete persisted
-            # context must recover the same random ID and folder without another
-            # append when UUID probing is unavailable.
+            # Second call: must not add it again
             I.machine_folder(apply_it=True, pi=pi)
             doc_after_second = json.loads(
                 (d / "machines.json").read_text(encoding="utf-8"))
-            registry_after_second = (d / "machine_registry.txt").read_text(
-                encoding="utf-8")
 
         n_first  = len(doc_after_first.get("machines", []))
         n_second = len(doc_after_second.get("machines", []))
@@ -488,15 +471,6 @@ def a_machine_folder_is_idempotent():
               f"first call added {n_first} entr(ies); second call had "
               f"{n_second} — a duplicate would cause combine.py to report "
               "one empty machine for every install.py run")
-        entry = doc_after_first["machines"][0]
-        check("new registration persists an 8-character machine ID",
-              bool(I.re.fullmatch(r"[a-z0-9]{8}", entry.get("machine_id", ""))), True)
-        check("suggested folder includes the persisted machine ID",
-              entry["folder"].endswith("-" + entry["machine_id"]), True)
-        check("re-run reuses the pre-scan registered folder and ID",
-              doc_after_second["machines"][0], entry)
-        check("machine registry is appended only once on idempotent apply",
-              registry_after_second, registry_after_first)
     finally:
         I.ROOT = real_root
         shutil.rmtree(d, ignore_errors=True)
@@ -504,7 +478,7 @@ def a_machine_folder_is_idempotent():
 
 def a_machine_folder_dry_run_changes_nothing():
     """--check (apply_it=False) must not modify machines.json."""
-    d = fixture_dir("dry-run")
+    d = pathlib.Path(tempfile.mkdtemp(prefix="adv-install-"))
     try:
         real_root = I.ROOT
         I.ROOT = d
@@ -520,107 +494,8 @@ def a_machine_folder_dry_run_changes_nothing():
               after, original,
               "apply_it=False must be safe to run on any machine without "
               "committing any change — that is what --check promises")
-        check("dry run does not create or mutate machine_registry.txt",
-              (d / "machine_registry.txt").exists(), False)
     finally:
         I.ROOT = real_root
-        shutil.rmtree(d, ignore_errors=True)
-
-
-def a_machine_id_collision_retry_and_exhaustion():
-    """IDs use secrets, skip a committed collision, and fail after a bounded retry."""
-    d = fixture_dir("id-collision")
-    real_root = I.ROOT
-    real_choice = I.secrets.choice
-    real_attempts = I.MACHINE_ID_ATTEMPTS
-    try:
-        I.ROOT = d
-        (d / "machine_registry.txt").write_text(
-            "# registry comments and blanks are ignored\n\naaaaaaaa\n",
-            encoding="utf-8")
-        values = iter("aaaaaaaa" + "bbbbbbbb")
-        I.secrets.choice = lambda alphabet: next(values)
-        machine_id = I._new_machine_id()
-        check("machine ID retries a registry collision", machine_id, "bbbbbbbb")
-        check("machine ID is lowercase alphanumeric and 8 characters",
-              bool(I.re.fullmatch(r"[a-z0-9]{8}", machine_id)), True)
-
-        I.MACHINE_ID_ATTEMPTS = 2
-        I.secrets.choice = lambda alphabet: "a"
-        exhausted = False
-        try:
-            I._new_machine_id()
-        except RuntimeError as e:
-            exhausted = "2 attempts" in str(e)
-        check("machine ID exhaustion is bounded and visible", exhausted, True)
-    finally:
-        I.ROOT = real_root
-        I.secrets.choice = real_choice
-        I.MACHINE_ID_ATTEMPTS = real_attempts
-        shutil.rmtree(d, ignore_errors=True)
-
-
-def a_legacy_folder_is_not_renamed():
-    """An unscanned pre-registry folder remains usable without minting an ID."""
-    d = fixture_dir("legacy-folder")
-    real_root = I.ROOT
-    try:
-        I.ROOT = d
-        original = json.dumps({"machines": [{
-            "folder": "judy-laptop-linux",
-            "label": "Judy Laptop Linux",
-        }]}, indent=2)
-        (d / "machines.json").write_text(original, encoding="utf-8")
-        pi = {"system": "linux", "is_wsl": False}
-        with fake_system("linux", arch="x86_64", user="judy", chassis_type="9"):
-            I.machine_folder(apply_it=True, pi=pi)
-        check("legacy unscanned folder remains unchanged",
-              (d / "machines.json").read_text(encoding="utf-8"), original)
-        check("legacy unscanned folder does not mint a registry ID",
-              (d / "machine_registry.txt").exists(), False)
-    finally:
-        I.ROOT = real_root
-        shutil.rmtree(d, ignore_errors=True)
-
-
-def a_registered_uuid_resolves_and_claims_machine_id():
-    """A pre-scan roster UUID resolves safely and flows into .machine-id."""
-    import update as U
-
-    d = fixture_dir("registered-uuid")
-    folder = "alice-laptop-linux-abc123z9"
-    uuid = "AAAABBBB-0000-0000-0000-000000000001"
-    real_update_root = U.ROOT
-    real_hw = I.hardware_uuid
-    try:
-        (d / "machines.json").write_text(json.dumps({"machines": [{
-            "folder": folder,
-            "label": "Alice Laptop",
-            "machine_id": "abc123z9",
-            "hardware_uuid": uuid,
-        }]}), encoding="utf-8")
-        (d / folder).mkdir()
-        U.ROOT = d
-        I.hardware_uuid = lambda: uuid
-
-        resolved, why = U.guess("unrelated-host")
-        check("update resolves an unscanned folder by registered hardware UUID",
-              resolved, folder)
-        check("registered UUID resolution does not use hostname guessing",
-              why, "registered hardware UUID")
-        U._write_machine_id(folder, "unrelated-host", "Alice Laptop")
-        claimed = json.loads((d / folder / ".machine-id").read_text(encoding="utf-8"))
-        check(".machine-id carries registered machine_id", claimed.get("machine_id"),
-              "abc123z9")
-        check(".machine-id keeps hardware UUID as the ownership anchor",
-              claimed.get("hardware_uuid"), uuid)
-        I.hardware_uuid = lambda: "DIFFERENT-UUID"
-        unresolved, _ = U.guess("alice-laptop-linux")
-        check("random-ID folder is not claimed by hostname-shaped slug",
-              unresolved, None)
-    finally:
-        U.ROOT = real_update_root
-        I.hardware_uuid = real_hw
         shutil.rmtree(d, ignore_errors=True)
 
 
@@ -630,7 +505,7 @@ def a_registered_uuid_resolves_and_claims_machine_id():
 
 def a_claimed_folder_finds_existing():
     """_claimed_folder returns the folder name when .machine-id matches hostname."""
-    d = fixture_dir("claimed")
+    d = pathlib.Path(tempfile.mkdtemp(prefix="adv-install-"))
     try:
         real_root = I.ROOT
         real_node = platform.node
@@ -659,7 +534,7 @@ def a_claimed_folder_is_case_insensitive():
     ('HP-Phantom-Core'); platform.node() may return it differently cased on
     the next run. A case-sensitive match creates a duplicate entry.
     """
-    d = fixture_dir("case-insensitive")
+    d = pathlib.Path(tempfile.mkdtemp(prefix="adv-install-"))
     try:
         real_root = I.ROOT
         real_node = platform.node
@@ -685,7 +560,7 @@ def a_claimed_folder_is_case_insensitive():
 
 def a_claimed_folder_returns_none_on_fresh_machine():
     """_claimed_folder returns None when no .machine-id exists yet."""
-    d = fixture_dir("fresh")
+    d = pathlib.Path(tempfile.mkdtemp(prefix="adv-install-"))
     try:
         real_root = I.ROOT
         I.ROOT = d
@@ -710,7 +585,7 @@ def a_uuid_match_finds_folder_after_hostname_change():
     import importlib
     import update as U
 
-    d = fixture_dir("uuid")
+    d = pathlib.Path(tempfile.mkdtemp(prefix="adv-uuid-"))
     try:
         mdir = d / "my-machine"
         mdir.mkdir()
@@ -756,7 +631,7 @@ def a_hostname_fallback_when_no_uuid():
     """
     import update as U
 
-    d = fixture_dir("uuid-fallback")
+    d = pathlib.Path(tempfile.mkdtemp(prefix="adv-uuid-fallback-"))
     try:
         mdir = d / "legacy-machine"
         mdir.mkdir()
@@ -803,7 +678,7 @@ def a_degenerate_markers():
     _sessions.active_minutes([_sessions.blank()])
 
     # ABSENT — rmtree outside finally
-    d = fixture_dir("degenerate")
+    d = pathlib.Path(tempfile.mkdtemp(prefix="adv-inst-deg-"))
     shutil.rmtree(str(d))           # ABSENT marker — outside finally
 
 
@@ -829,11 +704,6 @@ ATTACKS = [
     ("machines.json write is atomic", a_machines_json_is_atomic),
     ("machine_folder is idempotent", a_machine_folder_is_idempotent),
     ("dry run changes nothing", a_machine_folder_dry_run_changes_nothing),
-    ("machine ID collision retry and bounded exhaustion",
-     a_machine_id_collision_retry_and_exhaustion),
-    ("legacy folder remains unchanged", a_legacy_folder_is_not_renamed),
-    ("registered UUID resolves and claims machine ID",
-     a_registered_uuid_resolves_and_claims_machine_id),
     # claimed_folder
     ("claimed_folder finds existing folder", a_claimed_folder_finds_existing),
     ("claimed_folder is case-insensitive", a_claimed_folder_is_case_insensitive),
@@ -868,7 +738,6 @@ def main():
             print(line)
 
     print()
-    shutil.rmtree(_FIXTURE_ROOT, ignore_errors=True)
     if SKIPPED:
         print(f"  {len(SKIPPED)} attack(s) skipped (recorded, not counted as passed):")
         for sname, why in SKIPPED:

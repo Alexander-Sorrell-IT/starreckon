@@ -110,7 +110,6 @@ def retire_stale_machines(root, stamp, dry):
             # clean.
             mid = dest / d.name / ".machine-id"
             if mid.is_file():
-                d.mkdir(parents=True, exist_ok=True)
                 shutil.copy2(str(mid), str(d / ".machine-id"))
     print(f"\n  machines on an older scanner ({'would move' if dry else 'moved'}):")
     for name, v in moved:
@@ -121,8 +120,7 @@ def retire_stale_machines(root, stamp, dry):
 
 
 def retire(root, stamp, dry, label):
-    from update import stamp_path
-    dest = root / "testing-archive" / stamp_path(stamp)
+    dest = root / "testing-archive" / stamp
     moved = []
 
     arc = root / "archive"
@@ -177,62 +175,12 @@ def retire(root, stamp, dry, label):
             "since been replaced.\n\n"
             "Nothing here should be read as usage over time.\n",
             encoding="utf-8")
-    return moved, dest
-
-
-
-def _inventory(d):
-    """{relative path: size} for every file under d. The comparison unit."""
-    return {str(f.relative_to(d)): f.stat().st_size
-            for f in d.rglob("*") if f.is_file()}
-
-
-def verify_and_wipe(root, dest, label, dry):
-    """Remove each computer's folder — but ONLY where its copy is verified.
-
-    `retire` COPIES the machine folders into testing-archive/. Copying and then
-    deleting are two steps, and a wipe that assumes the first one worked is how
-    a fleet loses the only record of a scan. So every file is compared by
-    relative path AND size against what landed in this repo's OWN testing
-    archive, per repo, and a folder whose copy does not match is REFUSED and
-    left exactly where it is. A refusal is not a failure of the run; it is the
-    check doing its job on the one folder that would have been lost.
-    """
-    wiped, refused = [], []
-    skip = {"archive", "testing-archive", "corpus", "merged", "digests",
-            "dist", "docker", ".git", "__pycache__"}
-    for mdir in sorted(d for d in root.iterdir() if d.is_dir()):
-        if mdir.name in skip:
-            continue
-        for sub in (paths.HUMAN, paths.MACHINE):
-            src = mdir / sub
-            if not src.is_dir():
-                continue
-            out = dest / mdir.name / sub
-            want, got = _inventory(src), (_inventory(out) if out.is_dir() else {})
-            missing = {k: v for k, v in want.items() if got.get(k) != v}
-            if missing:
-                refused.append((f"{mdir.name}/{sub}", len(missing), len(want)))
-                continue
-            wiped.append((f"{mdir.name}/{sub}", len(want)))
-            if not dry:
-                shutil.rmtree(src)
-    print(f"\n  {label} — wipe after verify")
-    for name, n in wiped:
-        print(f"     {'WIPED' if not dry else 'would wipe':12} {name:38} {n:>5} file(s) verified in testing-archive")
-    for name, m, n in refused:
-        print(f"     {'REFUSED':12} {name:38} {m} of {n} file(s) did not match — left in place")
-    if not wiped and not refused:
-        print("     nothing to wipe")
-    return wiped, refused
+    return moved
 
 
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--yes", action="store_true")
-    ap.add_argument("--wipe", action="store_true",
-                    help="after the copy is VERIFIED, remove each computer's "
-                         "folder from every repo")
     ap.add_argument("--corpus", default=str(pathlib.Path.home() / "deadreckon-record"))
     args = ap.parse_args()
     dry = not args.yes
@@ -240,16 +188,12 @@ def main():
     stamp = datetime.datetime.now().astimezone().strftime("%Y-%m-%dT%H-%M-%S")
 
     print(f"{'DRY RUN — nothing moved' if dry else 'RETIRING'}   {stamp}\n")
-    _, dest_count = retire(root, stamp, dry, "deadreckon-count")
+    retire(root, stamp, dry, "deadreckon-count")
     retire_stale_machines(root, stamp, dry)
-    if args.wipe:
-        verify_and_wipe(root, dest_count, "deadreckon-count", dry)
     corpus = pathlib.Path(args.corpus)
     if corpus.is_dir():
         print()
-        _, dest_rec = retire(corpus, stamp, dry, "deadreckon-record")
-        if args.wipe:
-            verify_and_wipe(corpus, dest_rec, "deadreckon-record", dry)
+        retire(corpus, stamp, dry, "deadreckon-record")
 
     print(f"\n  archive/ is {'still full' if dry else 'now empty and ready for the real run'}")
     if dry:

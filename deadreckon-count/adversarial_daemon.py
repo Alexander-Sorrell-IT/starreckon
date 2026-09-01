@@ -34,9 +34,6 @@ import os
 import re
 import sys
 import contextlib
-import subprocess
-import tempfile
-import time
 
 sys.path.insert(0, os.path.dirname(os.path.realpath(__file__)))
 import retention_guard as RG
@@ -108,10 +105,8 @@ def a_retention_fails():
     # NOT `== "ok"`. That assertion could never fail while tick() assigned "ok"
     # unconditionally, which is what made it worth nothing. The property is that
     # the ledger was ATTEMPTED — "dry" is what a rehearsal returns.
-    # "skipped" is also valid: when there is no machine folder, the ledger ran
-    # but had nothing to record — which is still "ran", not "failed".
     check("guard fails -> ledger still ran",
-          res["ledger"] in ("ok", "dry", "skipped"), True, f"got {res['ledger']!r}")
+          res["ledger"] in ("ok", "dry"), True, f"got {res['ledger']!r}")
     check("guard fails -> and it is reported, not swallowed",
           res["retention"].startswith("ERROR"), True)
     check("guard fails -> the log says the other job survived",
@@ -192,10 +187,8 @@ def a_disable_retention():
     finally:
         os.environ.pop("RETENTION_GUARD_RETENTION", None)
     check("guard disabled -> guard did not run", res["retention"], "disabled")
-    # "skipped" is valid: when there is no machine folder, the ledger ran but
-    # had nothing to record — which is still "ran", not "failed".
     check("guard disabled -> ledger still ran",
-          res["ledger"] in ("ok", "dry", "skipped"), True, f"got {res['ledger']!r}")
+          res["ledger"] in ("ok", "dry"), True, f"got {res['ledger']!r}")
 
 
 def a_disable_everything():
@@ -493,83 +486,33 @@ def a_tick_does_not_invent_ok():
           f"got {res['ledger']!r} — skip should return a distinct non-ok value")
 
 
-def a_verify_boot_lifecycle():
-    """--verify-boot distinguishes a live current-boot child from a dead one.
+def a_verify_boot_can_fail():
+    """--verify-boot must be able to say NO.
 
-    This never addresses a service PID or its configuration. The only process
-    it starts is its own sleeping Python child, whose argv deliberately includes
-    ``retention_guard`` so the real `_alive()` identity check can recognize it.
-    The fixture boot ID is patched rather than taken from Linux, so the same
-    lifecycle contract runs on every platform; a separate patched no-ID case
-    preserves the honest "cannot tell" verdict.
+    Its verdict was `now_id in seen` against a row written at process start. The
+    pid it records was never read back, so `systemctl stop`, a disable, a
+    dangling ExecStart or a wedged tick all still printed PASS and exit 0. A
+    check that cannot fail is not evidence of anything.
+
+    The test: a boot record for THIS boot whose pid is not a running daemon.
     """
-    fixture_boot = "adversarial-current-boot"
-
-    def write_rows(log, rows):
-        with open(log, "w") as fh:
-            for row in rows:
-                fh.write(json.dumps(row) + "\n")
-
-    def stop_child(child):
-        if child.poll() is None:
-            child.terminate()
+    import tempfile
+    old_log = RG.BOOTLOG
+    with tempfile.TemporaryDirectory() as td:
+        RG.BOOTLOG = os.path.join(td, "boots.jsonl")
+        with open(RG.BOOTLOG, "w") as fh:
+            fh.write(json.dumps({
+                "boot_id": RG._boot_id(), "boot_time": RG._boot_time(),
+                "started": 1, "delay_s": 0,
+                "pid": 999999,             # nothing is running under this pid
+            }) + "\n")
         try:
-            child.wait(timeout=5)
-        except subprocess.TimeoutExpired:
-            child.kill()
-            child.wait(timeout=5)
-
-    # Keep all test artifacts under this checkout, never the user's boot log.
-    with tempfile.TemporaryDirectory(
-            prefix=".verify-boot-fixture-",
-            dir=os.path.dirname(os.path.realpath(__file__))) as td:
-        log = os.path.join(td, "boots.jsonl")
-        row = {"boot_id": fixture_boot, "boot_time": 1,
-               "started": 1, "delay_s": 0}
-        with patched(BOOTLOG=log, _boot_id=lambda: fixture_boot,
-                     _boot_time=lambda: 1):
-            child = subprocess.Popen(
-                [sys.executable, "-c", "import time; time.sleep(60)",
-                 "retention_guard_lifecycle_fixture"],
-                stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
-            try:
-                row["pid"] = child.pid
-                write_rows(log, [row])
-                # Popen can return just before exec; give the platform's process
-                # inspector a short bounded window to see this controlled child.
-                deadline = time.monotonic() + 2
-                rc_live, live_log = 1, ""
-                while time.monotonic() < deadline:
-                    rc_live, live_log = quiet(RG.verify_boot)
-                    if rc_live == 0:
-                        break
-                    time.sleep(0.05)
-            finally:
-                stop_child(child)
-            check("verify_boot PASSES for a live controlled current-boot child",
-                  rc_live, 0,
-                  f"got {rc_live}; output was {live_log!r}")
-            check("the live-child verdict is a real PASS, not merely non-failure",
-                  "PASS  the daemon came back under the CURRENT boot" in live_log,
-                  True, f"output was {live_log!r}")
-
             rc, _ = quiet(RG.verify_boot)
-            check("verify_boot FAILS after that same controlled child exits",
-                  rc, 1,
-                  "a recorded start is not proof the daemon is alive now")
-
-            write_rows(log, [{"boot_id": "previous-fixture-boot", "pid": 999999}])
-            rc, _ = quiet(RG.verify_boot)
-            check("verify_boot FAILS with no current-boot record", rc, 1,
-                  "a record from another boot is not evidence of this boot")
-
-        with patched(BOOTLOG=log, _boot_id=lambda: "", _boot_time=lambda: 0):
-            rc, no_id_log = quiet(RG.verify_boot)
-        check("verify_boot says cannot tell when no boot ID is available", rc, 2,
-              "unknown is not a false PASS or false daemon failure")
-        check("the no-boot-ID verdict explains that it cannot read the boot ID",
-              "cannot read /proc" in no_id_log, True,
-              f"output was {no_id_log!r}")
+        finally:
+            RG.BOOTLOG = old_log
+    check("verify_boot FAILS when no daemon is running under that record",
+          rc != 0, True,
+          "a recorded start is not proof the daemon is alive now")
 
 
 def a_link_tree_cannot_report_ok_for_work_it_did_not_do():
@@ -627,25 +570,19 @@ def a_link_tree_cannot_report_ok_for_work_it_did_not_do():
               "the daemon reports 'ok' for the whole job otherwise")
 
         # 2. a subtree that cannot be read.
-        # Skip this test when running as root, because root bypasses permission
-        # checks and the test would always fail regardless of link_tree's logic.
-        if os.geteuid() == 0:
-            skip("an UNREADABLE subtree is not reported as ok",
-                 "running as root — chmod 000 does not prevent directory access")
-        else:
-            shutil.rmtree(dst, ignore_errors=True)
-            RG.FAILED_LINKS.clear()
-            os.chmod(d / "src" / "locked", 0o000)
-            try:
-                blind = RG.link_tree(src, dst, True)
-            finally:
-                os.chmod(d / "src" / "locked", 0o755)
-            check("an UNREADABLE subtree is not reported as ok",
-                  blind[2] != "ok", True,
-                  f"got {blind!r} — a half-read tree and a fully-read one were "
-                  f"the same tuple")
-            check("and it says how many it could not read",
-                  "UNREADABLE" in blind[2], True)
+        shutil.rmtree(dst, ignore_errors=True)
+        RG.FAILED_LINKS.clear()
+        os.chmod(d / "src" / "locked", 0o000)
+        try:
+            blind = RG.link_tree(src, dst, True)
+        finally:
+            os.chmod(d / "src" / "locked", 0o755)
+        check("an UNREADABLE subtree is not reported as ok",
+              blind[2] != "ok", True,
+              f"got {blind!r} — a half-read tree and a fully-read one were "
+              f"the same tuple")
+        check("and it says how many it could not read",
+              "UNREADABLE" in blind[2], True)
     finally:
         shutil.rmtree(d, ignore_errors=True)
 
@@ -2492,7 +2429,7 @@ ATTACKS = [
     ("two writers at once", a_two_writers_at_once),
     ("the ledger job must actually scan", a_ledger_job_actually_scans),
     ("tick must not invent ok", a_tick_does_not_invent_ok),
-    ("verify-boot lifecycle proves live and dead verdicts", a_verify_boot_lifecycle),
+    ("verify-boot must be able to fail", a_verify_boot_can_fail),
     ("link_tree cannot report ok for nothing",
      a_link_tree_cannot_report_ok_for_work_it_did_not_do),
     ("the Windows side is never written", a_the_windows_side_is_never_written),

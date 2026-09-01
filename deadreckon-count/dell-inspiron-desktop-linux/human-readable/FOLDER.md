@@ -44,7 +44,7 @@ Built from 1 input(s); tree state `populated`; digest `sha256:e392c97bb47409c7â€
   "document": "dell-inspiron-desktop-linux/human-readable/FOLDER.md",
   "kind": "machine",
   "scope": "dell-inspiron-desktop-linux",
-  "generated_at": "2026-08-27T15:22:53-05:00",
+  "generated_at": "2026-08-14T18:56:15-05:00",
   "tree_state": "populated",
   "excluded_from_digests": [
     "human-readable/FOLDER.md"

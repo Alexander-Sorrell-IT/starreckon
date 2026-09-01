@@ -87,45 +87,15 @@ SLOW_SUITES_WITH_DESC = [
 ]
 
 
-# A suite that never returns has proven nothing, and the run that waits for it
-# reports nothing either. Measured 2026-08-24: `redteam.py` was launched twice
-# and produced a 56-byte log both times — the header, then `....
-# adversarial_meta.py`, then silence, because `subprocess.run` was called with
-# no timeout and that suite takes minutes. Both runs were eventually killed
-# from outside, and the second reported `REDTEAM EXIT: 124`.
-#
-# The failure mode that matters is the FIRST one: a wrapper reported exit 0
-# over a truncated log, and exit 0 on a 56-byte log reads exactly like a pass.
-# The red team is the thing that decides whether the numbers are defensible;
-# it must not be capable of appearing to succeed while having run one suite of
-# twenty-seven.
-SUITE_TIMEOUT = 600     # seconds, per suite
-
-
-def run_suite(script, desc, verbose=False, timeout=SUITE_TIMEOUT):
-    """Run one suite. Returns (ok, duration_s, output).
-
-    A timeout is a FAILURE, never a skip. A suite that could not finish has
-    not defended its claim, and recording it as anything but failed is how a
-    red team starts agreeing with the thing it is meant to attack.
-    """
+def run_suite(script, desc, verbose=False):
+    """Run one suite. Returns (ok, duration_s, output)."""
     t0 = time.monotonic()
-    try:
-        r = subprocess.run(
-            [sys.executable, str(ROOT / script)],
-            capture_output=True, text=True, cwd=str(ROOT), timeout=timeout)
-        dt = time.monotonic() - t0
-        ok = r.returncode == 0
-        out = (r.stdout + r.stderr).strip()
-    except subprocess.TimeoutExpired as e:
-        dt = time.monotonic() - t0
-        partial = ((e.stdout or b"").decode(errors="replace")
-                   + (e.output or b"").decode(errors="replace")
-                   if isinstance(e.stdout, bytes) else (e.stdout or ""))
-        ok = False
-        out = (f"TIMED OUT after {timeout}s — did not finish, so it defended "
-               f"nothing. Re-run it alone: python3 {script}\n"
-               + (partial or "").strip())
+    r = subprocess.run(
+        [sys.executable, str(ROOT / script)],
+        capture_output=True, text=True, cwd=str(ROOT))
+    dt = time.monotonic() - t0
+    ok = r.returncode == 0
+    out = (r.stdout + r.stderr).strip()
     return ok, dt, out
 
 

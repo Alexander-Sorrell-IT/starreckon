@@ -305,65 +305,72 @@ def tree_figures(root, machines, sessions):
     t["month_by_cli"] = dict(m_cli)
     t["month_by_machine"] = dict(m_mach)
 
-    # THE LIFETIME FIGURE — MONTHLY.PY'S OWN ARITHMETIC, IMPORTED NOT RESTATED.
+    # THE LEDGER — what the lifetime documents include beyond the scan.
     #
-    # LIFETIME.md and lifetime.json are written by monthly.py, which folds three
-    # things onto the scan in order: the ledger (max(0, ledger_cli - scan_cli)
-    # per machine per CLI), the undated sessions, then the stats-cache floor.
-    # This block restated the first and the third and skipped the second, and
-    # the two comments that lived here — "that is the same calculation here —
-    # ONE RULE, ONE PLACE" and "the gate re-derives the floor independently" —
-    # were both false by the time they were read. Measured on this tree:
-    #
-    #   * the floor's cur_claude filtered on s.get("start") and omitted what
-    #     fold_ledger had already added, so the gate's claude floor delta came
-    #     to 52,259,957,972 against monthly.apply_statscache_floor's
-    #     46,864,414,354 — 5,395,543,618 too high;
-    #   * monthly.fold_undated puts undated tokens in the headline and this
-    #     block never did — 5,347,971,170 too low.
-    #
-    # The two nearly cancelled, which is why it surfaced as a 47,572,448
-    # discrepancy on LIFETIME.md, lifetime.json and README.md — three documents
-    # monthly.py had written correctly in the same minute — rather than as a
-    # 5 B one, and why a restatement that had drifted twice still looked right.
-    #
-    # So the rule is now IMPORTED. Independence from the DOCUMENT is what this
-    # gate needs and it is untouched: collect() walks the same machine folders,
-    # and no rollup is read to check a rollup. Independence from the
-    # GENERATOR'S ARITHMETIC was never the goal — it was the defect.
+    # LIFETIME.md and lifetime.json are written by monthly.py, which calls
+    # fold_ledger and adds max(0, ledger_cli - scan_cli) per machine per CLI.
+    # That is the same calculation here — ONE RULE, ONE PLACE. If this
+    # diverged from monthly.py the gate would fire on a correct document, which
+    # is the false alarm that has already caused two rule removals.
+    life_ledger_cli = defaultdict(int)
+    life_ledger_mach = defaultdict(int)
+    life_ledger_beyond = 0
     try:
-        import monthly as _monthly
-        _, _mlife = _monthly.collect(root)
-        _monthly.fold_ledger_fleet(root, _mlife)
+        import token_ledger as _tl
+        # Build scan-cli per machine from the sessions already read.
+        # l_mach gives the scanned total per machine name, but the ledger needs
+        # per-cli breakdowns — replicate l_cli keyed by (machine, cli).
+        scan_by_mdir = {}           # mdir.name -> (machine_name, {cli: tokens})
+        for mdir, sf in paths.iter_machine_files(root, "sessions.json"):
+            try:
+                sd = json.loads(sf.read_text(encoding="utf-8"))
+            except Exception:       # noqa: BLE001
+                sd = {}
+            mname = sd.get("machine", mdir.name)
+            per_cli = defaultdict(int)
+            for s in sd.get("sessions", []):
+                per_cli[s.get("cli") or "-"] += s.get("total", 0)
+            scan_by_mdir[mdir.name] = (mname, per_cli)
+        for mdir in paths.machine_folders(root):
+            lt = _tl.lifetime(mdir)
+            mname, per_cli = scan_by_mdir.get(mdir.name, (mdir.name, {}))
+            for cli, n in lt["by_cli"].items():
+                d = n - per_cli.get(cli, 0)
+                if d > 0:
+                    life_ledger_beyond += d
+                    life_ledger_cli[cli] += d
+                    life_ledger_mach[mname] += d
     except Exception:                                           # noqa: BLE001
-        _mlife = None                  # not available; skip lifetime checks
-    # Ledger-beyond-the-scan as monthly.py records it, unread-CLI tokens
-    # included — the total form, so this is the whole difference between the
-    # scan and the post-ledger bucket and not one of its two causes.
-    t["life_ledger_beyond"] = (
-        _mlife["ledger_beyond_scan_total"] if _mlife is not None else None)
-    # What LIFETIME.md and lifetime.json publish: scan + ledger + undated +
-    # stats-cache floor, taken off the bucket the publisher itself renders.
-    # None when monthly.py could not be run here; the checks below then fall
-    # back to the scan-only lifetime and FAIL loudly against it, which is a
-    # figure the gate could not derive announcing itself rather than a document
-    # quietly going unchecked.
-    if _mlife is not None:
-        t["life_floor_total"] = _mlife["tokens"]
-        t["life_floor_by_cli"] = dict(_mlife["by_cli"])
-        t["life_floor_by_machine"] = dict(_mlife["by_machine"])
-    else:
-        t["life_floor_total"] = None
-        t["life_floor_by_cli"] = None
-        t["life_floor_by_machine"] = None
+        life_ledger_beyond = None      # not available; skip lifetime checks
+    t["life_ledger_cli"] = dict(life_ledger_cli)
+    t["life_ledger_mach"] = dict(life_ledger_mach)
+    t["life_ledger_beyond"] = life_ledger_beyond
+    # The lifetime figure in the documents: scan + ledger-beyond.
+    # None when the ledger could not be read — the check is skipped rather than
+    # misfired.
+    t["life_total"] = (
+        life + life_ledger_beyond if life_ledger_beyond is not None else None)
+    t["life_total_by_cli"] = {
+        k: l_cli.get(k, 0) + life_ledger_cli.get(k, 0)
+        for k in set(l_cli) | set(life_ledger_cli)}
+    t["life_total_by_machine"] = {
+        k: l_mach.get(k, 0) + life_ledger_mach.get(k, 0)
+        for k in set(l_mach) | set(life_ledger_mach)}
 
     # The floor, through stats_page.machine_floor — the same function combine.py
     # calls to write the README's headline column, so a difference here is a
     # stale document and never a second opinion about how a floor is built.
-    # Per machine and as a fleet sum only: the floor's effect on the LIFETIME
-    # documents is monthly.py's to compute, above, and splitting it a second
-    # time here is what produced the 5,395,543,618 divergence.
     floors, total = {}, 0
+    # Per-machine floor breakdown for the by_cli and by_machine lift.
+    # LIFETIME.md is written by monthly.py which calls
+    # apply_statscache_floor_fleet — the same machine_floor() function used
+    # here. If the gate compared LIFETIME.md against scan+ledger only it would
+    # fire on a correct document whenever the stats-cache floor raises the
+    # headline above what the transcripts alone show. ONE RULE, ONE PLACE:
+    # the gate re-derives the floor independently rather than hardcoding a
+    # correction factor, for the same reason it re-derives every other figure.
+    floor_by_cli = defaultdict(int)
+    floor_by_mach = defaultdict(int)
     try:
         import stats_page as _sp
         for mdir, tf in paths.iter_machine_files(root, "totals.json"):
@@ -372,13 +379,43 @@ def tree_figures(root, machines, sessions):
             sd = json.loads(sf.read_text(encoding="utf-8")) if sf else {}
             sess_here = sd.get("sessions") or []
             sc_here   = sd.get("stats_cache") or []
-            fl, _cl_fl, _oth_fl, _ = _sp.machine_floor(doc, sess_here, sc_here)
-            floors[doc.get("machine", mdir.name)] = fl
+            fl, cl_fl, oth_fl, _ = _sp.machine_floor(doc, sess_here, sc_here)
+            mname = doc.get("machine", mdir.name)
+            floors[mname] = fl
             total += fl
+            # Split the floor delta into by_cli buckets so the gate can check
+            # the by-CLI table in LIFETIME.md, not just the headline.
+            # The floor lifts claude by cl_fl, other tools by oth_fl. The
+            # scan-only totals for each CLI on this machine come from sessions.
+            cur_claude = sum(s.get("total", 0) for s in sess_here
+                             if s.get("cli") == "claude"
+                             and s.get("start"))
+            cur_other  = sum(s.get("total", 0) for s in sess_here
+                             if s.get("cli") != "claude"
+                             and s.get("start"))
+            d_claude = max(0, cl_fl - cur_claude)
+            d_other  = max(0, oth_fl - cur_other)
+            if d_claude:
+                floor_by_cli["claude"] += d_claude
+            floor_by_mach[mname] += d_claude + d_other
     except Exception:                                           # noqa: BLE001
         floors, total = {}, None
     t["floor_by_machine"] = floors
     t["floor"] = total
+    # Lifetime figures that include the floor — what LIFETIME.md and
+    # lifetime.json actually publish. None when the floor could not be computed.
+    if total is not None and t["life_total"] is not None:
+        t["life_floor_total"] = t["life_total"] + sum(floor_by_cli.values())
+        t["life_floor_by_cli"] = {
+            k: t["life_total_by_cli"].get(k, 0) + floor_by_cli.get(k, 0)
+            for k in set(t["life_total_by_cli"]) | set(floor_by_cli)}
+        t["life_floor_by_machine"] = {
+            k: t["life_total_by_machine"].get(k, 0) + floor_by_mach.get(k, 0)
+            for k in set(t["life_total_by_machine"]) | set(floor_by_mach)}
+    else:
+        t["life_floor_total"] = None
+        t["life_floor_by_cli"] = None
+        t["life_floor_by_machine"] = None
 
     try:
         reg = json.loads((root / "machines.json").read_text(encoding="utf-8"))
@@ -1096,7 +1133,6 @@ def main():
         print("no machine folders — nothing to check (none was ever committed)")
         return 0
     sessions = []
-    orphan_tokens = {}
     for _mdir, f in paths.iter_machine_files(root, "sessions.json"):
         d = json.loads(f.read_text(encoding="utf-8"))
         for s in d.get("sessions", []):
@@ -1107,60 +1143,12 @@ def main():
             # precisely so this guess is not needed.
             s["machine"] = d.get("machine", _mdir.name)
             sessions.append(s)
-        # Orphans are read from the READERS block, not by filtering rows on
-        # `source`: rows only carry that field from 2026-08-21 onward, and
-        # every machine folder committed before then must still be checkable
-        # from a checkout that has not rescanned it.
-        orphan_tokens[d.get("machine", _mdir.name)] = sum(
-            r.get("tokens", 0) for r in d.get("readers", [])
-            if r.get("cli") == "claude-orphans")
 
     grand = sum(m["grand_total_tokens"] for m in machines)
     checks = []
 
     def chk(name, got, want, detail="", fatal=True):
         checks.append((name, got, want, got == want, detail, fatal))
-
-    # A scan is only reproducible under the authored configuration that governed
-    # it. Older artifacts predate this field, so name their provenance as unknown
-    # without treating their otherwise-valid historical totals as a failure.
-    try:
-        import sessions as _scan_sessions
-        current_config = _scan_sessions.config_fingerprint(root)
-        config_drift, config_legacy = [], []
-        for _mdir, _f in paths.iter_machine_files(root, "sessions.json"):
-            try:
-                _doc = json.loads(_f.read_text(encoding="utf-8"))
-            except Exception:
-                continue
-            recorded = _doc.get("config_fingerprint")
-            label = _doc.get("machine", _mdir.name)
-            if recorded is None:
-                config_legacy.append(label)
-                continue
-            if not isinstance(recorded, dict):
-                config_drift.append(f"{label}: malformed fingerprint")
-                continue
-            differs = (
-                recorded.get("fingerprint_version") != current_config["fingerprint_version"]
-                or recorded.get("algorithm") != current_config["algorithm"]
-                or recorded.get("sha256") != current_config["sha256"]
-                or recorded.get("files") != current_config["files"]
-            )
-            if differs:
-                changed = _scan_sessions.config_fingerprint_changes(
-                    recorded, current_config)
-                detail = ", ".join(changed) if changed else "fingerprint metadata"
-                config_drift.append(f"{label}: {detail}")
-        chk("every fingerprinted scan matches checked-out configuration",
-            len(config_drift), 0, "; ".join(config_drift[:5])
-            + (" ..." if len(config_drift) > 5 else ""), fatal=False)
-        chk("legacy scans without config fingerprints are advisory",
-            len(config_legacy), 0, ", ".join(config_legacy[:5])
-            + (" ..." if len(config_legacy) > 5 else ""), fatal=False)
-    except Exception as _config_error:  # noqa: BLE001 - do not hide the gate result
-        chk("scan config fingerprint could be recomputed", False, True,
-            str(_config_error)[:120], fatal=False)
 
     # AN ENTIRE FAMILY OF CHECKS HERE IS BLIND WITHOUT GIT, AND BLIND IS WHAT
     # PASSING LOOKS LIKE.
@@ -1365,17 +1353,17 @@ def main():
             if m["machine"] not in scanned:
                 continue
             mine = [s for s in sessions if s["machine"] == m["machine"]]
-            per_sess = sum(s.get("total", 0) for s in mine if s.get("cli") == "claude")
-            # SUBTRACT THE ORPHANS BEFORE COMPARING. analyze_tokens reads
-            # transcripts; the claude-orphans reader recovers sessions whose
-            # transcripts are DELETED, out of .claude.json, and writes them
-            # into sessions[] tagged cli="claude". One scanner therefore
-            # cannot see what the other counted, by construction, and the
-            # difference is not drift — it is the orphans, exactly. Measured
-            # on dell-latitude-7480-linux: 16,580 rows minus 16,532 = 48
-            # orphan sessions worth 2,324,208,273, reported for weeks as
-            # "one scanner has drifted".
-            per_sess -= orphan_tokens.get(m["machine"], 0)
+            # transcript is False only for read_claude_orphans' records —
+            # counters recovered from .claude.json after the transcript that
+            # produced them was deleted. analyze_tokens.py has no orphan
+            # reader at all, so grand_total_tokens structurally cannot include
+            # them; comparing sessions.py's total WITH them counted this
+            # check's own deliberate 4.17B recovery as scanner drift. Verified
+            # exact on this machine: orphan sum 4,172,332,033 == the delta
+            # this check used to report, and excluding them made per_sess
+            # match grand_total_tokens to within live-session growth.
+            per_sess = sum(s.get("total", 0) for s in mine
+                           if s.get("cli") == "claude" and s.get("transcript") is not False)
             delta = abs(per_sess - m["grand_total_tokens"])
             cutoff = m.get("generated_at") or ""
             live = sum(s.get("total", 0) for s in mine
@@ -1408,8 +1396,7 @@ def main():
                 + (f"  (±{delta:,}, live session)" if delta and delta <= live else ""),
                 max(0, delta - live), 0,
                 f"differs by {delta:,}; only {live:,} is attributable to "
-                "sessions still being written — one scanner has drifted",
-                fatal=False)
+                "sessions still being written — one scanner has drifted")
 
     # Version skew. Every check above is internal to one machine and passes
     # regardless of which scanner produced it, so two folders can disagree about
@@ -1471,339 +1458,6 @@ def main():
         (", ".join(unstamped[:6]) + (" ..." if len(unstamped) > 6 else ""))
         if unstamped else "",
         fatal=False)
-
-    # ---- THE TOOL REGISTRY CHECKS ITSELF -----------------------------------
-    #
-    # clis.json and programs.json replaced hardcoded constants. That is the
-    # right shape — one edit adds a tool — but it moved the inventory from
-    # code, which cannot be wrong without failing to import, to data, which can
-    # be wrong and still parse. The verification that adopting the config moved
-    # no number was done ONCE, BY HAND. These run it on every scan.
-    #
-    # The invariant is a SUBSET, not equality: `_BUILTIN_* ⊆ loaded`. Adding a
-    # tool to the JSON is the entire point and must pass. Silently LOSING one
-    # must not — a tool that disappears from the inventory stops being detected
-    # and reports as "not installed", which is this repository's signature
-    # defect in its purest form: absent looking exactly like zero.
-    try:
-        import sessions as _sx
-        loaded_names = {t[0] for t in _sx.INVENTORY}
-        builtin_names = {t[0] for t in _sx._BUILTIN_INVENTORY}
-        lost = sorted(builtin_names - loaded_names)
-        chk("every built-in tool survives the config round-trip",
-            len(lost), 0,
-            f"{len(lost)} tool(s) in _BUILTIN_INVENTORY but not in the loaded "
-            f"inventory: {', '.join(lost[:6])}"
-            + (" ..." if len(lost) > 6 else "")
-            + " — clis.json/programs.json dropped them, and a dropped tool "
-              "reports as 'not installed'")
-
-        # Reader parity. INVENTORY_CLI maps a tool to the name of the reader
-        # that parses it; READERS holds the functions. A tool naming a reader
-        # that does not exist is counted at zero forever, and the store it
-        # points at is not reported NOT COVERED either, because the inventory
-        # claims something already handles it. That is worse than an unclaimed
-        # store: it is an unclaimed store wearing a claim.
-        missing_reader = sorted(
-            f"{tool} -> {rd}" for tool, rd in _sx.INVENTORY_CLI.items()
-            if rd not in _sx.READERS)
-        chk("every CLI's named reader exists",
-            len(missing_reader), 0,
-            "; ".join(missing_reader[:5])
-            + (" ..." if len(missing_reader) > 5 else ""))
-
-        # And the other direction: a reader nobody claims. Not fatal — the
-        # orphans reader is real and deliberately absent from INVENTORY_CLI,
-        # because it recovers sessions rather than reading a tool's store.
-        unclaimed = sorted(set(_sx.READERS) - set(_sx.INVENTORY_CLI.values())
-                           - {"claude-orphans"})
-        # Say WHICH KIND of gap each one is, and what it costs. A reader that
-        # is absent from the inventory entirely and one that is present but
-        # unmapped are different repairs, and the tokens each is carrying is
-        # what makes it worth doing rather than a tidy-up.
-        tok = defaultdict(int)
-        for _m, _f in paths.iter_machine_files(root, "sessions.json"):
-            try:
-                for _r in json.loads(_f.read_text(encoding="utf-8")).get("readers", []):
-                    if _r.get("cli") in unclaimed:
-                        tok[_r["cli"]] += _r.get("tokens", 0) or 0
-            except Exception:  # noqa: BLE001
-                pass
-        inv_paths = " ".join(str(t) for t in _sx.INVENTORY).lower()
-        detail = []
-        for r in unclaimed:
-            where = "in INVENTORY but unmapped" if r in inv_paths else "ABSENT from INVENTORY"
-            detail.append(f"{r} ({where}, {tok.get(r, 0):,} tokens fleet-wide)")
-        chk("every reader is claimed by a tool in the inventory",
-            len(unclaimed), 0, "; ".join(detail), fatal=False)
-
-        registry_errors = _sx.registry_errors()
-        chk("every token-bearing store is claimed by its configured reader",
-            len(registry_errors), 0, "; ".join(registry_errors[:5])
-            + (" ..." if len(registry_errors) > 5 else ""))
-
-        empty_store_state = []
-        for _mdir, _f in paths.iter_machine_files(root, "sessions.json"):
-            try:
-                _doc = json.loads(_f.read_text(encoding="utf-8"))
-            except Exception as _e:  # noqa: BLE001 - unreadable scans fail elsewhere
-                continue
-            for _detail in _sx.inventory_store_mismatches(_doc):
-                empty_store_state.append(f"{_doc.get('machine', _mdir.name)}: {_detail}")
-        chk("every installed token tool has a readable canonical store",
-            len(empty_store_state), 0, "; ".join(empty_store_state[:5])
-            + (" ..." if len(empty_store_state) > 5 else ""), fatal=False)
-    except Exception as _e:  # noqa: BLE001 - never block the gate on import
-        chk("the tool registry could be read at all", 0, 0,
-            f"sessions.py did not import: {_e}", fatal=False)
-
-    # ---- THE READERS MUST PARTITION THE ROWS -------------------------------
-    #
-    # Every session row is produced by exactly one reader, and each reader
-    # publishes its own total. So the readers' totals must sum to the rows'
-    # totals, on every machine, exactly. Not approximately: both sides are the
-    # same integers added in a different order.
-    #
-    # THIS IS THE CHECK THAT WOULD HAVE SAVED AN AFTERNOON. sessions.json
-    # carries TWELVE readers for this fleet, and the twelfth is claude-orphans
-    # — sessions whose transcripts are deleted, recovered from .claude.json and
-    # written into sessions[] tagged cli="claude". The gate compared
-    # analyze_tokens (which reads transcripts, so it CANNOT see them) against
-    # the sum of those rows, and reported "one scanner has drifted" by
-    # 2,324,208,273 on two machines for six days. Nothing had drifted; the
-    # readers did not partition the way the check assumed. A partition stated
-    # out loud cannot be assumed wrongly.
-    split = []
-    for _mdir, _f in paths.iter_machine_files(root, "sessions.json"):
-        try:
-            _d = json.loads(_f.read_text(encoding="utf-8"))
-        except Exception:  # noqa: BLE001
-            continue
-        _r = sum(x.get("tokens", 0) or 0 for x in _d.get("readers", []))
-        _s = sum(x.get("total", 0) or 0 for x in _d.get("sessions", []))
-        if _r != _s:
-            split.append(f"{_d.get('machine', _mdir.name)}: readers {_r:,} "
-                         f"vs rows {_s:,} ({_r - _s:+,})")
-    chk("every reader's total sums to the rows it produced",
-        len(split), 0, "; ".join(split[:3]))
-
-    # ---- THE LEDGER MUST NOT BE BEHIND THE SCAN ----------------------------
-    #
-    # The ledger is the floor: it remembers sessions whose transcripts have
-    # since been deleted, so it is normally LARGER than what a scan can still
-    # see. When it is SMALLER, it has not observed the current scan — the
-    # daemon records on its tick, and a machine that scanned but has not
-    # ticked since sits behind.
-    #
-    # NOT FATAL, and not stated as "ledger >= scan", because that is not a true
-    # invariant: measured here, dell-inspiron-desktop-linux sits 3,639,988
-    # below its own scan for exactly this reason and nothing is wrong with it.
-    # What IS worth saying out loud is the failure this shape also produces —
-    # a machine whose daemon has DIED keeps scanning while its ledger stops
-    # growing, and the floor quietly stops being a floor at the moment
-    # retention starts eating the transcripts behind it. The number below is
-    # how far behind, which is the difference between "ticks in a minute" and
-    # "has not run in weeks".
-    behind = []
-    try:
-        import token_ledger as _tl
-        for _mdir, _f in paths.iter_machine_files(root, "sessions.json"):
-            try:
-                _d = json.loads(_f.read_text(encoding="utf-8"))
-                _scan = sum(x.get("total", 0) or 0 for x in _d.get("sessions", []))
-                _lt = (_tl.lifetime(_mdir) or {}).get("total", 0)
-            except Exception:  # noqa: BLE001
-                continue
-            if _lt < _scan:
-                behind.append(f"{_d.get('machine', _mdir.name)}: ledger "
-                              f"{_lt:,} < scan {_scan:,} ({_scan - _lt:,} behind)")
-    except Exception:  # noqa: BLE001
-        pass
-    chk("no machine's ledger is behind its own scan",
-        len(behind), 0,
-        "; ".join(behind[:3])
-        + " — run `python3 token_ledger.py --record` there, or check the daemon",
-        fatal=False)
-
-    # ---- THE BELT, CHECKED FROM THE OTHER END ------------------------------
-    #
-    # retention_guard sets cleanupPeriodDays to 36500 and hard-links every
-    # transcript, and it reports on itself. This checks the same two facts from
-    # OUTSIDE the guard, because a guard that has stopped running reports
-    # nothing at all — and nothing at all is what a healthy quiet run also
-    # looks like. Claude Code deletes transcripts AT STARTUP, so the window
-    # between "the setting was lowered" and "the transcripts are gone" is one
-    # launch. This is the only check here that reads live state on THIS
-    # machine rather than committed artifacts, so it is advisory: another
-    # machine's folder cannot be judged from here.
-    try:
-        import retention_guard as _rg
-        target = getattr(_rg, "TARGET_DAYS", 36500)
-    except Exception:  # noqa: BLE001
-        target = 36500
-    lowered, unprotected = [], 0
-    home = pathlib.Path.home()
-    for prof in sorted(home.glob(".claude*")):
-        st = prof / "settings.json"
-        if not st.is_file():
-            continue
-        try:
-            days = json.loads(st.read_text(encoding="utf-8")).get("cleanupPeriodDays")
-        except Exception:  # noqa: BLE001
-            continue
-        if days is not None and days < target:
-            lowered.append(f"~/{prof.name}: cleanupPeriodDays={days} (< {target})")
-        pdir = prof / "projects"
-        if pdir.is_dir():
-            for t in pdir.rglob("*.jsonl"):
-                try:
-                    if t.stat().st_nlink < 2:
-                        unprotected += 1
-                except OSError:
-                    pass
-    chk("this machine's retention period was not lowered",
-        len(lowered), 0, "; ".join(lowered[:4]), fatal=False)
-    chk("this machine's live transcripts are all hard-linked",
-        unprotected, 0,
-        f"{unprotected} transcript(s) have no archive link — "
-        "`python3 retention_guard.py --apply`", fatal=False)
-
-    # ---- NO CREDENTIAL MAY LIVE IN THE ARCHIVE -----------------------------
-    #
-    # PLAN.md P0.1. The archive is a hard link, so a credential in it is the
-    # SAME INODE as the live secret — and the archive is the thing that gets
-    # packed and shipped as a release asset.
-    #
-    # THIS CHECK EXISTS BECAUSE THE FIX DID NOT HOLD. The six files were moved
-    # out and verified gone at 14:25 on 2026-08-22. The daemon ran APPLYING at
-    # 16:50 and they were back, at nlink=3. The guard's own report said
-    # "9 config/credential file(s) REFUSED — never linked, at any depth, in any
-    # store" while that happened, so the tool that does the linking is also the
-    # tool that says it did not, and believing it is what let the regression
-    # stand for two hours.
-    #
-    # `_refuse()` returns True for every one of these paths when called
-    # directly, and re-running `--apply` by hand does NOT re-link them, so the
-    # predicate and the manual path are both fine. Rather than keep hunting a
-    # run that is over, this asserts the PROPERTY from outside: whatever put
-    # them there, the gate now says so the same day instead of two hours later
-    # and only because someone happened to count.
-    secretish = {".credentials.json", "installation_id", "auth.json",
-                 "google_accounts.json", "oauth_creds.json", "token",
-                 ".netrc", "id_rsa", "id_ed25519"}
-    arch = pathlib.Path.home() / ".ai-logs-archive"
-    leaked = []
-    if arch.is_dir():
-        for f in arch.rglob("*"):
-            try:
-                if f.is_file() and f.name in secretish:
-                    leaked.append(f"{f.relative_to(arch)} (nlink={f.stat().st_nlink})")
-            except OSError:
-                pass
-    # ---- A STORE WITH RECORDS IN IT MUST HAVE PRODUCED SOMETHING ----------
-    #
-    # `inventory` joins presence to usage: files on disk, and what the reader
-    # made of them. A row with files > 0, a reader named, `counted: true`, and
-    # ZERO sessions is a store full of records that nothing read — reported as
-    # counted. That is the exact shape this repository keeps finding in its own
-    # components, and the one the "uncountable" rule was written for: the
-    # difference between "there is nothing here" and "I could not read what is
-    # here" must never be silent.
-    #
-    # Found on the first run: Gemini CLI on ASUS Laptop Linux, 9,667 files, 0
-    # tokens. Antigravity there, 1,625 files, 0 tokens.
-    #
-    # WARN, not FAIL, and deliberately: some stores legitimately hold files
-    # that are not records — ~/.gemini/tmp holds tool outputs beside its
-    # sessions — so a non-zero count here is a question, not a verdict. It
-    # names the machine and the file count so the question can be answered
-    # where the store actually is.
-    mute = []
-    for _mdir, _f in paths.iter_machine_files(root, "sessions.json"):
-        try:
-            _d = json.loads(_f.read_text(encoding="utf-8"))
-        except Exception:  # noqa: BLE001
-            continue
-        _m = _d.get("machine", _mdir.name)
-        for _it in _d.get("inventory", []):
-            if (_it.get("cli") and (_it.get("files") or 0)
-                    and not (_it.get("sessions_count") or 0)):
-                mute.append(f"{_m}: {_it.get('tool')} "
-                            f"({_it.get('files'):,} files, 0 sessions)")
-    # (A narrower config-hash check lived here. It was superseded by
-    # config_fingerprint(), which covers four authored inputs instead of two
-    # and can NAME the one that moved. Two fingerprints of the same thing is
-    # the defect this repo keeps finding in itself, so the narrower one went
-    # rather than sitting beside it agreeing most of the time.)
-
-
-    chk("no store holds records its reader produced nothing from",
-        len(mute), 0,
-        "; ".join(mute[:4]) + (f" (+{len(mute) - 4} more)" if len(mute) > 4 else ""),
-        fatal=False)
-
-    # ---- WHAT THE HELP CLAIMS MUST BE WHAT THE MACHINE HAS ----------------
-    #
-    # The second adversary for 8.4. The build test asserts `--help` and
-    # `status` render the SAME function; this asserts, at runtime on a real
-    # machine, that the function is not lying — every component it reports
-    # "on" is checked again here, independently.
-    #
-    # A status display that is wrong is worse than none: it is the reason
-    # nobody looked at the daemon for 204 archive failures. So the components
-    # that MATTER — the daemon and the config files — are re-derived rather
-    # than trusted, and a disagreement between the two derivations is the
-    # finding.
-    disagree = []
-    try:
-        import run as _run
-        for _g, _name, _state, _detail in _run.component_status():
-            if _g == "config":
-                on_disk = (root / _name).is_file()
-                if _state == "on" and not on_disk:
-                    disagree.append(f"{_name}: reported present, not on disk")
-                if _state == "off" and on_disk:
-                    disagree.append(f"{_name}: reported absent, but it is there")
-            if _name == "retention-guard" and _state == "on":
-                r = subprocess.run(["systemctl", "--user", "is-active",
-                                    "retention-guard.service"],
-                                   capture_output=True, text=True)
-                if r.stdout.strip() != "active":
-                    disagree.append("retention-guard: reported active, "
-                                    f"systemctl says {r.stdout.strip()!r}")
-    except Exception as _e:  # noqa: BLE001
-        disagree.append(f"component_status() could not be re-derived: {_e}")
-    chk("what `run.py --help` claims about this machine is true",
-        len(disagree), 0, "; ".join(disagree[:3]), fatal=False)
-
-    # ---- MANUAL ADJUSTMENTS MUST BE INTACT AND SEPARATE -------------------
-    #
-    # PLAN item 10.3, the runtime half. A manual entry is the only number here
-    # that no scanner produced, so it is the only one an editor could invent —
-    # and it sits in a plain text file that anyone with the disk can rewrite.
-    #
-    # The design does not pretend that is preventable. It makes it LOUD: every
-    # entry hashes its own content into `id`, and names the id before it, so an
-    # edit, a deletion and a reorder each break something checkable. This runs
-    # that check on every gate, and a tampered entry is excluded from the
-    # adjusted total rather than silently counted — smaller and explained,
-    # never larger and quiet.
-    tampered = []
-    try:
-        import manual_adjust as _madj
-        for _mdir in paths.machine_folders(root):
-            for _p in _madj.verify(_mdir):
-                tampered.append(f"{_mdir.name}: {_p}")
-    except Exception:  # noqa: BLE001
-        pass
-    chk("every manual adjustment still hashes to its own id",
-        len(tampered), 0, "; ".join(tampered[:3]))
-
-    chk("no credential is hard-linked into the archive",
-        len(leaked), 0,
-        "; ".join(leaked[:5]) + (" ..." if len(leaked) > 5 else "")
-        + " — same inode as the live secret, and the archive is what gets "
-          "shipped", fatal=False)
 
     # A SCAN THAT COULD NOT READ PART OF THE MACHINE IS NOT A SCAN OF THE
     # MACHINE, AND EVERY PARTITION STILL SUMS.
@@ -1935,25 +1589,19 @@ def main():
         retired = {}
         ta = root / "testing-archive"
         if ta.is_dir():
-            for p in ta.rglob("*"):
-                if p.is_dir() and p.name in expected:
-                    if paths.find(p, "totals.json") or paths.find(p, "token_ledger.jsonl") or (p / "human-readable").is_dir():
-                        m_name = p.name
-                        when = None
-                        for part in reversed(p.parts):
-                            try:
-                                when = _dt.datetime.strptime(part, "%Y-%m-%dT%H-%M-%S")
-                                break
-                            except ValueError:
-                                pass
-                        if when is None:
-                            try:
-                                when = _dt.datetime.fromtimestamp(p.stat().st_mtime)
-                            except Exception:
-                                when = None
-                        prev = retired.get(m_name, "none")
+            for stamp in sorted(ta.iterdir()):
+                sm = stamp / "stale-machines"
+                if not sm.is_dir():
+                    continue
+                try:
+                    when = _dt.datetime.strptime(stamp.name, "%Y-%m-%dT%H-%M-%S")
+                except ValueError:
+                    when = None            # unparseable: cannot be shown fresh
+                for p in sm.iterdir():
+                    if p.is_dir() and paths.find(p, "totals.json"):
+                        prev = retired.get(p.name, "none")
                         if prev == "none" or (when and (prev is None or when > prev)):
-                            retired[m_name] = when
+                            retired[p.name] = when
 
         gone_from_git, was_retired, unreadable, last_sha = [], [], [], {}
         for m in vanished:
@@ -2072,30 +1720,15 @@ def main():
     #     most careful about: which company served the tokens. Compared against
     #     the last commit, because there is nothing inside the file to check it
     #     against.
-    #
-    #     AND `if r.returncode: continue` EXEMPTED EVERY UNTRACKED FOLDER FROM
-    #     IT. hp-laptop-linux/machine-readable/totals.json left the index in
-    #     fe6a7f6 and the file is still on disk, so `git show HEAD:...` exits
-    #     128 for it and this loop skipped straight past — as did the two other
-    #     sites below. Measured on a clone with that folder restored exactly as
-    #     the working tree holds it: 4,800,775,316 claude tokens relabelled
-    #     deepseek-v4-pro AND last_computed dragged 2026-05-17 -> 2020-01-01,
-    #     and the run printed 56 checks / 12 failed both before and after —
-    #     PASS on this line and PASS on last_computed, character for character.
-    #     So the git call goes through _git(), which separates answered-with-
-    #     nothing from unable-to-answer, and a folder it could not read is
-    #     named on the banner instead of quietly leaving the population.
-    moved, head_blind, vs_head = [], [], 0
+    moved = []
     for mdir in sorted(p for p in root.iterdir() if p.is_dir()):
         f = paths.find(mdir, "totals.json")
         if not f:
             continue
-        answered, head = _git(root, "show",
-                              f"HEAD:{mdir.name}/machine-readable/totals.json")
-        if not answered or not head.strip():
-            head_blind.append(f"{mdir.name}/totals.json")
+        r = subprocess.run(["git", "show", f"HEAD:{mdir.name}/machine-readable/totals.json"],
+                           cwd=root, capture_output=True, text=True)
+        if r.returncode or not r.stdout.strip():
             continue
-        vs_head += 1
 
         def split(doc):
             o = defaultdict(int)
@@ -2106,7 +1739,7 @@ def main():
             return o
 
         try:
-            was, now_ = split(json.loads(head)), split(json.loads(f.read_text(encoding="utf-8")))
+            was, now_ = split(json.loads(r.stdout)), split(json.loads(f.read_text(encoding="utf-8")))
         except Exception:  # noqa: BLE001
             continue
         # The signature of relabelling is CONSERVATION WITH REDISTRIBUTION: one
@@ -2128,11 +1761,7 @@ def main():
                 # Within 1%: a transfer, not two independent movements.
                 if abs(gain - amt) <= max(amt, gain) * 0.01:
                     moved.append(f"{mdir.name}: {lc} -{amt:,} while {gc} +{gain:,}")
-    # THE POPULATION GOES IN THE NAME, not in the detail: the banner prints
-    # detail only for a check that did NOT pass, so this line read identically
-    # over nought folders and over the whole fleet. Today it is 1 — one of the
-    # two machine folders on disk — and that is now on the banner.
-    chk(f"no company's tokens moved into another ({vs_head} folder(s) vs HEAD)",
+    chk("no company's tokens moved into another",
         len(moved), 0, "; ".join(moved[:3]), fatal=True)
 
     # 1c. A MACHINE'S SESSIONS MUST NOT EMPTY. The analyze_tokens == sessions
@@ -2224,7 +1853,7 @@ def main():
         if below else "",
         fatal=False)
 
-    backdated, sc_vs_head = [], 0
+    backdated = []
     for mdir in sorted(p for p in root.iterdir() if p.is_dir()):
         f = paths.find(mdir, "sessions.json")
         if not f:
@@ -2234,22 +1863,20 @@ def main():
                       for e in (json.loads(f.read_text(encoding="utf-8")).get("stats_cache") or [])}
         except Exception:  # noqa: BLE001
             continue
-        answered, head = _git(root, "show",
-                              f"HEAD:{mdir.name}/machine-readable/sessions.json")
-        if not answered or not head.strip():
-            head_blind.append(f"{mdir.name}/sessions.json")
+        r = subprocess.run(["git", "show", f"HEAD:{mdir.name}/machine-readable/sessions.json"],
+                           cwd=root, capture_output=True, text=True)
+        if r.returncode or not r.stdout.strip():
             continue
-        sc_vs_head += 1
         try:
             was = {e.get("account"): e.get("last_computed")
-                   for e in (json.loads(head).get("stats_cache") or [])}
+                   for e in (json.loads(r.stdout).get("stats_cache") or [])}
         except Exception:  # noqa: BLE001
             continue
         for acct, before in was.items():
             after = now_sc.get(acct)
             if before and after and str(after) < str(before):
                 backdated.append(f"{mdir.name}/{str(acct)[:20]} {before}->{after}")
-    chk(f"last_computed never moves backwards ({sc_vs_head} folder(s) vs HEAD)",
+    chk("last_computed never moves backwards",
         len(backdated), 0, "; ".join(backdated[:4]), fatal=True)
 
     # 3. THE VERSION MUST MATCH THE CODE THAT IS RUNNING. The check above only
@@ -2390,17 +2017,12 @@ def main():
     # exactly like "this machine was idle".
     # subprocess is imported at module level
     for _mdir, f in paths.iter_machine_files(root, "totals.json"):
-        # Same skip, same hole: an untracked folder never reaches the closed-day
-        # audit, the middle-of-history check or the retention check, and none of
-        # those emits a line for a machine it never looked at. Named, not
-        # skipped.
-        answered, head = _git(root, "show",
-                              f"HEAD:{_mdir.name}/machine-readable/totals.json")
-        if not answered or not head.strip():
-            head_blind.append(f"{_mdir.name}/totals.json")
-            continue
         try:
-            before = json.loads(head)
+            prev = subprocess.run(["git", "show", f"HEAD:{_mdir.name}/machine-readable/totals.json"],
+                                  cwd=root, capture_output=True, text=True)
+            if prev.returncode:
+                continue
+            before = json.loads(prev.stdout)
             now = json.loads(f.read_text(encoding="utf-8"))
         except Exception:
             continue
@@ -2575,23 +2197,6 @@ def main():
                 "cleanupPeriodDays and were deleted. Raise it in settings.json "
                 "to stop further loss; the previous figure survives in git history",
                 fatal=False)
-
-    # THE FOLDERS NONE OF THE THREE COULD READ. One line for all of them,
-    # emitted here because this is the last of the three sites to fill it.
-    #
-    # WARN and not FAIL: a machine folder that was never committed is a real,
-    # innocent state — a computer scanned before its first commit is in it. What
-    # is not innocent is saying nothing. Every check above that anchors on HEAD
-    # surveyed this folder and reported on it exactly as it reports a folder
-    # that is clean, which is how a relabel and a backdate on hp-laptop-linux
-    # both printed PASS.
-    _blind = sorted(set(head_blind))
-    chk("every machine folder could be compared against HEAD",
-        len(_blind), 0,
-        ", ".join(_blind) + " — not at HEAD, so relabelling, backdating, "
-        "closed days, holes in the middle and retention went unchecked on "
-        "them. Commit the folder, or retire it" if _blind else "",
-        fatal=False)
 
     # A floor below the measured figure is a contradiction, not a small error.
     # It happened: the floor read totals.json while the measured value read

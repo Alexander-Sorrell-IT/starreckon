@@ -30,53 +30,37 @@ Folder document `dell-latitude-7480-linux/human-readable/FOLDER.md` was **REGENE
 
 Folder document `hp-laptop-linux/human-readable/FOLDER.md` was **REGENERATED** when this was written.
 
-## macbook-air-m1 (`macbook-air-m1/`)
-
-**UNCOUNTED — absent.** The roster names this computer and there is no folder for it. It has never been scanned. It contributes nothing to the TOTAL, and the TOTAL says so rather than treating it as zero.
-
-## MacBookAir (`macbookair/`)
+## MacBook Air M1 (`macbook-air-m1/`)
 
 | | |
 |---|---|
-| tokens | 42,036,497,160 |
-| scanner | `b9154bfefd2c` |
-| scanned | 2026-08-27T05:06:36-05:00 |
-| files | 5 |
+| tokens | 15,251,673,339 |
+| scanner | `103c20d12f3a` |
+| scanned | 2026-08-14T18:52:17-05:00 |
+| files | 24 |
 
-Folder document `macbookair/human-readable/FOLDER.md` was **REGENERATED** when this was written.
-
-## MacBook Air M1 (Darwin ARM64) (`macbookair-attlocal-net/`)
-
-| | |
-|---|---|
-| tokens | 18,487,763,737 |
-| scanner | `d6a764c4fac5` |
-| scanned | 2026-08-27T15:19:30-05:00 |
-| files | 26 |
-
-Folder document `macbookair-attlocal-net/human-readable/FOLDER.md` was **REGENERATED** when this was written.
+Folder document `macbook-air-m1/human-readable/FOLDER.md` was **REGENERATED** when this was written.
 
 ## TOTAL
 
-**60,524,260,897 tokens** across **2 of 8 computers**.
+**15,251,673,339 tokens** across **1 of 6 computers**.
 
 This is the sum of `grand_total_tokens` over the machine folders named in the fingerprint below — the same field `combine.py` sums. It changes whenever any of those folders changes, because this document is regenerated from them and its fingerprint stops it being read as current when it has not been.
 
-**INCOMPLETE — 6 computer(s) contributed nothing and were not counted as zero:**
+**INCOMPLETE — 5 computer(s) contributed nothing and were not counted as zero:**
 
 - `asus-laptop-linux` — no-totals
 - `dell-inspiron-desktop-linux` — no-totals
 - `dell-latitude-7480-linux` — no-totals
 - `dell-latitude-7480-windows` — absent
 - `hp-laptop-linux` — no-totals
-- `macbook-air-m1` — absent
 
 A total over a subset is a floor, not a fleet total. This is the exact shape of the failure that put a 2-machine rollup on the front page beside 5 committed scans and understated the fleet by 78,967,248,634 tokens.
 
 
 ## Input fingerprint
 
-Built from 8 input(s); tree state `populated`; digest `sha256:27e3808a5cb7d577…`. A document whose fingerprint no longer matches the tree is STALE and `python3 run.py status` says so.
+Built from 6 input(s); tree state `populated`; digest `sha256:8ff62e4bc8177601…`. A document whose fingerprint no longer matches the tree is STALE and `python3 run.py status` says so.
 
 | Input | State | Scanner | Scanned | Files |
 |---|---|---|---|---:|
@@ -85,9 +69,7 @@ Built from 8 input(s); tree state `populated`; digest `sha256:27e3808a5cb7d577�
 | `dell-latitude-7480-linux` | no-totals | `—` | — | 2 |
 | `dell-latitude-7480-windows` | absent | `—` | — | 0 |
 | `hp-laptop-linux` | no-totals | `—` | — | 2 |
-| `macbook-air-m1` | absent | `—` | — | 0 |
-| `macbookair` | scanned | `b9154bfefd2c` | 2026-08-27T05:06:36 | 5 |
-| `macbookair-attlocal-net` | scanned | `d6a764c4fac5` | 2026-08-27T15:19:30 | 26 |
+| `macbook-air-m1` | scanned | `103c20d12f3a` | 2026-08-14T18:52:17 | 24 |
 
 ```input-fingerprint
 {
@@ -97,7 +79,7 @@ Built from 8 input(s); tree state `populated`; digest `sha256:27e3808a5cb7d577�
   "document": "human-readable/FLEET.md",
   "kind": "root",
   "scope": "fleet",
-  "generated_at": "2026-08-27T15:22:54-05:00",
+  "generated_at": "2026-08-14T18:56:15-05:00",
   "tree_state": "populated",
   "excluded_from_digests": [
     "human-readable/FOLDER.md"
@@ -145,34 +127,16 @@ Built from 8 input(s); tree state `populated`; digest `sha256:27e3808a5cb7d577�
     },
     {
       "id": "macbook-air-m1",
-      "state": "absent",
-      "scanner_version": null,
-      "generated_at": null,
-      "files": 0,
-      "content": null
-    },
-    {
-      "id": "macbookair",
       "state": "scanned",
-      "scanner_version": "b9154bfefd2c",
-      "generated_at": "2026-08-27T05:06:36-05:00",
-      "files": 5,
-      "content": "sha256:785b5a85230ac4352d53a73f3de6baba949df046ad048167a336da08f7fdbbf8",
-      "total_tokens": 42036497160,
-      "label": "MacBookAir"
-    },
-    {
-      "id": "macbookair-attlocal-net",
-      "state": "scanned",
-      "scanner_version": "d6a764c4fac5",
-      "generated_at": "2026-08-27T15:19:30-05:00",
-      "files": 26,
-      "content": "sha256:473ec1979ebbd03b1288b6dc6b2d227cd377b3073eabcacff4e0cf1d6b293468",
-      "total_tokens": 18487763737,
-      "label": "MacBook Air M1 (Darwin ARM64)"
+      "scanner_version": "103c20d12f3a",
+      "generated_at": "2026-08-14T18:52:17-05:00",
+      "files": 24,
+      "content": "sha256:90cf89893e3bf1ef53f4fc329f93607171e4ae6d53aebf01da1bf857eee9b2a4",
+      "total_tokens": 15251673339,
+      "label": "MacBook Air M1"
     }
   ],
-  "digest": "sha256:27e3808a5cb7d577a4f488b65b18e46f7a7d3e965f162f9429e3f95ab4c5b492"
+  "digest": "sha256:8ff62e4bc81776011f19e84859d7574a485eadf57cf038397bff56940964564e"
 }
 ```
 

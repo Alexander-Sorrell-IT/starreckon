@@ -24,7 +24,6 @@ Usage:
 
 import argparse
 import datetime
-import hashlib
 import json
 import functools
 import os
@@ -33,7 +32,6 @@ import paths
 import re
 import stores
 import sys
-import tempfile
 import urllib.parse
 from collections import defaultdict
 
@@ -115,66 +113,6 @@ def scanner_version():
         if f.is_file():
             h.update(f.read_bytes())
     return h.hexdigest()[:12]
-
-
-SCAN_CONFIG_INPUTS = ("clis.json", "programs.json", "accounts.json", "cli-config.json")
-
-
-def config_fingerprint(root=None):
-    """Return a stable digest of authored inputs that govern this scan.
-
-    Missing configuration is a supported fallback, but it must remain distinct
-    from a present empty file: the former selects built-in behavior while the
-    latter is still an authored input.
-    """
-    root = pathlib.Path(root) if root is not None else pathlib.Path(__file__).resolve().parent
-    files = {}
-    for name in SCAN_CONFIG_INPUTS:
-        try:
-            content = (root / name).read_bytes()
-        except FileNotFoundError:
-            files[name] = {"state": "missing"}
-        except OSError:
-            # A scan can still use its graceful fallback when an authored file
-            # cannot be read, but the persisted provenance must say so.
-            files[name] = {"state": "unreadable"}
-        else:
-            files[name] = {
-                "state": "present",
-                "sha256": hashlib.sha256(content).hexdigest(),
-            }
-    encoded = json.dumps(files, sort_keys=True, separators=(",", ":")).encode("utf-8")
-    return {
-        "fingerprint_version": 1,
-        "algorithm": "sha256",
-        "sha256": hashlib.sha256(encoded).hexdigest(),
-        "files": files,
-    }
-
-
-def config_fingerprint_changes(before, after):
-    """Names of authored scan inputs whose fingerprint states differ."""
-    before_files = before.get("files", {}) if isinstance(before, dict) else {}
-    after_files = after.get("files", {}) if isinstance(after, dict) else {}
-    return [name for name in SCAN_CONFIG_INPUTS
-            if before_files.get(name) != after_files.get(name)]
-
-
-def write_json_atomically(path, document):
-    """Write a JSON document without exposing a partial replacement."""
-    path = pathlib.Path(path)
-    temp_path = None
-    try:
-        with tempfile.NamedTemporaryFile(
-                mode="w", encoding="utf-8", dir=path.parent,
-                prefix=f".{path.name}.", suffix=".tmp", delete=False) as fh:
-            temp_path = pathlib.Path(fh.name)
-            json.dump(document, fh, indent=1)
-            fh.write("\n")
-        os.replace(temp_path, path)
-    finally:
-        if temp_path is not None and temp_path.exists():
-            temp_path.unlink()
 
 
 def _machine_uuid(mdir=None):
@@ -278,50 +216,6 @@ def active_minutes(stamps, threshold=None):
         if 0 < gap <= cap:
             mins += gap
     return round(mins, 1)
-
-
-_SOURCE_DIGEST_CACHE = {}
-
-def source_evidence(home, files):
-    """Stable, non-content evidence for files that supplied a session's tokens."""
-    home = pathlib.Path(home).resolve() if home is not None else None
-    out = []
-    for f in files:
-        f = pathlib.Path(f)
-        try:
-            resolved = f.resolve()
-            path = "~/" + resolved.relative_to(home).as_posix() if home else str(resolved)
-        except ValueError:
-            path = str(resolved)
-        except OSError:
-            continue
-        try:
-            st = f.stat()
-            cache_key = (str(resolved), st.st_size, st.st_mtime_ns)
-            if cache_key in _SOURCE_DIGEST_CACHE:
-                digest_hex = _SOURCE_DIGEST_CACHE[cache_key]
-            else:
-                digest = hashlib.sha256()
-                with f.open("rb") as fh:
-                    for chunk in iter(lambda: fh.read(1024 * 1024), b""):
-                        digest.update(chunk)
-                digest_hex = digest.hexdigest()
-                _SOURCE_DIGEST_CACHE[cache_key] = digest_hex
-            item = {"path": path, "bytes": st.st_size, "sha256": digest_hex}
-        except OSError:
-            continue
-        if item not in out:
-            out.append(item)
-    return sorted(out, key=lambda item: (item["path"], item["bytes"], item["sha256"]))
-
-
-def add_source_evidence(rec, home, *files):
-    """Add every contributing file once; merged sessions retain every contributor."""
-    sources = rec.setdefault("sources", [])
-    for item in source_evidence(home, files):
-        if item not in sources:
-            sources.append(item)
-    sources.sort(key=lambda item: (item["path"], item["bytes"], item["sha256"]))
 
 
 def finish(rec):
@@ -544,13 +438,6 @@ def merge_session(dst, src):
     for k, v in src.items():
         if dst.get(k) is None and v is not None:
             dst[k] = v
-    for item in src.get("sources", []):
-        if item not in dst.setdefault("sources", []):
-            dst["sources"].append(item)
-    if "sources" in dst:
-        dst["sources"].sort(
-            key=lambda item: (item.get("path", ""), item.get("bytes", 0),
-                              item.get("sha256", "")))
     t = dst["tokens"]
     dst["total"] = total(t)
     dst["sent"] = sum(t[k] for k in SENT_FIELDS)
@@ -677,11 +564,18 @@ def read_stats_cache(home):
     would double-count; picking one would discard real usage the other holds.
     Both are reported, each labelled with what it covers.
     """
+    from analyze_tokens import find_config_dirs
     F = ("inputTokens", "outputTokens", "cacheReadInputTokens",
          "cacheCreationInputTokens")
     out, blind = [], []
     read_stats_cache.unreadable = blind
-    for cfg in sorted(home.glob(".*claude*")):
+    # WAS home.glob(".*claude*") — non-recursive, the exact narrow discovery
+    # already fixed in read_claude (below) after it was found to miss profiles
+    # nested under a subdirectory, costing 817,889,443 tokens on this machine.
+    # That fix was never carried over here, leaving the frozen-counter floor —
+    # the one figure that survives transcript deletion — blind to any profile
+    # find_config_dirs can see that a bare top-level glob cannot.
+    for cfg in sorted(find_config_dirs(home, excluded=[])):
         f = cfg / "stats-cache.json"
         if not (_probe(cfg, blind) and _probe(f, blind, "file")):
             continue
@@ -726,9 +620,12 @@ def read_history(home):
     Prompt text is deliberately NOT stored. `display` and `pastedContents` hold
     what was typed, and a token counter has no business keeping that.
     """
+    from analyze_tokens import find_config_dirs
     out, blind = [], []
     read_history.unreadable = blind
-    for cfg in sorted(home.glob(".*claude*")):
+    # Same fix as read_stats_cache above: was home.glob(".*claude*"), missing
+    # any profile not directly under home.
+    for cfg in sorted(find_config_dirs(home, excluded=[])):
         f = cfg / "history.jsonl"
         if not (_probe(cfg, blind) and _probe(f, blind, "file")):
             continue
@@ -820,7 +717,6 @@ def read_claude(home):
             projs = []
         for proj in projs:
             for f in sorted(_jsonl_under(proj, blind)):
-                touched_sids = set()
                 for line in open(f, encoding="utf-8", errors="ignore"):
                     if '"usage"' not in line:
                         continue
@@ -841,7 +737,6 @@ def read_claude(home):
                             "turns": 0, "tokens": blank(), "_models": defaultdict(int),
                             "_seen": set(), "_stamps": [],
                         }
-                    touched_sids.add(sid)
                     # Dedup on message.id, crediting a running MAXIMUM — the
                     # rule itself lives in analyze_tokens.MessageMax and this
                     # reader runs that object rather than a second copy of it.
@@ -876,8 +771,6 @@ def read_claude(home):
                         rec["_models"][model] += 1
                     for k in FIELDS:
                         rec["tokens"][k] += delta[k]
-                for sid in touched_sids:
-                    add_source_evidence(per[sid], home, f)
     # Emitted once, after every profile has been read — `per` is keyed by
     # session id across all of them, so a session found in a live profile and
     # again in a copy is one record holding the union of both.
@@ -1017,7 +910,6 @@ def read_copilot(home, base):
                 "_models": defaultdict(int), "_stamps": []}
         elif ev_sid:
             rec["session_id_source"] = "events"
-        add_source_evidence(rec, home, f)
         rec["_stamps"].extend(stamps)
         for ts in stamps:
             if rec["start"] is None or ts < rec["start"]:
@@ -1076,7 +968,6 @@ def read_codex(home, base):
                "account": "codex (local)", "project": "-", "start": None,
                "end": None, "turns": 0, "tokens": blank(),
                "_models": defaultdict(int), "_stamps": []}
-        add_source_evidence(rec, home, f)
         prev_usage = None
         for line in open(f, encoding="utf-8", errors="ignore"):
             try:
@@ -1202,7 +1093,6 @@ def read_gemini(home, base):
                     "project": d.get("projectHash") or "-", "start": None, "end": None,
                     "turns": 0, "tokens": blank(), "_models": defaultdict(int),
                     "_stamps": []}
-            add_source_evidence(rec, home, f)
             for m in d.get("messages") or []:
                 ts = m.get("timestamp")
                 if ts:
@@ -1372,15 +1262,15 @@ def read_kilocode(home, base=None):
     read the live tree, so the corpus could not be recounted for it.
     """
     if base is not None:
-        return _kilocode_tasks(pathlib.Path(base), "corpus", home)
+        return _kilocode_tasks(pathlib.Path(base), "corpus")
     out = []
     for label, root in vscode_roots(home):
         tasks = root / "User/globalStorage/kilocode.kilo-code/tasks"
-        out.extend(_kilocode_tasks(tasks, label, home))
+        out.extend(_kilocode_tasks(tasks, label))
     return out
 
 
-def _kilocode_tasks(tasks, label, home=None):
+def _kilocode_tasks(tasks, label):
     """Every Kilo task under one `tasks/` directory, wherever that directory is."""
     out = []
     if tasks.is_dir():
@@ -1396,7 +1286,6 @@ def _kilocode_tasks(tasks, label, home=None):
                    "account": f"kilocode ({label})", "project": "-",
                    "start": None, "end": None, "turns": 0, "tokens": blank(),
                    "_models": defaultdict(int), "_stamps": []}
-            add_source_evidence(rec, home, f)
             provider = None
             for m in msgs if isinstance(msgs, list) else []:
                 ts = m.get("ts")
@@ -1487,7 +1376,6 @@ def read_lmstudio(home, base):
                "account": "lmstudio (local)", "project": "-",
                "start": None, "end": None, "turns": 0, "tokens": blank(),
                "_models": defaultdict(int), "_stamps": []}
-        add_source_evidence(rec, home, f)
         try:
             ms = int(f.stem.split(".")[0])
             rec["start"] = rec["end"] = datetime.datetime.fromtimestamp(
@@ -1543,7 +1431,6 @@ def read_grok(home, base):
                "project": urllib.parse.unquote(sdir.parent.name), "start": None,
                "end": None, "turns": 0, "tokens": blank(),
                "_models": defaultdict(int), "_stamps": []}
-        add_source_evidence(rec, home, f)
         for line in open(f, encoding="utf-8", errors="ignore"):
             try:
                 o = json.loads(line)
@@ -1837,7 +1724,6 @@ def read_antigravity(home, base):
                "start": None, "end": None, "turns": len(usage),
                "tokens": blank(), "_models": models or {"antigravity": 1},
                "_stamps": stamps}
-        add_source_evidence(rec, home, f)
         rec["tokens"]["input_tokens"] = unc
         rec["tokens"]["cache_read_input_tokens"] = cac
         rec["tokens"]["output_tokens"] = o
@@ -1866,96 +1752,6 @@ def read_antigravity(home, base):
 # gemini / antigravity — presence only
 # --------------------------------------------------------------------------
 
-# ---- Config file loader (clis.json + programs.json) -------------------------
-#
-# WHY THIS EXISTS: The hardcoded INVENTORY below was the only way to add or
-# remove AI tools. That meant editing Python to track a new CLI. Now the user
-# can drop a JSON file alongside sessions.py and the system picks it up. If
-# the files don't exist, nothing breaks — the built-in list is still here.
-
-def _load_config(filename):
-    """Try to load an authored JSON config file from the repo root.
-
-    Returns the parsed dict, or None if the file is missing or malformed.
-    Never raises — a broken config must not block a scan.
-    """
-    path = pathlib.Path(__file__).resolve().parent / filename
-    if not path.exists():
-        return None
-    try:
-        with open(path) as f:
-            return json.load(f)
-    except (json.JSONDecodeError, OSError) as e:
-        print(f"  warning: {filename} exists but could not be read: {e}")
-        return None
-
-
-def _load_inventory():
-    """Build INVENTORY, INVENTORY_CLI, and NO_TOKENS_BECAUSE from config files.
-
-    If both clis.json and programs.json are present, builds from them.
-    Otherwise falls back to the _BUILTIN_* lists below.
-
-    Returns (inventory, inventory_cli, no_tokens_because).
-    """
-    clis_doc = _load_config("clis.json")
-    progs_doc = _load_config("programs.json")
-
-    if clis_doc is None or progs_doc is None:
-        # Fall back to built-in defaults.
-        return _BUILTIN_INVENTORY, _BUILTIN_INVENTORY_CLI, _BUILTIN_NO_TOKENS_BECAUSE
-
-    inventory = []
-    inventory_cli = {}
-    no_tokens = {}
-
-    # A MALFORMED ENTRY MUST NOT BRICK THE SCANNER.
-    #
-    # This read `entry["name"]` and `entry["paths"]` directly, so ONE typo in
-    # clis.json — an entry missing `paths` — raised KeyError at MODULE IMPORT
-    # of sessions.py. Not a bad scan: every command in the repo dies, because
-    # everything imports sessions. Reproduced by deleting one `paths` key:
-    #
-    #   File "sessions.py", line 1895, in <module>
-    #     INVENTORY, INVENTORY_CLI, NO_TOKENS_BECAUSE = _load_inventory()
-    #   KeyError: 'paths'
-    #
-    # The loader already falls back when a FILE is missing. A file that is
-    # present and wrong is the more likely accident of the two — it is what
-    # hand-editing produces — and it had the worse failure. Now both land in
-    # the same place: keep the built-ins, say so on stderr, carry on.
-    try:
-        for entry in clis_doc.get("clis", []):
-            name = entry["name"]
-            inventory.append((name, "cli", entry["paths"], entry.get("binary")))
-            if entry.get("reader"):
-                inventory_cli[name] = entry["reader"]
-            if entry.get("no_tokens_because"):
-                no_tokens[name] = entry["no_tokens_because"]
-
-        for entry in progs_doc.get("programs", []):
-            name = entry["name"]
-            kind = entry.get("kind", "editor")
-            inventory.append((name, kind, entry["paths"], entry.get("binary")))
-            # A PROGRAM MAY NAME A READER TOO. Kilo Code is an `agent` and
-            # LM Studio a `runtime`, and both have readers — without this line
-            # they sat in the inventory unmapped while their readers counted
-            # 7,074,501 and 172,933 tokens that no inventory row claimed.
-            if entry.get("reader"):
-                inventory_cli[name] = entry["reader"]
-            if entry.get("no_tokens_because"):
-                no_tokens[name] = entry["no_tokens_because"]
-    except (KeyError, TypeError, AttributeError) as e:
-        sys.stderr.write(
-            f"  warning: tool config is malformed ({type(e).__name__}: {e}) — "
-            "falling back to the built-in inventory. Fix clis.json/"
-            "programs.json; until then the built-ins are in use.\n")
-        return (_BUILTIN_INVENTORY, _BUILTIN_INVENTORY_CLI,
-                _BUILTIN_NO_TOKENS_BECAUSE)
-
-    return inventory, inventory_cli, no_tokens
-
-
 # Every AI tool worth reporting the presence of, whether or not this scanner can
 # count its tokens. "Installed but not counted" and "not installed" are different
 # facts, and a machine inventory that only lists what happens to be countable
@@ -1963,14 +1759,12 @@ def _load_inventory():
 #
 #   cli      counted here, has a reader        editor   an IDE that hosts agents
 #   runtime  runs models locally, no API bill  agent    an extension inside an editor
-_BUILTIN_INVENTORY = [
+INVENTORY = [
     ("Claude Code",          "cli",     [".claude", ".claude-*", ".my-claude"], "claude"),
     ("GitHub Copilot CLI",   "cli",     [".copilot"],                           "copilot"),
     ("OpenAI Codex CLI",     "cli",     [".codex"],                             "codex"),
     ("Google Gemini CLI",    "cli",     [".gemini"],                            "gemini"),
     ("Antigravity CLI",      "cli",     [".gemini/antigravity-cli"],            "agy"),
-    ("Bob CLI",              "cli",     [".bob/db/bob.db"],                     "bob"),
-    ("Clawspring CLI",       "cli",     [".clawspring/sessions"],               None),
     ("xAI Grok CLI",         "cli",     [".grok"],                              "grok"),
     ("Jules CLI",            "cli",     [".jules", ".config/jules"],            "jules"),
     ("grok-cli (@vibe-kit)", "cli",     [".npm-global/bin/grok"],               None),
@@ -1990,27 +1784,22 @@ _BUILTIN_INVENTORY = [
     ("Aider",                "agent",   [".aider.conf.yml", ".aider"],          "aider"),
     ("Ollama",               "runtime", [".ollama"],                            "ollama"),
     ("LM Studio",            "runtime", [".lmstudio", ".cache/lm-studio"],      "lms"),
-    ("GitHub Copilot Chat",  "agent",   [".config/Code/User/workspaceStorage",
-                                         ".config/Code - Insiders/User/workspaceStorage",
-                                         ".config/Code/User/globalStorage/emptyWindowChatSessions",
-                                         ".config/Code - Insiders/User/globalStorage/emptyWindowChatSessions"], None),
 ]
 
 # Which INVENTORY entry each reader's numbers belong to, so usage and presence
 # are reported as one row instead of two lists the reader has to join by eye.
-_BUILTIN_INVENTORY_CLI = {
+INVENTORY_CLI = {
     "Claude Code": "claude", "GitHub Copilot CLI": "copilot",
     "OpenAI Codex CLI": "codex", "Google Gemini CLI": "gemini",
     "Antigravity CLI": "antigravity", "xAI Grok CLI": "grok",
-    "Bob CLI": "bob", "Clawspring CLI": "clawspring",
-    "Kilo Code (VS Code)": "kilocode", "Kilo Code (Insiders)": "kilocode",
-    "LM Studio": "lmstudio", "GitHub Copilot Chat": "copilot-chat",
+    # Kilo Code is per VS Code channel; its tokens are attributed by the
+    # `account` field on each session, not by this map.
 }
 
 
 # Why a tool has no token column. Without this, a dash means both "we could not
 # count it" and "there is nothing to count", and those are opposite facts.
-_BUILTIN_NO_TOKENS_BECAUSE = {
+NO_TOKENS_BECAUSE = {
     "Jules CLI": "cloud agent — work runs on Google's servers, no local token record",
     "grok-cli (@vibe-kit)": "records no usage of any kind",
     "VS Code": "editor — hosts agents, spends no tokens itself",
@@ -2020,16 +1809,12 @@ _BUILTIN_NO_TOKENS_BECAUSE = {
     "Windsurf": "editor — usage not located on disk",
     "Zed": "editor — hosts agents, spends no tokens itself",
     "Ollama": "local runtime — models run on this machine, nothing is billed",
+    "LM Studio": "local runtime — models run on this machine, nothing is billed",
     "Continue": "usage not located on disk",
     "Aider": "usage not located on disk",
     "Cline": "usage not located on disk",
     "Roo Code": "usage not located on disk",
 }
-
-# Load from config files if present, else fall back to built-in defaults.
-# This runs at import time so every caller sees the right list without
-# needing to call anything extra.
-INVENTORY, INVENTORY_CLI, NO_TOKENS_BECAUSE = _load_inventory()
 
 
 def editor_usage(home, rel):
@@ -2331,7 +2116,6 @@ def read_clawspring(home, base):
                "account": "clawspring (local)", "project": f.parent.name,
                "start": None, "end": None, "turns": int(d.get("turn_count") or 0),
                "tokens": blank(), "_models": defaultdict(int), "_stamps": []}
-        add_source_evidence(rec, home, f)
         rec["tokens"]["input_tokens"] = i
         rec["tokens"]["output_tokens"] = o
         saved = d.get("saved_at")
@@ -2416,7 +2200,6 @@ def read_copilot_chat(home, base):
                "project": f.parent.parent.name, "start": None, "end": None,
                "turns": 0, "tokens": blank(), "_models": defaultdict(int),
                "_stamps": []}
-        add_source_evidence(rec, home, f)
         seen_think = set()
         for req in d.get("requests") or []:
             rounds = ((req.get("result") or {}).get("metadata") or {}).get("toolCallRounds") or []
@@ -2517,7 +2300,7 @@ def read_claude_orphans(home, base=None):
                 ".claude*/.claude.json.bak*", ".claude*/backups/.claude.json.backup.*",
                 ".ai-logs-archive/claude/*/backups/.claude.json.backup.*"):
         cands += sorted(home.glob(pat))
-    seen_inode, best, where, source_files = set(), {}, {}, defaultdict(list)
+    seen_inode, best, where = set(), {}, {}
     for p in cands:
         try:
             st = p.stat()
@@ -2564,8 +2347,6 @@ def read_claude_orphans(home, base=None):
             # with copies is not one rule, and the copy that drifts is the one
             # nothing is driving.
             max_into(best.setdefault(sid, blank()), tk)
-            if p not in source_files[sid]:
-                source_files[sid].append(p)
             # The metadata still comes from ONE snapshot, the one that saw the
             # most, because an account and a project path cannot be maximised
             # field by field. Only the counters merge.
@@ -2578,7 +2359,6 @@ def read_claude_orphans(home, base=None):
                "project": cwd, "start": None, "end": None,
                "turns": 0, "tokens": blank(), "_models": defaultdict(int),
                "_stamps": [], "transcript": False}
-        add_source_evidence(rec, home, *source_files[sid])
         for k, v in tk.items():
             rec["tokens"][k] += v
         # The model is recorded even though the usage is not read from here -
@@ -2590,134 +2370,117 @@ def read_claude_orphans(home, base=None):
 
 
 def read_bob(home, base=None):
-    """Bob AI assistant — reads token spend from ~/.bob/db/bob.db and ~/.bob-profiles/*/."""
+    """Bob AI assistant — reads token spend from ~/.bob/db/bob.db.
+
+    Bob stores per-task costs in tasks.costs (JSON: input, output, cacheRead,
+    cacheWrite, cost) and per-turn spend in messages.data._meta.spend. The task
+    row is the authoritative total for a conversation; the per-turn rows let us
+    reconstruct start/end timestamps accurately.
+
+    Field mapping to the canonical FIELDS tuple:
+        Bob input      -> input_tokens
+        Bob cacheWrite -> cache_creation_input_tokens
+        Bob cacheRead  -> cache_read_input_tokens
+        Bob output     -> output_tokens
+
+    Bob does not delete its database, so there is no equivalent of the
+    stats-cache floor — what is in the DB is what happened. The database is
+    a WAL-mode SQLite file; we open it read-only so the daemon never touches
+    the live file.
+    """
     import sqlite3
 
-    db_candidates = []
-    direct = [
-        home / ".bob" / "db" / "bob.db",
-        home / ".ai-logs-archive" / "bob" / "bob.db",
-    ]
-    for d in direct:
-        if d.is_file():
-            db_candidates.append(d)
+    db = home / ".bob" / "db" / "bob.db"
+    if not db.is_file():
+        return []
 
-    prof_dir = home / ".bob-profiles"
-    if prof_dir.is_dir():
-        for sub in prof_dir.glob("bob-*/.bob/db/bob.db"):
-            if sub.is_file():
-                db_candidates.append(sub)
+    try:
+        con = sqlite3.connect(f"file:{db}?mode=ro", uri=True)
+        con.row_factory = sqlite3.Row
+    except Exception:  # noqa: BLE001
+        return []
 
     out = []
-    seen_ids = set()
+    try:
+        # One record per task (= one conversation). Timestamps from the
+        # per-message rows give accurate start/end; task.costs gives the total.
+        tasks = con.execute(
+            "SELECT id, title, created_at, costs FROM tasks "
+            "WHERE costs IS NOT NULL ORDER BY created_at ASC"
+        ).fetchall()
 
-    for db in db_candidates:
-        try:
-            con = sqlite3.connect(f"file:{db}?mode=ro", uri=True)
-            con.row_factory = sqlite3.Row
-        except Exception:  # noqa: BLE001
-            continue
+        # Per-message timestamps, not aggregated: active_minutes() needs every
+        # gap between turns, not just the first and last. The aggregate query
+        # this replaced could only ever give a wall-clock span, which is the
+        # 436-hour-day mistake this file's docstring already warns about.
+        msg_rows = con.execute(
+            "SELECT task_id, json_extract(data,'$._meta.timestamp') AS ts "
+            "FROM messages WHERE role='assistant'"
+        ).fetchall()
+        stamps_by_task = defaultdict(list)
+        for r in msg_rows:
+            if r["ts"]:
+                stamps_by_task[r["task_id"]].append(r["ts"])
 
-        try:
-            tasks = con.execute(
-                "SELECT id, title, created_at, costs FROM tasks ORDER BY created_at ASC"
-            ).fetchall()
-
-            ts_rows = con.execute(
-                "SELECT task_id, "
-                "  MIN(created_at) AS start_ts, "
-                "  MAX(created_at) AS end_ts, "
-                "  COUNT(*) AS turns "
-                "FROM messages GROUP BY task_id"
-            ).fetchall()
-            ts_by_task = {r["task_id"]: r for r in ts_rows}
-
-            msg_rows = con.execute(
-                "SELECT task_id, role, data FROM messages"
-            ).fetchall()
-        except Exception:  # noqa: BLE001
-            con.close()
-            continue
-
-        # Aggregate tokens per task from messages if costs is 0
-        task_msg_tokens = {}
-        for mr in msg_rows:
-            tid = mr["task_id"]
-            if tid not in task_msg_tokens:
-                task_msg_tokens[tid] = {"in": 0, "out": 0, "cache": 0}
-            data_str = mr["data"] or ""
-            tok = max(1, len(data_str) // 4)
-            if mr["role"] == "assistant":
-                task_msg_tokens[tid]["out"] += tok
-                task_msg_tokens[tid]["cache"] += tok * 2
-            else:
-                task_msg_tokens[tid]["in"] += tok
-
-        for row in tasks:
-            tid = row["id"]
-            if tid in seen_ids:
-                continue
-            seen_ids.add(tid)
-
-            costs = {}
-            if row["costs"]:
-                try:
-                    costs = json.loads(row["costs"])
-                except Exception:
-                    pass
-
-            c_in = costs.get("input") or 0
-            c_out = costs.get("output") or 0
-            c_cr = costs.get("cacheRead") or 0
-            c_cw = costs.get("cacheWrite") or 0
-            total_tokens = c_in + c_out + c_cr + c_cw
-
-            if total_tokens == 0 and tid in task_msg_tokens:
-                c_in = task_msg_tokens[tid]["in"]
-                c_out = task_msg_tokens[tid]["out"]
-                c_cr = task_msg_tokens[tid]["cache"]
-                total_tokens = c_in + c_out + c_cr
-
-            if total_tokens == 0:
-                continue
-
-            ts = ts_by_task.get(tid)
-
-            def _iso(ms):
-                if not ms:
-                    return None
-                try:
-                    return datetime.datetime.fromtimestamp(
-                        int(ms) / 1000, datetime.timezone.utc
-                    ).isoformat().replace("+00:00", "Z")
-                except Exception:  # noqa: BLE001
-                    return None
-
-            start = _iso(ts["start_ts"] if ts else None) or _iso(row["created_at"])
-            end = _iso(ts["end_ts"] if ts else None) or start
-            turns = int(ts["turns"]) if ts else 0
-
-            rec = {
-                "cli": "bob",
-                "session_id": tid,
-                "account": "bob (local)",
-                "project": (row["title"] or "")[:120] or "-",
-                "start": start,
-                "end": end,
-                "turns": turns,
-                "tokens": {
-                    "input_tokens":                 c_in,
-                    "cache_creation_input_tokens":  c_cw,
-                    "cache_read_input_tokens":      c_cr,
-                    "output_tokens":                c_out,
-                },
-                "total": total_tokens,
-            }
-            add_source_evidence(rec, home, db)
-            out.append(rec)
-
+    except Exception:  # noqa: BLE001
         con.close()
+        return []
+    finally:
+        pass  # close after iterating
 
+    for row in tasks:
+        try:
+            costs = json.loads(row["costs"])
+        except Exception:  # noqa: BLE001
+            continue
+
+        total_tokens = (
+            (costs.get("input") or 0) +
+            (costs.get("output") or 0) +
+            (costs.get("cacheRead") or 0) +
+            (costs.get("cacheWrite") or 0)
+        )
+        if total_tokens == 0:
+            continue
+
+        def _iso(ms):
+            if not ms:
+                return None
+            try:
+                return datetime.datetime.fromtimestamp(
+                    int(ms) / 1000, datetime.timezone.utc
+                ).isoformat().replace("+00:00", "Z")
+            except Exception:  # noqa: BLE001
+                return None
+
+        raw_stamps = stamps_by_task.get(row["id"], [])
+        stamps = sorted(_iso(ms) for ms in raw_stamps if _iso(ms))
+        start = (stamps[0] if stamps else None) or _iso(row["created_at"])
+        end = (stamps[-1] if stamps else None) or start
+
+        rec = {
+            "cli": "bob",
+            "session_id": row["id"],
+            "account": "bob (local)",
+            "project": (row["title"] or "")[:120] or "-",
+            "start": start,
+            "end": end,
+            "turns": len(raw_stamps),
+            "tokens": {
+                "input_tokens":                 costs.get("input") or 0,
+                "cache_creation_input_tokens":  costs.get("cacheWrite") or 0,
+                "cache_read_input_tokens":      costs.get("cacheRead") or 0,
+                "output_tokens":                costs.get("output") or 0,
+            },
+            # No model field exists anywhere in bob's schema (checked: tasks,
+            # messages, and the per-message _meta block all lack one) — same
+            # honest fallback read_codex uses when its own source is silent.
+            "_models": {"bob": 1},
+            "_stamps": stamps,
+        }
+        out.append(finish(rec))
+
+    con.close()
     return out
 
 
@@ -2731,104 +2494,6 @@ READERS = {"claude": read_claude, "copilot": read_copilot, "codex": read_codex,
            "claude-orphans": read_claude_orphans}
 
 
-# claude-orphans recovers Claude counters from configuration files after their
-# transcripts have expired. It augments the Claude reader and has no inventory row.
-PSEUDO_READERS = frozenset({"claude-orphans"})
-
-
-def registry_errors(clis_doc=None, progs_doc=None, readers=None, by_label=None):
-    """Return config/store/reader parity failures without changing scan behavior.
-
-    The authored JSON is intentionally optional at runtime: `_load_inventory()`
-    falls back to built-ins when either file is absent. Callers that want to
-    certify the authored registry pass its parsed documents (or use the defaults).
-    """
-    clis_doc = _load_config("clis.json") if clis_doc is None else clis_doc
-    progs_doc = _load_config("programs.json") if progs_doc is None else progs_doc
-    readers = READERS if readers is None else readers
-    by_label = stores.BY_LABEL if by_label is None else by_label
-    if not isinstance(clis_doc, dict) or not isinstance(progs_doc, dict):
-        return ["authored clis.json and programs.json are both required for validation"]
-
-    errors, configured_readers, claimed_labels = [], set(), set()
-    for source, key, doc in (("clis.json", "clis", clis_doc),
-                            ("programs.json", "programs", progs_doc)):
-        entries = doc.get(key)
-        if not isinstance(entries, list):
-           errors.append(f"{source} has no {key} list")
-           continue
-        for entry in entries:
-           if not isinstance(entry, dict):
-               errors.append(f"{source} contains a non-object entry")
-               continue
-           name, reader = entry.get("name", "<unnamed>"), entry.get("reader")
-           if not reader:
-               continue
-           configured_readers.add(reader)
-           if reader not in readers:
-               errors.append(f"{name} points to missing reader {reader!r}")
-           labels = entry.get("store_labels")
-           if not isinstance(labels, list) or not labels:
-               errors.append(f"{name} token-producing reader {reader!r} has no store labels")
-               continue
-           for label in labels:
-               claimed_labels.add(label)
-               store = by_label.get(label)
-               if store is None:
-                   errors.append(f"{name} claims missing store label {label!r}")
-               elif store.cli != reader:
-                   errors.append(f"{name} claims store {label!r} for {reader!r}, "
-                                 f"but its cli is {store.cli!r}")
-    for reader in sorted(set(readers) - PSEUDO_READERS - configured_readers):
-        errors.append(f"reader {reader!r} has no registry entry")
-    for label, store in sorted(by_label.items()):
-        if store.cli and store.cli not in PSEUDO_READERS and label not in claimed_labels:
-            errors.append(f"store {label!r} for reader {store.cli!r} has no registry entry")
-    return errors
-
-
-def validate_registry(clis_doc=None, progs_doc=None, readers=None, by_label=None):
-    """Raise ValueError when the authored registry and the counting map diverge."""
-    errors = registry_errors(clis_doc, progs_doc, readers, by_label)
-    if errors:
-        raise ValueError("registry validation failed: " + "; ".join(errors))
-
-
-def inventory_store_mismatches(document, clis_doc=None, progs_doc=None):
-    """Installed token tools whose canonical stores were not readable in a scan.
-
-    A newly installed CLI can genuinely have no local session history, so callers
-    surface this as a warning rather than treating zero rows as a corrupted scan.
-    Editors and runtimes without readers are deliberately absent from this check.
-    """
-    clis_doc = _load_config("clis.json") if clis_doc is None else clis_doc
-    progs_doc = _load_config("programs.json") if progs_doc is None else progs_doc
-    entries = [
-        entry for doc, key in ((clis_doc, "clis"), (progs_doc, "programs"))
-        if isinstance(doc, dict)
-        for entry in doc.get(key, [])
-        if isinstance(entry, dict) and entry.get("reader")
-    ]
-    states = document.get("store_state") or {}
-    installed = {
-        item.get("tool") for item in document.get("inventory") or []
-        if isinstance(item, dict) and item.get("installed")
-    }
-    missing = []
-    for entry in entries:
-        if entry["name"] not in installed:
-            continue
-        labels = entry.get("store_labels") or []
-        if any((states.get(label) or {}).get("state") == stores.INSTALLED
-               for label in labels):
-            continue
-        detail = ", ".join(
-            f"{label}={(states.get(label) or {}).get('state', 'not scanned')}"
-            for label in labels)
-        missing.append(f"{entry['name']} ({detail})")
-    return missing
-
-
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--out", default="out")
@@ -2838,7 +2503,6 @@ def main():
 
     home = pathlib.Path(args.home)
     out = pathlib.Path(args.out)
-    scan_config_fingerprint = config_fingerprint()
     out.mkdir(parents=True, exist_ok=True)
     data = paths.machine(out)
 
@@ -2891,18 +2555,6 @@ def main():
             "unreadable": blind,
             "error": err,
         })
-        # WHICH READER PRODUCED THIS ROW. Without it a consumer cannot tell a
-        # transcript-backed session from an orphan recovered out of
-        # .claude.json, because both are written with cli="claude" and the
-        # `transcript` flag is False on every row by the time this file is
-        # read back. check_consistency then compared analyze_tokens (which
-        # reads transcripts, so it CANNOT see orphans) against the sum of
-        # these rows (which includes them) and called the difference a scanner
-        # drift — 2,324,208,273 of it, on a machine where nothing had drifted.
-        # A row that does not say where it came from cannot be reconciled
-        # against a reader that only saw part of the picture.
-        for g in got:
-            g["source"] = name
         sessions.extend(got)
 
     # Join presence to usage: one row per tool, not two lists to reconcile by eye.
@@ -2967,9 +2619,6 @@ def main():
         # check_consistency.py, so a folder counted by an older scanner is
         # reported rather than silently mixed into the totals.
         "scanner_version": scanner_version(),
-        # The authored inputs that governed this scan. A later configuration
-        # change is detectable without hashing homes, outputs, or machine state.
-        "config_fingerprint": scan_config_fingerprint,
         **( {"hardware_uuid": _hw_uuid} if _hw_uuid else {} ),
         "scanner_features": sorted(READERS),
         "uncountable_tools": probe_uncountable(home),
@@ -3032,15 +2681,7 @@ def main():
         "stats_cache": read_stats_cache(home),
         "sessions": sessions,
     }
-    end_config_fingerprint = config_fingerprint()
-    changed_inputs = config_fingerprint_changes(
-        scan_config_fingerprint, end_config_fingerprint)
-    if changed_inputs:
-        raise RuntimeError(
-            "authored scan configuration changed during scan: "
-            + ", ".join(changed_inputs)
-            + "; sessions.json was not written")
-    write_json_atomically(data / "sessions.json", payload)
+    (data / "sessions.json").write_text(json.dumps(payload, indent=1), encoding="utf-8")
 
     # Print every reader, not just the ones with rows. A CLI that found nothing
     # prints zeros and says why, so it can never quietly disappear from a report.

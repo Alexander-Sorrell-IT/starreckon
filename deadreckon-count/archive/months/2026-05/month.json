@@ -1,27 +1,37 @@
 {
- "tokens": 1404610343,
- "sessions": 31,
- "turns": 7121,
- "minutes": 2927.2,
+ "tokens": 5170397904,
+ "sessions": 168,
+ "turns": 23136,
+ "minutes": 15358.300000000007,
  "by_cli": {
-  "copilot": 409096536,
-  "gemini": 995360683,
-  "claude": 153124
+  "claude": 3031647596,
+  "clawspring": 258502806,
+  "copilot": 698989251,
+  "gemini": 1104042267,
+  "antigravity": 77215984
  },
  "by_machine": {
-  "MacBook Air M1": 1404610343
+  "HP Laptop Linux": 3708789823,
+  "MacBook Air M1": 1461608081
  },
  "by_model": {
-  "unknown": 13590702,
+  "claude-opus-4-7": 2439590293,
+  "unknown": 272093508,
+  "deepseek-v4-pro": 461108501,
+  "gpt-5.5": 225314053,
+  "gpt-5.4-mini": 64578662,
+  "gemini-3-pro-preview": 108681584,
+  "claude-sonnet-4-6": 126493930,
+  "gemini-3-flash-d": 74439389,
+  "claude-opus-4-8": 4454872,
   "gpt-5.4": 660827,
-  "gemini-3-flash-preview": 932704860,
+  "gemini-3-flash-preview": 935481455,
   "claude-haiku-4.5": 36579835,
   "claude-sonnet-4.6": 264206868,
   "gemini-3.1-pro-preview": 62655823,
-  "claude-opus-4.7": 94058304,
-  "claude-opus-4-7": 153124
+  "claude-opus-4.7": 94058304
  },
- "first": "2026-05-15T23:49:27.398Z",
- "last": "2026-05-28T16:47:47.753Z",
+ "first": "2026-05-04T17:09:10.131Z",
+ "last": "2026-06-01T03:30:04Z",
  "month": "2026-05"
 }

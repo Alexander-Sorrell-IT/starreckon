@@ -1,118 +1,96 @@
 {
-  "generated_at": "2026-08-27T18:17:15-05:00",
-  "grand_total_tokens": 18487763737,
-  "ledger_total": 42363678442,
-  "ledger_beyond_scan": 9648928,
-  "ledger_only_machines": [
-    {
-      "machine": "ASUS Laptop Linux",
-      "folder": "asus-laptop-linux",
-      "state": "ledger-only",
-      "total": null,
-      "scanned": null,
-      "sessions_scanned": false,
-      "ledger_total": 146981095,
-      "ledger_sessions": 36,
-      "ledger_present": true,
-      "ledger_beyond_scan": null
-    },
-    {
-      "machine": "Dell Inspiron Desktop Linux",
-      "folder": "dell-inspiron-desktop-linux",
-      "state": "ledger-only",
-      "total": null,
-      "scanned": null,
-      "sessions_scanned": false,
-      "ledger_total": 11292220,
-      "ledger_sessions": 7,
-      "ledger_present": true,
-      "ledger_beyond_scan": null
-    },
-    {
-      "machine": "Dell Latitude 7480 Linux",
-      "folder": "dell-latitude-7480-linux",
-      "state": "ledger-only",
-      "total": null,
-      "scanned": null,
-      "sessions_scanned": false,
-      "ledger_total": 4464394318,
-      "ledger_sessions": 13378,
-      "ledger_present": true,
-      "ledger_beyond_scan": null
-    },
-    {
-      "machine": "HP Laptop Linux",
-      "folder": "hp-laptop-linux",
-      "state": "ledger-only",
-      "total": null,
-      "scanned": null,
-      "sessions_scanned": false,
-      "ledger_total": 13367051701,
-      "ledger_sessions": 374,
-      "ledger_present": true,
-      "ledger_beyond_scan": null
-    }
-  ],
+  "generated_at": "2026-09-01T06:49:42-05:00",
+  "grand_total_tokens": 29583611349,
+  "ledger_total": 36248089375,
+  "ledger_beyond_scan": 37081013,
   "ledger_beyond_scan_unknown_on": [],
   "machines_without_ledger": [],
   "machines": [
     {
       "machine": "MacBook Air M1",
       "folder": "macbook-air-m1",
-      "state": "scanned",
-      "total": 18487763737,
-      "ledger_total": 24373959108,
-      "ledger_sessions": 280,
+      "total": 18032194745,
+      "ledger_total": 22881037674,
+      "ledger_sessions": 261,
       "ledger_present": true,
-      "ledger_beyond_scan": 9648928,
-      "scanned": "2026-08-27T18:12:33-05:00",
+      "ledger_beyond_scan": 37081013,
+      "scanned": "2026-08-19T21:24:07-05:00",
+      "sessions_scanned": true
+    },
+    {
+      "machine": "HP Laptop Linux",
+      "folder": "hp-laptop-linux",
+      "total": 11551416604,
+      "ledger_total": 13367051701,
+      "ledger_sessions": 374,
+      "ledger_present": true,
+      "ledger_beyond_scan": 0,
+      "scanned": "2026-09-01T06:48:33-05:00",
       "sessions_scanned": true
     }
   ],
   "accounts": [
     {
       "account": "broodierchip@gmail.com",
-      "total": 12834169588,
-      "sessions": 74,
-      "turns": 60017,
+      "total": 15201382120,
+      "sessions": 330,
+      "turns": 68503,
       "by_machine": {
-        "MacBook Air M1": 12834169588
+        "MacBook Air M1": 12456931683,
+        "HP Laptop Linux": 2744450437
       },
       "totals": {
-        "input_tokens": 3820245,
-        "cache_creation_input_tokens": 333605510,
-        "cache_read_input_tokens": 12437108824,
-        "output_tokens": 59635009
+        "input_tokens": 5467228,
+        "cache_creation_input_tokens": 396057965,
+        "cache_read_input_tokens": 14729674597,
+        "output_tokens": 70182330
       }
     },
     {
       "account": "codehunterextreme@gmail.com",
-      "total": 5321298979,
-      "sessions": 50,
-      "turns": 13265,
+      "total": 13383775040,
+      "sessions": 171,
+      "turns": 59583,
       "by_machine": {
-        "MacBook Air M1": 5321298979
+        "MacBook Air M1": 5321298979,
+        "HP Laptop Linux": 8062476061
       },
       "totals": {
-        "input_tokens": 434300,
-        "cache_creation_input_tokens": 161543121,
-        "cache_read_input_tokens": 5143134863,
-        "output_tokens": 16186695
+        "input_tokens": 1273884,
+        "cache_creation_input_tokens": 352453272,
+        "cache_read_input_tokens": 12971528788,
+        "output_tokens": 58519096
+      }
+    },
+    {
+      "account": "DeepSeek backend (~/.my-claude)",
+      "total": 520497793,
+      "sessions": 18,
+      "turns": 5101,
+      "by_machine": {
+        "HP Laptop Linux": 520497793
+      },
+      "totals": {
+        "input_tokens": 21796441,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 493706496,
+        "output_tokens": 4994856
       }
     },
     {
       "account": "alexander.sorrell.it@gmail.com",
-      "total": 322280256,
-      "sessions": 14,
-      "turns": 1430,
+      "total": 467800272,
+      "sessions": 30,
+      "turns": 2288,
       "by_machine": {
-        "MacBook Air M1": 322280256
+        "MacBook Air M1": 243949169,
+        "HP Laptop Linux": 223851103
       },
       "totals": {
-        "input_tokens": 29149,
-        "cache_creation_input_tokens": 7468550,
-        "cache_read_input_tokens": 313447283,
-        "output_tokens": 1335274
+        "input_tokens": 41466,
+        "cache_creation_input_tokens": 12011205,
+        "cache_read_input_tokens": 454127715,
+        "output_tokens": 1619886
       }
     },
     {
@@ -129,62 +107,77 @@
         "cache_read_input_tokens": 9441167,
         "output_tokens": 63955
       }
+    },
+    {
+      "account": "API key (org 15a93e14-aabb-4293-8228-8c56a803d972)",
+      "total": 141210,
+      "sessions": 3,
+      "turns": 6,
+      "by_machine": {
+        "HP Laptop Linux": 141210
+      },
+      "totals": {
+        "input_tokens": 1922,
+        "cache_creation_input_tokens": 10864,
+        "cache_read_input_tokens": 125198,
+        "output_tokens": 3226
+      }
     }
   ],
   "by_cli": {
     "claude": {
-      "sessions": 90,
-      "tokens": 19662188714,
-      "active_min": 34699.1
-    },
-    "codex": {
-      "sessions": 125,
-      "tokens": 1633604881,
-      "active_min": 1783.2
+      "sessions": 314,
+      "tokens": 34933038613,
+      "active_min": 55293.1
     },
     "gemini": {
-      "sessions": 4,
-      "tokens": 995360683,
-      "active_min": 578.4
+      "sessions": 50,
+      "tokens": 2463723232,
+      "active_min": 4796.1
+    },
+    "codex": {
+      "sessions": 130,
+      "tokens": 1635058955,
+      "active_min": 1806.6
+    },
+    "copilot": {
+      "sessions": 67,
+      "tokens": 793528750,
+      "active_min": 8067.0
     },
     "bob": {
-      "sessions": 25,
-      "tokens": 802946395,
+      "sessions": 64,
+      "tokens": 501660927,
+      "active_min": 532.8
+    },
+    "clawspring": {
+      "sessions": 20,
+      "tokens": 258503636,
       "active_min": 0.0
     },
     "antigravity": {
-      "sessions": 53,
-      "tokens": 597487937,
-      "active_min": 1886.1
-    },
-    "copilot": {
-      "sessions": 38,
-      "tokens": 572446089,
-      "active_min": 4914.4
+      "sessions": 62,
+      "tokens": 218712737,
+      "active_min": 1263.4
     },
     "grok": {
       "sessions": 8,
       "tokens": 100222322,
       "active_min": 609.4
     },
-    "lmstudio": {
-      "sessions": 3,
-      "tokens": 53159,
-      "active_min": 0.0
-    },
     "kilocode": {
-      "sessions": 0,
-      "tokens": 0,
-      "active_min": 0.0
-    },
-    "clawspring": {
-      "sessions": 0,
-      "tokens": 0,
-      "active_min": 0.0
+      "sessions": 4,
+      "tokens": 7074501,
+      "active_min": 79.3
     },
     "copilot-chat": {
-      "sessions": 0,
-      "tokens": 0,
+      "sessions": 11,
+      "tokens": 1214160,
+      "active_min": 0.0
+    },
+    "lmstudio": {
+      "sessions": 11,
+      "tokens": 173043,
       "active_min": 0.0
     },
     "claude-orphans": {
@@ -194,54 +187,84 @@
     }
   },
   "by_provider": {
-    "anthropic": 18487763737
+    "anthropic": 29048940196,
+    "deepseek": 534671153
   },
   "by_machine_provider": {
     "MacBook Air M1": {
-      "anthropic": 18487763737
+      "anthropic": 18032194745
+    },
+    "HP Laptop Linux": {
+      "anthropic": 11016745451,
+      "deepseek": 534671153
     }
   },
   "cli_by_provider": {
     "anthropic": {
-      "sessions": 113,
-      "tokens": 20099891508,
-      "active_min": 37255.0
-    },
-    "openai": {
-      "sessions": 128,
-      "tokens": 1708975767,
-      "active_min": 1925.6
+      "sessions": 283,
+      "tokens": 34795162939,
+      "active_min": 53281.5
     },
     "google": {
-      "sessions": 53,
-      "tokens": 1574732792,
-      "active_min": 2359.7
+      "sessions": 114,
+      "tokens": 2689461091,
+      "active_min": 6138.1
     },
-    "-": {
-      "sessions": 25,
-      "tokens": 802946395,
-      "active_min": 0.0
+    "openai": {
+      "sessions": 158,
+      "tokens": 1925612497,
+      "active_min": 3831.3
     },
-    "xai": {
-      "sessions": 8,
-      "tokens": 100222322,
-      "active_min": 609.4
+    "deepseek": {
+      "sessions": 52,
+      "tokens": 543650928,
+      "active_min": 4563.3
     },
     "synthetic": {
-      "sessions": 12,
-      "tokens": 59372409,
-      "active_min": 2216.1
+      "sessions": 40,
+      "tokens": 355707230,
+      "active_min": 3490.6
     },
-    "antigravity": {
-      "sessions": 4,
-      "tokens": 18115828,
-      "active_min": 104.8
+    "-": {
+      "sessions": 5,
+      "tokens": 272617335,
+      "active_min": 0.0
     },
     "other": {
-      "sessions": 3,
-      "tokens": 53159,
+      "sessions": 63,
+      "tokens": 229135484,
+      "active_min": 533.4
+    },
+    "xai": {
+      "sessions": 9,
+      "tokens": 100232968,
+      "active_min": 609.5
+    },
+    "copilot": {
+      "sessions": 11,
+      "tokens": 1214160,
+      "active_min": 0.0
+    },
+    "mistral": {
+      "sessions": 5,
+      "tokens": 116185,
+      "active_min": 0.0
+    },
+    "meta": {
+      "sessions": 1,
+      "tokens": 59,
       "active_min": 0.0
     }
   },
-  "uncountable_tools": []
+  "uncountable_tools": [
+    {
+      "tool": "grok-cli (@vibe-kit)",
+      "dir": "/home/phantomcore/.npm-global/bin/grok",
+      "files": 1,
+      "records_token_usage": false,
+      "counted_here": false,
+      "why": "community npm CLI, distinct from xAI's official Grok Build CLI; stores no usage of any kind",
+      "machine": "HP Laptop Linux"
+    }
+  ]
 }

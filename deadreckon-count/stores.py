@@ -739,6 +739,25 @@ STORES = [
     Store("claude", ".*claude*/projects", cli="claude",
           note="cleanupPeriodDays deletes these at startup"),
 
+    # THE FROZEN LIFETIME COUNTER, FOR THE ACTUAL .claude PROFILES.
+    #
+    # stats-cache.json accumulates modelUsage per profile from its first
+    # session and is never cleared by cleanupPeriodDays — it is the only
+    # record of billed tokens whose transcript has already been deleted (see
+    # CLAUDE_PROFILE_RECORDS in retention_guard.py, which already protects it
+    # from deletion). Before this store existed, nothing shipped it into the
+    # corpus: the "claude" store above only walks projects/, and stats-cache
+    # sits at the profile ROOT, one level up. "proteus-root" named it in a
+    # records tuple for the Claude Code fork, but the real, ordinary .claude
+    # profile — the common case — had no store at all, so export_corpus.py
+    # never had a chance to ship the file that machine_floor() and every
+    # lifetime total in this repo depend on.
+    Store("claude-root", ".*claude*", kind="root_files", cli="claude",
+          note="stats-cache.json is the frozen lifetime counter; "
+               "history.jsonl is the only surviving record of sessions "
+               "whose transcript cleanupPeriodDays already deleted",
+          records=("history.jsonl", "stats-cache.json")),
+
     # -- THE ONLY SURVIVING RECORD of sessions Claude has already deleted.
     #
     # .claude.json keeps per-project counters — lastTotal{Input,Output,
@@ -818,7 +837,9 @@ STORES = [
           kind="root_files", note="history.jsonl, 40 lines",
           records=("history.jsonl", "conversation_summaries.db")),
 
-    # -- Clawspring's daily records are counted; history.json is an excluded rollup.
+    # -- preserved, counted by nobody. cli=None is a statement, not an omission:
+    #    these hold real records that no reader in sessions.py can read, so they
+    #    appear in the corpus and in no total.
     Store("clawspring", ".clawspring/sessions", cli="clawspring",
           note="258,502,806 tokens; read daily/ only — history.json is a rollup"),
 

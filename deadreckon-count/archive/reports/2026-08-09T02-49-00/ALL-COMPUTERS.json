@@ -1,0 +1,441 @@
+{
+  "generated_at": "2026-08-09T02:48:38-05:00",
+  "grand_total_tokens": 20689624179,
+  "machines": [
+    {
+      "machine": "MacBook Air M1",
+      "folder": "macbook-air-m1",
+      "total": 13955323225,
+      "scanned": "2026-08-09T02:34:15-05:00",
+      "sessions_scanned": true
+    },
+    {
+      "machine": "HP Laptop Linux",
+      "folder": "hp-laptop-linux",
+      "total": 6734300954,
+      "scanned": "2026-08-09T00:54:17-05:00",
+      "sessions_scanned": true
+    }
+  ],
+  "accounts": [
+    {
+      "account": "broodierchip@gmail.com",
+      "total": 11016451059,
+      "sessions": 2805,
+      "turns": 54558,
+      "by_machine": {
+        "MacBook Air M1": 8431493209,
+        "HP Laptop Linux": 2584957850
+      },
+      "totals": {
+        "input_tokens": 5253984,
+        "cache_creation_input_tokens": 311445981,
+        "cache_read_input_tokens": 10642529238,
+        "output_tokens": 57221856
+      }
+    },
+    {
+      "account": "codehunterextreme@gmail.com",
+      "total": 8361023577,
+      "sessions": 2177,
+      "turns": 27100,
+      "by_machine": {
+        "MacBook Air M1": 5269752187,
+        "HP Laptop Linux": 3091271390
+      },
+      "totals": {
+        "input_tokens": 981158,
+        "cache_creation_input_tokens": 237312763,
+        "cache_read_input_tokens": 8092142934,
+        "output_tokens": 30586722
+      }
+    },
+    {
+      "account": "DeepSeek backend (~/.my-claude)",
+      "total": 520497793,
+      "sessions": 6,
+      "turns": 5101,
+      "by_machine": {
+        "HP Laptop Linux": 520497793
+      },
+      "totals": {
+        "input_tokens": 21796441,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 493706496,
+        "output_tokens": 4994856
+      }
+    },
+    {
+      "account": "unknown (Desktop_standout_clean_.claude)",
+      "total": 321101727,
+      "sessions": 420,
+      "turns": 2098,
+      "by_machine": {
+        "HP Laptop Linux": 321101727
+      },
+      "totals": {
+        "input_tokens": 557017,
+        "cache_creation_input_tokens": 14268145,
+        "cache_read_input_tokens": 304377575,
+        "output_tokens": 1898990
+      }
+    },
+    {
+      "account": "alexander.sorrell.it@gmail.com",
+      "total": 287780990,
+      "sessions": 6,
+      "turns": 1578,
+      "by_machine": {
+        "MacBook Air M1": 243949169,
+        "HP Laptop Linux": 43831821
+      },
+      "totals": {
+        "input_tokens": 40075,
+        "cache_creation_input_tokens": 6323397,
+        "cache_read_input_tokens": 280259375,
+        "output_tokens": 1158143
+      }
+    },
+    {
+      "account": "unknown (Desktop_standout_full_.claude)",
+      "total": 167829804,
+      "sessions": 805,
+      "turns": 2477,
+      "by_machine": {
+        "HP Laptop Linux": 167829804
+      },
+      "totals": {
+        "input_tokens": 728428,
+        "cache_creation_input_tokens": 15635400,
+        "cache_read_input_tokens": 148941469,
+        "output_tokens": 2524507
+      }
+    },
+    {
+      "account": "unknown (Documents)",
+      "total": 6062632,
+      "sessions": 4360,
+      "turns": 31,
+      "by_machine": {
+        "MacBook Air M1": 6062632
+      },
+      "totals": {
+        "input_tokens": 62,
+        "cache_creation_input_tokens": 106705,
+        "cache_read_input_tokens": 5935687,
+        "output_tokens": 20178
+      }
+    },
+    {
+      "account": "unknown (Desktop_standout_max_.claude)",
+      "total": 4669359,
+      "sessions": 805,
+      "turns": 20,
+      "by_machine": {
+        "HP Laptop Linux": 4669359
+      },
+      "totals": {
+        "input_tokens": 4528,
+        "cache_creation_input_tokens": 52353,
+        "cache_read_input_tokens": 4582144,
+        "output_tokens": 30334
+      }
+    },
+    {
+      "account": "unknown (Desktop_standout_sandbox_.claude)",
+      "total": 3952282,
+      "sessions": 2702,
+      "turns": 75,
+      "by_machine": {
+        "MacBook Air M1": 3952282,
+        "HP Laptop Linux": 0
+      },
+      "totals": {
+        "input_tokens": 25837,
+        "cache_creation_input_tokens": 377188,
+        "cache_read_input_tokens": 3505480,
+        "output_tokens": 43777
+      }
+    },
+    {
+      "account": "API key (org 15a93e14-aabb-4293-8228-8c56a803d972)",
+      "total": 141210,
+      "sessions": 1,
+      "turns": 6,
+      "by_machine": {
+        "HP Laptop Linux": 141210
+      },
+      "totals": {
+        "input_tokens": 1922,
+        "cache_creation_input_tokens": 10864,
+        "cache_read_input_tokens": 125198,
+        "output_tokens": 3226
+      }
+    },
+    {
+      "account": "unknown (claude-main)",
+      "total": 113746,
+      "sessions": 31,
+      "turns": 1,
+      "by_machine": {
+        "MacBook Air M1": 113746
+      },
+      "totals": {
+        "input_tokens": 2,
+        "cache_creation_input_tokens": 376,
+        "cache_read_input_tokens": 112355,
+        "output_tokens": 1013
+      }
+    },
+    {
+      "account": "unknown (claude)",
+      "total": 0,
+      "sessions": 108,
+      "turns": 0,
+      "by_machine": {
+        "MacBook Air M1": 0,
+        "HP Laptop Linux": 0
+      },
+      "totals": {
+        "input_tokens": 0,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "output_tokens": 0
+      }
+    },
+    {
+      "account": "unknown (claude-it)",
+      "total": 0,
+      "sessions": 6,
+      "turns": 0,
+      "by_machine": {
+        "MacBook Air M1": 0,
+        "HP Laptop Linux": 0
+      },
+      "totals": {
+        "input_tokens": 0,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "output_tokens": 0
+      }
+    },
+    {
+      "account": "unknown (.claude-alt)",
+      "total": 0,
+      "sessions": 27,
+      "turns": 0,
+      "by_machine": {
+        "HP Laptop Linux": 0
+      },
+      "totals": {
+        "input_tokens": 0,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "output_tokens": 0
+      }
+    },
+    {
+      "account": "unknown (.claude-alt-api)",
+      "total": 0,
+      "sessions": 1,
+      "turns": 0,
+      "by_machine": {
+        "HP Laptop Linux": 0
+      },
+      "totals": {
+        "input_tokens": 0,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "output_tokens": 0
+      }
+    },
+    {
+      "account": "unknown (.claude-it)",
+      "total": 0,
+      "sessions": 2,
+      "turns": 0,
+      "by_machine": {
+        "HP Laptop Linux": 0
+      },
+      "totals": {
+        "input_tokens": 0,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "output_tokens": 0
+      }
+    },
+    {
+      "account": "unknown (.my-claude)",
+      "total": 0,
+      "sessions": 6,
+      "turns": 0,
+      "by_machine": {
+        "HP Laptop Linux": 0
+      },
+      "totals": {
+        "input_tokens": 0,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "output_tokens": 0
+      }
+    },
+    {
+      "account": "unknown (claude-alt)",
+      "total": 0,
+      "sessions": 27,
+      "turns": 0,
+      "by_machine": {
+        "HP Laptop Linux": 0
+      },
+      "totals": {
+        "input_tokens": 0,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "output_tokens": 0
+      }
+    },
+    {
+      "account": "unknown (claude-alt-api)",
+      "total": 0,
+      "sessions": 1,
+      "turns": 0,
+      "by_machine": {
+        "HP Laptop Linux": 0
+      },
+      "totals": {
+        "input_tokens": 0,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "output_tokens": 0
+      }
+    },
+    {
+      "account": "unknown (my-claude)",
+      "total": 0,
+      "sessions": 6,
+      "turns": 0,
+      "by_machine": {
+        "HP Laptop Linux": 0
+      },
+      "totals": {
+        "input_tokens": 0,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "output_tokens": 0
+      }
+    }
+  ],
+  "by_cli": {
+    "claude": {
+      "sessions": 223,
+      "tokens": 20721251067,
+      "active_min": 44181.3
+    },
+    "gemini": {
+      "sessions": 50,
+      "tokens": 2463723232,
+      "active_min": 4796.1
+    },
+    "codex": {
+      "sessions": 127,
+      "tokens": 1635058499,
+      "active_min": 1806.5
+    },
+    "copilot": {
+      "sessions": 67,
+      "tokens": 793528750,
+      "active_min": 8067.0
+    },
+    "antigravity": {
+      "sessions": 54,
+      "tokens": 162039081,
+      "active_min": 917.1
+    },
+    "grok": {
+      "sessions": 7,
+      "tokens": 99062873,
+      "active_min": 589.9
+    },
+    "kilocode": {
+      "sessions": 4,
+      "tokens": 7074501,
+      "active_min": 79.3
+    },
+    "lmstudio": {
+      "sessions": 10,
+      "tokens": 172933,
+      "active_min": 0.0
+    }
+  },
+  "by_provider": {
+    "anthropic": 20154953026,
+    "deepseek": 534671153
+  },
+  "by_machine_provider": {
+    "MacBook Air M1": {
+      "anthropic": 13955323225
+    },
+    "HP Laptop Linux": {
+      "anthropic": 6199629801,
+      "deepseek": 534671153
+    }
+  },
+  "cli_by_provider": {
+    "anthropic": {
+      "sessions": 196,
+      "tokens": 20624193466,
+      "active_min": 42169.7
+    },
+    "google": {
+      "sessions": 106,
+      "tokens": 2632787435,
+      "active_min": 5791.8
+    },
+    "openai": {
+      "sessions": 155,
+      "tokens": 1925612041,
+      "active_min": 3831.2
+    },
+    "deepseek": {
+      "sessions": 48,
+      "tokens": 534674683,
+      "active_min": 4563.3
+    },
+    "xai": {
+      "sessions": 8,
+      "tokens": 99073519,
+      "active_min": 590.0
+    },
+    "synthetic": {
+      "sessions": 19,
+      "tokens": 65361656,
+      "active_min": 3490.6
+    },
+    "mistral": {
+      "sessions": 5,
+      "tokens": 116185,
+      "active_min": 0.0
+    },
+    "other": {
+      "sessions": 4,
+      "tokens": 91892,
+      "active_min": 0.6
+    },
+    "meta": {
+      "sessions": 1,
+      "tokens": 59,
+      "active_min": 0.0
+    }
+  },
+  "uncountable_tools": [
+    {
+      "tool": "grok-cli (@vibe-kit)",
+      "dir": "/home/phantomcore/.npm-global/bin/grok",
+      "files": 1,
+      "records_token_usage": false,
+      "counted_here": false,
+      "why": "community npm CLI, distinct from xAI's official Grok Build CLI; stores no usage of any kind",
+      "machine": "HP Laptop Linux"
+    }
+  ]
+}

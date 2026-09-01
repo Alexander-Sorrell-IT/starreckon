@@ -1,5 +1,0 @@
-# Machine registry - one unique ID per line
-# Format: 8-character lowercase alphanumeric ID. 36**8 choices are materially
-# safer than the earlier 6-character idea while remaining a readable slug suffix.
-# Used for collision detection and machine identity
-# Generated automatically, append-only

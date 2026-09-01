@@ -462,17 +462,6 @@ DISCOVER_SKIP = {".cache", ".local", ".config", ".mozilla", ".pki", ".gnupg", ".
                  # Linking it would add a quarter-million directory entries for
                  # data that is not usage history.
                  ".basilisk",
-                 # SESSION-SHAPED, AND HOLDS NO USAGE RECORD. ~/.playwright-mcp
-                 # is the Playwright MCP server's per-run artifacts: 41 MB of
-                 # 200 .yml accessibility snapshots, 81 console-<ISO>.log files
-                 # and 76 .png screenshots, and NOT ONE .json or .jsonl. The
-                 # dated-filename shape is what DISCOVER_HINTS matches on, so it
-                 # was reported NOT COVERED on every run — and the comment below
-                 # the discovery loop says why that costs something: an alarm
-                 # that is wrong every time is one people stop reading, which
-                 # costs the real one its meaning. Skipped for that reason, not
-                 # because the directory is unimportant.
-                 ".playwright-mcp",
                  # browser/credential profiles, not AI sessions
                  ".creds-profile", ".creds-profile-ff", ".melius_browser_session",
                  # A CREDENTIAL STORE THAT LOOKS SESSION-SHAPED AND IS NOT.
@@ -1893,7 +1882,8 @@ def main(argv):
     rc = run(apply="--apply" in argv)
     if "--apply" in argv:
         print()
-        print(record_ledger())
+        _outcome, _msg = record_ledger()
+        print(_msg.strip())
     return rc
 
 

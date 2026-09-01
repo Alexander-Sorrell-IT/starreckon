@@ -1,79 +1,94 @@
 {
  "scope": "The fleet",
- "generated_at": "2026-08-27T18:17:15-05:00",
- "total_tokens": 24364310180,
- "sessions": 346,
+ "generated_at": "2026-09-01T06:54:14-05:00",
+ "total_tokens": 40912910876,
+ "sessions": 741,
  "fields": {
-  "input_tokens": 4309593,
-  "cache_creation_input_tokens": 503101074,
-  "cache_read_input_tokens": 17903132137,
-  "output_tokens": 77220933
+  "input_tokens": 28606840,
+  "cache_creation_input_tokens": 761017199,
+  "cache_read_input_tokens": 28658603961,
+  "output_tokens": 135383349
  },
- "new_content_tokens": 584631600,
- "hours": 741.2,
+ "new_content_tokens": 925007388,
+ "hours": 1207.5,
  "by_cli": {
-  "claude": {
-   "sessions": 90,
-   "tokens": 19662188714,
-   "minutes": 34699.1
-  },
   "lmstudio": {
-   "sessions": 3,
-   "tokens": 53159,
+   "sessions": 11,
+   "tokens": 173043,
    "minutes": 0.0
   },
-  "copilot": {
-   "sessions": 38,
-   "tokens": 572446089,
-   "minutes": 4914.4
+  "clawspring": {
+   "sessions": 20,
+   "tokens": 258503636,
+   "minutes": 0.0
   },
-  "gemini": {
+  "copilot-chat": {
+   "sessions": 11,
+   "tokens": 1214160,
+   "minutes": 0.0
+  },
+  "claude": {
+   "sessions": 314,
+   "tokens": 34933038613,
+   "minutes": 55293.1
+  },
+  "kilocode": {
    "sessions": 4,
-   "tokens": 995360683,
-   "minutes": 578.4
-  },
-  "antigravity": {
-   "sessions": 53,
-   "tokens": 597487937,
-   "minutes": 1886.1
+   "tokens": 7074501,
+   "minutes": 79.3
   },
   "codex": {
-   "sessions": 125,
-   "tokens": 1633604881,
-   "minutes": 1783.2
+   "sessions": 130,
+   "tokens": 1635058955,
+   "minutes": 1806.6
+  },
+  "gemini": {
+   "sessions": 50,
+   "tokens": 2463723232,
+   "minutes": 4796.1
+  },
+  "copilot": {
+   "sessions": 67,
+   "tokens": 793528750,
+   "minutes": 8067.0
+  },
+  "antigravity": {
+   "sessions": 62,
+   "tokens": 218712737,
+   "minutes": 1263.4
+  },
+  "bob": {
+   "sessions": 64,
+   "tokens": 501660927,
+   "minutes": 532.8
   },
   "grok": {
    "sessions": 8,
    "tokens": 100222322,
    "minutes": 609.4
-  },
-  "bob": {
-   "sessions": 25,
-   "tokens": 802946395,
-   "minutes": 0.0
   }
  },
  "by_model": {
-  "claude-opus-5": 12384457033,
-  "claude-opus-4-8": 5670800342,
+  "claude-opus-5": 18392974111,
+  "claude-opus-4-8": 5898633547,
+  "claude-haiku-4-5-20251001": 3608828444,
+  "claude-opus-4-7": 2442708241,
+  "gemini-3-flash-preview": 2135901976,
+  "claude-fable-5": 2033031832,
   "gpt-5.6-sol": 1451179368,
-  "gemini-3-flash-preview": 932704860,
-  "claude-fable-5": 495265511,
+  "claude-opus-4-6": 922220157,
+  "deepseek-v4-pro": 539641290,
   "claude-opus-4-8[1m]": 467059378,
-  "claude-haiku-4-5-20251001": 400504157,
+  "claude-sonnet-4-6": 414274920,
+  "unknown": 355657235,
   "claude-sonnet-4.6": 279118768,
-  "gemini-3.7-flash-safety-le": 258520721,
-  "claude-sonnet-4-6": 243949169,
+  "bob": 229043592,
+  "gpt-5.5": 225314053,
+  "gemini-3-pro-preview": 201035389,
   "gpt-5.6-luna": 180826644,
-  "gemini-antigravity-root.is_record": 123203781,
+  "claude-sonnet-5": 177021920,
   "grok-4.5-build": 100222322,
-  "claude-opus-4.7": 94058304,
-  "gpt-5.6-terra": 74710059,
-  "gemini-3.7-flash-high": 68400916,
-  "gemini-3.1-pro-preview": 62655823,
-  "unknown": 59372409,
-  "gemini-3.7-flash-low": 54501431,
-  "gemini-3-flash-agent": 48392056
+  "claude-opus-4.7": 94058304
  },
  "records": {
   "longest_session": {
@@ -83,10 +98,10 @@
    "minutes": 5141.5
   },
   "most_tokens": {
-   "id": "8804d304-0502-4582-b1d7-90862d0bcd08",
+   "id": "44f39a17-f72d-46f1-a093-5a14a3ce8622",
    "cli": "claude",
-   "machine": "MacBook Air M1",
-   "tokens": 3304664216
+   "machine": "HP Laptop Linux",
+   "tokens": 3314505487
   },
   "most_turns": {
    "id": "f4b9b473-5470-452b-baaf-a70f6ad029e2",
@@ -96,48 +111,73 @@
   }
  },
  "scans": {
-  "MacBook Air M1": "2026-08-27T18:16:40-05:00"
+  "HP Laptop Linux": "2026-09-01T06:49:36-05:00",
+  "MacBook Air M1": "2026-08-19T21:29:02-05:00"
  },
  "first_last_seen": {
   "lmstudio": {
-   "first": "2025-07-03T07:40:02.682000Z",
+   "first": "2025-07-01T06:58:19.695000Z",
    "last": "2025-07-04T07:49:17.357000Z",
+   "sources": [
+    "transcripts"
+   ]
+  },
+  "kilocode": {
+   "first": "2025-07-17T06:18:26.913000Z",
+   "last": "2026-01-13T09:17:03.568000Z",
+   "sources": [
+    "transcripts",
+    "vscode:Code",
+    "vscode:Code - Insiders"
+   ]
+  },
+  "codex": {
+   "first": "2025-12-21T07:51:12.181Z",
+   "last": "2026-08-05T20:31:10.368Z",
+   "sources": [
+    "transcripts"
+   ]
+  },
+  "gemini": {
+   "first": "2025-12-27T19:46:57.086Z",
+   "last": "2026-07-02T23:30:25.789Z",
    "sources": [
     "transcripts"
    ]
   },
   "copilot": {
    "first": "1976-04-01T06:00:44.237000Z",
-   "last": "2026-08-24T22:37:26.415Z",
+   "last": "2026-06-15T13:45:31.080000Z",
    "sources": [
     "transcripts",
+    "vscode:Code",
     "vscode:Code - Insiders"
    ]
   },
-  "gemini": {
-   "first": "2026-05-20T03:56:40.330Z",
-   "last": "2026-05-23T14:44:33.216Z",
+  "claude": {
+   "first": "2026-05-04T17:09:10.131Z",
+   "last": "2026-09-01T11:48:16.396Z",
    "sources": [
     "transcripts"
    ]
   },
-  "claude": {
-   "first": "2026-05-26T01:30:36.298Z",
-   "last": "2026-08-26T03:59:37.782Z",
+  "clawspring": {
+   "first": "2026-05-06 13:06:54",
+   "last": "2026-05-11 16:25:54",
    "sources": [
     "transcripts"
    ]
   },
   "antigravity": {
-   "first": "2026-06-02T08:34:18Z",
-   "last": "2026-08-27T23:15:32Z",
+   "first": "2026-05-28T16:55:48Z",
+   "last": "2026-08-30T22:34:55Z",
    "sources": [
     "transcripts"
    ]
   },
-  "codex": {
-   "first": "2026-07-13T02:27:15.629Z",
-   "last": "2026-08-05T20:31:10.368Z",
+  "bob": {
+   "first": "2026-08-11T03:15:25.947000Z",
+   "last": "2026-08-20T05:07:59.855000Z",
    "sources": [
     "transcripts"
    ]
@@ -148,15 +188,8 @@
    "sources": [
     "transcripts"
    ]
-  },
-  "bob": {
-   "first": "2026-08-11T19:19:48.873000Z",
-   "last": "2026-08-25T12:15:05.744000Z",
-   "sources": [
-    "transcripts"
-   ]
   }
  },
- "scanner_version": "159a7ead51d2",
- "hardware_uuid": "0088B2C6-9198-52C3-A51B-5D0E5CD4B596"
+ "scanner_version": "1db5dde1cc04",
+ "hardware_uuid": "4a5b5dc6-8401-43cb-b62b-45fa5d974c11"
 }

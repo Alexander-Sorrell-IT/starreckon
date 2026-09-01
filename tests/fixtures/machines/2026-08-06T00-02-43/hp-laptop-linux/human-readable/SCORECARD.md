@@ -15,7 +15,7 @@ _2026-08-06T00:00:32-05:00_
 | readers | no CLI is installed-but-silent | ✅ | none |
 | readers | no reader raised | ✅ | none |
 | agreement | analyze_tokens == sessions | ✅ | 11,555,816,157 vs 11,555,816,157 — 0 apart (0.00%) |
-| corpus | export exists | ✅ | /home/phantomcore/token-corpus/hp-laptop-linux |
+| corpus | export exists | ✅ | /home/testuser/token-corpus/hp-laptop-linux |
 | corpus | export is recent | ✅ | 2026-08-05T03:20:21-05:00 |
 | corpus | profiles match the scan | ✅ | 9 exported / 9 scanned |
 | corpus | redaction ran | ✅ | topic 227,122, span 1,543, path 92,878, email 2,453 |

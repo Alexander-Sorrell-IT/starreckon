@@ -11,28 +11,28 @@
     {
       "vendor": "gemini",
       "label": "Gemini CLI",
-      "dir": "/home/phantomcore/.gemini",
+      "dir": "/home/testuser/.gemini",
       "files": 942,
       "records_usage": false
     },
     {
       "vendor": "copilot",
       "label": "GitHub Copilot CLI",
-      "dir": "/home/phantomcore/.copilot",
+      "dir": "/home/testuser/.copilot",
       "files": 557,
       "records_usage": false
     },
     {
       "vendor": "antigravity",
       "label": "Antigravity CLI",
-      "dir": "/home/phantomcore/.antigravitycli",
+      "dir": "/home/testuser/.antigravitycli",
       "files": 1,
       "records_usage": false
     },
     {
       "vendor": "openai",
       "label": "OpenAI Codex CLI",
-      "dir": "/home/phantomcore/.codex",
+      "dir": "/home/testuser/.codex",
       "files": 5,
       "records_usage": true
     }
@@ -40,7 +40,7 @@
   "grand_total_tokens": 6734300954,
   "accounts": [
     {
-      "config_dir": "/home/phantomcore/.claude-alt",
+      "config_dir": "/home/testuser/.claude-alt",
       "sessions": 27,
       "files": {
         "main": 27,
@@ -243,55 +243,55 @@
         }
       },
       "by_project": {
-        "-home-phantomcore": {
+        "-home-testuser": {
           "input_tokens": 59544,
           "cache_creation_input_tokens": 6596006,
           "cache_read_input_tokens": 138318087,
           "output_tokens": 1028065
         },
-        "-media-phantomcore-AI-DRIVE-AI-Shit-mining-Quest-coder": {
+        "-media-testuser-AI-DRIVE-AI-Shit-mining-Quest-coder": {
           "input_tokens": 3232,
           "cache_creation_input_tokens": 7073150,
           "cache_read_input_tokens": 93361980,
           "output_tokens": 949203
         },
-        "-media-phantomcore-AI-DRIVE-AI-Shit-mining-Quest-coder-Claude-Code": {
+        "-media-testuser-AI-DRIVE-AI-Shit-mining-Quest-coder-Claude-Code": {
           "input_tokens": 42265,
           "cache_creation_input_tokens": 43409774,
           "cache_read_input_tokens": 2367760550,
           "output_tokens": 8993023
         },
-        "-media-phantomcore-AI-DRIVE-Transcribing": {
+        "-media-testuser-AI-DRIVE-Transcribing": {
           "input_tokens": 1282,
           "cache_creation_input_tokens": 2991550,
           "cache_read_input_tokens": 179459215,
           "output_tokens": 366805
         },
-        "-media-phantomcore-AI-DRIVE-VORTEX-SYSTEM": {
+        "-media-testuser-AI-DRIVE-VORTEX-SYSTEM": {
           "input_tokens": 421068,
           "cache_creation_input_tokens": 12836009,
           "cache_read_input_tokens": 152435354,
           "output_tokens": 2219297
         },
-        "-media-phantomcore-AI-DRIVE-hackathons-Pacto-secto": {
+        "-media-testuser-AI-DRIVE-hackathons-Pacto-secto": {
           "input_tokens": 4,
           "cache_creation_input_tokens": 11661,
           "cache_read_input_tokens": 53137,
           "output_tokens": 160
         },
-        "-media-phantomcore-AI-DRIVE-hackathons-mantle": {
+        "-media-testuser-AI-DRIVE-hackathons-mantle": {
           "input_tokens": 5050,
           "cache_creation_input_tokens": 16648,
           "cache_read_input_tokens": 144037,
           "output_tokens": 1529
         },
-        "-media-phantomcore-AI-DRIVE-hackathons-tierva": {
+        "-media-testuser-AI-DRIVE-hackathons-tierva": {
           "input_tokens": 5044,
           "cache_creation_input_tokens": 13245,
           "cache_read_input_tokens": 44814,
           "output_tokens": 700
         },
-        "-media-phantomcore-AI-DRIVE-pip": {
+        "-media-testuser-AI-DRIVE-pip": {
           "input_tokens": 10019,
           "cache_creation_input_tokens": 5221687,
           "cache_read_input_tokens": 66186792,
@@ -312,7 +312,7 @@
       "grand_total": 3091271390
     },
     {
-      "config_dir": "/home/phantomcore/.claude",
+      "config_dir": "/home/testuser/.claude",
       "sessions": 84,
       "files": {
         "main": 84,
@@ -514,133 +514,133 @@
         }
       },
       "by_project": {
-        "-home-phantomcore": {
+        "-home-testuser": {
           "input_tokens": 37733,
           "cache_creation_input_tokens": 250740,
           "cache_read_input_tokens": 4933242,
           "output_tokens": 77983
         },
-        "-media-phantomcore-AI-DRIVE-AI-Shit-mining-Quest-coder-Claude-Code": {
+        "-media-testuser-AI-DRIVE-AI-Shit-mining-Quest-coder-Claude-Code": {
           "input_tokens": 33600,
           "cache_creation_input_tokens": 7753824,
           "cache_read_input_tokens": 267351532,
           "output_tokens": 1056169
         },
-        "-media-phantomcore-AI-DRIVE-Contra": {
+        "-media-testuser-AI-DRIVE-Contra": {
           "input_tokens": 1501,
           "cache_creation_input_tokens": 4511453,
           "cache_read_input_tokens": 152597871,
           "output_tokens": 857382
         },
-        "-media-phantomcore-AI-DRIVE-DeepSeek-work": {
+        "-media-testuser-AI-DRIVE-DeepSeek-work": {
           "input_tokens": 5,
           "cache_creation_input_tokens": 51047,
           "cache_read_input_tokens": 0,
           "output_tokens": 205
         },
-        "-media-phantomcore-AI-DRIVE-DeepSeek-work-Test": {
+        "-media-testuser-AI-DRIVE-DeepSeek-work-Test": {
           "input_tokens": 88415,
           "cache_creation_input_tokens": 0,
           "cache_read_input_tokens": 3280256,
           "output_tokens": 34950
         },
-        "-media-phantomcore-AI-DRIVE-DeepSeek-work-deepseek-bug-finder": {
+        "-media-testuser-AI-DRIVE-DeepSeek-work-deepseek-bug-finder": {
           "input_tokens": 7941,
           "cache_creation_input_tokens": 905404,
           "cache_read_input_tokens": 49741411,
           "output_tokens": 203919
         },
-        "-media-phantomcore-AI-DRIVE-DeepSeek-work-deepseek-claude-code": {
+        "-media-testuser-AI-DRIVE-DeepSeek-work-deepseek-claude-code": {
           "input_tokens": 7205,
           "cache_creation_input_tokens": 5666684,
           "cache_read_input_tokens": 802948712,
           "output_tokens": 1675404
         },
-        "-media-phantomcore-AI-DRIVE-DeepSeek-work-deepseek-claude-code-my-claude": {
+        "-media-testuser-AI-DRIVE-DeepSeek-work-deepseek-claude-code-my-claude": {
           "input_tokens": 611191,
           "cache_creation_input_tokens": 0,
           "cache_read_input_tokens": 507136,
           "output_tokens": 4518
         },
-        "-media-phantomcore-AI-DRIVE-DeepSeek-work-math": {
+        "-media-testuser-AI-DRIVE-DeepSeek-work-math": {
           "input_tokens": 177,
           "cache_creation_input_tokens": 297451,
           "cache_read_input_tokens": 7538699,
           "output_tokens": 120786
         },
-        "-media-phantomcore-AI-DRIVE-DeepSeek-work-my-claude-seek": {
+        "-media-testuser-AI-DRIVE-DeepSeek-work-my-claude-seek": {
           "input_tokens": 215480,
           "cache_creation_input_tokens": 91226,
           "cache_read_input_tokens": 5945320,
           "output_tokens": 87524
         },
-        "-media-phantomcore-AI-DRIVE-DeepSeek-work-my-claude-seek-claude": {
+        "-media-testuser-AI-DRIVE-DeepSeek-work-my-claude-seek-claude": {
           "input_tokens": 44248,
           "cache_creation_input_tokens": 12885731,
           "cache_read_input_tokens": 206726224,
           "output_tokens": 979908
         },
-        "-media-phantomcore-AI-DRIVE-DeepSeek-work-my-claude-seek-deepseek-bug-finder": {
+        "-media-testuser-AI-DRIVE-DeepSeek-work-my-claude-seek-deepseek-bug-finder": {
           "input_tokens": 42857,
           "cache_creation_input_tokens": 7193863,
           "cache_read_input_tokens": 312176632,
           "output_tokens": 862940
         },
-        "-media-phantomcore-AI-DRIVE-DeepSeek-work-my-claude-seek-reddit": {
+        "-media-testuser-AI-DRIVE-DeepSeek-work-my-claude-seek-reddit": {
           "input_tokens": 7100,
           "cache_creation_input_tokens": 635590,
           "cache_read_input_tokens": 52167517,
           "output_tokens": 205341
         },
-        "-media-phantomcore-AI-DRIVE-DeepSeek-work-reddit": {
+        "-media-testuser-AI-DRIVE-DeepSeek-work-reddit": {
           "input_tokens": 9778,
           "cache_creation_input_tokens": 4460887,
           "cache_read_input_tokens": 210253890,
           "output_tokens": 616760
         },
-        "-media-phantomcore-AI-DRIVE-DeepSeek-work-reddit-logistis": {
+        "-media-testuser-AI-DRIVE-DeepSeek-work-reddit-logistis": {
           "input_tokens": 253,
           "cache_creation_input_tokens": 453825,
           "cache_read_input_tokens": 433997,
           "output_tokens": 4000
         },
-        "-media-phantomcore-AI-DRIVE-DeepSeek-work-testing-modle-structure": {
+        "-media-testuser-AI-DRIVE-DeepSeek-work-testing-modle-structure": {
           "input_tokens": 178,
           "cache_creation_input_tokens": 1543967,
           "cache_read_input_tokens": 70135368,
           "output_tokens": 322179
         },
-        "-media-phantomcore-AI-DRIVE-fable": {
+        "-media-testuser-AI-DRIVE-fable": {
           "input_tokens": 21781,
           "cache_creation_input_tokens": 9867,
           "cache_read_input_tokens": 18326,
           "output_tokens": 21
         },
-        "-media-phantomcore-AI-DRIVE-hackathons-Reddit-Mod-Tools-and-Migrated-Apps-Hackathon": {
+        "-media-testuser-AI-DRIVE-hackathons-Reddit-Mod-Tools-and-Migrated-Apps-Hackathon": {
           "input_tokens": 85367,
           "cache_creation_input_tokens": 2730758,
           "cache_read_input_tokens": 73511914,
           "output_tokens": 494592
         },
-        "-media-phantomcore-AI-DRIVE-hackathons-Slack": {
+        "-media-testuser-AI-DRIVE-hackathons-Slack": {
           "input_tokens": 138197,
           "cache_creation_input_tokens": 3410418,
           "cache_read_input_tokens": 127886687,
           "output_tokens": 672761
         },
-        "-media-phantomcore-AI-DRIVE-hackathons-UiPath-AgentHack": {
+        "-media-testuser-AI-DRIVE-hackathons-UiPath-AgentHack": {
           "input_tokens": 79038,
           "cache_creation_input_tokens": 1397034,
           "cache_read_input_tokens": 46005701,
           "output_tokens": 306217
         },
-        "-media-phantomcore-AI-DRIVE-hackathons-evil": {
+        "-media-testuser-AI-DRIVE-hackathons-evil": {
           "input_tokens": 10904,
           "cache_creation_input_tokens": 27204,
           "cache_read_input_tokens": 0,
           "output_tokens": 4
         },
-        "-media-phantomcore-AI-DRIVE-hackathons-mind": {
+        "-media-testuser-AI-DRIVE-hackathons-mind": {
           "input_tokens": 101381,
           "cache_creation_input_tokens": 3985120,
           "cache_read_input_tokens": 121675299,
@@ -661,7 +661,7 @@
       "grand_total": 2584957850
     },
     {
-      "config_dir": "/home/phantomcore/.my-claude",
+      "config_dir": "/home/testuser/.my-claude",
       "sessions": 6,
       "files": {
         "main": 6,
@@ -845,61 +845,61 @@
         }
       },
       "by_project": {
-        "-media-phantomcore-AI-DRIVE-DeepSeek-work": {
+        "-media-testuser-AI-DRIVE-DeepSeek-work": {
           "input_tokens": 98930,
           "cache_creation_input_tokens": 0,
           "cache_read_input_tokens": 13891584,
           "output_tokens": 68400
         },
-        "-media-phantomcore-AI-DRIVE-DeepSeek-work-deepseek-claude-code": {
+        "-media-testuser-AI-DRIVE-DeepSeek-work-deepseek-claude-code": {
           "input_tokens": 118022,
           "cache_creation_input_tokens": 0,
           "cache_read_input_tokens": 10557056,
           "output_tokens": 44953
         },
-        "-media-phantomcore-AI-DRIVE-DeepSeek-work-my-claude-seek-claude": {
+        "-media-testuser-AI-DRIVE-DeepSeek-work-my-claude-seek-claude": {
           "input_tokens": 12752245,
           "cache_creation_input_tokens": 0,
           "cache_read_input_tokens": 238355712,
           "output_tokens": 2915769
         },
-        "-media-phantomcore-AI-DRIVE-DeepSeek-work-my-claude-seek-deepseek-bug-finder": {
+        "-media-testuser-AI-DRIVE-DeepSeek-work-my-claude-seek-deepseek-bug-finder": {
           "input_tokens": 1647775,
           "cache_creation_input_tokens": 0,
           "cache_read_input_tokens": 59826432,
           "output_tokens": 324745
         },
-        "-media-phantomcore-AI-DRIVE-DeepSeek-work-my-claude-seek-just-agents": {
+        "-media-testuser-AI-DRIVE-DeepSeek-work-my-claude-seek-just-agents": {
           "input_tokens": 2769976,
           "cache_creation_input_tokens": 0,
           "cache_read_input_tokens": 52980864,
           "output_tokens": 875495
         },
-        "-media-phantomcore-AI-DRIVE-DeepSeek-work-my-claude-seek-math": {
+        "-media-testuser-AI-DRIVE-DeepSeek-work-my-claude-seek-math": {
           "input_tokens": 291253,
           "cache_creation_input_tokens": 0,
           "cache_read_input_tokens": 10082176,
           "output_tokens": 66844
         },
-        "-media-phantomcore-AI-DRIVE-DeepSeek-work-my-claude-seek-reddit": {
+        "-media-testuser-AI-DRIVE-DeepSeek-work-my-claude-seek-reddit": {
           "input_tokens": 608561,
           "cache_creation_input_tokens": 0,
           "cache_read_input_tokens": 9266176,
           "output_tokens": 65830
         },
-        "-media-phantomcore-AI-DRIVE-VORTEX-SYSTEM-deepseek": {
+        "-media-testuser-AI-DRIVE-VORTEX-SYSTEM-deepseek": {
           "input_tokens": 1310232,
           "cache_creation_input_tokens": 0,
           "cache_read_input_tokens": 33710464,
           "output_tokens": 231367
         },
-        "-media-phantomcore-AI-DRIVE-hackathons-ai-ml-hack-2026": {
+        "-media-testuser-AI-DRIVE-hackathons-ai-ml-hack-2026": {
           "input_tokens": 1476728,
           "cache_creation_input_tokens": 0,
           "cache_read_input_tokens": 52301312,
           "output_tokens": 327248
         },
-        "-media-phantomcore-AI-DRIVE-pip": {
+        "-media-testuser-AI-DRIVE-pip": {
           "input_tokens": 722719,
           "cache_creation_input_tokens": 0,
           "cache_read_input_tokens": 12734720,
@@ -920,7 +920,7 @@
       "grand_total": 520497793
     },
     {
-      "config_dir": "/home/phantomcore/.ai-logs-archive/claude/Desktop_standout_clean_.claude",
+      "config_dir": "/home/testuser/.ai-logs-archive/claude/Desktop_standout_clean_.claude",
       "sessions": 420,
       "files": {
         "main": 420
@@ -1043,73 +1043,73 @@
         }
       },
       "by_project": {
-        "alt__-home-phantomcore": {
+        "alt__-home-testuser": {
           "input_tokens": 151885,
           "cache_creation_input_tokens": 1118347,
           "cache_read_input_tokens": 21559463,
           "output_tokens": 216594
         },
-        "alt__-home-phantomcore--claude-meta-teams-smoke-mixed-workdirs-t-claude": {
+        "alt__-home-testuser--claude-meta-teams-smoke-mixed-workdirs-t-claude": {
           "input_tokens": 7876,
           "cache_creation_input_tokens": 38522,
           "cache_read_input_tokens": 1288295,
           "output_tokens": 8896
         },
-        "alt__-media-phantomcore-AI-DRIVE": {
+        "alt__-media-testuser-AI-DRIVE": {
           "input_tokens": 5828,
           "cache_creation_input_tokens": 205721,
           "cache_read_input_tokens": 4774588,
           "output_tokens": 59796
         },
-        "alt__-media-phantomcore-AI-DRIVE-DeepSeek-work-deepseek-claude-code": {
+        "alt__-media-testuser-AI-DRIVE-DeepSeek-work-deepseek-claude-code": {
           "input_tokens": 4900,
           "cache_creation_input_tokens": 18498,
           "cache_read_input_tokens": 145993,
           "output_tokens": 2147
         },
-        "alt__-media-phantomcore-AI-DRIVE-fable": {
+        "alt__-media-testuser-AI-DRIVE-fable": {
           "input_tokens": 4873,
           "cache_creation_input_tokens": 10956,
           "cache_read_input_tokens": 42728,
           "output_tokens": 186
         },
-        "alt__-media-phantomcore-AI-DRIVE-hackathons-mantle": {
+        "alt__-media-testuser-AI-DRIVE-hackathons-mantle": {
           "input_tokens": 17227,
           "cache_creation_input_tokens": 4779775,
           "cache_read_input_tokens": 68629420,
           "output_tokens": 362642
         },
-        "alt__-media-phantomcore-AI-DRIVE-hackathons-tierva": {
+        "alt__-media-testuser-AI-DRIVE-hackathons-tierva": {
           "input_tokens": 11212,
           "cache_creation_input_tokens": 213478,
           "cache_read_input_tokens": 5093045,
           "output_tokens": 44572
         },
-        "alt__-media-phantomcore-AI-DRIVE-pip": {
+        "alt__-media-testuser-AI-DRIVE-pip": {
           "input_tokens": 87006,
           "cache_creation_input_tokens": 4458364,
           "cache_read_input_tokens": 155041801,
           "output_tokens": 590198
         },
-        "alt__-media-phantomcore-AI-DRIVE-pip__314e21c5-cdf8-4a5b-a667-2d2f2b44eb05__subagents": {
+        "alt__-media-testuser-AI-DRIVE-pip__314e21c5-cdf8-4a5b-a667-2d2f2b44eb05__subagents": {
           "input_tokens": 59860,
           "cache_creation_input_tokens": 1174425,
           "cache_read_input_tokens": 14033322,
           "output_tokens": 209619
         },
-        "alt__-media-phantomcore-AI-DRIVE-pip__c9b9dba0-12af-4bbc-975b-6a4dc2996eaa__subagents": {
+        "alt__-media-testuser-AI-DRIVE-pip__c9b9dba0-12af-4bbc-975b-6a4dc2996eaa__subagents": {
           "input_tokens": 192830,
           "cache_creation_input_tokens": 2228643,
           "cache_read_input_tokens": 33595189,
           "output_tokens": 401706
         },
-        "alt__-tmp-claude-1000--media-phantomcore-AI-DRIVE-pip-c9b9dba0-12af-4bbc-975b-6a4dc2996eaa-scratchpad": {
+        "alt__-tmp-claude-1000--media-testuser-AI-DRIVE-pip-c9b9dba0-12af-4bbc-975b-6a4dc2996eaa-scratchpad": {
           "input_tokens": 5912,
           "cache_creation_input_tokens": 4353,
           "cache_read_input_tokens": 34783,
           "output_tokens": 1257
         },
-        "alt__-tmp-claude-1000--media-phantomcore-AI-DRIVE-pip-c9b9dba0-12af-4bbc-975b-6a4dc2996eaa-scratchpad-live-schema-check": {
+        "alt__-tmp-claude-1000--media-testuser-AI-DRIVE-pip-c9b9dba0-12af-4bbc-975b-6a4dc2996eaa-scratchpad-live-schema-check": {
           "input_tokens": 7608,
           "cache_creation_input_tokens": 17063,
           "cache_read_input_tokens": 138948,
@@ -1130,7 +1130,7 @@
       "grand_total": 321101727
     },
     {
-      "config_dir": "/home/phantomcore/.ai-logs-archive/claude/Desktop_standout_full_.claude",
+      "config_dir": "/home/testuser/.ai-logs-archive/claude/Desktop_standout_full_.claude",
       "sessions": 805,
       "files": {
         "main": 805
@@ -1247,127 +1247,127 @@
         }
       },
       "by_project": {
-        "alt__-home-phantomcore": {
+        "alt__-home-testuser": {
           "input_tokens": 2,
           "cache_creation_input_tokens": 0,
           "cache_read_input_tokens": 79962,
           "output_tokens": 1755
         },
-        "alt__-media-phantomcore-AI-DRIVE-VORTEX-SYSTEM": {
+        "alt__-media-testuser-AI-DRIVE-VORTEX-SYSTEM": {
           "input_tokens": 64237,
           "cache_creation_input_tokens": 4121203,
           "cache_read_input_tokens": 40992182,
           "output_tokens": 618782
         },
-        "alt__-media-phantomcore-AI-DRIVE-VORTEX-SYSTEM-deepseek": {
+        "alt__-media-testuser-AI-DRIVE-VORTEX-SYSTEM-deepseek": {
           "input_tokens": 5028,
           "cache_creation_input_tokens": 44979,
           "cache_read_input_tokens": 517704,
           "output_tokens": 5550
         },
-        "alt__-media-phantomcore-AI-DRIVE-VORTEX-SYSTEM-fable": {
+        "alt__-media-testuser-AI-DRIVE-VORTEX-SYSTEM-fable": {
           "input_tokens": 4875,
           "cache_creation_input_tokens": 12602,
           "cache_read_input_tokens": 74741,
           "output_tokens": 458
         },
-        "alt__-media-phantomcore-AI-DRIVE-VORTEX-SYSTEM__6e61c0f7-6283-4005-b056-8aacc175c5d3__subagents__workflows__wf_0a13dde3-04a": {
+        "alt__-media-testuser-AI-DRIVE-VORTEX-SYSTEM__6e61c0f7-6283-4005-b056-8aacc175c5d3__subagents__workflows__wf_0a13dde3-04a": {
           "input_tokens": 16674,
           "cache_creation_input_tokens": 281511,
           "cache_read_input_tokens": 1231309,
           "output_tokens": 60307
         },
-        "alt__-media-phantomcore-AI-DRIVE-VORTEX-SYSTEM__6e61c0f7-6283-4005-b056-8aacc175c5d3__subagents__workflows__wf_3470e2d8-ac5": {
+        "alt__-media-testuser-AI-DRIVE-VORTEX-SYSTEM__6e61c0f7-6283-4005-b056-8aacc175c5d3__subagents__workflows__wf_3470e2d8-ac5": {
           "input_tokens": 13344,
           "cache_creation_input_tokens": 187896,
           "cache_read_input_tokens": 1218224,
           "output_tokens": 37721
         },
-        "alt__-media-phantomcore-AI-DRIVE-VORTEX-SYSTEM__6e61c0f7-6283-4005-b056-8aacc175c5d3__subagents__workflows__wf_480a8ff7-e32": {
+        "alt__-media-testuser-AI-DRIVE-VORTEX-SYSTEM__6e61c0f7-6283-4005-b056-8aacc175c5d3__subagents__workflows__wf_480a8ff7-e32": {
           "input_tokens": 74311,
           "cache_creation_input_tokens": 1848548,
           "cache_read_input_tokens": 12968244,
           "output_tokens": 287804
         },
-        "alt__-media-phantomcore-AI-DRIVE-VORTEX-SYSTEM__6e61c0f7-6283-4005-b056-8aacc175c5d3__subagents__workflows__wf_a8836b68-c52": {
+        "alt__-media-testuser-AI-DRIVE-VORTEX-SYSTEM__6e61c0f7-6283-4005-b056-8aacc175c5d3__subagents__workflows__wf_a8836b68-c52": {
           "input_tokens": 13334,
           "cache_creation_input_tokens": 153435,
           "cache_read_input_tokens": 701704,
           "output_tokens": 37826
         },
-        "alt__-media-phantomcore-AI-DRIVE-VORTEX-SYSTEM__7af0a3f7-9e8d-4ef5-9d40-6dc9ef375b5d__subagents": {
+        "alt__-media-testuser-AI-DRIVE-VORTEX-SYSTEM__7af0a3f7-9e8d-4ef5-9d40-6dc9ef375b5d__subagents": {
           "input_tokens": 12425,
           "cache_creation_input_tokens": 158835,
           "cache_read_input_tokens": 739500,
           "output_tokens": 21062
         },
-        "alt__-media-phantomcore-AI-DRIVE-VORTEX-SYSTEM__c2b6343a-e599-421c-8d80-0c91fff7a15d__subagents": {
+        "alt__-media-testuser-AI-DRIVE-VORTEX-SYSTEM__c2b6343a-e599-421c-8d80-0c91fff7a15d__subagents": {
           "input_tokens": 62443,
           "cache_creation_input_tokens": 436542,
           "cache_read_input_tokens": 2643301,
           "output_tokens": 67677
         },
-        "alt__-media-phantomcore-AI-DRIVE-VORTEX-SYSTEM__db6723e4-a658-4a0e-8977-7e7758b27be5__subagents": {
+        "alt__-media-testuser-AI-DRIVE-VORTEX-SYSTEM__db6723e4-a658-4a0e-8977-7e7758b27be5__subagents": {
           "input_tokens": 15648,
           "cache_creation_input_tokens": 129015,
           "cache_read_input_tokens": 915996,
           "output_tokens": 19861
         },
-        "alt__-media-phantomcore-AI-DRIVE-VORTEX-SYSTEM__db6723e4-a658-4a0e-8977-7e7758b27be5__subagents__workflows__wf_1ba5b953-248": {
+        "alt__-media-testuser-AI-DRIVE-VORTEX-SYSTEM__db6723e4-a658-4a0e-8977-7e7758b27be5__subagents__workflows__wf_1ba5b953-248": {
           "input_tokens": 55685,
           "cache_creation_input_tokens": 497775,
           "cache_read_input_tokens": 4212333,
           "output_tokens": 86377
         },
-        "alt__-media-phantomcore-AI-DRIVE-VORTEX-SYSTEM__db6723e4-a658-4a0e-8977-7e7758b27be5__subagents__workflows__wf_4f331da5-c25": {
+        "alt__-media-testuser-AI-DRIVE-VORTEX-SYSTEM__db6723e4-a658-4a0e-8977-7e7758b27be5__subagents__workflows__wf_4f331da5-c25": {
           "input_tokens": 149752,
           "cache_creation_input_tokens": 1522174,
           "cache_read_input_tokens": 24357868,
           "output_tokens": 420868
         },
-        "alt__-media-phantomcore-AI-DRIVE-hackathons-CodeCrusher": {
+        "alt__-media-testuser-AI-DRIVE-hackathons-CodeCrusher": {
           "input_tokens": 22329,
           "cache_creation_input_tokens": 272047,
           "cache_read_input_tokens": 6539988,
           "output_tokens": 95054
         },
-        "alt__-media-phantomcore-AI-DRIVE-hackathons-CodeCrusher__00e1fa7b-fc1e-48a9-b4a6-1f1eff13e305__subagents": {
+        "alt__-media-testuser-AI-DRIVE-hackathons-CodeCrusher__00e1fa7b-fc1e-48a9-b4a6-1f1eff13e305__subagents": {
           "input_tokens": 354,
           "cache_creation_input_tokens": 70528,
           "cache_read_input_tokens": 2007617,
           "output_tokens": 9466
         },
-        "alt__-media-phantomcore-AI-DRIVE-hackathons-CodeCrusher__00e1fa7b-fc1e-48a9-b4a6-1f1eff13e305__subagents__workflows__wf_c2496bae-446": {
+        "alt__-media-testuser-AI-DRIVE-hackathons-CodeCrusher__00e1fa7b-fc1e-48a9-b4a6-1f1eff13e305__subagents__workflows__wf_c2496bae-446": {
           "input_tokens": 157020,
           "cache_creation_input_tokens": 4800644,
           "cache_read_input_tokens": 42685881,
           "output_tokens": 598001
         },
-        "alt__-media-phantomcore-AI-DRIVE-hackathons-CodeCrusher__bcd58245-691e-490c-950b-c2bc992ebe2a__subagents": {
+        "alt__-media-testuser-AI-DRIVE-hackathons-CodeCrusher__bcd58245-691e-490c-950b-c2bc992ebe2a__subagents": {
           "input_tokens": 50,
           "cache_creation_input_tokens": 28736,
           "cache_read_input_tokens": 106306,
           "output_tokens": 2043
         },
-        "alt__-media-phantomcore-AI-DRIVE-hackathons-CodeCrusher__bcd58245-691e-490c-950b-c2bc992ebe2a__subagents__workflows__wf_30d16dcc-5ca": {
+        "alt__-media-testuser-AI-DRIVE-hackathons-CodeCrusher__bcd58245-691e-490c-950b-c2bc992ebe2a__subagents__workflows__wf_30d16dcc-5ca": {
           "input_tokens": 60909,
           "cache_creation_input_tokens": 1059188,
           "cache_read_input_tokens": 6489768,
           "output_tokens": 152292
         },
-        "alt__-media-phantomcore-AI-DRIVE-hackathons-mantle": {
+        "alt__-media-testuser-AI-DRIVE-hackathons-mantle": {
           "input_tokens": 2,
           "cache_creation_input_tokens": 3895,
           "cache_read_input_tokens": 298042,
           "output_tokens": 366
         },
-        "alt__-media-phantomcore-AI-DRIVE-hackathons-tierva": {
+        "alt__-media-testuser-AI-DRIVE-hackathons-tierva": {
           "input_tokens": 2,
           "cache_creation_input_tokens": 1338,
           "cache_read_input_tokens": 93835,
           "output_tokens": 148
         },
-        "alt__-media-phantomcore-AI-DRIVE-pip__c9b9dba0-12af-4bbc-975b-6a4dc2996eaa__subagents": {
+        "alt__-media-testuser-AI-DRIVE-pip__c9b9dba0-12af-4bbc-975b-6a4dc2996eaa__subagents": {
           "input_tokens": 4,
           "cache_creation_input_tokens": 4509,
           "cache_read_input_tokens": 66964,
@@ -1388,7 +1388,7 @@
       "grand_total": 167829804
     },
     {
-      "config_dir": "/home/phantomcore/.claude-it",
+      "config_dir": "/home/testuser/.claude-it",
       "sessions": 2,
       "files": {
         "subagent": 1,
@@ -1452,13 +1452,13 @@
         }
       },
       "by_project": {
-        "-home-phantomcore": {
+        "-home-testuser": {
           "input_tokens": 11283,
           "cache_creation_input_tokens": 823833,
           "cache_read_input_tokens": 26560606,
           "output_tokens": 143886
         },
-        "-media-phantomcore-AI-DRIVE-hackathons-DeveloperWeek-New-York-2026-Hackathon": {
+        "-media-testuser-AI-DRIVE-hackathons-DeveloperWeek-New-York-2026-Hackathon": {
           "input_tokens": 259,
           "cache_creation_input_tokens": 225063,
           "cache_read_input_tokens": 15988583,
@@ -1479,7 +1479,7 @@
       "grand_total": 43831821
     },
     {
-      "config_dir": "/home/phantomcore/.ai-logs-archive/claude/Desktop_standout_max_.claude",
+      "config_dir": "/home/testuser/.ai-logs-archive/claude/Desktop_standout_max_.claude",
       "sessions": 805,
       "files": {
         "main": 805
@@ -1695,7 +1695,7 @@
       "grand_total": 4669359
     },
     {
-      "config_dir": "/home/phantomcore/.claude-alt-api",
+      "config_dir": "/home/testuser/.claude-alt-api",
       "sessions": 1,
       "files": {
         "main": 1
@@ -1746,7 +1746,7 @@
         }
       },
       "by_project": {
-        "-media-phantomcore-AI-DRIVE-DeepSeek-work-my-claude-seek-fable": {
+        "-media-testuser-AI-DRIVE-DeepSeek-work-my-claude-seek-fable": {
           "input_tokens": 1922,
           "cache_creation_input_tokens": 10864,
           "cache_read_input_tokens": 125198,
@@ -1765,14 +1765,14 @@
         "approved_api_keys": [
           "rT2g1afg0EQ-yQjtpwAA"
         ],
-        "api_key_file": "/home/phantomcore/.config/anthropic/claude-alt-api.key",
+        "api_key_file": "/home/testuser/.config/anthropic/claude-alt-api.key",
         "linked_account": null,
         "link_basis": "unlinked \u2014 org not among this machine's logins"
       },
       "grand_total": 141210
     },
     {
-      "config_dir": "/home/phantomcore/.ai-logs-archive/claude/.claude",
+      "config_dir": "/home/testuser/.ai-logs-archive/claude/.claude",
       "sessions": 84,
       "files": {
         "main": 84,
@@ -1804,7 +1804,7 @@
       "grand_total": 0
     },
     {
-      "config_dir": "/home/phantomcore/.ai-logs-archive/claude/.claude-alt",
+      "config_dir": "/home/testuser/.ai-logs-archive/claude/.claude-alt",
       "sessions": 27,
       "files": {
         "main": 27,
@@ -1837,7 +1837,7 @@
       "grand_total": 0
     },
     {
-      "config_dir": "/home/phantomcore/.ai-logs-archive/claude/.claude-alt-api",
+      "config_dir": "/home/testuser/.ai-logs-archive/claude/.claude-alt-api",
       "sessions": 1,
       "files": {
         "main": 1
@@ -1868,7 +1868,7 @@
       "grand_total": 0
     },
     {
-      "config_dir": "/home/phantomcore/.ai-logs-archive/claude/.claude-it",
+      "config_dir": "/home/testuser/.ai-logs-archive/claude/.claude-it",
       "sessions": 2,
       "files": {
         "subagent": 1,
@@ -1900,7 +1900,7 @@
       "grand_total": 0
     },
     {
-      "config_dir": "/home/phantomcore/.ai-logs-archive/claude/.my-claude",
+      "config_dir": "/home/testuser/.ai-logs-archive/claude/.my-claude",
       "sessions": 6,
       "files": {
         "main": 6,
@@ -1932,7 +1932,7 @@
       "grand_total": 0
     },
     {
-      "config_dir": "/home/phantomcore/.ai-logs-archive/claude/Desktop_standout_sandbox_.claude",
+      "config_dir": "/home/testuser/.ai-logs-archive/claude/Desktop_standout_sandbox_.claude",
       "sessions": 576,
       "files": {
         "main": 576,
@@ -1964,7 +1964,7 @@
       "grand_total": 0
     },
     {
-      "config_dir": "/home/phantomcore/.ai-logs-archive/claude/claude",
+      "config_dir": "/home/testuser/.ai-logs-archive/claude/claude",
       "sessions": 84,
       "files": {
         "main": 84,
@@ -1996,7 +1996,7 @@
       "grand_total": 0
     },
     {
-      "config_dir": "/home/phantomcore/.ai-logs-archive/claude/claude-alt",
+      "config_dir": "/home/testuser/.ai-logs-archive/claude/claude-alt",
       "sessions": 27,
       "files": {
         "main": 27,
@@ -2029,7 +2029,7 @@
       "grand_total": 0
     },
     {
-      "config_dir": "/home/phantomcore/.ai-logs-archive/claude/claude-alt-api",
+      "config_dir": "/home/testuser/.ai-logs-archive/claude/claude-alt-api",
       "sessions": 1,
       "files": {
         "main": 1
@@ -2060,7 +2060,7 @@
       "grand_total": 0
     },
     {
-      "config_dir": "/home/phantomcore/.ai-logs-archive/claude/claude-it",
+      "config_dir": "/home/testuser/.ai-logs-archive/claude/claude-it",
       "sessions": 2,
       "files": {
         "subagent": 1,
@@ -2092,7 +2092,7 @@
       "grand_total": 0
     },
     {
-      "config_dir": "/home/phantomcore/.ai-logs-archive/claude/my-claude",
+      "config_dir": "/home/testuser/.ai-logs-archive/claude/my-claude",
       "sessions": 6,
       "files": {
         "main": 6,
@@ -2124,7 +2124,7 @@
       "grand_total": 0
     },
     {
-      "config_dir": "/home/phantomcore/Desktop/standout_clean/.claude",
+      "config_dir": "/home/testuser/Desktop/standout_clean/.claude",
       "sessions": 420,
       "files": {
         "main": 420
@@ -2155,7 +2155,7 @@
       "grand_total": 0
     },
     {
-      "config_dir": "/home/phantomcore/Desktop/standout_full/.claude",
+      "config_dir": "/home/testuser/Desktop/standout_full/.claude",
       "sessions": 805,
       "files": {
         "main": 805
@@ -2186,7 +2186,7 @@
       "grand_total": 0
     },
     {
-      "config_dir": "/home/phantomcore/Desktop/standout_max/.claude",
+      "config_dir": "/home/testuser/Desktop/standout_max/.claude",
       "sessions": 805,
       "files": {
         "main": 805
@@ -2217,7 +2217,7 @@
       "grand_total": 0
     },
     {
-      "config_dir": "/home/phantomcore/Desktop/standout_sandbox/.claude",
+      "config_dir": "/home/testuser/Desktop/standout_sandbox/.claude",
       "sessions": 576,
       "files": {
         "main": 576,

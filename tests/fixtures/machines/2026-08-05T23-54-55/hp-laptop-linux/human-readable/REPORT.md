@@ -46,10 +46,10 @@ from a tool that was never used.
 
 | Tool | Directory | Files | Token usage on disk |
 |---|---|---:|---|
-| Gemini CLI | `/home/phantomcore/.gemini` | 942 | **no — not countable** |
-| GitHub Copilot CLI | `/home/phantomcore/.copilot` | 557 | **no — not countable** |
-| Antigravity CLI | `/home/phantomcore/.antigravitycli` | 1 | **no — not countable** |
-| OpenAI Codex CLI | `/home/phantomcore/.codex` | 5 | yes — countable |
+| Gemini CLI | `/home/testuser/.gemini` | 942 | **no — not countable** |
+| GitHub Copilot CLI | `/home/testuser/.copilot` | 557 | **no — not countable** |
+| Antigravity CLI | `/home/testuser/.antigravitycli` | 1 | **no — not countable** |
+| OpenAI Codex CLI | `/home/testuser/.codex` | 5 | yes — countable |
 
 ## Authentication and organization
 
@@ -71,7 +71,7 @@ linked to an account only when their organization UUIDs match.
 
 ### broodierchip@gmail.com
 
-**5,547,678,789 tokens** (5.55B) — `/home/phantomcore/.claude`
+**5,547,678,789 tokens** (5.55B) — `/home/testuser/.claude`
 
 userID `9fe225ab991233bf703aa663b6bf06bb04ddab782025753b968e194eeb2b0173`
 
@@ -94,18 +94,18 @@ Active 2026-05-04 → 2026-07-02 (21 days). Busiest day 2026-05-13 at 1.13B.
 
 | Project | Total |
 |---|---:|
-| `-media-phantomcore-AI-DRIVE-DeepSeek-work-deepseek-claude-code` | 1.36B |
-| `-media-phantomcore-AI-DRIVE-DeepSeek-work-my-claude-seek-deepseek-bug-finder` | 710.82M |
-| `-media-phantomcore-AI-DRIVE-AI-Shit-mining-Quest-coder-Claude-Code` | 605.93M |
-| `-media-phantomcore-AI-DRIVE-DeepSeek-work-my-claude-seek-claude` | 585.78M |
-| `-media-phantomcore-AI-DRIVE-DeepSeek-work-reddit` | 406.17M |
-| `-media-phantomcore-AI-DRIVE-Contra` | 372.65M |
-| `-media-phantomcore-AI-DRIVE-hackathons-Slack` | 366.01M |
-| `-media-phantomcore-AI-DRIVE-hackathons-mind` | 333.77M |
+| `-media-testuser-AI-DRIVE-DeepSeek-work-deepseek-claude-code` | 1.36B |
+| `-media-testuser-AI-DRIVE-DeepSeek-work-my-claude-seek-deepseek-bug-finder` | 710.82M |
+| `-media-testuser-AI-DRIVE-AI-Shit-mining-Quest-coder-Claude-Code` | 605.93M |
+| `-media-testuser-AI-DRIVE-DeepSeek-work-my-claude-seek-claude` | 585.78M |
+| `-media-testuser-AI-DRIVE-DeepSeek-work-reddit` | 406.17M |
+| `-media-testuser-AI-DRIVE-Contra` | 372.65M |
+| `-media-testuser-AI-DRIVE-hackathons-Slack` | 366.01M |
+| `-media-testuser-AI-DRIVE-hackathons-mind` | 333.77M |
 
 ### codehunterextreme@gmail.com
 
-**3,640,123,785 tokens** (3.64B) — `/home/phantomcore/.claude-alt`
+**3,640,123,785 tokens** (3.64B) — `/home/testuser/.claude-alt`
 
 userID `7332676f0b84f06017ed5ef60ae6c498a7f6b1ea73c9ab98be498d78883ab952`
 
@@ -126,18 +126,18 @@ Active 2026-06-21 → 2026-08-06 (30 days). Busiest day 2026-08-04 at 992.88M.
 
 | Project | Total |
 |---|---:|
-| `-media-phantomcore-AI-DRIVE-AI-Shit-mining-Quest-coder-Claude-Code` | 2.03B |
-| `-media-phantomcore-AI-DRIVE-VORTEX-SYSTEM` | 613.72M |
-| `-media-phantomcore-AI-DRIVE-Transcribing` | 292.58M |
-| `-media-phantomcore-AI-DRIVE-AI-Shit-mining-Quest-coder` | 248.72M |
-| `-media-phantomcore-AI-DRIVE-pip` | 201.96M |
-| `-media-phantomcore-AI-DRIVE-hackathons-mantle` | 161.67M |
-| `-home-phantomcore` | 72.00M |
-| `-media-phantomcore-AI-DRIVE-hackathons-tierva` | 12.27M |
+| `-media-testuser-AI-DRIVE-AI-Shit-mining-Quest-coder-Claude-Code` | 2.03B |
+| `-media-testuser-AI-DRIVE-VORTEX-SYSTEM` | 613.72M |
+| `-media-testuser-AI-DRIVE-Transcribing` | 292.58M |
+| `-media-testuser-AI-DRIVE-AI-Shit-mining-Quest-coder` | 248.72M |
+| `-media-testuser-AI-DRIVE-pip` | 201.96M |
+| `-media-testuser-AI-DRIVE-hackathons-mantle` | 161.67M |
+| `-home-testuser` | 72.00M |
+| `-media-testuser-AI-DRIVE-hackathons-tierva` | 12.27M |
 
 ### user:73ae64bf180b
 
-**1,409,787,623 tokens** (1.41B) — `/home/phantomcore/.my-claude`
+**1,409,787,623 tokens** (1.41B) — `/home/testuser/.my-claude`
 
 userID `73ae64bf180bd1e9d1fd095bb0126c740a00c47d248a47e830ed9f2af12201b5`
 
@@ -156,18 +156,18 @@ Active 2026-05-12 → 2026-07-20 (22 days). Busiest day 2026-05-13 at 279.14M.
 
 | Project | Total |
 |---|---:|
-| `-media-phantomcore-AI-DRIVE-DeepSeek-work-my-claude-seek-claude` | 694.60M |
-| `-media-phantomcore-AI-DRIVE-DeepSeek-work-my-claude-seek-just-agents` | 161.79M |
-| `-media-phantomcore-AI-DRIVE-DeepSeek-work-my-claude-seek-deepseek-bug-finder` | 152.83M |
-| `-media-phantomcore-AI-DRIVE-hackathons-ai-ml-hack-2026` | 135.94M |
-| `-media-phantomcore-AI-DRIVE-VORTEX-SYSTEM-deepseek` | 99.61M |
-| `-media-phantomcore-AI-DRIVE-pip` | 39.65M |
-| `-media-phantomcore-AI-DRIVE-DeepSeek-work` | 35.08M |
-| `-media-phantomcore-AI-DRIVE-DeepSeek-work-my-claude-seek-reddit` | 32.85M |
+| `-media-testuser-AI-DRIVE-DeepSeek-work-my-claude-seek-claude` | 694.60M |
+| `-media-testuser-AI-DRIVE-DeepSeek-work-my-claude-seek-just-agents` | 161.79M |
+| `-media-testuser-AI-DRIVE-DeepSeek-work-my-claude-seek-deepseek-bug-finder` | 152.83M |
+| `-media-testuser-AI-DRIVE-hackathons-ai-ml-hack-2026` | 135.94M |
+| `-media-testuser-AI-DRIVE-VORTEX-SYSTEM-deepseek` | 99.61M |
+| `-media-testuser-AI-DRIVE-pip` | 39.65M |
+| `-media-testuser-AI-DRIVE-DeepSeek-work` | 35.08M |
+| `-media-testuser-AI-DRIVE-DeepSeek-work-my-claude-seek-reddit` | 32.85M |
 
 ### broodierchip@gmail.com
 
-**488,276,416 tokens** (488.28M) — `/home/phantomcore/Desktop/standout_clean/.claude`
+**488,276,416 tokens** (488.28M) — `/home/testuser/Desktop/standout_clean/.claude`
 
 userID `9fe225ab991233bf703aa663b6bf06bb04ddab782025753b968e194eeb2b0173`
 
@@ -185,18 +185,18 @@ Active 2026-06-27 → 2026-07-04 (7 days). Busiest day 2026-06-29 at 350.33M.
 
 | Project | Total |
 |---|---:|
-| `alt__-media-phantomcore-AI-DRIVE-pip` | 358.24M |
-| `alt__-media-phantomcore-AI-DRIVE-pip__c9b9dba0-12af-4bbc-975b-6a4dc2996eaa__subagents` | 86.87M |
-| `alt__-media-phantomcore-AI-DRIVE-pip__314e21c5-cdf8-4a5b-a667-2d2f2b44eb05__subagents` | 39.13M |
-| `alt__-home-phantomcore--claude-meta-teams-smoke-mixed-workdirs-t-claude` | 2.12M |
-| `alt__-home-phantomcore` | 1.40M |
-| `alt__-tmp-claude-1000--media-phantomcore-AI-DRIVE-pip-c9b9dba0-12af-4bbc-975b-6a4dc2996eaa-scratchpad-live-schema-check` | 328.11K |
-| `alt__-tmp-claude-1000--media-phantomcore-AI-DRIVE-pip-c9b9dba0-12af-4bbc-975b-6a4dc2996eaa-scratchpad` | 92.61K |
-| `alt__-media-phantomcore-AI-DRIVE-fable` | 88.21K |
+| `alt__-media-testuser-AI-DRIVE-pip` | 358.24M |
+| `alt__-media-testuser-AI-DRIVE-pip__c9b9dba0-12af-4bbc-975b-6a4dc2996eaa__subagents` | 86.87M |
+| `alt__-media-testuser-AI-DRIVE-pip__314e21c5-cdf8-4a5b-a667-2d2f2b44eb05__subagents` | 39.13M |
+| `alt__-home-testuser--claude-meta-teams-smoke-mixed-workdirs-t-claude` | 2.12M |
+| `alt__-home-testuser` | 1.40M |
+| `alt__-tmp-claude-1000--media-testuser-AI-DRIVE-pip-c9b9dba0-12af-4bbc-975b-6a4dc2996eaa-scratchpad-live-schema-check` | 328.11K |
+| `alt__-tmp-claude-1000--media-testuser-AI-DRIVE-pip-c9b9dba0-12af-4bbc-975b-6a4dc2996eaa-scratchpad` | 92.61K |
+| `alt__-media-testuser-AI-DRIVE-fable` | 88.21K |
 
 ### broodierchip@gmail.com
 
-**329,613,027 tokens** (329.61M) — `/home/phantomcore/Desktop/standout_full/.claude`
+**329,613,027 tokens** (329.61M) — `/home/testuser/Desktop/standout_full/.claude`
 
 userID `9fe225ab991233bf703aa663b6bf06bb04ddab782025753b968e194eeb2b0173`
 
@@ -215,18 +215,18 @@ Active 2026-06-27 → 2026-07-02 (5 days). Busiest day 2026-06-27 at 311.32M.
 
 | Project | Total |
 |---|---:|
-| `alt__-media-phantomcore-AI-DRIVE-hackathons-CodeCrusher__00e1fa7b-fc1e-48a9-b4a6-1f1eff13e305__subagents__workflows__wf_c2496bae-446` | 162.13M |
-| `alt__-media-phantomcore-AI-DRIVE-VORTEX-SYSTEM` | 54.90M |
-| `alt__-media-phantomcore-AI-DRIVE-VORTEX-SYSTEM__6e61c0f7-6283-4005-b056-8aacc175c5d3__subagents__workflows__wf_480a8ff7-e32` | 51.72M |
-| `alt__-media-phantomcore-AI-DRIVE-hackathons-CodeCrusher__bcd58245-691e-490c-950b-c2bc992ebe2a__subagents__workflows__wf_30d16dcc-5ca` | 25.54M |
-| `alt__-media-phantomcore-AI-DRIVE-hackathons-CodeCrusher` | 16.00M |
-| `alt__-media-phantomcore-AI-DRIVE-VORTEX-SYSTEM__6e61c0f7-6283-4005-b056-8aacc175c5d3__subagents__workflows__wf_0a13dde3-04a` | 5.55M |
-| `alt__-media-phantomcore-AI-DRIVE-VORTEX-SYSTEM__6e61c0f7-6283-4005-b056-8aacc175c5d3__subagents__workflows__wf_3470e2d8-ac5` | 4.20M |
-| `alt__-media-phantomcore-AI-DRIVE-hackathons-CodeCrusher__00e1fa7b-fc1e-48a9-b4a6-1f1eff13e305__subagents` | 4.18M |
+| `alt__-media-testuser-AI-DRIVE-hackathons-CodeCrusher__00e1fa7b-fc1e-48a9-b4a6-1f1eff13e305__subagents__workflows__wf_c2496bae-446` | 162.13M |
+| `alt__-media-testuser-AI-DRIVE-VORTEX-SYSTEM` | 54.90M |
+| `alt__-media-testuser-AI-DRIVE-VORTEX-SYSTEM__6e61c0f7-6283-4005-b056-8aacc175c5d3__subagents__workflows__wf_480a8ff7-e32` | 51.72M |
+| `alt__-media-testuser-AI-DRIVE-hackathons-CodeCrusher__bcd58245-691e-490c-950b-c2bc992ebe2a__subagents__workflows__wf_30d16dcc-5ca` | 25.54M |
+| `alt__-media-testuser-AI-DRIVE-hackathons-CodeCrusher` | 16.00M |
+| `alt__-media-testuser-AI-DRIVE-VORTEX-SYSTEM__6e61c0f7-6283-4005-b056-8aacc175c5d3__subagents__workflows__wf_0a13dde3-04a` | 5.55M |
+| `alt__-media-testuser-AI-DRIVE-VORTEX-SYSTEM__6e61c0f7-6283-4005-b056-8aacc175c5d3__subagents__workflows__wf_3470e2d8-ac5` | 4.20M |
+| `alt__-media-testuser-AI-DRIVE-hackathons-CodeCrusher__00e1fa7b-fc1e-48a9-b4a6-1f1eff13e305__subagents` | 4.18M |
 
 ### alexander.sorrell.it@gmail.com
 
-**83,212,683 tokens** (83.21M) — `/home/phantomcore/.claude-it`
+**83,212,683 tokens** (83.21M) — `/home/testuser/.claude-it`
 
 userID `53a6fc28c93264480360b0eac01b9f6ce310137e8581f22ff931dbaa003fd4fe`
 
@@ -244,12 +244,12 @@ Active 2026-06-09 → 2026-06-10 (2 days). Busiest day 2026-06-09 at 52.14M.
 
 | Project | Total |
 |---|---:|
-| `-home-phantomcore` | 53.10M |
-| `-media-phantomcore-AI-DRIVE-hackathons-DeveloperWeek-New-York-2026-Hackathon` | 30.11M |
+| `-home-testuser` | 53.10M |
+| `-media-testuser-AI-DRIVE-hackathons-DeveloperWeek-New-York-2026-Hackathon` | 30.11M |
 
 ### user:4be462f3a2f9
 
-**437,619 tokens** (437.62K) — `/home/phantomcore/.claude-alt-api`
+**437,619 tokens** (437.62K) — `/home/testuser/.claude-alt-api`
 
 userID `4be462f3a2f9620e57e7f032c0d9b4a5005f30e7373904a9f7448a1fbface369`
 
@@ -266,16 +266,16 @@ Active 2026-06-09 → 2026-06-09 (1 days). Busiest day 2026-06-09 at 437.62K.
 
 | Project | Total |
 |---|---:|
-| `-media-phantomcore-AI-DRIVE-DeepSeek-work-my-claude-seek-fable` | 437.62K |
+| `-media-testuser-AI-DRIVE-DeepSeek-work-my-claude-seek-fable` | 437.62K |
 
 ### broodierchip@gmail.com
 
-**0 tokens** (0) — `/home/phantomcore/Desktop/standout_max/.claude`
+**0 tokens** (0) — `/home/testuser/Desktop/standout_max/.claude`
 
 userID `9fe225ab991233bf703aa663b6bf06bb04ddab782025753b968e194eeb2b0173`
 
 ### broodierchip@gmail.com
 
-**0 tokens** (0) — `/home/phantomcore/Desktop/standout_sandbox/.claude`
+**0 tokens** (0) — `/home/testuser/Desktop/standout_sandbox/.claude`
 
 userID `9fe225ab991233bf703aa663b6bf06bb04ddab782025753b968e194eeb2b0173`

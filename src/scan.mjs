@@ -142,7 +142,13 @@ export function creditUsage(seen, id, usage) {
     if (cur[k] > prev[k]) {
       delta[k] = cur[k] - prev[k];
       prev[k] = cur[k];
+    } else if (cur[k] < prev[k]) {
+      // Token count decreased — this indicates log corruption or out-of-order
+      // processing. Do NOT silently drop tokens. Credit the difference as zero
+      // but warn so the caller knows data integrity is compromised.
+      console.warn(`Warning: Token count for ${k} decreased from ${prev[k]} to ${cur[k]} for session ${id}`);
     }
+    // If equal, no delta needed (already counted)
   }
   return delta;
 }

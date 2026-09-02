@@ -224,8 +224,15 @@ function listDirs(p) {
   try { names = readdirSync(p).sort(); } catch { return []; }
   return names.map((n) => join(p, n)).filter(isDir);
 }
-function readTextSafe(p) {
-  try { return readFileSync(p, "utf-8"); } catch { return null; }
+function readTextSafe(p, maxBytes = 10 * 1024 * 1024) {
+  try {
+    const stat = statSync(p);
+    if (stat.size > maxBytes) {
+      console.warn(`Warning: File ${p} exceeds ${maxBytes / 1024 / 1024}MB limit, skipping`);
+      return null;
+    }
+    return readFileSync(p, "utf-8");
+  } catch { return null; }
 }
 function walkFiles(base, cb, depth = 16) {
   if (depth < 0) return;
@@ -334,6 +341,8 @@ export function toolRoots(home, rels) {
 function* geminiDocs(text) {
   // Whole-file JSON, or JSONL where each line is a full session doc or a bare
   // message record. Unparseable lines are skipped, never abort the file.
+  // Line length limit to prevent DoS (1MB per line max)
+  const MAX_LINE_LENGTH = 1024 * 1024;
   try {
     const d = JSON.parse(text);
     if (d && typeof d === "object" && !Array.isArray(d)) yield d;
@@ -344,6 +353,11 @@ function* geminiDocs(text) {
   for (let line of text.split("\n")) {
     line = line.trim();
     if (!line) continue;
+    // Skip excessively long lines (DoS protection)
+    if (line.length > MAX_LINE_LENGTH) {
+      console.warn(`Warning: Skipping line exceeding ${MAX_LINE_LENGTH / 1024 / 1024}MB`);
+      continue;
+    }
     let o;
     try { o = JSON.parse(line); } catch { continue; }
     if (!o || typeof o !== "object" || Array.isArray(o)) continue;
@@ -443,8 +457,14 @@ function readCopilot(home, base) {
     for (const f of files.sort()) {
       const text = readTextSafe(f);
       if (text === null) continue;
+      const MAX_LINE_LENGTH = 1024 * 1024;
       for (const line of text.split("\n")) {
         if (!line.includes('"timestamp"')) continue;
+        // Skip excessively long lines (DoS protection)
+        if (line.length > MAX_LINE_LENGTH) {
+          console.warn(`Warning: Skipping line exceeding ${MAX_LINE_LENGTH / 1024 / 1024}MB`);
+          continue;
+        }
         let o;
         try { o = JSON.parse(line); } catch { continue; }
         if (!o || typeof o !== "object") continue;
@@ -512,8 +532,14 @@ function readGrok(home, base) {
     const rec = mkRec("grok", basename(sdir), "grok (local)", maskPath(project));
     const text = readTextSafe(f);
     if (text === null) continue;
+    const MAX_LINE_LENGTH = 1024 * 1024;
     for (const line of text.split("\n")) {
       if (!line.trim()) continue;
+      // Skip excessively long lines (DoS protection)
+      if (line.length > MAX_LINE_LENGTH) {
+        console.warn(`Warning: Skipping line exceeding ${MAX_LINE_LENGTH / 1024 / 1024}MB`);
+        continue;
+      }
       let o;
       try { o = JSON.parse(line); } catch { continue; }
       if (!o || typeof o !== "object") continue;

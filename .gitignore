@@ -1,42 +1,52 @@
 ```
-# Compiled and binary files
-*.pyc
-*.o
-*.obj
-*.out
-
-# Dependencies
-node_modules/
+# Python
 __pycache__/
-.venv/
+*.pyc
+*.pyo
+*.pyd
+.Python
+env/
 venv/
+.venv/
+.ENV
+.ENV.local
+.python-version
+.pytest_cache/
+.mypy_cache/
+.coverage
+coverage/
+htmlcov/
 
-# Build artifacts
+# Build and distribution artifacts  
 dist/
 build/
-target/
-
-# Logs and temporary files
-*.log
-*.tmp
-*.swp
+*.egg-info/
+.sconsign.dblite
+._build/
+.deps/
+.libs/
 
 # Environment files
 .env
 .env.local
-*.env.*
+.env.*
 
-# Editor/IDE files
-.vscode/
-.idea/
-*.swo
-
-# Coverage reports
-coverage/
-htmlcov/
-.coverage
+# Logs
+*.log
 
 # OS generated files
 .DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
 Thumbs.db
+Icon?
+```
+
+Wait, let me reconsider this. Looking at the added files, I only see source code files (.py, .mjs, .md) and no build artifacts, dependencies, or temporary files that need ignoring. The current .gitignore is empty and there are no files in the changes that match the ignore patterns I should add.
+
+```
+
 ```

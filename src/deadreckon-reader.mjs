@@ -1,191 +1,162 @@
-import fs from 'fs';
-import path from 'path';
+/**
+ * Deadreckon Reader Module - Reads Deadreckon corpus files for Starreckon.
+ * Handles malformed lines, missing fields, and schema validation.
+ * Falls back to generic mode if models/daemons config is missing.
+ */
+import { readFileSync, existsSync } from 'fs';
+import { resolve, dirname } from 'path';
 
 /**
- * Reader for Deadreckon-Count machine-readable corpus files.
- * Allows Starreckon to import and verify totals from existing Deadreckon outputs
- * when raw session logs are unavailable or archived.
+ * Read a Deadreckon corpus file (JSONL format)
+ * @param {string} filepath - Path to corpus file
+ * @returns {Array} Array of parsed entries
  */
-
-export async function readDeadreckonCorpus(corpusPath) {
-    const machineReadablePath = path.join(corpusPath, 'machine-readable');
-    const sessionsFile = path.join(machineReadablePath, 'sessions.json');
-    const totalsFile = path.join(machineReadablePath, 'totals.json');
-
-    if (!fs.existsSync(sessionsFile)) {
-        throw new Error(`Deadreckon sessions.json not found at ${sessionsFile}`);
-    }
-
-    let sessionsData;
-    try {
-        const sessionsContent = fs.readFileSync(sessionsFile, 'utf8');
-        // Limit file size to prevent DoS (10MB max)
-        if (sessionsContent.length > 10 * 1024 * 1024) {
-            throw new Error('Sessions file exceeds 10MB limit');
-        }
-        sessionsData = JSON.parse(sessionsContent);
-    } catch (err) {
-        if (err instanceof SyntaxError) {
-            throw new Error(`Invalid JSON in sessions file: ${err.message}`);
-        }
-        throw err;
+export function readDeadreckonCorpus(filepath) {
+    const absPath = resolve(filepath);
+    
+    if (!existsSync(absPath)) {
+        console.error(`Error: Corpus file not found: ${absPath}`);
+        return [];
     }
     
-    let totalsData = null;
-    if (fs.existsSync(totalsFile)) {
+    const content = readFileSync(absPath, 'utf-8');
+    const lines = content.split('\n').filter(l => l.trim());
+    const entries = [];
+    let errors = 0;
+    
+    for (let i = 0; i < lines.length; i++) {
+        const line = lines[i].trim();
+        if (!line) continue;
+        
         try {
-            const totalsContent = fs.readFileSync(totalsFile, 'utf8');
-            if (totalsContent.length > 10 * 1024 * 1024) {
-                throw new Error('Totals file exceeds 10MB limit');
+            const entry = JSON.parse(line);
+            
+            // Validate minimal schema
+            if (!entry.id || !entry.source_path) {
+                console.error(`Warning: Line ${i + 1} missing required fields (id, source_path), skipping`);
+                errors++;
+                continue;
             }
-            totalsData = JSON.parse(totalsContent);
-        } catch (err) {
-            if (err instanceof SyntaxError) {
-                throw new Error(`Invalid JSON in totals file: ${err.message}`);
+            
+            // Normalize tool_origin if missing
+            if (!entry.tool_origin) {
+                entry.tool_origin = 'deadreckon';
             }
-            throw err;
+            
+            // Ensure counts object exists with defaults
+            if (!entry.counts) {
+                entry.counts = {
+                    raw_chars: 0,
+                    raw_tokens_est: 0,
+                    model_specific_tokens: null,
+                    model_name: 'generic'
+                };
+            }
+            
+            entries.push(entry);
+            
+        } catch (e) {
+            console.error(`Warning: Line ${i + 1} malformed JSON: ${e.message}, skipping`);
+            errors++;
+            continue;
         }
     }
-
-    // Handle both array format and object with sessions property
-    const sessions = Array.isArray(sessionsData) ? sessionsData : (sessionsData.sessions || []);
     
-    const transformedSessions = sessions.map(session => {
-        // Validate session_id - reject null/undefined
-        const sessionId = session.session_id || session.id;
-        if (!sessionId) {
-            console.warn('Warning: Skipping session with missing session_id');
-            return null;
-        }
-        
-        // Safely extract token counts with validation
-        const inputTokens = session.tokens?.input_tokens ?? session.input_tokens ?? 0;
-        const outputTokens = session.tokens?.output_tokens ?? session.output_tokens ?? 0;
-        const cacheCreationTokens = session.tokens?.cache_creation_input_tokens ?? session.cache_creation_input_tokens ?? 0;
-        const cacheReadTokens = session.tokens?.cache_read_input_tokens ?? session.cache_read_input_tokens ?? 0;
-        
-        // Validate and sanitize token values
-        const sanitizeTokenCount = (val, fieldName) => {
-            if (typeof val !== 'number' || !Number.isFinite(val)) {
-                console.warn(`Warning: Invalid ${fieldName} value: ${val}, using 0`);
-                return 0;
-            }
-            // Reject negative tokens
-            if (val < 0) {
-                console.warn(`Warning: Negative ${fieldName} value: ${val}, using 0`);
-                return 0;
-            }
-            // Round floats to integers
-            if (!Number.isInteger(val)) {
-                console.warn(`Warning: Float ${fieldName} value: ${val}, rounding to ${Math.round(val)}`);
-                return Math.round(val);
-            }
-            // Check for unsafe integers
-            if (!Number.isSafeInteger(val)) {
-                console.warn(`Warning: Unsafe integer ${fieldName}: ${val}, capping at MAX_SAFE_INTEGER`);
-                return Number.MAX_SAFE_INTEGER;
-            }
-            return val;
-        };
-        
-        const safeInput = sanitizeTokenCount(inputTokens, 'input_tokens');
-        const safeOutput = sanitizeTokenCount(outputTokens, 'output_tokens');
-        const safeCacheCreation = sanitizeTokenCount(cacheCreationTokens, 'cache_creation_input_tokens');
-        const safeCacheRead = sanitizeTokenCount(cacheReadTokens, 'cache_read_input_tokens');
-        
-        // Sanitize model name (limit length to prevent DoS)
-        let modelName = session.model || 'unknown';
-        if (typeof modelName !== 'string') {
-            modelName = String(modelName);
-        }
-        if (modelName.length > 1024) {
-            console.warn(`Warning: Truncating long model name (${modelName.length} chars)`);
-            modelName = modelName.substring(0, 1024);
-        }
-        
-        return {
-            id: sessionId,
-            provider: session.provider || detectProviderFromModel(modelName),
-            model: modelName,
-            timestamp: session.timestamp || session.date || session.start,
-            tokens: {
-                input: safeInput,
-                output: safeOutput,
-                cacheCreation: safeCacheCreation,
-                cacheRead: safeCacheRead,
-                total: safeInput + safeOutput + safeCacheCreation + safeCacheRead
-            },
-            cost: typeof session.total_cost === 'number' ? session.total_cost : 
-                  typeof session.cost === 'number' ? session.cost : 0,
-            sourceFile: sessionsFile,
-            redacted: false
-        };
-    }).filter(s => s !== null); // Remove sessions with missing IDs
+    console.error(`Read ${entries.length} entries from ${absPath} (${errors} errors)`);
+    return entries;
+}
 
-    return {
-        sessions: transformedSessions,
-        totals: totalsData ? {
-            totalTokens: totalsData.anthropic_only_tokens || 
-                        totalsData.total_tokens || 
-                        (totalsData.grand_total && totalsData.grand_total.total_tokens) || 0,
-            totalCost: totalsData.total_cost || 
-                      (totalsData.grand_total && totalsData.grand_total.total_cost) || 0,
-            sessionCount: totalsData.session_count || 
-                         (totalsData.grand_total && totalsData.grand_total.session_count) || sessions.length,
-            byProvider: totalsData.by_provider || totalsData.byProvider || {},
-            byModel: totalsData.by_model || totalsData.byModel || {}
-        } : calculateTotals(transformedSessions),
-        source: 'deadreckon-corpus',
-        importedAt: new Date().toISOString()
+/**
+ * Compare Starreckon results against Deadreckon corpus
+ * @param {Array} srEntries - Starreckon entries
+ * @param {Array} drEntries - Deadreckon entries
+ * @returns {Object} Comparison report
+ */
+export function compareCorpora(srEntries, drEntries) {
+    const drMap = new Map(drEntries.map(e => [e.id, e]));
+    
+    const report = {
+        matches: 0,
+        mismatches: 0,
+        missingInSR: 0,
+        missingInDR: 0,
+        discrepancies: []
     };
-}
-
-function detectProviderFromModel(modelName) {
-    if (!modelName) return 'unknown';
-    const lower = modelName.toLowerCase();
     
-    if (lower.includes('claude') || lower.includes('anthropic')) return 'claude-code';
-    if (lower.includes('gemini')) return 'gemini-cli';
-    if (lower.includes('copilot') || lower.includes('gpt-4')) return 'copilot-cli';
-    if (lower.includes('cline')) return 'cline';
-    
-    return 'unknown';
-}
-
-function calculateTotals(sessions) {
-    let totalTokens = 0;
-    let totalCost = 0;
-    const byProvider = {};
-    const byModel = {};
-
-    for (const session of sessions) {
-        totalTokens += session.tokens.total;
-        totalCost += session.cost;
-
-        // Aggregate by provider
-        if (!byProvider[session.provider]) {
-            byProvider[session.provider] = { tokens: 0, cost: 0, sessions: 0 };
+    // Check DR entries against SR
+    for (const [id, drEntry] of drMap) {
+        const srEntry = srEntries.find(e => e.id === id);
+        
+        if (!srEntry) {
+            report.missingInSR++;
+            continue;
         }
-        byProvider[session.provider].tokens += session.tokens.total;
-        byProvider[session.provider].cost += session.cost;
-        byProvider[session.provider].sessions += 1;
-
-        // Aggregate by model
-        if (!byModel[session.model]) {
-            byModel[session.model] = { tokens: 0, cost: 0, sessions: 0 };
+        
+        const drTokens = drEntry.counts?.raw_tokens_est || 0;
+        const srTokens = srEntry.counts?.raw_tokens_est || 0;
+        
+        if (drTokens === srTokens) {
+            report.matches++;
+        } else {
+            report.mismatches++;
+            report.discrepancies.push({
+                id,
+                deadreckon: drTokens,
+                starreckon: srTokens,
+                diff: Math.abs(drTokens - srTokens)
+            });
+            console.error(`Mismatch for ${id}: DR=${drTokens}, SR=${srTokens}`);
         }
-        byModel[session.model].tokens += session.tokens.total;
-        byModel[session.model].cost += session.cost;
-        byModel[session.model].sessions += 1;
     }
-
-    return {
-        totalTokens,
-        totalCost,
-        sessionCount: sessions.length,
-        byProvider,
-        byModel
-    };
+    
+    // Check for SR entries not in DR
+    for (const srEntry of srEntries) {
+        if (!drMap.has(srEntry.id)) {
+            report.missingInDR++;
+        }
+    }
+    
+    return report;
 }
 
-export default readDeadreckonCorpus;
+/**
+ * Generic token counter fallback when models/daemons unavailable
+ * @param {string} text - Input text
+ * @returns {number} Estimated token count
+ */
+export function genericTokenCount(text) {
+    if (!text || typeof text !== 'string') return 0;
+    // Simple whitespace-based estimation
+    return text.split(/\s+/).filter(w => w.length > 0).length;
+}
+
+/**
+ * Check if models/daemons configuration exists
+ * @returns {boolean} True if configured, false for generic mode
+ */
+export function hasModelConfig() {
+    const modelPaths = [
+        './models.json',
+        './config/models.json',
+        '../models.json'
+    ];
+    return modelPaths.some(p => existsSync(p));
+}
+
+// CLI usage
+if (import.meta.url === `file://${process.argv[1]}`) {
+    const args = process.argv.slice(2);
+    if (args.length < 1) {
+        console.log('Usage: node deadreckon-reader.mjs <corpus.jsonl> [compare_with.jsonl]');
+        process.exit(1);
+    }
+    
+    const drFile = args[0];
+    const entries = readDeadreckonCorpus(drFile);
+    console.log(`Successfully parsed ${entries.length} entries`);
+    
+    if (args.length > 1) {
+        // Would need SR corpus reader here for full comparison
+        console.log('Comparison mode requires Starreckon corpus integration');
+    }
+}

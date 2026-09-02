@@ -16,33 +16,111 @@ export async function readDeadreckonCorpus(corpusPath) {
         throw new Error(`Deadreckon sessions.json not found at ${sessionsFile}`);
     }
 
-    const sessionsData = JSON.parse(fs.readFileSync(sessionsFile, 'utf8'));
-    const totalsData = fs.existsSync(totalsFile) 
-        ? JSON.parse(fs.readFileSync(totalsFile, 'utf8')) 
-        : null;
+    let sessionsData;
+    try {
+        const sessionsContent = fs.readFileSync(sessionsFile, 'utf8');
+        // Limit file size to prevent DoS (10MB max)
+        if (sessionsContent.length > 10 * 1024 * 1024) {
+            throw new Error('Sessions file exceeds 10MB limit');
+        }
+        sessionsData = JSON.parse(sessionsContent);
+    } catch (err) {
+        if (err instanceof SyntaxError) {
+            throw new Error(`Invalid JSON in sessions file: ${err.message}`);
+        }
+        throw err;
+    }
+    
+    let totalsData = null;
+    if (fs.existsSync(totalsFile)) {
+        try {
+            const totalsContent = fs.readFileSync(totalsFile, 'utf8');
+            if (totalsContent.length > 10 * 1024 * 1024) {
+                throw new Error('Totals file exceeds 10MB limit');
+            }
+            totalsData = JSON.parse(totalsContent);
+        } catch (err) {
+            if (err instanceof SyntaxError) {
+                throw new Error(`Invalid JSON in totals file: ${err.message}`);
+            }
+            throw err;
+        }
+    }
 
     // Handle both array format and object with sessions property
     const sessions = Array.isArray(sessionsData) ? sessionsData : (sessionsData.sessions || []);
     
-    const transformedSessions = sessions.map(session => ({
-        id: session.session_id || session.id,
-        provider: session.provider || detectProviderFromModel(session.model),
-        model: session.model,
-        timestamp: session.timestamp || session.date || session.start,
-        tokens: {
-            input: session.tokens?.input_tokens || session.input_tokens || 0,
-            output: session.tokens?.output_tokens || session.output_tokens || 0,
-            cacheCreation: session.tokens?.cache_creation_input_tokens || session.cache_creation_input_tokens || 0,
-            cacheRead: session.tokens?.cache_read_input_tokens || session.cache_read_input_tokens || 0,
-            total: (session.tokens?.input_tokens || session.input_tokens || 0) + 
-                   (session.tokens?.output_tokens || session.output_tokens || 0) + 
-                   (session.tokens?.cache_creation_input_tokens || session.cache_creation_input_tokens || 0) + 
-                   (session.tokens?.cache_read_input_tokens || session.cache_read_input_tokens || 0)
-        },
-        cost: session.total_cost || session.cost || 0,
-        sourceFile: sessionsFile,
-        redacted: false
-    }));
+    const transformedSessions = sessions.map(session => {
+        // Validate session_id - reject null/undefined
+        const sessionId = session.session_id || session.id;
+        if (!sessionId) {
+            console.warn('Warning: Skipping session with missing session_id');
+            return null;
+        }
+        
+        // Safely extract token counts with validation
+        const inputTokens = session.tokens?.input_tokens ?? session.input_tokens ?? 0;
+        const outputTokens = session.tokens?.output_tokens ?? session.output_tokens ?? 0;
+        const cacheCreationTokens = session.tokens?.cache_creation_input_tokens ?? session.cache_creation_input_tokens ?? 0;
+        const cacheReadTokens = session.tokens?.cache_read_input_tokens ?? session.cache_read_input_tokens ?? 0;
+        
+        // Validate and sanitize token values
+        const sanitizeTokenCount = (val, fieldName) => {
+            if (typeof val !== 'number' || !Number.isFinite(val)) {
+                console.warn(`Warning: Invalid ${fieldName} value: ${val}, using 0`);
+                return 0;
+            }
+            // Reject negative tokens
+            if (val < 0) {
+                console.warn(`Warning: Negative ${fieldName} value: ${val}, using 0`);
+                return 0;
+            }
+            // Round floats to integers
+            if (!Number.isInteger(val)) {
+                console.warn(`Warning: Float ${fieldName} value: ${val}, rounding to ${Math.round(val)}`);
+                return Math.round(val);
+            }
+            // Check for unsafe integers
+            if (!Number.isSafeInteger(val)) {
+                console.warn(`Warning: Unsafe integer ${fieldName}: ${val}, capping at MAX_SAFE_INTEGER`);
+                return Number.MAX_SAFE_INTEGER;
+            }
+            return val;
+        };
+        
+        const safeInput = sanitizeTokenCount(inputTokens, 'input_tokens');
+        const safeOutput = sanitizeTokenCount(outputTokens, 'output_tokens');
+        const safeCacheCreation = sanitizeTokenCount(cacheCreationTokens, 'cache_creation_input_tokens');
+        const safeCacheRead = sanitizeTokenCount(cacheReadTokens, 'cache_read_input_tokens');
+        
+        // Sanitize model name (limit length to prevent DoS)
+        let modelName = session.model || 'unknown';
+        if (typeof modelName !== 'string') {
+            modelName = String(modelName);
+        }
+        if (modelName.length > 1024) {
+            console.warn(`Warning: Truncating long model name (${modelName.length} chars)`);
+            modelName = modelName.substring(0, 1024);
+        }
+        
+        return {
+            id: sessionId,
+            provider: session.provider || detectProviderFromModel(modelName),
+            model: modelName,
+            timestamp: session.timestamp || session.date || session.start,
+            tokens: {
+                input: safeInput,
+                output: safeOutput,
+                cacheCreation: safeCacheCreation,
+                cacheRead: safeCacheRead,
+                total: safeInput + safeOutput + safeCacheCreation + safeCacheRead
+            },
+            cost: typeof session.total_cost === 'number' ? session.total_cost : 
+                  typeof session.cost === 'number' ? session.cost : 0,
+            sourceFile: sessionsFile,
+            redacted: false
+        };
+    }).filter(s => s !== null); // Remove sessions with missing IDs
 
     return {
         sessions: transformedSessions,

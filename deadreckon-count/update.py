@@ -82,54 +82,26 @@ def owned_folder(host):
 
 
 def guess(host):
-    """Best folder for this host: hardware UUID, registry lookup, or dynamic host slug."""
+    """Best folder for this host: exact claim, then hostname/label overlap."""
     claimed = owned_folder(host)
     if claimed:
         return claimed, "claimed by .machine-id (UUID or hostname)"
-    
-    # Check machine_registry.json for unique hardware UUID
-    try:
-        import install as _install
-        current_uuid = _install.hardware_uuid()
-    except Exception:
-        current_uuid = None
-
-    reg_file = ROOT / "machine_registry.json"
-    if reg_file.is_file() and current_uuid:
-        try:
-            reg_data = json.loads(reg_file.read_text(encoding="utf-8"))
-            if current_uuid in reg_data.get("machines", {}):
-                return reg_data["machines"][current_uuid]["folder"], "registered by hardware UUID"
-        except Exception:
-            pass
-
     reg = registered()
     hs = slug(host)
-    for e in reg:
-        if current_uuid and e.get("hardware_uuid") == current_uuid:
-            return e.get("folder"), "registered in machines.json by hardware UUID"
+    for e in reg:                       # hostname contained in folder or vice versa
         f = e.get("folder", "")
         if hs and (hs in f or f in hs):
             return f, f"hostname {host!r} matches folder"
-
-    # Default to 5-part dynamic unique hardware slug: <user>-<chassis>-<arch>-<os>-<uuid8>
-    try:
-        import platform_detect as _pd
-        pi = _pd.detect()
-        mid = (current_uuid[:8].lower() if current_uuid else None)
-        dynamic_slug = _install._suggest_folder(pi, machine_id=mid)
-    except Exception:
-        dynamic_slug = hs or slug(f"{platform.node()}-{platform.system().lower()}")
-    return dynamic_slug, "derived dynamically from 5-part hardware, user, and UUID uniqueifier"
-
-def stamp_path(stamp):
-    """`2026-08-21T17-08-14` -> `2026/08/W34/21/17-08-14` (or flat ISO if parsing fails)."""
-    import datetime
-    try:
-        d = datetime.datetime.strptime(stamp, "%Y-%m-%dT%H-%M-%S")
-        return f"{d.year:04d}/{d.month:02d}/W{d.isocalendar()[1]:02d}/{d.day:02d}/{d:%H-%M-%S}"
-    except Exception:
-        return stamp
+    # Fall back to word overlap with the label, needing at least two words to
+    # agree — one shared word ("linux", "dell") is not identification.
+    best, score = None, 0
+    hw = set(slug(host).split("-"))
+    for e in reg:
+        lw = set(slug(e.get("label", "")).split("-"))
+        n = len(hw & lw)
+        if n > score:
+            best, score = e.get("folder"), n
+    return (best, f"hostname shares {score} words with its label") if score >= 2 else (None, "")
 
 
 def archive(_folder, stamp):

@@ -1,7 +1,0 @@
-{
- "hostname": "phantom-eternal",
- "folder": "asus-laptop-linux",
- "label": "ASUS Laptop Linux",
- "platform": "Linux-6.14.0-35-generic-x86_64-with-glibc2.39",
- "hardware_uuid": "cdceeb56-f376-4e8b-8949-1360a270b285"
-}

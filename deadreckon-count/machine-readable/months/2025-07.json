@@ -1,19 +1,25 @@
 {
- "tokens": 53159,
- "sessions": 3,
- "turns": 49,
- "minutes": 0.0,
+ "tokens": 7198055,
+ "sessions": 12,
+ "turns": 195,
+ "minutes": 78.6,
  "by_cli": {
-  "lmstudio": 53159
+  "lmstudio": 172933,
+  "kilocode": 7025122
  },
  "by_machine": {
+  "HP Laptop Linux": 7144896,
   "MacBook Air M1": 53159
  },
  "by_model": {
+  "Mixtral-8x7B-Instruct-v0.1.Q6_K.gguf": 116185,
+  "deepseek-coder-6.7b-instruct.Q6_K.gguf": 3530,
+  "Llama-3-13B-Instruct-v0.1.Q4_K_S.gguf": 59,
+  "gemini-2.5-pro-preview": 7025122,
   "Wizard-Vicuna-7B-Uncensored.Q4_K_S.gguf": 37497,
   "nomic-ai-gpt4all-falcon-Q4_K_S.gguf": 15662
  },
- "first": "2025-07-03T07:40:02.682000Z",
- "last": "2025-07-04T07:49:17.357000Z",
+ "first": "2025-07-01T06:58:19.695000Z",
+ "last": "2025-07-17T07:39:00.697000Z",
  "month": "2025-07"
 }

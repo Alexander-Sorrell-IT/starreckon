@@ -45,7 +45,8 @@ FIELDS = ("input_tokens", "cache_creation_input_tokens",
 # tool's own redacted exports, and the merged tree built from them. Reading them
 # is not wrong — global dedup makes a copy contribute nothing — but walking
 # hundreds of MB to learn that is a waste, so they are skipped by name.
-COPY_DIRS = {"corpus", "merged", "token-corpus", "deadreckon-record", "deadreckon-transcripts", "node_modules", ".git",
+COPY_DIRS = {"corpus", "merged", "token-corpus", "deadreckon-record",
+             "deadreckon-transcripts", "node_modules", ".git",
              "archive", "snap", ".cache", ".local", "venv", ".venv"}
 
 

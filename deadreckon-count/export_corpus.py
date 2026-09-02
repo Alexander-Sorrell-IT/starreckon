@@ -49,7 +49,6 @@ from collections import Counter, defaultdict
 import os
 import paths
 import pathlib
-import sys
 import platform
 import re
 import shutil
@@ -1427,11 +1426,6 @@ def main():
     ap.add_argument("--archive", default="~/.ai-logs-archive/claude",
                     help="hard-link archive of transcripts Claude has since deleted "
                          "(retention_guard.py); '' to export live profiles only")
-    ap.add_argument("--exclude-profile", action="append", default=None,
-                    metavar="SUBSTRING",
-                    help="skip any profile whose path contains SUBSTRING. "
-                         "Repeatable. Default: profiles naming ANOTHER machine "
-                         "registered in this repo — pass '' to export everything")
     ap.add_argument("--archive-other", default="~/.ai-logs-archive/other",
                     help="hard-link archive for every non-Claude CLI")
     args = ap.parse_args()
@@ -1516,54 +1510,6 @@ def main():
         for prof in sorted(p for p in archive.iterdir() if p.is_dir()):
             if (prof / "projects").is_dir():
                 sources.append(prof)
-
-    # A MACHINE EXPORTS ITS OWN CONVERSATIONS AND NOBODY ELSE'S.
-    #
-    # This home holds copies of four other computers' Claude profiles, left by
-    # a pre-clone of deadreckon-record:
-    #
-    #   ~/old/deadreckon-record.pre-clone/<machine>/.claude
-    #   ~/.ai-logs-archive/claude/old_deadreckon-record.pre-clone_<machine>_.claude
-    #
-    # They are real transcripts, so every rule here admits them, and they were
-    # exported into THIS machine's corpus under this machine's name. The
-    # per-machine folder is the whole model of both repositories; a corpus that
-    # answers "what did this computer do" with another computer's work is
-    # wrong in a way no total can reveal, because the tokens are real and the
-    # sum is right.
-    #
-    # The default is derived, not a hardcoded list: any machine folder in the
-    # repo OTHER than this one contributes its own name. So a machine added
-    # later is covered without touching this code, and a profile belonging to
-    # THIS machine is never skipped by its own name.
-    _repo = pathlib.Path(__file__).resolve().parent
-    if args.exclude_profile is None:
-        mine, others = None, []
-        for cand in sorted(_repo.iterdir()) if _repo.is_dir() else []:
-            mid = cand / ".machine-id"
-            if not (cand.is_dir() and mid.is_file()):
-                continue
-            try:
-                j = json.loads(mid.read_text(encoding="utf-8"))
-            except Exception:  # noqa: BLE001
-                continue
-            if j.get("hostname") == platform.node():
-                mine = j.get("folder") or cand.name
-            else:
-                others.append(cand.name)
-        # `mine` is resolved by hostname, so a folder this machine owns is
-        # never in `others` even when the two names differ.
-        args.exclude_profile = [o for o in others if o != mine]
-    skips = [x for x in (args.exclude_profile or []) if x]
-    if skips:
-        kept = []
-        dropped = []
-        for src in sources:
-            hit = next((k for k in skips if k in str(src)), None)
-            (dropped if hit else kept).append((src, hit))
-        sources = [s_ for s_, _ in kept]
-        for src, hit in dropped:
-            print(f"  SKIPPED profile (belongs to {hit}): {src}", file=sys.stderr)
 
     for cfg in sources:
         if not (cfg / "projects").is_dir():

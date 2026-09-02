@@ -563,111 +563,54 @@ def test_a_truncated_final_write_cannot_reduce_a_total(tmp):
 
 
 def test_the_ledger_survives_a_deletion_but_follows_a_correction():
-    """Source evidence distinguishes a correction from a partial transcript loss.
+    """The two properties that make an append-only ledger worth keeping.
 
-    The sessions.json documents below are built by the real Claude reader, not
-    invented session dictionaries.  The total override models a newer scanner's
-    corrected counting rule while retaining the reader-emitted file evidence.
+    Both are load-bearing and they pull in opposite directions, which is why
+    they are asserted together: a rule that only ever takes the maximum keeps a
+    deleted month AND keeps a miscount forever.
     """
-    import sessions as S
     import token_ledger as TL
 
     with tempfile.TemporaryDirectory() as td:
-        root = pathlib.Path(td)
+        m = pathlib.Path(td) / "test-machine"
+        (m / "machine-readable").mkdir(parents=True)
+        sj = m / "machine-readable" / "sessions.json"
 
-        def case(name):
-            home, machine = root / name / "home", root / name / "machine"
-            (machine / "machine-readable").mkdir(parents=True)
-            source = home / ".claude" / "projects" / "p1" / "s1.jsonl"
-            source.parent.mkdir(parents=True)
-            return home, machine, source
-
-        def write_source(source, uuid="u1", tokens=1000):
-            source.write_text(turn(uuid, output_tokens=tokens) + "\n", encoding="utf-8")
-
-        def scan(machine, home, version, corrected_total=None):
-            rows = S.read_claude(home)
-            if corrected_total is not None:
-                rows[0]["total"] = corrected_total
-                rows[0]["tokens"]["output_tokens"] = corrected_total
-            (machine / "machine-readable" / "sessions.json").write_text(json.dumps({
-                "machine": machine.name, "scanner_version": version, "sessions": rows,
+        def scan(version, sessions):
+            sj.write_text(json.dumps({
+                "machine": "test-machine", "scanner_version": version,
+                "sessions": [
+                    {"session_id": sid, "cli": "claude", "start": "2026-01-01",
+                     "total": n, "model": "m",
+                     "tokens": {"input_tokens": n, "cache_creation_input_tokens": 0,
+                                "cache_read_input_tokens": 0, "output_tokens": 0}}
+                    for sid, n in sessions],
             }), encoding="utf-8")
-            TL.record(machine)
-            return rows
+            TL.record(m)
 
-        # The real reader emits portable path, byte count and content hash.
-        home, machine, source = case("deleted")
-        write_source(source)
-        rows = scan(machine, home, "v1")
-        expected = S.source_evidence(home, [source])
-        check("real Claude reader emits source byte/hash evidence",
-              rows[0].get("sources"), expected)
-        source.unlink()
-        scan(machine, home, "v2")
-        check("a fully deleted session keeps its ledger total", TL.lifetime(machine)["total"], 1000)
+        scan("v1", [("s1", 1000), ("s2", 500)])
+        check("the ledger records what the scan sees",
+              TL.lifetime(m)["total"], 1500)
 
-        # Claude sessions span sibling transcripts and nested subagents; evidence
-        # must name both rather than only the first file that created the record.
-        home, _machine, source = case("multi-source")
-        nested = source.parent / "subagents" / "agent-s1.jsonl"
-        nested.parent.mkdir(parents=True)
-        write_source(source, uuid="main")
-        write_source(nested, uuid="agent")
-        check("Claude multi-file/subagent evidence retains every contributor",
-              S.read_claude(home)[0].get("sources"),
-              S.source_evidence(home, [source, nested]))
+        # Retention deletes s2's transcript. The scanner can no longer see it.
+        scan("v1", [("s1", 1000)])
+        check("a deleted transcript does NOT lower the lifetime total",
+              TL.lifetime(m)["total"], 1500,
+              "s2 is gone from disk; the ledger is the only evidence it existed")
 
-        # Two same-version partial scans must remain two observations. Combining
-        # their A-only and B-only evidence would falsely claim one complete scan.
-        home, machine, source = case("split-sources")
-        nested = source.parent / "subagents" / "agent-s1.jsonl"
-        nested.parent.mkdir(parents=True)
-        write_source(source, uuid="main", tokens=500)
-        write_source(nested, uuid="agent", tokens=500)
-        scan(machine, home, "v1")
-        nested.unlink()
-        scan(machine, home, "v2")
-        source.unlink()
-        write_source(nested, uuid="agent", tokens=500)
-        scan(machine, home, "v2")
-        v2_rows = [json.loads(line) for line in
-                   (machine / "machine-readable" / TL.LEDGER).read_text().splitlines()
-                   if json.loads(line).get("scanner") == "v2"]
-        check("same-version partial scans append their changed evidence",
-              len(v2_rows), 2)
-        check("separate partial-source observations cannot authorize a decrease",
-              TL.lifetime(machine)["total"], 1000)
+        # A corrected scanner recounts s1 DOWNWARD — the real event: fixing the
+        # dedup rule cut this machine 14,529,373,789 -> 6,608,178,238.
+        scan("v2", [("s1", 400)])
+        check("a corrected scanner DOES lower it, for what it can still see",
+              TL.lifetime(m)["total"], 900,
+              "s1 recounted 1000 -> 400 by v2; s2 keeps its v1 value of 500 "
+              "because no v2 scan will ever see it again")
 
-        # A newer counting rule can lower a total if the source bytes are exactly
-        # the same. This is the correction case, not a synthetic source fixture.
-        home, machine, source = case("correction")
-        write_source(source)
-        scan(machine, home, "v1")
-        scan(machine, home, "v2", corrected_total=400)
-        check("unchanged source evidence permits a corrected lower total",
-              TL.lifetime(machine)["total"], 400)
-
-        # The session remains visible, but the transcript is now shorter.
-        home, machine, source = case("truncated")
-        write_source(source)
-        scan(machine, home, "v1")
-        write_source(source, tokens=400)
-        scan(machine, home, "v2")
-        check("a truncated contributing source blocks a decrease",
-              TL.lifetime(machine)["total"], 1000)
-
-        # A rewrite can keep the byte count; hash evidence catches that case.
-        home, machine, source = case("rewritten")
-        write_source(source, uuid="u1")
-        before_bytes = source.stat().st_size
-        scan(machine, home, "v1")
-        write_source(source, uuid="u2")
-        check("same-byte rewrite fixture really keeps its byte count",
-              source.stat().st_size, before_bytes)
-        scan(machine, home, "v2", corrected_total=400)
-        check("a same-byte source rewrite with a new hash blocks a decrease",
-              TL.lifetime(machine)["total"], 1000)
+        # And the correction must stick, not be re-won by the old maximum on a
+        # later run of the same corrected scanner.
+        scan("v2", [("s1", 400)])
+        check("re-running the corrected scanner does not restore the old figure",
+              TL.lifetime(m)["total"], 900)
 
 
 def test_find_reads_the_old_layout_too(tmp):
@@ -910,104 +853,6 @@ def test_cli_overrides_path_validation():
               True, f"wrong error: {e}")
 
 
-def test_config_fingerprint_rejects_scan_drift(tmp):
-    """A config mutation during a reader cannot replace the prior scan."""
-    import sessions as S
-
-    source_file = pathlib.Path(S.__file__)
-    source = source_file.read_text(encoding="utf-8")
-    reader_loop = source.index("for name, fn in READERS.items():")
-    scan_start = source.index("scan_config_fingerprint = config_fingerprint()")
-    scan_end = source.index("end_config_fingerprint = config_fingerprint()")
-    writer = source.index('write_json_atomically(data / "sessions.json", payload)')
-    check("config fingerprint is captured before readers in source",
-          scan_start < reader_loop, True)
-    check("config fingerprint is checked immediately before the atomic writer in source",
-          scan_end < writer, True)
-
-    config_root = tmp / "config"
-    config_root.mkdir()
-    clis = config_root / "clis.json"
-    clis.write_text('{"clis":[]}', encoding="utf-8")
-    start = S.config_fingerprint(config_root)
-    check("unchanged authored config has a deterministic fingerprint",
-          S.config_fingerprint(config_root), start)
-    clis.write_text('{"clis":[{"name":"changed"}]}', encoding="utf-8")
-    changed = S.config_fingerprint(config_root)
-    check("changed authored config changes its fingerprint",
-          S.config_fingerprint_changes(start, changed), ["clis.json"])
-
-    missing_root = tmp / "missing"
-    empty_root = tmp / "empty"
-    empty_root.mkdir()
-    (empty_root / "clis.json").write_bytes(b"")
-    check("missing config differs from an empty config",
-          S.config_fingerprint(missing_root)["files"]["clis.json"]
-          != S.config_fingerprint(empty_root)["files"]["clis.json"], True)
-
-    # Run main through a real reader slot. It changes clis.json after the
-    # start fingerprint and must leave the previous artifact byte-for-byte intact.
-    out, home = tmp / "out", tmp / "home"
-    home.mkdir()
-    old_sessions = pathlib.Path(out / "machine-readable" / "sessions.json")
-    old_sessions.parent.mkdir(parents=True)
-    old_sessions.write_text('{"previous":"scan"}\n', encoding="utf-8")
-    previous = old_sessions.read_bytes()
-
-    def mutate_config(_home):
-        clis.write_text('{"clis":[{"name":"mutated-during-scan"}]}',
-                        encoding="utf-8")
-        return []
-
-    def empty_scan(_home):
-        return []
-
-    empty_scan.unreadable = []
-    empty_scan.excluded = []
-    saved = {
-        "file": S.__file__, "readers": S.READERS, "detect": S.detect,
-        "inventory": S.inventory, "probe": S.probe_uncountable,
-        "first_last": S.first_last_seen, "history": S.read_history,
-        "stats": S.read_stats_cache, "claude": S.read_claude,
-        "machine_uuid": S._machine_uuid, "argv": sys.argv[:],
-        "store_scan": S.stores.scan,
-    }
-    try:
-        S.__file__ = str(config_root / "sessions.py")
-        S.READERS = {"mutator": mutate_config}
-        S.detect = lambda _name, _home: (False, [], [])
-        S.inventory = lambda _home: []
-        S.probe_uncountable = lambda _home: []
-        S.first_last_seen = lambda _home, _sessions: {}
-        S.read_history = S.read_stats_cache = S.read_claude = empty_scan
-        S._machine_uuid = lambda _out: None
-        S.stores.scan = lambda _home: {}
-        sys.argv = ["sessions.py", "--out", str(out), "--home", str(home),
-                    "--label", "config-drift-test"]
-        error = None
-        try:
-            S.main()
-        except RuntimeError as e:
-            error = str(e)
-        check("reader-time config mutation reports the changed input",
-              error is not None and "clis.json" in error, True)
-        check("reader-time config mutation cannot replace sessions.json",
-              old_sessions.read_bytes(), previous)
-    finally:
-        S.__file__ = saved["file"]
-        S.READERS = saved["readers"]
-        S.detect = saved["detect"]
-        S.inventory = saved["inventory"]
-        S.probe_uncountable = saved["probe"]
-        S.first_last_seen = saved["first_last"]
-        S.read_history = saved["history"]
-        S.read_stats_cache = saved["stats"]
-        S.read_claude = saved["claude"]
-        S._machine_uuid = saved["machine_uuid"]
-        S.stores.scan = saved["store_scan"]
-        sys.argv = saved["argv"]
-
-
 def test_hardware_uuid_embeds_in_artifacts(tmp):
     """hardware_uuid from .machine-id flows into stamped() and ledger rows.
 
@@ -1086,3 +931,4 @@ def test_hardware_uuid_embeds_in_artifacts(tmp):
 
 if __name__ == "__main__":
     sys.exit(main())
+

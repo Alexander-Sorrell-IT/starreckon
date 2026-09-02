@@ -1,0 +1,1621 @@
+{
+  "machine": "HP Laptop Linux",
+  "generated_at": "2026-09-01T06:48:33-05:00",
+  "scanner_version": "1db5dde1cc04",
+  "hardware_uuid": "4a5b5dc6-8401-43cb-b62b-45fa5d974c11",
+  "anthropic_only_tokens": 11016745451,
+  "by_provider": {
+    "anthropic": 11016745451,
+    "deepseek": 534671153
+  },
+  "other_tools": [
+    {
+      "vendor": "gemini",
+      "label": "Gemini CLI",
+      "dir": "/home/phantomcore/.gemini",
+      "files": 1654,
+      "records_usage": true
+    },
+    {
+      "vendor": "copilot",
+      "label": "GitHub Copilot CLI",
+      "dir": "/home/phantomcore/.copilot",
+      "files": 557,
+      "records_usage": false
+    },
+    {
+      "vendor": "antigravity",
+      "label": "Antigravity CLI",
+      "dir": "/home/phantomcore/.antigravitycli",
+      "files": 1,
+      "records_usage": false
+    },
+    {
+      "vendor": "openai",
+      "label": "OpenAI Codex CLI",
+      "dir": "/home/phantomcore/.codex",
+      "files": 5,
+      "records_usage": true
+    }
+  ],
+  "grand_total_tokens": 11551416604,
+  "excluded_profiles": [
+    {
+      "path": "/home/phantomcore/.ai-logs-archive/claude/Desktop_standout_clean_.claude",
+      "reason": "no config file of its own"
+    },
+    {
+      "path": "/home/phantomcore/.ai-logs-archive/claude/Desktop_standout_full_.claude",
+      "reason": "no config file of its own"
+    },
+    {
+      "path": "/home/phantomcore/.ai-logs-archive/claude/Desktop_standout_max_.claude",
+      "reason": "no config file of its own"
+    },
+    {
+      "path": "/home/phantomcore/.ai-logs-archive/claude/Desktop_standout_sandbox_.claude",
+      "reason": "no config file of its own"
+    },
+    {
+      "path": "/home/phantomcore/Desktop/standout_clean/.claude",
+      "reason": "no config file of its own"
+    },
+    {
+      "path": "/home/phantomcore/Desktop/standout_full/.claude",
+      "reason": "no config file of its own"
+    },
+    {
+      "path": "/home/phantomcore/Desktop/standout_max/.claude",
+      "reason": "no config file of its own"
+    },
+    {
+      "path": "/home/phantomcore/Desktop/standout_sandbox/.claude",
+      "reason": "no config file of its own"
+    },
+    {
+      "path": "/home/phantomcore/starreckon-latest/tests/conformance/home/.claude",
+      "reason": "no config file of its own"
+    }
+  ],
+  "accounts": [
+    {
+      "config_dir": "/home/phantomcore/.claude-alt",
+      "sessions": 47,
+      "files": {
+        "main": 47,
+        "workflow": 1540,
+        "subagent": 60
+      },
+      "unreadable": [],
+      "turns": 46318,
+      "totals": {
+        "input_tokens": 839584,
+        "cache_creation_input_tokens": 190910151,
+        "cache_read_input_tokens": 7828393925,
+        "output_tokens": 42332401
+      },
+      "by_kind": {
+        "main": {
+          "input_tokens": 89617,
+          "cache_creation_input_tokens": 73077759,
+          "cache_read_input_tokens": 5390107700,
+          "output_tokens": 11823309
+        },
+        "workflow": {
+          "input_tokens": 669136,
+          "cache_creation_input_tokens": 104942798,
+          "cache_read_input_tokens": 2107108535,
+          "output_tokens": 27851114
+        },
+        "subagent": {
+          "input_tokens": 80831,
+          "cache_creation_input_tokens": 12889594,
+          "cache_read_input_tokens": 331177690,
+          "output_tokens": 2657978
+        }
+      },
+      "by_provider": {
+        "anthropic": {
+          "input_tokens": 839584,
+          "cache_creation_input_tokens": 190910151,
+          "cache_read_input_tokens": 7828393925,
+          "output_tokens": 42332401
+        }
+      },
+      "by_model": {
+        "claude-opus-5": {
+          "input_tokens": 362447,
+          "cache_creation_input_tokens": 131679587,
+          "cache_read_input_tokens": 6524787700,
+          "output_tokens": 32141164
+        },
+        "claude-fable-5": {
+          "input_tokens": 41967,
+          "cache_creation_input_tokens": 43205261,
+          "cache_read_input_tokens": 1075849610,
+          "output_tokens": 7438931
+        },
+        "claude-opus-4-8": {
+          "input_tokens": 435164,
+          "cache_creation_input_tokens": 16000537,
+          "cache_read_input_tokens": 227660828,
+          "output_tokens": 2752279
+        },
+        "claude-sonnet-5": {
+          "input_tokens": 6,
+          "cache_creation_input_tokens": 24766,
+          "cache_read_input_tokens": 95787,
+          "output_tokens": 27
+        }
+      },
+      "by_day": {
+        "2026-08-19": {
+          "input_tokens": 4478,
+          "cache_creation_input_tokens": 10952471,
+          "cache_read_input_tokens": 472717975,
+          "output_tokens": 1956943
+        },
+        "2026-08-09": {
+          "input_tokens": 68889,
+          "cache_creation_input_tokens": 12819069,
+          "cache_read_input_tokens": 547280425,
+          "output_tokens": 3066850
+        },
+        "2026-08-18": {
+          "input_tokens": 5054,
+          "cache_creation_input_tokens": 7693297,
+          "cache_read_input_tokens": 525007626,
+          "output_tokens": 2397715
+        },
+        "2026-08-13": {
+          "input_tokens": 47,
+          "cache_creation_input_tokens": 168824,
+          "cache_read_input_tokens": 1664756,
+          "output_tokens": 49717
+        },
+        "2026-08-17": {
+          "input_tokens": 1618,
+          "cache_creation_input_tokens": 2491616,
+          "cache_read_input_tokens": 84302735,
+          "output_tokens": 762060
+        },
+        "2026-08-20": {
+          "input_tokens": 1864,
+          "cache_creation_input_tokens": 2792130,
+          "cache_read_input_tokens": 509240511,
+          "output_tokens": 715833
+        },
+        "2026-07-07": {
+          "input_tokens": 98225,
+          "cache_creation_input_tokens": 1379881,
+          "cache_read_input_tokens": 20990178,
+          "output_tokens": 238649
+        },
+        "2026-08-10": {
+          "input_tokens": 125003,
+          "cache_creation_input_tokens": 30165893,
+          "cache_read_input_tokens": 907188512,
+          "output_tokens": 7545668
+        },
+        "2026-08-11": {
+          "input_tokens": 20712,
+          "cache_creation_input_tokens": 6291446,
+          "cache_read_input_tokens": 355846136,
+          "output_tokens": 1657279
+        },
+        "2026-08-08": {
+          "input_tokens": 14554,
+          "cache_creation_input_tokens": 6263876,
+          "cache_read_input_tokens": 502509403,
+          "output_tokens": 1001964
+        },
+        "2026-08-07": {
+          "input_tokens": 57109,
+          "cache_creation_input_tokens": 17139195,
+          "cache_read_input_tokens": 833843568,
+          "output_tokens": 4055572
+        },
+        "2026-08-04": {
+          "input_tokens": 4922,
+          "cache_creation_input_tokens": 8705942,
+          "cache_read_input_tokens": 454078697,
+          "output_tokens": 1741362
+        },
+        "2026-08-06": {
+          "input_tokens": 3110,
+          "cache_creation_input_tokens": 4866550,
+          "cache_read_input_tokens": 314902152,
+          "output_tokens": 1151299
+        },
+        "2026-08-15": {
+          "input_tokens": 54289,
+          "cache_creation_input_tokens": 20251041,
+          "cache_read_input_tokens": 533096874,
+          "output_tokens": 5382729
+        },
+        "2026-08-16": {
+          "input_tokens": 9544,
+          "cache_creation_input_tokens": 17699480,
+          "cache_read_input_tokens": 743153874,
+          "output_tokens": 3825845
+        },
+        "2026-08-03": {
+          "input_tokens": 3636,
+          "cache_creation_input_tokens": 5370229,
+          "cache_read_input_tokens": 277817346,
+          "output_tokens": 1100690
+        },
+        "2026-08-14": {
+          "input_tokens": 315,
+          "cache_creation_input_tokens": 249345,
+          "cache_read_input_tokens": 25853338,
+          "output_tokens": 103693
+        },
+        "2026-08-21": {
+          "input_tokens": 464,
+          "cache_creation_input_tokens": 2364509,
+          "cache_read_input_tokens": 173593875,
+          "output_tokens": 153310
+        },
+        "2026-08-05": {
+          "input_tokens": 764,
+          "cache_creation_input_tokens": 3677194,
+          "cache_read_input_tokens": 138932034,
+          "output_tokens": 421107
+        },
+        "2026-07-30": {
+          "input_tokens": 128,
+          "cache_creation_input_tokens": 963390,
+          "cache_read_input_tokens": 17266463,
+          "output_tokens": 146051
+        },
+        "2026-07-18": {
+          "input_tokens": 132,
+          "cache_creation_input_tokens": 266014,
+          "cache_read_input_tokens": 3869279,
+          "output_tokens": 64778
+        },
+        "2026-08-02": {
+          "input_tokens": 198,
+          "cache_creation_input_tokens": 1990190,
+          "cache_read_input_tokens": 18078929,
+          "output_tokens": 209826
+        },
+        "2026-07-23": {
+          "input_tokens": 12867,
+          "cache_creation_input_tokens": 9240671,
+          "cache_read_input_tokens": 136851124,
+          "output_tokens": 1984260
+        },
+        "2026-08-01": {
+          "input_tokens": 382,
+          "cache_creation_input_tokens": 3189904,
+          "cache_read_input_tokens": 72266266,
+          "output_tokens": 494476
+        },
+        "2026-07-22": {
+          "input_tokens": 335,
+          "cache_creation_input_tokens": 1079964,
+          "cache_read_input_tokens": 10729623,
+          "output_tokens": 182018
+        },
+        "2026-07-20": {
+          "input_tokens": 42,
+          "cache_creation_input_tokens": 147594,
+          "cache_read_input_tokens": 3857738,
+          "output_tokens": 29037
+        },
+        "2026-07-21": {
+          "input_tokens": 3,
+          "cache_creation_input_tokens": 134578,
+          "cache_read_input_tokens": 174313,
+          "output_tokens": 1619
+        },
+        "2026-07-24": {
+          "input_tokens": 178,
+          "cache_creation_input_tokens": 1069444,
+          "cache_read_input_tokens": 15405723,
+          "output_tokens": 75507
+        },
+        "2026-07-31": {
+          "input_tokens": 14,
+          "cache_creation_input_tokens": 754183,
+          "cache_read_input_tokens": 5379000,
+          "output_tokens": 13965
+        },
+        "2026-07-09": {
+          "input_tokens": 193950,
+          "cache_creation_input_tokens": 4920578,
+          "cache_read_input_tokens": 69167647,
+          "output_tokens": 804296
+        },
+        "2026-07-08": {
+          "input_tokens": 6071,
+          "cache_creation_input_tokens": 1427943,
+          "cache_read_input_tokens": 14838873,
+          "output_tokens": 91547
+        },
+        "2026-07-12": {
+          "input_tokens": 92928,
+          "cache_creation_input_tokens": 3097497,
+          "cache_read_input_tokens": 20491322,
+          "output_tokens": 577124
+        },
+        "2026-07-11": {
+          "input_tokens": 57759,
+          "cache_creation_input_tokens": 1286213,
+          "cache_read_input_tokens": 17997610,
+          "output_tokens": 329612
+        }
+      },
+      "by_project": {
+        "-home-phantomcore": {
+          "input_tokens": 61631,
+          "cache_creation_input_tokens": 9895006,
+          "cache_read_input_tokens": 317914622,
+          "output_tokens": 1903263
+        },
+        "-media-phantomcore-AI-DRIVE-AI-Shit-mining-Quest-coder": {
+          "input_tokens": 150767,
+          "cache_creation_input_tokens": 82015668,
+          "cache_read_input_tokens": 3659331891,
+          "output_tokens": 19442640
+        },
+        "-media-phantomcore-AI-DRIVE-AI-Shit-mining-Quest-coder-Claude-Code": {
+          "input_tokens": 184717,
+          "cache_creation_input_tokens": 77891358,
+          "cache_read_input_tokens": 3452807822,
+          "output_tokens": 17166233
+        },
+        "-media-phantomcore-AI-DRIVE-AI-Shit-mining-Quest-coder-starforge-submission-starforge-repo": {
+          "input_tokens": 2,
+          "cache_creation_input_tokens": 17319,
+          "cache_read_input_tokens": 16241,
+          "output_tokens": 370
+        },
+        "-media-phantomcore-AI-DRIVE-Transcribing": {
+          "input_tokens": 1282,
+          "cache_creation_input_tokens": 2991550,
+          "cache_read_input_tokens": 179459215,
+          "output_tokens": 366805
+        },
+        "-media-phantomcore-AI-DRIVE-VORTEX-SYSTEM": {
+          "input_tokens": 421068,
+          "cache_creation_input_tokens": 12836009,
+          "cache_read_input_tokens": 152435354,
+          "output_tokens": 2219297
+        },
+        "-media-phantomcore-AI-DRIVE-hackathons-Pacto-secto": {
+          "input_tokens": 4,
+          "cache_creation_input_tokens": 11661,
+          "cache_read_input_tokens": 53137,
+          "output_tokens": 160
+        },
+        "-media-phantomcore-AI-DRIVE-hackathons-mantle": {
+          "input_tokens": 5050,
+          "cache_creation_input_tokens": 16648,
+          "cache_read_input_tokens": 144037,
+          "output_tokens": 1529
+        },
+        "-media-phantomcore-AI-DRIVE-hackathons-tierva": {
+          "input_tokens": 5044,
+          "cache_creation_input_tokens": 13245,
+          "cache_read_input_tokens": 44814,
+          "output_tokens": 700
+        },
+        "-media-phantomcore-AI-DRIVE-pip": {
+          "input_tokens": 10019,
+          "cache_creation_input_tokens": 5221687,
+          "cache_read_input_tokens": 66186792,
+          "output_tokens": 1231404
+        }
+      },
+      "account": "codehunterextreme@gmail.com",
+      "user_id": "7332676f0b84f06017ed5ef60ae6c498a7f6b1ea73c9ab98be498d78883ab952",
+      "identity": {
+        "auth": "oauth",
+        "email": "codehunterextreme@gmail.com",
+        "org_uuid": "ba511861-53b4-4599-8019-93db6389d991",
+        "org_name": "codehunterextreme@gmail.com's Organization",
+        "account_uuid": "cf12fe66-594f-449a-b951-c9bb2ce5db76",
+        "user_id": "7332676f0b84f06017ed5ef60ae6c498a7f6b1ea73c9ab98be498d78883ab952",
+        "approved_api_keys": []
+      },
+      "grand_total": 8062476061
+    },
+    {
+      "config_dir": "/home/phantomcore/.claude",
+      "sessions": 87,
+      "files": {
+        "main": 87,
+        "workflow": 196,
+        "subagent": 59
+      },
+      "unreadable": [],
+      "turns": 9891,
+      "totals": {
+        "input_tokens": 1652292,
+        "cache_creation_input_tokens": 68751028,
+        "cache_read_input_tokens": 2662338461,
+        "output_tokens": 11708656
+      },
+      "by_kind": {
+        "main": {
+          "input_tokens": 1232344,
+          "cache_creation_input_tokens": 56781117,
+          "cache_read_input_tokens": 2530089067,
+          "output_tokens": 9234959
+        },
+        "workflow": {
+          "input_tokens": 107405,
+          "cache_creation_input_tokens": 9422583,
+          "cache_read_input_tokens": 104023905,
+          "output_tokens": 2199753
+        },
+        "subagent": {
+          "input_tokens": 312543,
+          "cache_creation_input_tokens": 2547328,
+          "cache_read_input_tokens": 28225489,
+          "output_tokens": 273944
+        }
+      },
+      "by_provider": {
+        "anthropic": {
+          "input_tokens": 689316,
+          "cache_creation_input_tokens": 68751028,
+          "cache_read_input_tokens": 2649261213,
+          "output_tokens": 11575520
+        },
+        "deepseek": {
+          "input_tokens": 962976,
+          "cache_creation_input_tokens": 0,
+          "cache_read_input_tokens": 13077248,
+          "output_tokens": 133136
+        }
+      },
+      "by_model": {
+        "claude-opus-4-7": {
+          "input_tokens": 512505,
+          "cache_creation_input_tokens": 57323331,
+          "cache_read_input_tokens": 2485425633,
+          "output_tokens": 9024658
+        },
+        "claude-opus-4-8": {
+          "input_tokens": 59277,
+          "cache_creation_input_tokens": 411836,
+          "cache_read_input_tokens": 5590447,
+          "output_tokens": 108640
+        },
+        "claude-opus-5": {
+          "input_tokens": 107655,
+          "cache_creation_input_tokens": 10307734,
+          "cache_read_input_tokens": 145408211,
+          "output_tokens": 2352178
+        },
+        "deepseek-v4-pro": {
+          "input_tokens": 951993,
+          "cache_creation_input_tokens": 0,
+          "cache_read_input_tokens": 13077248,
+          "output_tokens": 133118
+        },
+        "deepseek-v4-flash": {
+          "input_tokens": 10983,
+          "cache_creation_input_tokens": 0,
+          "cache_read_input_tokens": 0,
+          "output_tokens": 18
+        },
+        "claude-haiku-4-5-20251001": {
+          "input_tokens": 112,
+          "cache_creation_input_tokens": 155308,
+          "cache_read_input_tokens": 3146271,
+          "output_tokens": 13160
+        },
+        "claude-sonnet-4-6": {
+          "input_tokens": 9767,
+          "cache_creation_input_tokens": 552819,
+          "cache_read_input_tokens": 9690651,
+          "output_tokens": 76884
+        }
+      },
+      "by_day": {
+        "2026-05-23": {
+          "input_tokens": 32190,
+          "cache_creation_input_tokens": 4181355,
+          "cache_read_input_tokens": 64310247,
+          "output_tokens": 245087
+        },
+        "2026-06-10": {
+          "input_tokens": 12476,
+          "cache_creation_input_tokens": 51670,
+          "cache_read_input_tokens": 281179,
+          "output_tokens": 3199
+        },
+        "2026-05-29": {
+          "input_tokens": 24713,
+          "cache_creation_input_tokens": 169098,
+          "cache_read_input_tokens": 4196426,
+          "output_tokens": 64635
+        },
+        "2026-08-15": {
+          "input_tokens": 107960,
+          "cache_creation_input_tokens": 10442383,
+          "cache_read_input_tokens": 146502727,
+          "output_tokens": 2392954
+        },
+        "2026-05-06": {
+          "input_tokens": 5883,
+          "cache_creation_input_tokens": 3268320,
+          "cache_read_input_tokens": 131113544,
+          "output_tokens": 426786
+        },
+        "2026-05-04": {
+          "input_tokens": 26753,
+          "cache_creation_input_tokens": 1899613,
+          "cache_read_input_tokens": 56377809,
+          "output_tokens": 321552
+        },
+        "2026-05-05": {
+          "input_tokens": 964,
+          "cache_creation_input_tokens": 2585891,
+          "cache_read_input_tokens": 79860179,
+          "output_tokens": 307831
+        },
+        "2026-05-18": {
+          "input_tokens": 240,
+          "cache_creation_input_tokens": 1807310,
+          "cache_read_input_tokens": 21445365,
+          "output_tokens": 191132
+        },
+        "2026-05-14": {
+          "input_tokens": 13407,
+          "cache_creation_input_tokens": 8031097,
+          "cache_read_input_tokens": 332549176,
+          "output_tokens": 983306
+        },
+        "2026-05-15": {
+          "input_tokens": 1309,
+          "cache_creation_input_tokens": 8821175,
+          "cache_read_input_tokens": 175786912,
+          "output_tokens": 754319
+        },
+        "2026-05-12": {
+          "input_tokens": 973290,
+          "cache_creation_input_tokens": 4314741,
+          "cache_read_input_tokens": 461617461,
+          "output_tokens": 1530311
+        },
+        "2026-05-13": {
+          "input_tokens": 3641,
+          "cache_creation_input_tokens": 4109644,
+          "cache_read_input_tokens": 644703105,
+          "output_tokens": 1300935
+        },
+        "2026-05-10": {
+          "input_tokens": 5,
+          "cache_creation_input_tokens": 51047,
+          "cache_read_input_tokens": 0,
+          "output_tokens": 205
+        },
+        "2026-05-11": {
+          "input_tokens": 355,
+          "cache_creation_input_tokens": 1841418,
+          "cache_read_input_tokens": 77674067,
+          "output_tokens": 442965
+        },
+        "2026-05-16": {
+          "input_tokens": 276,
+          "cache_creation_input_tokens": 726816,
+          "cache_read_input_tokens": 52354757,
+          "output_tokens": 220877
+        },
+        "2026-05-22": {
+          "input_tokens": 199,
+          "cache_creation_input_tokens": 425345,
+          "cache_read_input_tokens": 22212566,
+          "output_tokens": 239517
+        },
+        "2026-05-24": {
+          "input_tokens": 425748,
+          "cache_creation_input_tokens": 14067798,
+          "cache_read_input_tokens": 363683594,
+          "output_tokens": 2223763
+        },
+        "2026-05-08": {
+          "input_tokens": 205,
+          "cache_creation_input_tokens": 180125,
+          "cache_read_input_tokens": 294707,
+          "output_tokens": 3532
+        },
+        "2026-05-09": {
+          "input_tokens": 6,
+          "cache_creation_input_tokens": 51319,
+          "cache_read_input_tokens": 0,
+          "output_tokens": 6
+        },
+        "2026-07-02": {
+          "input_tokens": 21781,
+          "cache_creation_input_tokens": 9867,
+          "cache_read_input_tokens": 18326,
+          "output_tokens": 21
+        },
+        "2026-05-25": {
+          "input_tokens": 889,
+          "cache_creation_input_tokens": 1668444,
+          "cache_read_input_tokens": 27356314,
+          "output_tokens": 55714
+        },
+        "2026-08-17": {
+          "input_tokens": 2,
+          "cache_creation_input_tokens": 46552,
+          "cache_read_input_tokens": 0,
+          "output_tokens": 9
+        }
+      },
+      "by_project": {
+        "-home-phantomcore": {
+          "input_tokens": 145693,
+          "cache_creation_input_tokens": 10693123,
+          "cache_read_input_tokens": 151435969,
+          "output_tokens": 2470937
+        },
+        "-media-phantomcore-AI-DRIVE-AI-Shit-mining-Quest-coder-Claude-Code": {
+          "input_tokens": 33600,
+          "cache_creation_input_tokens": 7753824,
+          "cache_read_input_tokens": 267351532,
+          "output_tokens": 1056169
+        },
+        "-media-phantomcore-AI-DRIVE-Contra": {
+          "input_tokens": 1501,
+          "cache_creation_input_tokens": 4511453,
+          "cache_read_input_tokens": 152597871,
+          "output_tokens": 857382
+        },
+        "-media-phantomcore-AI-DRIVE-DeepSeek-work": {
+          "input_tokens": 5,
+          "cache_creation_input_tokens": 51047,
+          "cache_read_input_tokens": 0,
+          "output_tokens": 205
+        },
+        "-media-phantomcore-AI-DRIVE-DeepSeek-work-Test": {
+          "input_tokens": 88415,
+          "cache_creation_input_tokens": 0,
+          "cache_read_input_tokens": 3280256,
+          "output_tokens": 34950
+        },
+        "-media-phantomcore-AI-DRIVE-DeepSeek-work-deepseek-bug-finder": {
+          "input_tokens": 7941,
+          "cache_creation_input_tokens": 905404,
+          "cache_read_input_tokens": 49741411,
+          "output_tokens": 203919
+        },
+        "-media-phantomcore-AI-DRIVE-DeepSeek-work-deepseek-claude-code": {
+          "input_tokens": 7205,
+          "cache_creation_input_tokens": 5666684,
+          "cache_read_input_tokens": 802948712,
+          "output_tokens": 1675404
+        },
+        "-media-phantomcore-AI-DRIVE-DeepSeek-work-deepseek-claude-code-my-claude": {
+          "input_tokens": 611191,
+          "cache_creation_input_tokens": 0,
+          "cache_read_input_tokens": 507136,
+          "output_tokens": 4518
+        },
+        "-media-phantomcore-AI-DRIVE-DeepSeek-work-math": {
+          "input_tokens": 177,
+          "cache_creation_input_tokens": 297451,
+          "cache_read_input_tokens": 7538699,
+          "output_tokens": 120786
+        },
+        "-media-phantomcore-AI-DRIVE-DeepSeek-work-my-claude-seek": {
+          "input_tokens": 215480,
+          "cache_creation_input_tokens": 91226,
+          "cache_read_input_tokens": 5945320,
+          "output_tokens": 87524
+        },
+        "-media-phantomcore-AI-DRIVE-DeepSeek-work-my-claude-seek-claude": {
+          "input_tokens": 44248,
+          "cache_creation_input_tokens": 12885731,
+          "cache_read_input_tokens": 206726224,
+          "output_tokens": 979908
+        },
+        "-media-phantomcore-AI-DRIVE-DeepSeek-work-my-claude-seek-deepseek-bug-finder": {
+          "input_tokens": 42857,
+          "cache_creation_input_tokens": 7193863,
+          "cache_read_input_tokens": 312176632,
+          "output_tokens": 862940
+        },
+        "-media-phantomcore-AI-DRIVE-DeepSeek-work-my-claude-seek-reddit": {
+          "input_tokens": 7100,
+          "cache_creation_input_tokens": 635590,
+          "cache_read_input_tokens": 52167517,
+          "output_tokens": 205341
+        },
+        "-media-phantomcore-AI-DRIVE-DeepSeek-work-reddit": {
+          "input_tokens": 9778,
+          "cache_creation_input_tokens": 4460887,
+          "cache_read_input_tokens": 210253890,
+          "output_tokens": 616760
+        },
+        "-media-phantomcore-AI-DRIVE-DeepSeek-work-reddit-logistis": {
+          "input_tokens": 253,
+          "cache_creation_input_tokens": 453825,
+          "cache_read_input_tokens": 433997,
+          "output_tokens": 4000
+        },
+        "-media-phantomcore-AI-DRIVE-DeepSeek-work-testing-modle-structure": {
+          "input_tokens": 178,
+          "cache_creation_input_tokens": 1543967,
+          "cache_read_input_tokens": 70135368,
+          "output_tokens": 322179
+        },
+        "-media-phantomcore-AI-DRIVE-fable": {
+          "input_tokens": 21781,
+          "cache_creation_input_tokens": 9867,
+          "cache_read_input_tokens": 18326,
+          "output_tokens": 21
+        },
+        "-media-phantomcore-AI-DRIVE-hackathons-Reddit-Mod-Tools-and-Migrated-Apps-Hackathon": {
+          "input_tokens": 85367,
+          "cache_creation_input_tokens": 2730758,
+          "cache_read_input_tokens": 73511914,
+          "output_tokens": 494592
+        },
+        "-media-phantomcore-AI-DRIVE-hackathons-Slack": {
+          "input_tokens": 138197,
+          "cache_creation_input_tokens": 3410418,
+          "cache_read_input_tokens": 127886687,
+          "output_tokens": 672761
+        },
+        "-media-phantomcore-AI-DRIVE-hackathons-UiPath-AgentHack": {
+          "input_tokens": 79038,
+          "cache_creation_input_tokens": 1397034,
+          "cache_read_input_tokens": 46005701,
+          "output_tokens": 306217
+        },
+        "-media-phantomcore-AI-DRIVE-hackathons-evil": {
+          "input_tokens": 10904,
+          "cache_creation_input_tokens": 27204,
+          "cache_read_input_tokens": 0,
+          "output_tokens": 4
+        },
+        "-media-phantomcore-AI-DRIVE-hackathons-mind": {
+          "input_tokens": 101381,
+          "cache_creation_input_tokens": 3985120,
+          "cache_read_input_tokens": 121675299,
+          "output_tokens": 732130
+        },
+        "-tmp": {
+          "input_tokens": 2,
+          "cache_creation_input_tokens": 46552,
+          "cache_read_input_tokens": 0,
+          "output_tokens": 9
+        }
+      },
+      "account": "broodierchip@gmail.com",
+      "user_id": "79e85db2d81700a09041764ff53e316b5f85138932145b678e9343bb933075a8",
+      "identity": {
+        "auth": "oauth",
+        "email": "broodierchip@gmail.com",
+        "org_uuid": "6bfc754e-a205-41c3-9dac-80e593f494e0",
+        "org_name": "broodierchip@gmail.com's Organization",
+        "account_uuid": "a9fec27d-ab5d-48bb-9679-a9bf60bfb97e",
+        "user_id": "79e85db2d81700a09041764ff53e316b5f85138932145b678e9343bb933075a8",
+        "approved_api_keys": []
+      },
+      "grand_total": 2744450437
+    },
+    {
+      "config_dir": "/home/phantomcore/.my-claude",
+      "sessions": 6,
+      "files": {
+        "main": 6,
+        "subagent": 124
+      },
+      "unreadable": [],
+      "turns": 5101,
+      "totals": {
+        "input_tokens": 21796441,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 493706496,
+        "output_tokens": 4994856
+      },
+      "by_kind": {
+        "main": {
+          "input_tokens": 745130,
+          "cache_creation_input_tokens": 0,
+          "cache_read_input_tokens": 44491392,
+          "output_tokens": 238207
+        },
+        "subagent": {
+          "input_tokens": 21051311,
+          "cache_creation_input_tokens": 0,
+          "cache_read_input_tokens": 449215104,
+          "output_tokens": 4756649
+        }
+      },
+      "by_provider": {
+        "deepseek": {
+          "input_tokens": 21796441,
+          "cache_creation_input_tokens": 0,
+          "cache_read_input_tokens": 493706496,
+          "output_tokens": 4994856
+        }
+      },
+      "by_model": {
+        "deepseek-v4-pro": {
+          "input_tokens": 19297608,
+          "cache_creation_input_tokens": 0,
+          "cache_read_input_tokens": 463029376,
+          "output_tokens": 4190083
+        },
+        "deepseek-v4-flash": {
+          "input_tokens": 2498833,
+          "cache_creation_input_tokens": 0,
+          "cache_read_input_tokens": 30677120,
+          "output_tokens": 804773
+        }
+      },
+      "by_day": {
+        "2026-07-03": {
+          "input_tokens": 226078,
+          "cache_creation_input_tokens": 0,
+          "cache_read_input_tokens": 9425152,
+          "output_tokens": 63038
+        },
+        "2026-07-04": {
+          "input_tokens": 703275,
+          "cache_creation_input_tokens": 0,
+          "cache_read_input_tokens": 26824832,
+          "output_tokens": 155979
+        },
+        "2026-07-02": {
+          "input_tokens": 569717,
+          "cache_creation_input_tokens": 0,
+          "cache_read_input_tokens": 21859840,
+          "output_tokens": 124496
+        },
+        "2026-05-14": {
+          "input_tokens": 2220068,
+          "cache_creation_input_tokens": 0,
+          "cache_read_input_tokens": 30174080,
+          "output_tokens": 535388
+        },
+        "2026-05-15": {
+          "input_tokens": 3065323,
+          "cache_creation_input_tokens": 0,
+          "cache_read_input_tokens": 78021760,
+          "output_tokens": 768172
+        },
+        "2026-05-18": {
+          "input_tokens": 48277,
+          "cache_creation_input_tokens": 0,
+          "cache_read_input_tokens": 315392,
+          "output_tokens": 5566
+        },
+        "2026-05-19": {
+          "input_tokens": 214546,
+          "cache_creation_input_tokens": 0,
+          "cache_read_input_tokens": 4134912,
+          "output_tokens": 76050
+        },
+        "2026-05-16": {
+          "input_tokens": 97570,
+          "cache_creation_input_tokens": 0,
+          "cache_read_input_tokens": 3862912,
+          "output_tokens": 38814
+        },
+        "2026-05-17": {
+          "input_tokens": 1769933,
+          "cache_creation_input_tokens": 0,
+          "cache_read_input_tokens": 22890880,
+          "output_tokens": 312320
+        },
+        "2026-05-22": {
+          "input_tokens": 2925287,
+          "cache_creation_input_tokens": 0,
+          "cache_read_input_tokens": 50431744,
+          "output_tokens": 623512
+        },
+        "2026-05-24": {
+          "input_tokens": 1646333,
+          "cache_creation_input_tokens": 0,
+          "cache_read_input_tokens": 38539904,
+          "output_tokens": 436022
+        },
+        "2026-05-23": {
+          "input_tokens": 2132750,
+          "cache_creation_input_tokens": 0,
+          "cache_read_input_tokens": 42738944,
+          "output_tokens": 464523
+        },
+        "2026-05-13": {
+          "input_tokens": 3852227,
+          "cache_creation_input_tokens": 0,
+          "cache_read_input_tokens": 100507904,
+          "output_tokens": 1031422
+        },
+        "2026-05-12": {
+          "input_tokens": 562932,
+          "cache_creation_input_tokens": 0,
+          "cache_read_input_tokens": 10503936,
+          "output_tokens": 81887
+        },
+        "2026-07-06": {
+          "input_tokens": 28114,
+          "cache_creation_input_tokens": 0,
+          "cache_read_input_tokens": 49280,
+          "output_tokens": 1207
+        },
+        "2026-05-27": {
+          "input_tokens": 235424,
+          "cache_creation_input_tokens": 0,
+          "cache_read_input_tokens": 4619392,
+          "output_tokens": 39012
+        },
+        "2026-05-25": {
+          "input_tokens": 278510,
+          "cache_creation_input_tokens": 0,
+          "cache_read_input_tokens": 16632960,
+          "output_tokens": 80995
+        },
+        "2026-05-26": {
+          "input_tokens": 497358,
+          "cache_creation_input_tokens": 0,
+          "cache_read_input_tokens": 19437952,
+          "output_tokens": 82248
+        },
+        "2026-07-13": {
+          "input_tokens": 425484,
+          "cache_creation_input_tokens": 0,
+          "cache_read_input_tokens": 6160256,
+          "output_tokens": 48395
+        },
+        "2026-07-12": {
+          "input_tokens": 147391,
+          "cache_creation_input_tokens": 0,
+          "cache_read_input_tokens": 4605312,
+          "output_tokens": 15817
+        },
+        "2026-07-18": {
+          "input_tokens": 140342,
+          "cache_creation_input_tokens": 0,
+          "cache_read_input_tokens": 638592,
+          "output_tokens": 5973
+        },
+        "2026-07-20": {
+          "input_tokens": 9502,
+          "cache_creation_input_tokens": 0,
+          "cache_read_input_tokens": 1330560,
+          "output_tokens": 4020
+        }
+      },
+      "by_project": {
+        "-media-phantomcore-AI-DRIVE-DeepSeek-work": {
+          "input_tokens": 98930,
+          "cache_creation_input_tokens": 0,
+          "cache_read_input_tokens": 13891584,
+          "output_tokens": 68400
+        },
+        "-media-phantomcore-AI-DRIVE-DeepSeek-work-deepseek-claude-code": {
+          "input_tokens": 118022,
+          "cache_creation_input_tokens": 0,
+          "cache_read_input_tokens": 10557056,
+          "output_tokens": 44953
+        },
+        "-media-phantomcore-AI-DRIVE-DeepSeek-work-my-claude-seek-claude": {
+          "input_tokens": 12752245,
+          "cache_creation_input_tokens": 0,
+          "cache_read_input_tokens": 238355712,
+          "output_tokens": 2915769
+        },
+        "-media-phantomcore-AI-DRIVE-DeepSeek-work-my-claude-seek-deepseek-bug-finder": {
+          "input_tokens": 1647775,
+          "cache_creation_input_tokens": 0,
+          "cache_read_input_tokens": 59826432,
+          "output_tokens": 324745
+        },
+        "-media-phantomcore-AI-DRIVE-DeepSeek-work-my-claude-seek-just-agents": {
+          "input_tokens": 2769976,
+          "cache_creation_input_tokens": 0,
+          "cache_read_input_tokens": 52980864,
+          "output_tokens": 875495
+        },
+        "-media-phantomcore-AI-DRIVE-DeepSeek-work-my-claude-seek-math": {
+          "input_tokens": 291253,
+          "cache_creation_input_tokens": 0,
+          "cache_read_input_tokens": 10082176,
+          "output_tokens": 66844
+        },
+        "-media-phantomcore-AI-DRIVE-DeepSeek-work-my-claude-seek-reddit": {
+          "input_tokens": 608561,
+          "cache_creation_input_tokens": 0,
+          "cache_read_input_tokens": 9266176,
+          "output_tokens": 65830
+        },
+        "-media-phantomcore-AI-DRIVE-VORTEX-SYSTEM-deepseek": {
+          "input_tokens": 1310232,
+          "cache_creation_input_tokens": 0,
+          "cache_read_input_tokens": 33710464,
+          "output_tokens": 231367
+        },
+        "-media-phantomcore-AI-DRIVE-hackathons-ai-ml-hack-2026": {
+          "input_tokens": 1476728,
+          "cache_creation_input_tokens": 0,
+          "cache_read_input_tokens": 52301312,
+          "output_tokens": 327248
+        },
+        "-media-phantomcore-AI-DRIVE-pip": {
+          "input_tokens": 722719,
+          "cache_creation_input_tokens": 0,
+          "cache_read_input_tokens": 12734720,
+          "output_tokens": 74205
+        }
+      },
+      "account": "user:73ae64bf180b",
+      "user_id": "73ae64bf180bd1e9d1fd095bb0126c740a00c47d248a47e830ed9f2af12201b5",
+      "identity": {
+        "auth": "unknown",
+        "email": null,
+        "org_uuid": null,
+        "org_name": null,
+        "account_uuid": null,
+        "user_id": "73ae64bf180bd1e9d1fd095bb0126c740a00c47d248a47e830ed9f2af12201b5",
+        "approved_api_keys": []
+      },
+      "grand_total": 520497793
+    },
+    {
+      "config_dir": "/home/phantomcore/.claude-it",
+      "sessions": 10,
+      "files": {
+        "subagent": 9,
+        "main": 10
+      },
+      "unreadable": [],
+      "turns": 1164,
+      "totals": {
+        "input_tokens": 12933,
+        "cache_creation_input_tokens": 6736704,
+        "cache_read_input_tokens": 216417529,
+        "output_tokens": 683937
+      },
+      "by_kind": {
+        "subagent": {
+          "input_tokens": 9580,
+          "cache_creation_input_tokens": 918727,
+          "cache_read_input_tokens": 9552169,
+          "output_tokens": 126282
+        },
+        "main": {
+          "input_tokens": 3353,
+          "cache_creation_input_tokens": 5817977,
+          "cache_read_input_tokens": 206865360,
+          "output_tokens": 557655
+        }
+      },
+      "by_provider": {
+        "anthropic": {
+          "input_tokens": 12933,
+          "cache_creation_input_tokens": 6736704,
+          "cache_read_input_tokens": 216417529,
+          "output_tokens": 683937
+        }
+      },
+      "by_model": {
+        "claude-sonnet-5": {
+          "input_tokens": 1310,
+          "cache_creation_input_tokens": 5188894,
+          "cache_read_input_tokens": 171274214,
+          "output_tokens": 436916
+        },
+        "claude-haiku-4-5-20251001": {
+          "input_tokens": 9330,
+          "cache_creation_input_tokens": 91087,
+          "cache_read_input_tokens": 636540,
+          "output_tokens": 8569
+        },
+        "claude-sonnet-4-6": {
+          "input_tokens": 2212,
+          "cache_creation_input_tokens": 957809,
+          "cache_read_input_tokens": 41912649,
+          "output_tokens": 213625
+        },
+        "claude-opus-4-7": {
+          "input_tokens": 81,
+          "cache_creation_input_tokens": 498914,
+          "cache_read_input_tokens": 2594126,
+          "output_tokens": 24827
+        }
+      },
+      "by_day": {
+        "2026-08-31": {
+          "input_tokens": 939,
+          "cache_creation_input_tokens": 2791806,
+          "cache_read_input_tokens": 86395411,
+          "output_tokens": 308153
+        },
+        "2026-08-30": {
+          "input_tokens": 112,
+          "cache_creation_input_tokens": 395354,
+          "cache_read_input_tokens": 3965465,
+          "output_tokens": 34631
+        },
+        "2026-09-01": {
+          "input_tokens": 340,
+          "cache_creation_input_tokens": 2500648,
+          "cache_read_input_tokens": 83507464,
+          "output_tokens": 118959
+        },
+        "2026-06-09": {
+          "input_tokens": 11308,
+          "cache_creation_input_tokens": 609393,
+          "cache_read_input_tokens": 25105452,
+          "output_tokens": 161495
+        },
+        "2026-06-10": {
+          "input_tokens": 234,
+          "cache_creation_input_tokens": 439503,
+          "cache_read_input_tokens": 17443737,
+          "output_tokens": 60699
+        }
+      },
+      "by_project": {
+        "-home-phantomcore": {
+          "input_tokens": 12593,
+          "cache_creation_input_tokens": 6012727,
+          "cache_read_input_tokens": 197834820,
+          "output_tokens": 580802
+        },
+        "-home-phantomcore-deadreckon-count-latest": {
+          "input_tokens": 75,
+          "cache_creation_input_tokens": 278937,
+          "cache_read_input_tokens": 2572806,
+          "output_tokens": 24510
+        },
+        "-home-phantomcore-starreckon-latest": {
+          "input_tokens": 6,
+          "cache_creation_input_tokens": 219977,
+          "cache_read_input_tokens": 21320,
+          "output_tokens": 317
+        },
+        "-media-phantomcore-AI-DRIVE-hackathons-DeveloperWeek-New-York-2026-Hackathon": {
+          "input_tokens": 259,
+          "cache_creation_input_tokens": 225063,
+          "cache_read_input_tokens": 15988583,
+          "output_tokens": 78308
+        }
+      },
+      "account": "alexander.sorrell.it@gmail.com",
+      "user_id": "53a6fc28c93264480360b0eac01b9f6ce310137e8581f22ff931dbaa003fd4fe",
+      "identity": {
+        "auth": "oauth",
+        "email": "alexander.sorrell.it@gmail.com",
+        "org_uuid": "66565064-263e-4d54-b06f-15cae4b2febc",
+        "org_name": "alexander.sorrell.it@gmail.com's Organization",
+        "account_uuid": "55c75c9e-b932-41e8-a80c-e3abf56861d8",
+        "user_id": "53a6fc28c93264480360b0eac01b9f6ce310137e8581f22ff931dbaa003fd4fe",
+        "approved_api_keys": []
+      },
+      "grand_total": 223851103
+    },
+    {
+      "config_dir": "/home/phantomcore/.claude-alt-api",
+      "sessions": 1,
+      "files": {
+        "main": 1
+      },
+      "unreadable": [],
+      "turns": 6,
+      "totals": {
+        "input_tokens": 1922,
+        "cache_creation_input_tokens": 10864,
+        "cache_read_input_tokens": 125198,
+        "output_tokens": 3226
+      },
+      "by_kind": {
+        "main": {
+          "input_tokens": 1922,
+          "cache_creation_input_tokens": 10864,
+          "cache_read_input_tokens": 125198,
+          "output_tokens": 3226
+        }
+      },
+      "by_provider": {
+        "anthropic": {
+          "input_tokens": 1922,
+          "cache_creation_input_tokens": 10864,
+          "cache_read_input_tokens": 125198,
+          "output_tokens": 3226
+        }
+      },
+      "by_model": {
+        "claude-fable-5": {
+          "input_tokens": 1916,
+          "cache_creation_input_tokens": 8539,
+          "cache_read_input_tokens": 53666,
+          "output_tokens": 937
+        },
+        "claude-opus-4-8": {
+          "input_tokens": 6,
+          "cache_creation_input_tokens": 2325,
+          "cache_read_input_tokens": 71532,
+          "output_tokens": 2289
+        }
+      },
+      "by_day": {
+        "2026-06-09": {
+          "input_tokens": 1922,
+          "cache_creation_input_tokens": 10864,
+          "cache_read_input_tokens": 125198,
+          "output_tokens": 3226
+        }
+      },
+      "by_project": {
+        "-media-phantomcore-AI-DRIVE-DeepSeek-work-my-claude-seek-fable": {
+          "input_tokens": 1922,
+          "cache_creation_input_tokens": 10864,
+          "cache_read_input_tokens": 125198,
+          "output_tokens": 3226
+        }
+      },
+      "account": "user:4be462f3a2f9",
+      "user_id": "4be462f3a2f9620e57e7f032c0d9b4a5005f30e7373904a9f7448a1fbface369",
+      "identity": {
+        "auth": "api_key",
+        "email": null,
+        "org_uuid": null,
+        "org_name": null,
+        "account_uuid": null,
+        "user_id": "4be462f3a2f9620e57e7f032c0d9b4a5005f30e7373904a9f7448a1fbface369",
+        "approved_api_keys": [
+          "rT2g1afg0EQ-yQjtpwAA"
+        ],
+        "api_key_file": "/home/phantomcore/.config/anthropic/claude-alt-api.key",
+        "linked_account": null,
+        "link_basis": "unlinked \u2014 org not among this machine's logins"
+      },
+      "grand_total": 141210
+    },
+    {
+      "config_dir": "/home/phantomcore/.ai-logs-archive/claude/.claude",
+      "sessions": 84,
+      "files": {
+        "main": 84,
+        "subagent": 59
+      },
+      "unreadable": [],
+      "turns": 0,
+      "totals": {
+        "input_tokens": 0,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "output_tokens": 0
+      },
+      "by_kind": {},
+      "by_provider": {},
+      "by_model": {},
+      "by_day": {},
+      "by_project": {},
+      "account": "broodierchip@gmail.com",
+      "user_id": "79e85db2d81700a09041764ff53e316b5f85138932145b678e9343bb933075a8",
+      "identity": {
+        "auth": "oauth",
+        "email": "broodierchip@gmail.com",
+        "org_uuid": "6bfc754e-a205-41c3-9dac-80e593f494e0",
+        "org_name": "broodierchip@gmail.com's Organization",
+        "account_uuid": "a9fec27d-ab5d-48bb-9679-a9bf60bfb97e",
+        "user_id": "79e85db2d81700a09041764ff53e316b5f85138932145b678e9343bb933075a8",
+        "approved_api_keys": []
+      },
+      "grand_total": 0
+    },
+    {
+      "config_dir": "/home/phantomcore/.ai-logs-archive/claude/.claude-alt",
+      "sessions": 27,
+      "files": {
+        "main": 27,
+        "workflow": 590,
+        "subagent": 21
+      },
+      "unreadable": [],
+      "turns": 0,
+      "totals": {
+        "input_tokens": 0,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "output_tokens": 0
+      },
+      "by_kind": {},
+      "by_provider": {},
+      "by_model": {},
+      "by_day": {},
+      "by_project": {},
+      "account": "codehunterextreme@gmail.com",
+      "user_id": "7332676f0b84f06017ed5ef60ae6c498a7f6b1ea73c9ab98be498d78883ab952",
+      "identity": {
+        "auth": "oauth",
+        "email": "codehunterextreme@gmail.com",
+        "org_uuid": "ba511861-53b4-4599-8019-93db6389d991",
+        "org_name": "codehunterextreme@gmail.com's Organization",
+        "account_uuid": "cf12fe66-594f-449a-b951-c9bb2ce5db76",
+        "user_id": "7332676f0b84f06017ed5ef60ae6c498a7f6b1ea73c9ab98be498d78883ab952",
+        "approved_api_keys": []
+      },
+      "grand_total": 0
+    },
+    {
+      "config_dir": "/home/phantomcore/.ai-logs-archive/claude/.claude-alt-api",
+      "sessions": 1,
+      "files": {
+        "main": 1
+      },
+      "unreadable": [],
+      "turns": 0,
+      "totals": {
+        "input_tokens": 0,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "output_tokens": 0
+      },
+      "by_kind": {},
+      "by_provider": {},
+      "by_model": {},
+      "by_day": {},
+      "by_project": {},
+      "account": "user:4be462f3a2f9",
+      "user_id": "4be462f3a2f9620e57e7f032c0d9b4a5005f30e7373904a9f7448a1fbface369",
+      "identity": {
+        "auth": "api_key",
+        "email": null,
+        "org_uuid": null,
+        "org_name": null,
+        "account_uuid": null,
+        "user_id": "4be462f3a2f9620e57e7f032c0d9b4a5005f30e7373904a9f7448a1fbface369",
+        "approved_api_keys": [
+          "rT2g1afg0EQ-yQjtpwAA"
+        ],
+        "api_key_file": "/home/phantomcore/.config/anthropic/claude-alt-api.key",
+        "linked_account": null,
+        "link_basis": "unlinked \u2014 org not among this machine's logins"
+      },
+      "grand_total": 0
+    },
+    {
+      "config_dir": "/home/phantomcore/.ai-logs-archive/claude/.claude-it",
+      "sessions": 2,
+      "files": {
+        "subagent": 1,
+        "main": 2
+      },
+      "unreadable": [],
+      "turns": 0,
+      "totals": {
+        "input_tokens": 0,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "output_tokens": 0
+      },
+      "by_kind": {},
+      "by_provider": {},
+      "by_model": {},
+      "by_day": {},
+      "by_project": {},
+      "account": "alexander.sorrell.it@gmail.com",
+      "user_id": "53a6fc28c93264480360b0eac01b9f6ce310137e8581f22ff931dbaa003fd4fe",
+      "identity": {
+        "auth": "oauth",
+        "email": "alexander.sorrell.it@gmail.com",
+        "org_uuid": "66565064-263e-4d54-b06f-15cae4b2febc",
+        "org_name": "alexander.sorrell.it@gmail.com's Organization",
+        "account_uuid": "55c75c9e-b932-41e8-a80c-e3abf56861d8",
+        "user_id": "53a6fc28c93264480360b0eac01b9f6ce310137e8581f22ff931dbaa003fd4fe",
+        "approved_api_keys": []
+      },
+      "grand_total": 0
+    },
+    {
+      "config_dir": "/home/phantomcore/.ai-logs-archive/claude/.my-claude",
+      "sessions": 6,
+      "files": {
+        "main": 6,
+        "subagent": 124
+      },
+      "unreadable": [],
+      "turns": 0,
+      "totals": {
+        "input_tokens": 0,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "output_tokens": 0
+      },
+      "by_kind": {},
+      "by_provider": {},
+      "by_model": {},
+      "by_day": {},
+      "by_project": {},
+      "account": "user:73ae64bf180b",
+      "user_id": "73ae64bf180bd1e9d1fd095bb0126c740a00c47d248a47e830ed9f2af12201b5",
+      "identity": {
+        "auth": "unknown",
+        "email": null,
+        "org_uuid": null,
+        "org_name": null,
+        "account_uuid": null,
+        "user_id": "73ae64bf180bd1e9d1fd095bb0126c740a00c47d248a47e830ed9f2af12201b5",
+        "approved_api_keys": []
+      },
+      "grand_total": 0
+    },
+    {
+      "config_dir": "/home/phantomcore/.ai-logs-archive/claude/claude",
+      "sessions": 87,
+      "files": {
+        "main": 87,
+        "workflow": 196,
+        "subagent": 59
+      },
+      "unreadable": [],
+      "turns": 0,
+      "totals": {
+        "input_tokens": 0,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "output_tokens": 0
+      },
+      "by_kind": {},
+      "by_provider": {},
+      "by_model": {},
+      "by_day": {},
+      "by_project": {},
+      "account": "broodierchip@gmail.com",
+      "user_id": "79e85db2d81700a09041764ff53e316b5f85138932145b678e9343bb933075a8",
+      "identity": {
+        "auth": "oauth",
+        "email": "broodierchip@gmail.com",
+        "org_uuid": "6bfc754e-a205-41c3-9dac-80e593f494e0",
+        "org_name": "broodierchip@gmail.com's Organization",
+        "account_uuid": "a9fec27d-ab5d-48bb-9679-a9bf60bfb97e",
+        "user_id": "79e85db2d81700a09041764ff53e316b5f85138932145b678e9343bb933075a8",
+        "approved_api_keys": []
+      },
+      "grand_total": 0
+    },
+    {
+      "config_dir": "/home/phantomcore/.ai-logs-archive/claude/claude-alt",
+      "sessions": 47,
+      "files": {
+        "main": 47,
+        "workflow": 1540,
+        "subagent": 60
+      },
+      "unreadable": [],
+      "turns": 0,
+      "totals": {
+        "input_tokens": 0,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "output_tokens": 0
+      },
+      "by_kind": {},
+      "by_provider": {},
+      "by_model": {},
+      "by_day": {},
+      "by_project": {},
+      "account": "codehunterextreme@gmail.com",
+      "user_id": "7332676f0b84f06017ed5ef60ae6c498a7f6b1ea73c9ab98be498d78883ab952",
+      "identity": {
+        "auth": "oauth",
+        "email": "codehunterextreme@gmail.com",
+        "org_uuid": "ba511861-53b4-4599-8019-93db6389d991",
+        "org_name": "codehunterextreme@gmail.com's Organization",
+        "account_uuid": "cf12fe66-594f-449a-b951-c9bb2ce5db76",
+        "user_id": "7332676f0b84f06017ed5ef60ae6c498a7f6b1ea73c9ab98be498d78883ab952",
+        "approved_api_keys": []
+      },
+      "grand_total": 0
+    },
+    {
+      "config_dir": "/home/phantomcore/.ai-logs-archive/claude/claude-alt-api",
+      "sessions": 1,
+      "files": {
+        "main": 1
+      },
+      "unreadable": [],
+      "turns": 0,
+      "totals": {
+        "input_tokens": 0,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "output_tokens": 0
+      },
+      "by_kind": {},
+      "by_provider": {},
+      "by_model": {},
+      "by_day": {},
+      "by_project": {},
+      "account": "user:4be462f3a2f9",
+      "user_id": "4be462f3a2f9620e57e7f032c0d9b4a5005f30e7373904a9f7448a1fbface369",
+      "identity": {
+        "auth": "api_key",
+        "email": null,
+        "org_uuid": null,
+        "org_name": null,
+        "account_uuid": null,
+        "user_id": "4be462f3a2f9620e57e7f032c0d9b4a5005f30e7373904a9f7448a1fbface369",
+        "approved_api_keys": [
+          "rT2g1afg0EQ-yQjtpwAA"
+        ],
+        "api_key_file": "/home/phantomcore/.config/anthropic/claude-alt-api.key",
+        "linked_account": null,
+        "link_basis": "unlinked \u2014 org not among this machine's logins"
+      },
+      "grand_total": 0
+    },
+    {
+      "config_dir": "/home/phantomcore/.ai-logs-archive/claude/claude-it",
+      "sessions": 10,
+      "files": {
+        "subagent": 9,
+        "main": 10
+      },
+      "unreadable": [],
+      "turns": 0,
+      "totals": {
+        "input_tokens": 0,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "output_tokens": 0
+      },
+      "by_kind": {},
+      "by_provider": {},
+      "by_model": {},
+      "by_day": {},
+      "by_project": {},
+      "account": "alexander.sorrell.it@gmail.com",
+      "user_id": "53a6fc28c93264480360b0eac01b9f6ce310137e8581f22ff931dbaa003fd4fe",
+      "identity": {
+        "auth": "oauth",
+        "email": "alexander.sorrell.it@gmail.com",
+        "org_uuid": "66565064-263e-4d54-b06f-15cae4b2febc",
+        "org_name": "alexander.sorrell.it@gmail.com's Organization",
+        "account_uuid": "55c75c9e-b932-41e8-a80c-e3abf56861d8",
+        "user_id": "53a6fc28c93264480360b0eac01b9f6ce310137e8581f22ff931dbaa003fd4fe",
+        "approved_api_keys": []
+      },
+      "grand_total": 0
+    },
+    {
+      "config_dir": "/home/phantomcore/.ai-logs-archive/claude/my-claude",
+      "sessions": 6,
+      "files": {
+        "main": 6,
+        "subagent": 124
+      },
+      "unreadable": [],
+      "turns": 0,
+      "totals": {
+        "input_tokens": 0,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "output_tokens": 0
+      },
+      "by_kind": {},
+      "by_provider": {},
+      "by_model": {},
+      "by_day": {},
+      "by_project": {},
+      "account": "user:73ae64bf180b",
+      "user_id": "73ae64bf180bd1e9d1fd095bb0126c740a00c47d248a47e830ed9f2af12201b5",
+      "identity": {
+        "auth": "unknown",
+        "email": null,
+        "org_uuid": null,
+        "org_name": null,
+        "account_uuid": null,
+        "user_id": "73ae64bf180bd1e9d1fd095bb0126c740a00c47d248a47e830ed9f2af12201b5",
+        "approved_api_keys": []
+      },
+      "grand_total": 0
+    }
+  ]
+}

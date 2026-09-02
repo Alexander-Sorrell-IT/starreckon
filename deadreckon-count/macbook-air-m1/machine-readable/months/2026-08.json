@@ -1,32 +1,23 @@
 {
- "tokens": 9007957221,
- "sessions": 77,
- "turns": 36004,
- "minutes": 15128.200000000003,
+ "tokens": 7427237440,
+ "sessions": 27,
+ "turns": 23083,
+ "minutes": 12751.5,
  "by_cli": {
-  "claude": 7584021383,
+  "claude": 7131122645,
   "grok": 23497460,
-  "bob": 802946395,
-  "antigravity": 522742677,
-  "copilot": 74749306
+  "bob": 272617335
  },
  "by_machine": {
-  "MacBook Air M1": 9007957221
+  "MacBook Air M1": 7427237440
  },
  "by_model": {
-  "claude-opus-5": 7571094211,
+  "claude-opus-5": 7118195473,
   "<synthetic>": 0,
   "claude-fable-5": 12927172,
-  "grok-4.5-build": 23497460,
-  "antigravity": 18115828,
-  "gemini-3.7-flash-low": 54501431,
-  "gemini-3.7-flash-high": 68400916,
-  "gemini-3.7-flash-safety-le": 258520721,
-  "claude-haiku-4.5": 39247,
-  "gpt-5.6-terra": 74710059,
-  "gemini-antigravity-root.is_record": 123203781
+  "grok-4.5-build": 23497460
  },
  "first": "2026-08-01T03:13:38.874Z",
- "last": "2026-08-27T23:15:32Z",
+ "last": "2026-08-20T02:25:22.954Z",
  "month": "2026-08"
 }

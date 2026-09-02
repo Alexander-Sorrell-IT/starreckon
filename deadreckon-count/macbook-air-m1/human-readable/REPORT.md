@@ -1,10 +1,10 @@
 # Claude Code token usage — MacBook Air M1
 
-_Generated 2026-08-27T18:12:33-05:00_
+_Generated 2026-08-19T21:24:07-05:00_
 
-## Total for this computer: 18,487,763,737 tokens (18.49B)
+## Total for this computer: 18,032,194,745 tokens (18.03B)
 
-Across 8 account(s), 4,498 sessions, 74,818 assistant turns.
+Across 8 account(s), 4,490 sessions, 73,107 assistant turns.
 
 Counted from `message.usage` in the local session JSONL — the API's own
 accounting, deduplicated by message uuid.
@@ -13,13 +13,13 @@ accounting, deduplicated by message uuid.
 
 | Account | Sessions | Turns | Input | Cache write | Cache read | Output | Total |
 |---|---:|---:|---:|---:|---:|---:|---:|
-| broodierchip@gmail.com | 37 | 60,017 | 3.82M | 333.61M | 12.44B | 59.64M | **12.83B** |
+| broodierchip@gmail.com | 36 | 58,612 | 3.81M | 327.31M | 12.07B | 58.47M | **12.46B** |
 | codehunterextreme@gmail.com | 25 | 13,265 | 434.30K | 161.54M | 5.14B | 16.19M | **5.32B** |
-| alexander.sorrell.it@gmail.com | 7 | 1,430 | 29.15K | 7.47M | 313.45M | 1.34M | **322.28M** |
+| alexander.sorrell.it@gmail.com | 4 | 1,124 | 28.53K | 5.27M | 237.71M | 935.95K | **243.95M** |
 | unknown (Documents) | 2,180 | 106 | 25.90K | 483.89K | 9.44M | 63.95K | **10.01M** |
 | codehunterextreme@gmail.com | 25 | 0 | 0 | 0 | 0 | 0 | **0** |
-| alexander.sorrell.it@gmail.com | 7 | 0 | 0 | 0 | 0 | 0 | **0** |
-| broodierchip@gmail.com | 37 | 0 | 0 | 0 | 0 | 0 | **0** |
+| alexander.sorrell.it@gmail.com | 4 | 0 | 0 | 0 | 0 | 0 | **0** |
+| broodierchip@gmail.com | 36 | 0 | 0 | 0 | 0 | 0 | **0** |
 | unknown (Documents) | 2,180 | 0 | 0 | 0 | 0 | 0 | **0** |
 
 ## By provider
@@ -30,9 +30,9 @@ Anthropic figure is never inflated by tokens Anthropic did not serve.
 
 | Provider | Tokens | Share |
 |---|---:|---:|
-| anthropic | 18,487,763,737 | 100.0% |
+| anthropic | 18,032,194,745 | 100.0% |
 
-**Anthropic-only total: 18,487,763,737 tokens (18.49B)**
+**Anthropic-only total: 18,032,194,745 tokens (18.03B)**
 
 
 ## Profiles found and NOT counted
@@ -55,8 +55,8 @@ from a tool that was never used.
 
 | Tool | Directory | Files | Token usage on disk |
 |---|---|---:|---|
-| Gemini CLI | `/Users/broodierchip-m1air/.gemini` | 5,059 | yes — countable |
-| GitHub Copilot CLI | `/Users/broodierchip-m1air/.copilot` | 216 | **no — not countable** |
+| Gemini CLI | `/Users/broodierchip-m1air/.gemini` | 238 | **no — not countable** |
+| GitHub Copilot CLI | `/Users/broodierchip-m1air/.copilot` | 215 | **no — not countable** |
 | Antigravity CLI | `/Users/broodierchip-m1air/.antigravitycli` | 1 | **no — not countable** |
 | OpenAI Codex CLI | `/Users/broodierchip-m1air/.codex` | 993 | yes — countable |
 | Grok CLI | `/Users/broodierchip-m1air/.grok` | 586 | **no — not countable** |
@@ -80,19 +80,19 @@ linked to an account only when their organization UUIDs match.
 
 ### broodierchip@gmail.com
 
-**12,834,169,588 tokens** (12.83B) — `/Users/broodierchip-m1air/.claude-main`
+**12,456,931,683 tokens** (12.46B) — `/Users/broodierchip-m1air/.claude-main`
 
 userID `f2c6d8a64f23fdea16f037b8edd329f7f3f592a0f7cadfcdb2dbf51d256502f7`
 
 | Transcript | Files | Tokens | Share |
 |---|---:|---:|---:|
-| main | 37 | 9.55B | 74% |
-| subagent | 21 | 15.78M | 0% |
-| workflow | 3,154 | 3.27B | 25% |
+| main | 36 | 9.24B | 74% |
+| subagent | 20 | 13.57M | 0% |
+| workflow | 3,099 | 3.20B | 26% |
 
 | Model | Total |
 |---|---:|
-| claude-opus-5 | 9.66B |
+| claude-opus-5 | 9.28B |
 | claude-opus-4-8 | 2.36B |
 | claude-fable-5 | 808.08M |
 | claude-haiku-4-5-20251001 | 480.73K |
@@ -101,7 +101,7 @@ Active 2026-07-05 → 2026-08-20 (42 days). Busiest day 2026-08-02 at 1.15B.
 
 | Project | Total |
 |---|---:|
-| `-Users-broodierchip-m1air` | 11.17B |
+| `-Users-broodierchip-m1air` | 10.79B |
 | `-Users-broodierchip-m1air-Desktop-vulcan-delta-tests` | 1.66B |
 
 ### codehunterextreme@gmail.com
@@ -133,27 +133,25 @@ Active 2026-05-26 → 2026-08-14 (33 days). Busiest day 2026-08-07 at 509.78M.
 
 ### alexander.sorrell.it@gmail.com
 
-**322,280,256 tokens** (322.28M) — `/Users/broodierchip-m1air/.claude-it`
+**243,949,169 tokens** (243.95M) — `/Users/broodierchip-m1air/.claude-it`
 
 userID `a842a0db1ce2f3e19742aa78893f10cf921a9d7e15a1412fec7c7cc4cf09525a`
 
 | Transcript | Files | Tokens | Share |
 |---|---:|---:|---:|
-| main | 7 | 321.95M | 100% |
+| main | 4 | 243.62M | 100% |
 | subagent | 1 | 325.57K | 0% |
 
 | Model | Total |
 |---|---:|
 | claude-opus-4-8 | 171.24M |
-| claude-opus-5 | 78.33M |
 | claude-sonnet-4-6 | 72.71M |
 
-Active 2026-06-18 → 2026-08-26 (5 days). Busiest day 2026-06-20 at 113.46M.
+Active 2026-06-18 → 2026-06-20 (3 days). Busiest day 2026-06-20 at 113.46M.
 
 | Project | Total |
 |---|---:|
 | `-Users-broodierchip-m1air-Desktop-Bug` | 243.95M |
-| `-Users-broodierchip-m1air` | 78.33M |
 
 ### unknown (Documents)
 

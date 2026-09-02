@@ -1,0 +1,93 @@
+{
+  "machine": "MacBook Air M1",
+  "hostname": "MacBookAir.attlocal.net",
+  "hardware": {
+    "model_identifier": "MacBookAir10,1",
+    "chip": "Apple M1",
+    "cpu_logical": 8,
+    "cpu_performance_cores": 4,
+    "cpu_efficiency_cores": 4,
+    "memory_gb": 16.0,
+    "gpu": "Apple M1",
+    "gpu_cores": 8,
+    "metal": "spdisplays_metal3",
+    "os": "macOS 15.7.8",
+    "os_build": "24G806"
+  },
+  "disk": {
+    "volume": "/Users/broodierchip-m1air",
+    "total_gb": 1858.2,
+    "used_gb": 1765.4,
+    "free_gb": 92.8
+  },
+  "python": "3.11.3",
+  "store_env": {},
+  "accounts": [
+    {
+      "account": "broodierchip@gmail.com",
+      "config_dir": "/Users/broodierchip-m1air/.claude-main",
+      "profile_env": "CLAUDE_CONFIG_DIR=/Users/broodierchip-m1air/.claude-main",
+      "sessions": 35,
+      "transcript_files": 3154,
+      "projects": 27
+    },
+    {
+      "account": "broodierchip@gmail.com",
+      "config_dir": "/Users/broodierchip-m1air/.ai-logs-archive/claude/claude-main",
+      "profile_env": "CLAUDE_CONFIG_DIR=/Users/broodierchip-m1air/.ai-logs-archive/claude/claude-main",
+      "sessions": 35,
+      "transcript_files": 3145,
+      "projects": 27
+    },
+    {
+      "account": "unknown (Documents)",
+      "config_dir": "/Users/broodierchip-m1air/.ai-logs-archive/claude/Documents",
+      "profile_env": "CLAUDE_CONFIG_DIR=/Users/broodierchip-m1air/.ai-logs-archive/claude/Documents",
+      "sessions": 2180,
+      "transcript_files": 2180,
+      "projects": 7
+    },
+    {
+      "account": "unknown (Documents)",
+      "config_dir": "/Users/broodierchip-m1air/Documents",
+      "profile_env": "CLAUDE_CONFIG_DIR=/Users/broodierchip-m1air/Documents",
+      "sessions": 2180,
+      "transcript_files": 2180,
+      "projects": 9
+    },
+    {
+      "account": "codehunterextreme@gmail.com",
+      "config_dir": "/Users/broodierchip-m1air/.claude",
+      "profile_env": "unset (default)",
+      "sessions": 25,
+      "transcript_files": 180,
+      "projects": 9
+    },
+    {
+      "account": "codehunterextreme@gmail.com",
+      "config_dir": "/Users/broodierchip-m1air/.ai-logs-archive/claude/claude",
+      "profile_env": "CLAUDE_CONFIG_DIR=/Users/broodierchip-m1air/.ai-logs-archive/claude/claude",
+      "sessions": 25,
+      "transcript_files": 180,
+      "projects": 9
+    },
+    {
+      "account": "alexander.sorrell.it@gmail.com",
+      "config_dir": "/Users/broodierchip-m1air/.claude-it",
+      "profile_env": "CLAUDE_CONFIG_DIR=/Users/broodierchip-m1air/.claude-it",
+      "sessions": 4,
+      "transcript_files": 5,
+      "projects": 2
+    },
+    {
+      "account": "alexander.sorrell.it@gmail.com",
+      "config_dir": "/Users/broodierchip-m1air/.ai-logs-archive/claude/claude-it",
+      "profile_env": "CLAUDE_CONFIG_DIR=/Users/broodierchip-m1air/.ai-logs-archive/claude/claude-it",
+      "sessions": 4,
+      "transcript_files": 5,
+      "projects": 2
+    }
+  ],
+  "scanner_version": "103c20d12f3a",
+  "hardware_uuid": "0088B2C6-9198-52C3-A51B-5D0E5CD4B596"
+}

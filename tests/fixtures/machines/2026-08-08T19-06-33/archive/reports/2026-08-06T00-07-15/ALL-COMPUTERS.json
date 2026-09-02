@@ -190,7 +190,7 @@
   "uncountable_tools": [
     {
       "tool": "grok-cli (@vibe-kit)",
-      "dir": "/home/phantomcore/.npm-global/bin/grok",
+      "dir": "/home/testuser/.npm-global/bin/grok",
       "files": 1,
       "records_token_usage": false,
       "counted_here": false,

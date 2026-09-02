@@ -252,17 +252,14 @@ def cmd_push(args, root):
     return 0
 
 
-def assets(repo=None, tag=None, missing_ok=False):
-    repo, tag = repo or REPO, tag or TAG
-    r = run(["gh", "api", f"repos/{repo}/releases/tags/{tag}"])
+def assets():
+    r = run(["gh", "api", f"repos/{REPO}/releases/tags/{TAG}"])
     if r.returncode:
-        if missing_ok:
-            return []
-        raise SystemExit(f"no release {tag!r} on {repo}: {r.stderr[-300:]}")
+        raise SystemExit(f"no release {TAG!r} on {REPO}: {r.stderr[-300:]}")
     return json.loads(r.stdout).get("assets", [])
 
 
-def require_repo_access(repo=None):
+def require_repo_access():
     """Fail loudly when the ACTIVE gh account cannot see the corpus repo.
 
     `gh auth token` returns whichever account is active, and more than one can
@@ -280,14 +277,13 @@ def require_repo_access(repo=None):
 
     So: check first, and name the fix.
     """
-    repo = repo or REPO
-    r = run(["gh", "api", f"repos/{repo}", "-q", ".full_name"])
+    r = run(["gh", "api", f"repos/{REPO}", "-q", ".full_name"])
     if r.returncode == 0 and r.stdout.strip():
         return
     who = run(["gh", "api", "user", "-q", ".login"]).stdout.strip() or "unknown"
-    owner = repo.split("/")[0]
+    owner = REPO.split("/")[0]
     raise SystemExit(
-        f"the active gh account ({who}) cannot see {repo}.\n"
+        f"the active gh account ({who}) cannot see {REPO}.\n"
         f"  A 404 here means NO ACCESS or NO REPO — they look the same.\n"
         f"  If the repo exists and is private, switch accounts first:\n"
         f"      gh auth switch --user {owner}\n"
@@ -328,69 +324,6 @@ def chunk_ok(dest, url, tok, start, end):
     return hashlib.sha256(local).digest() == hashlib.sha256(r.stdout).digest()
 
 
-def fetch_asset(a, dest, tok, repo, chunk_mb, retries):
-    """Download one release asset in verified, resumable chunks.
-
-    Extracted from cmd_pull so the raw-transcript shipper uses this same
-    implementation rather than a second copy of it — the chunk-verify and the
-    -L redirect handling below were both bought with a failure, and a parallel
-    implementation would have to buy them again.
-
-    Fetch one chunk, land it, verify it against the server, then move on. Each
-    range is its own request, so a dropped connection costs one chunk rather
-    than the file, and nothing is carried forward unverified.
-    """
-    size = a["size"]
-    url = f"https://api.github.com/repos/{repo}/releases/assets/{a['id']}"
-    step = chunk_mb * 1024 * 1024
-    print(f"  {a['name']}  {size/1e6:.1f} MB in {chunk_mb} MB chunks")
-
-    pos = dest.stat().st_size if dest.exists() else 0
-    if pos > size:
-        dest.unlink()
-        pos = 0
-    while pos < size:
-        end = min(pos + step, size) - 1
-        for attempt in range(1, retries + 1):
-            # -L is not optional: the asset API answers 302 to storage, and
-            # without following it curl succeeds with an empty body, which
-            # looks like a failed chunk forever. curl drops the auth header
-            # across the redirect by design; the storage URL is pre-signed.
-            r = subprocess.run(
-                ["curl", "-fsSL", "-H", f"Authorization: Bearer {tok}",
-                 "-H", "Accept: application/octet-stream",
-                 "-H", f"Range: bytes={pos}-{end}",
-                 "--retry", "2", "--retry-delay", "2",
-                 "--speed-limit", "1024", "--speed-time", "60",
-                 "--output", "-", url],
-                capture_output=True)
-            if r.returncode == 0 and len(r.stdout) == end - pos + 1:
-                with open(dest, "r+b" if dest.exists() else "wb") as fh:
-                    fh.seek(pos)
-                    fh.write(r.stdout)
-                break
-            print(f"     bytes {pos}-{end}: attempt {attempt} failed, retrying")
-        else:
-            print(f"     bytes {pos}-{end}: gave up after {retries}")
-            return False
-
-        v = chunk_ok(dest, url, tok, pos, end)
-        if v is False:
-            print(f"     bytes {pos}-{end}: MISMATCH against source — refetching")
-            continue                  # same range again, pos unchanged
-        pos = end + 1
-        print(f"     {pos/1e6:>7.1f}/{size/1e6:.1f} MB  {pos/size*100:5.1f}%"
-              f"  {'verified' if v else 'landed (range check unavailable)'}",
-              end="\r", flush=True)
-    print()
-
-    got = dest.stat().st_size if dest.exists() else 0
-    if got != size:
-        print(f"  {a['name']:34} INCOMPLETE {got/1e6:.1f}/{size/1e6:.1f} MB")
-        return False
-    return True
-
-
 def cmd_pull(args, root):
     require_repo_access()
     dist = root / "dist"
@@ -403,10 +336,61 @@ def cmd_pull(args, root):
         raise SystemExit("no archives on the release")
 
     sums = {a["name"]: a for a in assets() if a["name"].endswith(".sha256")}
+    step = args.chunk * 1024 * 1024
     ok = True
     for a in want:
         dest = dist / a["name"]
-        if not fetch_asset(a, dest, tok, REPO, args.chunk, args.retries):
+        url = f"https://api.github.com/repos/{REPO}/releases/assets/{a['id']}"
+        size = a["size"]
+        print(f"  {a['name']}  {size/1e6:.1f} MB in {args.chunk} MB chunks")
+
+        # Fetch one chunk, land it, verify it against the server, then move on.
+        # Each range is its own request, so a dropped connection costs one chunk
+        # rather than the file — and nothing is carried forward unverified.
+        pos = dest.stat().st_size if dest.exists() else 0
+        if pos > size:
+            dest.unlink()
+            pos = 0
+        while pos < size:
+            end = min(pos + step, size) - 1
+            for attempt in range(1, args.retries + 1):
+                # -L is not optional: the asset API answers 302 to storage, and
+                # without following it curl succeeds with an empty body, which
+                # looks like a failed chunk forever. curl drops the auth header
+                # across the redirect by design; the storage URL is pre-signed.
+                r = subprocess.run(
+                    ["curl", "-fsSL", "-H", f"Authorization: Bearer {tok}",
+                     "-H", "Accept: application/octet-stream",
+                     "-H", f"Range: bytes={pos}-{end}",
+                     "--retry", "2", "--retry-delay", "2",
+                     "--speed-limit", "1024", "--speed-time", "60",
+                     "--output", "-", url],
+                    capture_output=True)
+                if r.returncode == 0 and len(r.stdout) == end - pos + 1:
+                    with open(dest, "r+b" if dest.exists() else "wb") as fh:
+                        fh.seek(pos)
+                        fh.write(r.stdout)
+                    break
+                print(f"     bytes {pos}-{end}: attempt {attempt} failed, retrying")
+            else:
+                print(f"     bytes {pos}-{end}: gave up after {args.retries}")
+                ok = False
+                break
+
+            v = chunk_ok(dest, url, tok, pos, end)
+            if v is False:
+                print(f"     bytes {pos}-{end}: MISMATCH against source — refetching")
+                continue                  # same range again, pos unchanged
+            pos = end + 1
+            done = pos / size * 100
+            print(f"     {pos/1e6:>7.1f}/{size/1e6:.1f} MB  {done:5.1f}%"
+                  f"  {'verified' if v else 'landed (range check unavailable)'}",
+                  end="\r", flush=True)
+        print()
+
+        got = dest.stat().st_size if dest.exists() else 0
+        if got != size:
+            print(f"  {a['name']:34} INCOMPLETE {got/1e6:.1f}/{size/1e6:.1f} MB")
             ok = False
             continue
 
@@ -426,7 +410,7 @@ def cmd_pull(args, root):
                     ok = False
                     continue
                 note = "sha256 ok"
-        print(f"  {a['name']:34} {dest.stat().st_size/1e6:>8.1f} MB  {note}")
+        print(f"  {a['name']:34} {got/1e6:>8.1f} MB  {note}")
     print()
     print("  all archives verified" if ok else "  SOME ARCHIVES FAILED — re-run pull")
     return 0 if ok else 1

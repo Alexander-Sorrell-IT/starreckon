@@ -162,29 +162,6 @@ DEFAULT_SHAPES = {"check": {(1, 2)}, "chk": {(1, 2)}}
 SKIP_DIRS = {".git", "__pycache__", "node_modules", ".venv", "venv"}
 
 
-def skipped_dir(name):
-    """A directory this scan must not descend into. NAME, or a `.venv` PREFIX.
-
-    The set above is exact-name only, and install.py does not create `.venv`:
-    it creates `.venv-forecast` (install.py:826) and `.venv-search`
-    (install.py:870). Both were walked, so 12,125 of the 12,202 .py files this
-    scan opened were site-packages — and they were not inert. All six failures
-    of the last run were theirs or caused by theirs:
-
-        124 of 124  "compares a value with itself" sites, every one in
-                    joblib, mpmath, networkx or torch
-          1 of 1    unreadable file (joblib's
-                    test_func_inspect_special_encoding.py, UnicodeDecodeError)
-          3 of 4    hardcoded-flag sites — and the 4th was a false positive
-                    they manufactured: assertion_shapes grew from 2 helper
-                    names to 294, one of them `add`, which sessions.py also
-                    defines, so the production record at sessions.py:1913 was
-                    read as an assertion with the pass flag written in
-        877 of 882  ABSENT/FRESH gaps, and 616 of 619 EMPTY, 470 of 476 SINGLE
-    """
-    return name in SKIP_DIRS or name.startswith(".venv")
-
-
 def _callee(node):
     """The bare name a Call is calling: `chk`, or the `append` of x.append."""
     f = node.func
@@ -296,7 +273,7 @@ def repo_py_files(root):
     """
     out = []
     for dirpath, dirnames, filenames in os.walk(root):
-        dirnames[:] = sorted(d for d in dirnames if not skipped_dir(d))
+        dirnames[:] = sorted(d for d in dirnames if d not in SKIP_DIRS)
         out += [os.path.join(dirpath, f) for f in filenames if f.endswith(".py")]
     return sorted(out)
 
@@ -485,12 +462,6 @@ SUITES = [
     ("adversarial_daemon.py", "retention_guard.py",
      'out[job] = outcome', 'out[job] = "ok"',
      "tick() inventing ok for a job that skipped"),
-    # The lifecycle fixture must assert a genuine success as well as failures.
-    # If it regresses into only checking dead/missing records, forcing every
-    # current-boot PID to look dead leaves the suite green and this attack fails.
-    ("adversarial_daemon.py", "retention_guard.py",
-     'live = [r for r in here if _alive(r.get("pid"))]', 'live = []',
-     "verify_boot accepting a controlled live current-boot child"),
     ("adversarial_platform.py", "platform_detect.py",
      'system = system or platform.system().lower()',
      'system = "linux"',

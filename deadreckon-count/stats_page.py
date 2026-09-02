@@ -31,7 +31,6 @@ rather than hiding it.
 import datetime
 import json
 import pathlib
-import sys
 import paths
 from collections import defaultdict
 
@@ -151,43 +150,6 @@ def as_of(machines, statscache=None):
     return f"_{span}_"
 
 
-def relabel_profiles(machines, sessions, profile_labels):
-    """Rename bare `user:<uid>` rows to what accounts.json says the profile is.
-
-    BOTH sides, because two files carry that name. totals.json and sessions.json
-    identify a login-less profile by the same truncated uid, and renaming only
-    the totals side left machine_floor() looking `DeepSeek backend
-    (~/.my-claude)` up in a session map still keyed `user:73ae64bf180b`. The
-    lookup missed, `seen` fell back to totals.json's grand_total, and
-    BY-COMPUTER.md published a floor of 520,497,793 for a profile whose
-    sessions measure 529,474,038 — 8,976,245 BELOW the measured figure, which is
-    the contradiction the comment in machine_floor() says the per-account
-    session sum exists to prevent. HP Laptop Linux's floor was 32,260,807,673
-    against a tree holding 32,269,783,918, and the fleet floor 81,881,141,212
-    against 81,890,117,457.
-
-    The uid in the account string is truncated, so match on prefix.
-    """
-    def label_for(name):
-        if not isinstance(name, str) or not name.startswith("user:"):
-            return None
-        uid = name[5:]
-        for full, lab in profile_labels.items():
-            if full.startswith(uid):
-                return lab
-        return None
-
-    for m in machines:
-        for a in m.get("accounts", []):
-            lab = label_for(a.get("account"))
-            if lab:
-                a["account"] = lab
-    for x in sessions:
-        lab = label_for(x.get("account"))
-        if lab:
-            x["account"] = lab
-
-
 def machine_floor(m, sessions_here, statscache_here):
     """The most defensible single figure for one machine.
 
@@ -214,39 +176,7 @@ def machine_floor(m, sessions_here, statscache_here):
     # Guard against malformed entries: a stats-cache list that somehow contains
     # a non-dict value (e.g. a string) would crash the dict comprehension with
     # TypeError. Silently skip non-dicts — they hold no usable counter data.
-    # ONE COUNTER PER PROFILE, NOT PER ACCOUNT. Keying this dict by account
-    # kept the LAST profile and silently dropped every earlier one. On the
-    # machine this was found on, .claude (25,359,992,209 over 16,965 sessions)
-    # and .claude-it (2,442,457,035 over 55) are the same login in two separate
-    # installs, each with its own stats-cache over a DISJOINT set of sessions.
-    # The account key collapsed them to the last, and the floor published
-    # 5,873,327,825 against Anthropic's own 27,829,225,308 — 78.9% under the
-    # one number this report is not allowed to be under.
-    #
-    # Distinct counters are summed. The SAME counter seen twice is not: the
-    # inflation described above (30.9B -> 81.0B, one counter reached through
-    # five mirror paths and added five times) is prevented by deduping on the
-    # counter's CONTENT rather than on the profile's path, because a mirror
-    # arrives under a different path and identical content.
-    by_acct, _seen = {}, set()
-    for e in statscache_here:
-        if not isinstance(e, dict):
-            continue
-        ident = (e.get("account"), e.get("total"), e.get("last_computed"),
-                 e.get("first_session"), e.get("sessions"), e.get("messages"))
-        if ident in _seen:
-            continue                      # a mirror of a counter already held
-        _seen.add(ident)
-        prev = by_acct.get(e["account"])
-        if prev is None:
-            by_acct[e["account"]] = dict(e)
-            continue
-        prev["total"] = prev.get("total", 0) + e.get("total", 0)
-        # Two counters jointly own days only up to the LATER end date; taking
-        # the earlier one would let `after` re-add transcript days the other
-        # counter already covered. A floor may understate. It may not overstate.
-        if (e.get("last_computed") or "") > (prev.get("last_computed") or ""):
-            prev["last_computed"] = e.get("last_computed")
+    by_acct = {e["account"]: e for e in statscache_here if isinstance(e, dict)}
     # Per-account session totals, so a floor is never below what was measured.
     # totals.json and sessions.json are produced by different scanners moments
     # apart, so on a live machine they disagree slightly — taking the account's
@@ -272,49 +202,7 @@ def machine_floor(m, sessions_here, statscache_here):
             g["days"][k] += val(v)
         g["grand"] += a["grand_total"]
 
-    # A measured claude account that matches NO totals.json row is not zero, it
-    # is unmatched: `per_acct_sess.get(name, 0)` below can never reach it, so it
-    # is in no row of the table and in no floor. That is the shape the
-    # profile-label bug took — `merged` held "DeepSeek backend (~/.my-claude)"
-    # while per_acct_sess still held "user:73ae64bf180b", 529,474,038 measured
-    # tokens went unconsulted, and the floor published 520,497,793. It is named
-    # rather than folded in, because when the two names are the same profile
-    # adding it would count that profile twice; the point is that a dropped
-    # source must not look like a correct smaller number.
-    # An account measured ONLY as orphans cannot be double-counted by folding
-    # it in, and that is what makes this safe where the general case is not.
-    # analyze_tokens reads transcripts; an orphan has none, so it is absent
-    # from totals.json BY CONSTRUCTION rather than by a naming accident. The
-    # ambiguous case the warning below exists for — one profile appearing
-    # under two different labels — always has transcripts on at least one
-    # side, so it never lands here and is still only reported.
-    #
-    # `source` is written by sessions.py from 2026-08-21. A folder scanned
-    # before that has no such field, orphan_only is empty, and this behaves
-    # exactly as it did — a stale folder is reported, never silently folded.
-    per_acct_orphan = defaultdict(int)
-    for x in sessions_here:
-        if x.get("cli") == "claude" and x.get("source") == "claude-orphans":
-            per_acct_orphan[x.get("account")] += x.get("total", 0)
-    orphan_only = {k: v for k, v in per_acct_sess.items()
-                   if k not in merged and v and per_acct_orphan.get(k) == v}
-
-    stray = {k: v for k, v in per_acct_sess.items()
-             if k not in merged and v and k not in orphan_only}
-    if stray:
-        print(f"WARNING {m.get('machine') or '?'}: "
-              + "; ".join(f"{k!r} measures {v:,} claude tokens and matches no "
-                          f"account in totals.json"
-                          for k, v in sorted(stray.items(), key=lambda kv: -kv[1]))
-              + " — those tokens are in no row of this machine's floor",
-              file=sys.stderr)
-
     claude, rows = 0, []
-    for name, part in sorted(orphan_only.items(), key=lambda kv: -kv[1]):
-        # No counter and no by_day: the transcripts are gone. The measured
-        # figure IS the floor for this account.
-        rows.append((name, None, None, part, part))
-        claude += part
     for name, g in merged.items():
         days = g["days"]
         # per_acct_sess is already an account-level sum, so it is compared
@@ -350,8 +238,14 @@ def main():
         if c in owners:
             x["account"] = owners[c][0]
             x["account_evidence"] = owners[c][1]
-    # S as well as machines: machine_floor() compares the two by account name.
-    relabel_profiles(machines, S, profile_labels)
+    for m in machines:
+        for a in m["accounts"]:
+            if a["account"].startswith("user:"):
+                uid = a["account"][5:]
+                for full, lab in profile_labels.items():
+                    if full.startswith(uid):
+                        a["account"] = lab
+                        break
 
     now = datetime.datetime.now().astimezone().isoformat(timespec="seconds")
     grand_cc = sum(m["grand_total_tokens"] for m in machines)

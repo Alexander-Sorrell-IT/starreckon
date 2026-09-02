@@ -31,8 +31,3 @@ vendor/
 # already takes 25 minutes on a git operation because of what is in its history.
 .venv-forecast/
 .venv*/
-
-# raw transcript archives — release assets, never git
-raw-dist/
-raw-pulled/
-raw-unpacked/

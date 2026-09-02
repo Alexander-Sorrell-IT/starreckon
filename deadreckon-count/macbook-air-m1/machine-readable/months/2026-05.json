@@ -1,27 +1,29 @@
 {
- "tokens": 1404610343,
- "sessions": 31,
- "turns": 7121,
- "minutes": 2927.2,
+ "tokens": 1461608081,
+ "sessions": 36,
+ "turns": 7646,
+ "minutes": 3185.4999999999995,
  "by_cli": {
   "copilot": 409096536,
   "gemini": 995360683,
-  "claude": 153124
+  "claude": 153124,
+  "antigravity": 56997738
  },
  "by_machine": {
-  "MacBook Air M1": 1404610343
+  "MacBook Air M1": 1461608081
  },
  "by_model": {
   "unknown": 13590702,
   "gpt-5.4": 660827,
-  "gemini-3-flash-preview": 932704860,
+  "gemini-3-flash-preview": 935481455,
   "claude-haiku-4.5": 36579835,
   "claude-sonnet-4.6": 264206868,
   "gemini-3.1-pro-preview": 62655823,
   "claude-opus-4.7": 94058304,
-  "claude-opus-4-7": 153124
+  "claude-opus-4-7": 153124,
+  "gemini-3-flash-d": 54221143
  },
  "first": "2026-05-15T23:49:27.398Z",
- "last": "2026-05-28T16:47:47.753Z",
+ "last": "2026-06-01T03:30:04Z",
  "month": "2026-05"
 }

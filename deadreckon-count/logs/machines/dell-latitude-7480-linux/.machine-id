@@ -1,7 +1,0 @@
-{
- "hostname": "phantom-orchestrator",
- "folder": "dell-latitude-7480-linux",
- "label": "Dell Latitude 7480 Linux",
- "platform": "Linux-7.0.0-30-generic-x86_64-with-glibc2.39",
- "hardware_uuid": "1efc7639-c560-4eba-ab79-8c0df5834550"
-}

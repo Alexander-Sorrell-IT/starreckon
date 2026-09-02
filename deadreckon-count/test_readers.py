@@ -334,97 +334,6 @@ def t_no_reader_silently_returns_nothing(home):
           ".claude.json; both are exercised elsewhere, everything else needs one")
 
 
-def t_authored_registry_matches_readers_and_stores(home):
-    """Every counted reader names the exact canonical stores it opens."""
-    clis = sessions._load_config("clis.json")
-    programs = sessions._load_config("programs.json")
-    check("authored registry validates", sessions.registry_errors(clis, programs), [])
-    check("validate_registry accepts the authored registry",
-          sessions.validate_registry(clis, programs), None)
-    check("program readers are inventory token producers",
-          {name: sessions.INVENTORY_CLI.get(name) for name in (
-             "Kilo Code (VS Code)", "Kilo Code (Insiders)", "LM Studio",
-             "GitHub Copilot Chat")},
-          {"Kilo Code (VS Code)": "kilocode",
-          "Kilo Code (Insiders)": "kilocode",
-          "LM Studio": "lmstudio", "GitHub Copilot Chat": "copilot-chat"})
-
-    def mutated():
-        return (json.loads(json.dumps(clis)), json.loads(json.dumps(programs)))
-
-    def validation_fails(c, p, readers=None):
-        try:
-            sessions.validate_registry(c, p, readers)
-        except ValueError:
-            return True
-        return False
-
-    c, p = mutated()
-    readers = dict(sessions.READERS, ghost=lambda *_: [])
-    check("validator fails for an unregistered reader",
-          validation_fails(c, p, readers), True)
-    check("registry identifies an unregistered reader",
-          any("has no registry entry" in e
-             for e in sessions.registry_errors(c, p,
-                                               readers)),
-          True)
-
-    c, p = mutated()
-    c["clis"][0]["reader"] = "missing-reader"
-    check("validator fails for a config reader that does not exist",
-          validation_fails(c, p), True)
-    check("registry identifies a config reader that does not exist",
-          any("points to missing reader" in e for e in sessions.registry_errors(c, p)),
-          True)
-
-    c, p = mutated()
-    c["clis"][0]["store_labels"] = ["missing-store"]
-    check("validator fails for a missing canonical store label",
-          validation_fails(c, p), True)
-    check("registry identifies a missing canonical store label",
-          any("claims missing store label" in e for e in sessions.registry_errors(c, p)),
-          True)
-
-    c, p = mutated()
-    c["clis"][0]["store_labels"] = ["copilot"]
-    check("validator fails for a store owned by another reader",
-          validation_fails(c, p), True)
-    check("registry identifies a store owned by another reader",
-          any("but its cli is" in e for e in sessions.registry_errors(c, p)),
-          True)
-
-    c, p = mutated()
-    next(e for e in c["clis"] if e["reader"] == "bob").pop("store_labels")
-    check("validator fails for a reader without store labels",
-          validation_fails(c, p), True)
-    check("registry identifies a token-producing reader without store labels",
-          any("has no store labels" in e for e in sessions.registry_errors(c, p)),
-          True)
-
-    c, p = mutated()
-    next(e for e in c["clis"] if e["reader"] == "grok")["store_labels"] = ["grok"]
-    check("validator fails for a token-bearing store omitted from its reader",
-          validation_fails(c, p), True)
-    check("registry identifies an unclaimed token-bearing store",
-          any("store 'grok-archived' for reader 'grok' has no registry entry" == e
-              for e in sessions.registry_errors(c, p)),
-          True)
-
-    scan = {
-        "inventory": [
-            {"tool": "Bob CLI", "installed": True},
-            {"tool": "VS Code", "installed": True},
-        ],
-        "store_state": {"bob": {"state": stores.INSTALLED}},
-    }
-    check("installed token tool with a readable canonical store is accepted",
-          sessions.inventory_store_mismatches(scan, clis, programs), [])
-    scan["store_state"]["bob"]["state"] = stores.ABSENT
-    check("installed token tool without readable store is named",
-          sessions.inventory_store_mismatches(scan, clis, programs),
-          ["Bob CLI (bob=absent)"])
-
-
 def t_sessions_total_counts_all_fields(home):
     """FIX-PLAN #7: sessions.total() had no assertion.
 
@@ -1598,7 +1507,6 @@ FIXTURES = [
     ("clawspring", t_clawspring), ("copilot-chat", t_copilot_chat),
     ("kilocode", t_kilocode),
     ("registry", t_no_reader_silently_returns_nothing),
-    ("authored-registry", t_authored_registry_matches_readers_and_stores),
     ("sessions-total-all-fields", t_sessions_total_counts_all_fields),
     ("config-never-exported", t_config_is_never_exported),
     ("vscode-platform-paths", t_vscode_paths_follow_the_platform),

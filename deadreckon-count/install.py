@@ -44,7 +44,6 @@ import os
 import pathlib
 import platform
 import re
-import secrets
 import shutil
 import subprocess
 import sys
@@ -62,10 +61,6 @@ HOME = real_home()
 RETENTION_DAYS = 999999
 
 DONE, ALREADY, SKIPPED, FAILED = "DONE", "ALREADY", "SKIPPED", "FAILED"
-MACHINE_REGISTRY = "machine_registry.txt"
-MACHINE_ID_LENGTH = 8
-MACHINE_ID_ATTEMPTS = 100
-MACHINE_ID_ALPHABET = "abcdefghijklmnopqrstuvwxyz0123456789"
 
 results = []
 
@@ -203,7 +198,7 @@ def hardware_uuid():
     """Read the hardware UUID for this machine. Returns a string or None.
 
     THE UUID IS THE IDENTITY ANCHOR. The folder name describes the machine
-    (user + chassis + OS + registered ID); the UUID proves it. Two machines
+    (user + chassis + OS + short suffix); the UUID proves it. Two machines
     that produce the same derived name are disambiguated by their UUIDs, and
     a machine that is reinstalled keeps its folder because the UUID survives
     the reinstall.
@@ -289,7 +284,7 @@ def _arch_tag(arch):
     return None
 
 
-def _suggest_folder(pi, machine_id=None):
+def _suggest_folder(pi):
     """Derive the folder slug by asking the machine, not by stripping the hostname.
 
     FIVE COMPONENTS, IN ORDER:
@@ -297,20 +292,21 @@ def _suggest_folder(pi, machine_id=None):
       2. chassis (laptop / desktop / server) — the hardware class
       3. arch — only appended when it is distinctive (arm = 'm1', x86 = nothing)
       4. OS (linux / macos / windows / wsl) — always present, always last
-      5. machine ID — the registry-reserved random ID; makes the name unique even
-         when all four descriptive components are identical
+      5. UUID suffix — first 4 hex chars of the hardware UUID; makes the name
+         collision-proof even when all four descriptive components are identical
 
     The hostname is NOT used. Hostnames change on rename, are auto-generated
     on many platforms (DESKTOP-ABC123), and carry no machine-type information.
-    The readable components and a persistent registry ID are self-describing.
+    The five components above are stable, readable, and self-describing.
 
     Examples:
-      phantomcore-laptop-linux-a3f7k2m9
-      alex-laptop-m1-macos-0b2ck7q1
-      alex-desktop-linux-c91ea2z8
+      phantomcore-laptop-linux-a3f7
+      alex-laptop-m1-darwin-0b2c
+      alex-desktop-linux-c91e
 
-    The ID is supplied by machine_folder(), which persists it before the first
-    scan. Calling this helper without one remains safe for diagnostic callers.
+    NOT RANDOM, NOT FROM A FILE. Deterministic from the machine itself, so
+    running install.py twice gives the same slug, and the operator can verify
+    it before --apply commits it to machines.json.
     """
     try:
         probe = _probe_machine(pi)
@@ -335,17 +331,19 @@ def _suggest_folder(pi, machine_id=None):
     # Arch tag — only when it distinguishes (arm/M1)
     arch = _arch_tag(probe.get("arch") or "")
 
-    # Build: <user>-<chassis>-<arch>-<os>-<machine-id> omitting None parts.
-    # The UUID remains metadata and the strongest ownership anchor; it is not
-    # part of the human-facing slug.
+    # UUID suffix — first 4 hex chars; collision-proof disambiguator
+    uuid = probe.get("hardware_uuid") or hardware_uuid() or ""
+    suffix = re.sub(r'[^0-9a-f]', '', uuid.lower())[:4] or None
+
+    # Build: <user>-<chassis>-<arch>-<os>-<uuid4>  omitting None parts
     parts = [user]
     if chassis:
         parts.append(chassis)
     if arch:
         parts.append(arch)
     parts.append(os_tag)
-    if machine_id:
-        parts.append(machine_id)
+    if suffix:
+        parts.append(suffix)
     return "-".join(parts)
 
 
@@ -365,91 +363,6 @@ def _save_machines_json(doc):
     tmp = p.with_suffix(".json.installtmp")
     tmp.write_text(json.dumps(doc, indent=2), encoding="utf-8")
     tmp.replace(p)
-
-
-def _registry_ids():
-    """Read committed machine IDs, ignoring comments and blank lines.
-
-    Eight lower-case alphanumeric characters give 36**8 (about 2.8 trillion)
-    possible IDs. That is materially safer than the earlier six-character idea
-    while keeping a folder suffix short enough to scan.
-    """
-    path = ROOT / MACHINE_REGISTRY
-    if not path.is_file():
-        return set()
-    ids = set()
-    for number, raw in enumerate(path.read_text(encoding="utf-8").splitlines(), 1):
-        value = raw.strip()
-        if not value or value.startswith("#"):
-            continue
-        if not re.fullmatch(r"[a-z0-9]{8}", value):
-            raise ValueError(
-                f"{MACHINE_REGISTRY}:{number}: expected an 8-character "
-                "lowercase alphanumeric machine ID")
-        if value in ids:
-            raise ValueError(f"{MACHINE_REGISTRY}:{number}: duplicate machine ID {value!r}")
-        ids.add(value)
-    return ids
-
-
-def _new_machine_id():
-    """Return an unused cryptographic machine ID, or fail visibly on exhaustion."""
-    existing = _registry_ids()
-    for _ in range(MACHINE_ID_ATTEMPTS):
-        candidate = "".join(secrets.choice(MACHINE_ID_ALPHABET)
-                            for _ in range(MACHINE_ID_LENGTH))
-        if candidate not in existing:
-            return candidate
-    raise RuntimeError(
-        f"could not reserve a unique machine ID after {MACHINE_ID_ATTEMPTS} attempts; "
-        f"inspect {MACHINE_REGISTRY}")
-
-
-def _append_machine_id(machine_id):
-    """Append a previously collision-checked ID without ever rewriting history."""
-    existing = _registry_ids()
-    if machine_id in existing:
-        return
-    path = ROOT / MACHINE_REGISTRY
-    needs_newline = path.is_file() and path.stat().st_size and not path.read_bytes().endswith(b"\n")
-    with path.open("a", encoding="utf-8") as f:
-        if needs_newline:
-            f.write("\n")
-        f.write(f"{machine_id}\n")
-
-
-def _registered_uuid_folder(doc, uuid):
-    """Return the exact UUID-matched pre-scan registry entry, if any."""
-    if not uuid:
-        return None
-    for entry in doc.get("machines", []):
-        stored_uuid = entry.get("hardware_uuid")
-        if stored_uuid and stored_uuid.lower() == uuid.lower():
-            return entry
-    return None
-
-
-def _registration_context(probe, pi):
-    """The complete readable context used only when UUID probing is unavailable."""
-    os_tag = probe.get("system") or pi.get("system") or "linux"
-    if os_tag == "linux" and probe.get("is_wsl"):
-        os_tag = "wsl"
-    user = re.sub(r"[^a-z0-9-]", "", (probe.get("os_user") or "").lower())
-    return {
-        "os_user": user.strip("-") or "user",
-        "chassis": probe.get("chassis"),
-        "arch": _arch_tag(probe.get("arch") or ""),
-        "system": os_tag,
-    }
-
-
-def _registered_context_folder(doc, context):
-    """Recover one UUID-less pending registration without matching a random slug."""
-    matches = [entry for entry in doc.get("machines", [])
-               if entry.get("machine_id")
-               and entry.get("registration_context") == context
-               and not entry.get("hardware_uuid")]
-    return matches[0] if len(matches) == 1 else None
 
 
 def _claimed_folder():
@@ -516,43 +429,14 @@ def machine_folder(apply_it, pi, folder_override=None):
                     f"run: python3 run.py update --machine {claimed})")
 
     doc = _machines_json()
-    try:
-        probe = _probe_machine(pi)
-    except Exception:   # noqa: BLE001
-        probe = {}
-    uuid = probe.get("hardware_uuid") or hardware_uuid()
-    registered = _registered_uuid_folder(doc, uuid)
-    context = _registration_context(probe, pi)
-    if not registered and not uuid:
-        registered = _registered_context_folder(doc, context)
-    if registered:
-        return step("machine folder in machines.json", ALREADY,
-                    f"{registered.get('folder')} (registered "
-                    f"{'hardware UUID' if uuid else 'machine context'} — "
-                    f"run: python3 run.py update --machine {registered.get('folder')})")
-
     existing = {m["folder"] for m in doc.get("machines", [])}
+
     if folder_override:
         suggested = folder_override.lower().strip()
         suggested = re.sub(r'[^a-z0-9-]', '-', suggested)
         suggested = re.sub(r'-+', '-', suggested).strip('-') or "unknown"
     else:
-        # An old, UUID-less row has the old deterministic folder form. Keep that
-        # behavior for an unscanned legacy install rather than minting a new ID.
-        legacy_suggested = _suggest_folder(pi)
-        legacy = next((entry for entry in doc.get("machines", [])
-                       if entry.get("folder") == legacy_suggested
-                       and not entry.get("machine_id")
-                       and not entry.get("hardware_uuid")), None)
-        if legacy:
-            return step("machine folder in machines.json", ALREADY,
-                        f"{legacy_suggested} (legacy folder already listed — "
-                        f"run: python3 run.py update --machine {legacy_suggested})")
-        try:
-            machine_id = _new_machine_id()
-        except (OSError, ValueError, RuntimeError) as e:
-            return step("machine folder in machines.json", FAILED, str(e))
-        suggested = _suggest_folder(pi, machine_id)
+        suggested = _suggest_folder(pi)
 
     if suggested in existing:
         return step("machine folder in machines.json", ALREADY,
@@ -563,22 +447,11 @@ def machine_folder(apply_it, pi, folder_override=None):
         return step("machine folder in machines.json", SKIPPED,
                     f"would add {suggested!r} — re-run with --apply to register it")
 
-    if folder_override:
-        try:
-            machine_id = _new_machine_id()
-        except (OSError, ValueError, RuntimeError) as e:
-            return step("machine folder in machines.json", FAILED, str(e))
-
     label = " ".join(w.capitalize() for w in suggested.replace("-", " ").split())
-    entry = {"folder": suggested, "label": label, "machine_id": machine_id,
-             "registration_context": context}
-    if uuid:
-        entry["hardware_uuid"] = uuid
-    doc.setdefault("machines", []).append(entry)
+    doc.setdefault("machines", []).append({"folder": suggested, "label": label})
     try:
-        _append_machine_id(machine_id)
         _save_machines_json(doc)
-    except (OSError, ValueError) as e:
+    except OSError as e:
         return step("machine folder in machines.json", FAILED, str(e))
     return step("machine folder in machines.json", DONE,
                 f"added {suggested!r} to machines.json — "
@@ -963,11 +836,13 @@ def forecaster(apply_it, py311):
             subprocess.run([py311, "-m", "venv", str(venv)], check=True,
                            capture_output=True, timeout=300)
             pip = (venv / "bin/pip") if (venv / "bin/pip").exists() else (venv / "Scripts/pip.exe")
-            subprocess.run([str(pip), "install", "--quiet", "torch",
-                            "--index-url", "https://download.pytorch.org/whl/cpu"],
-                           check=True, capture_output=True, timeout=3600)
-            subprocess.run([str(pip), "install", "--quiet", "cisco-tsm",
-                            "huggingface_hub"],
+            if platform.system() == "Darwin":
+                torch_cmd = [str(pip), "install", "--quiet", "torch"]
+            else:
+                torch_cmd = [str(pip), "install", "--quiet", "torch",
+                             "--extra-index-url", "https://download.pytorch.org/whl/cpu"]
+            subprocess.run(torch_cmd, check=True, capture_output=True, timeout=3600)
+            subprocess.run([str(pip), "install", "--quiet", "huggingface_hub"],
                            check=True, capture_output=True, timeout=3600)
             step("forecaster environment", DONE, str(venv))
         except (subprocess.CalledProcessError, subprocess.TimeoutExpired, OSError) as e:
@@ -1029,91 +904,6 @@ def search_corpus(apply_it):
     return None
 
 
-def antares(apply_it):
-    """The optional Antares-350M environment for vulnerability scanning.
-
-    WHY THIS EXISTS: Deadreckon handles redacted transcripts, OAuth tokens,
-    and API keys. Running a vulnerability scanner against its OWN code is the
-    kind of self-auditing the system was built for. Antares-350M is Cisco's
-    tiny (350M param) agentic model that navigates a codebase to find
-    vulnerability patterns. It outputs SARIF-format reports.
-
-    Uses fdtn-ai/antares-350m from HuggingFace. Runs on the standard
-    interpreter (no version pin). Optional: a machine without it still scans
-    and archives normally. The scan never leaves the machine.
-    """
-    venv = ROOT / ".venv-antares"
-    py3 = shutil.which("python3") or shutil.which("python")
-    if not py3:
-        return step("antares environment", SKIPPED, "no python3 on PATH")
-
-    venv_ok = (venv / "bin/python").exists() or (venv / "Scripts/python.exe").exists()
-    if venv_ok and not apply_it:
-        return step("antares environment", ALREADY, str(venv))
-    if not venv_ok:
-        if not apply_it:
-            return step("antares environment", SKIPPED, f"would create {venv}")
-        try:
-            subprocess.run([py3, "-m", "venv", str(venv)], check=True,
-                           capture_output=True, timeout=300)
-            pip = (venv / "bin/pip") if (venv / "bin/pip").exists() else (venv / "Scripts/pip.exe")
-            subprocess.run([str(pip), "install", "--quiet",
-                            "transformers", "torch", "huggingface_hub",
-                            "--index-url", "https://download.pytorch.org/whl/cpu"],
-                           check=True, capture_output=True, timeout=3600)
-            step("antares environment", DONE, str(venv))
-        except (subprocess.CalledProcessError, subprocess.TimeoutExpired, OSError) as e:
-            return step("antares environment", FAILED, str(e)[:120])
-    else:
-        step("antares environment", ALREADY, str(venv))
-
-    # Pre-download the model weights.
-    if apply_it:
-        py = venv / "bin/python"
-        state, detail = _download_model(py, "fdtn-ai/antares-350m", "antares-350m")
-        step("antares model weights", state, detail)
-    return None
-
-
-def provenance_kit(apply_it):
-    """The optional Model Provenance Kit for verifying Cisco model weights.
-
-    WHY THIS EXISTS: The adversarial layer protecting the adversarial layer.
-    Deadreckon downloads Cisco AI models from HuggingFace. If someone poisons
-    the weights, the forecaster and scanner become unreliable without any
-    visible error. The provenance kit fingerprints model weights to verify
-    they are the genuine originals published by Cisco.
-
-    Uses fdtn-ai/model-provenance-kit. Lightweight CLI, no GPU needed.
-    Optional: a machine without it still uses the models, but cannot verify
-    their lineage.
-    """
-    venv = ROOT / ".venv-provenance"
-    py3 = shutil.which("python3") or shutil.which("python")
-    if not py3:
-        return step("provenance kit", SKIPPED, "no python3 on PATH")
-
-    venv_ok = (venv / "bin/python").exists() or (venv / "Scripts/python.exe").exists()
-    if venv_ok and not apply_it:
-        return step("provenance kit", ALREADY, str(venv))
-    if not venv_ok:
-        if not apply_it:
-            return step("provenance kit", SKIPPED, f"would create {venv}")
-        try:
-            subprocess.run([py3, "-m", "venv", str(venv)], check=True,
-                           capture_output=True, timeout=300)
-            pip = (venv / "bin/pip") if (venv / "bin/pip").exists() else (venv / "Scripts/pip.exe")
-            subprocess.run([str(pip), "install", "--quiet",
-                            "model-provenance-kit"],
-                           check=True, capture_output=True, timeout=3600)
-            step("provenance kit", DONE, str(venv))
-        except (subprocess.CalledProcessError, subprocess.TimeoutExpired, OSError) as e:
-            return step("provenance kit", FAILED, str(e)[:120])
-    else:
-        step("provenance kit", ALREADY, str(venv))
-    return None
-
-
 def daemon_health(apply_it):
     """Check the daemon is running. If not, re-pull the repo and say so.
 
@@ -1159,147 +949,16 @@ def daemon_health(apply_it):
                 f"then re-run python3 install.py --verify")
 
 
-def models_status():
-    """Print the installed state of the optional model environments."""
-    models = [
-        ("cisco-tsm (forecaster)",    ROOT / ".venv-forecast",   "cisco-ai/cisco-time-series-model-1.0"),
-        ("SecureBERT2.0 (search)",     ROOT / ".venv-search",     "cisco-ai/SecureBERT2.0-biencoder"),
-        ("Antares-350M (vuln scan)",   ROOT / ".venv-antares",    "fdtn-ai/antares-350m"),
-        ("Provenance Kit (verify)",    ROOT / ".venv-provenance", None),
-    ]
-    print("\n  Cisco AI Models:\n")
-    for label, venv, repo_id in models:
-        venv_ok = (venv / "bin/python").exists() or (venv / "Scripts/python.exe").exists()
-        if repo_id:
-            slug = repo_id.replace("/", "--")
-            cache = pathlib.Path(_hf_home()) / "hub" / f"models--{slug}"
-            weights_ok = (cache / "snapshots").is_dir()
-        else:
-            weights_ok = venv_ok  # provenance kit has no model weights
-        if venv_ok and weights_ok:
-            status = "installed"
-        elif venv_ok:
-            status = "venv ready, weights missing"
-        else:
-            status = "not installed"
-        print(f"    {'✓' if venv_ok and weights_ok else '⬡'} {label:36s} [{status}]")
-    print()
-
-
-def install_models():
-    """Install only the optional model environments and their weights."""
-    py311 = shutil.which("python3.11")
-    if not py311 and pathlib.Path("/usr/bin/python3.11").exists():
-        py311 = "/usr/bin/python3.11"
-    forecaster(True, py311)
-    search_corpus(True)
-    antares(True)
-    provenance_kit(True)
-
-
-def mode_result():
-    """Return a conventional status for a focused mode's recorded steps."""
-    bad = [r for r in results if r[1] == FAILED]
-    if bad:
-        print(f"\n  {len(bad)} focused setup step(s) failed.")
-        return 1
-    return 0
-
-
 def main():
-    # EVERY DOWNLOADABLE, NAMED, WITH ITS SIZE AND WHAT IT IS FOR.
-    #
-    # `--models-status` already says which are present. It does not say what
-    # they are, how big they are, or that the tool works without them — and a
-    # component nobody can find out about is one nobody installs deliberately.
-    # Two namespaces appear here and that is not a typo: three models are
-    # published under `cisco-ai` and Antares under `fdtn-ai`. Written out
-    # because a reader checking provenance should not have to discover the
-    # difference by reading source.
-    epilog = """optional components — all four are OPTIONAL and the tool works without any:
-
-  cisco-ai/cisco-time-series-model-1.0    forecasting (`forecast_check.py`)
-  cisco-ai/SecureBERT2.0-biencoder        corpus semantic search
-  cisco-ai/SecureBERT2.0-cross_encoder    corpus search re-ranking
-  fdtn-ai/antares-350m                    vulnerability scanning  [different namespace]
-  model-provenance-kit (pip)              verifies the above came from who they claim
-
-setup modes — choose one explicit scope; they do not run the full bootstrap:
-
-  --models          install only optional model environments and weights
-  --daemon          write only the retention-daemon artifact; never enable it
-  --all             do both --models and --daemon, and nothing else
-  --check           report model and daemon status; change nothing
-
-legacy full-bootstrap modes:
-
-  --apply            preserve the full setup behavior, including models and daemon artifact
-  --verify           preserve the existing install verification behavior
-  --models-status    show which Cisco AI models are installed, then exit
-  --no-models        with --apply, skip all optional Cisco AI model environments
-  --no-forecaster    with --apply, skip only the time-series environment
-
-Models land in $DEADRECKON_MODEL_CACHE, else ~/.cache/huggingface.
-`python3 run.py --help` shows the same components from the measuring side."""
-    ap = argparse.ArgumentParser(
-        description=__doc__.split("\n")[0], epilog=epilog,
-        formatter_class=argparse.RawDescriptionHelpFormatter)
-    modes = ap.add_mutually_exclusive_group()
-    modes.add_argument("--apply", action="store_true",
-                       help="legacy full setup: actually change things")
-    modes.add_argument("--verify", action="store_true",
-                       help="legacy existing-install verification")
-    modes.add_argument("--models", action="store_true",
-                       help="install only optional model components")
-    modes.add_argument("--daemon", action="store_true",
-                       help="write only the retention-daemon artifact")
-    modes.add_argument("--all", action="store_true",
-                       help="install optional models and write the daemon artifact only")
-    modes.add_argument("--check", action="store_true",
-                       help="report model and daemon status without changes")
-    modes.add_argument("--models-status", action="store_true",
-                       help="show which Cisco AI models are installed, then exit")
+    ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
+    ap.add_argument("--apply", action="store_true", help="actually change things")
+    ap.add_argument("--verify", action="store_true", help="check only, change nothing")
     ap.add_argument("--machine", metavar="FOLDER",
                     help="override the suggested machine folder name (letters, digits, hyphens)")
     ap.add_argument("--no-forecaster", action="store_true",
                     help="skip the optional time-series environment")
-    ap.add_argument("--no-models", action="store_true",
-                    help="skip ALL optional Cisco AI model environments")
     args = ap.parse_args()
-    if (args.models or args.all) and (args.no_models or args.no_forecaster):
-        ap.error("--no-models and --no-forecaster only modify legacy --apply")
-    if (args.daemon or args.check or args.verify) and (args.no_models or args.no_forecaster):
-        ap.error("--no-models and --no-forecaster require legacy --apply")
-    if (args.models or args.daemon or args.all or args.check) and args.machine:
-        ap.error("--machine only applies to the legacy full setup")
-    apply_it = args.apply
-
-    # ---- --models-status: show what's installed and exit --------------------
-    if args.models_status:
-        models_status()
-        return 0
-
-    # Focused modes deliberately return before platform probing and the full
-    # bootstrap. A request to set up models or the daemon must not also alter
-    # transcript retention, machine registration, or repository state.
-    if args.models:
-        print("\n  MODE --models: optional model components only.\n")
-        install_models()
-        return mode_result()
-    if args.daemon:
-        print("\n  MODE --daemon: retention-daemon artifact only; it is not enabled.\n")
-        daemon_artifact(True)
-        return mode_result()
-    if args.all:
-        print("\n  MODE --all: optional model components and daemon artifact only.\n")
-        daemon_artifact(True)
-        install_models()
-        return mode_result()
-    if args.check:
-        print("\n  MODE --check: status only; no files, services, or models will change.\n")
-        models_status()
-        daemon_running_check()
-        return mode_result()
+    apply_it = args.apply and not args.verify
 
     # Platform detection runs first, before anything else, so the right service
     # manager and store paths are known for all subsequent steps.
@@ -1371,34 +1030,19 @@ Models land in $DEADRECKON_MODEL_CACHE, else ~/.cache/huggingface.
     daemon_artifact(apply_it)
 
     # ---- 5. Forecaster (optional) ----
-    skip_models = args.no_forecaster or args.no_models
-    if skip_models:
-        step("forecaster environment", SKIPPED, "--no-forecaster" if args.no_forecaster else "--no-models")
-        step("forecaster model weights", SKIPPED, "--no-forecaster" if args.no_forecaster else "--no-models")
+    if args.no_forecaster:
+        step("forecaster environment", SKIPPED, "--no-forecaster")
+        step("forecaster model weights", SKIPPED, "--no-forecaster")
     else:
         forecaster(apply_it, have.get("python3.11"))
 
     # ---- 5b. Search-corpus environment (optional) ----
-    if skip_models:
-        step("search-corpus environment", SKIPPED, "--no-forecaster" if args.no_forecaster else "--no-models")
-        step("search model: SecureBERT2.0-biencoder", SKIPPED, "--no-forecaster" if args.no_forecaster else "--no-models")
-        step("search model: SecureBERT2.0-cross_encoder", SKIPPED, "--no-forecaster" if args.no_forecaster else "--no-models")
+    if args.no_forecaster:
+        step("search-corpus environment", SKIPPED, "--no-forecaster")
+        step("search model: SecureBERT2.0-biencoder", SKIPPED, "--no-forecaster")
+        step("search model: SecureBERT2.0-cross_encoder", SKIPPED, "--no-forecaster")
     else:
         search_corpus(apply_it)
-
-    # ---- 5c. Antares-350M vulnerability scanner (optional) ----
-    if skip_models:
-        step("antares environment", SKIPPED, "--no-models")
-        step("antares model weights", SKIPPED, "--no-models")
-    else:
-        antares(apply_it)
-
-    # ---- 5d. Model Provenance Kit (optional) ----
-    if skip_models:
-        step("provenance kit", SKIPPED, "--no-models")
-    else:
-        provenance_kit(apply_it)
-
 
     # ---- 6. Transcript exposure check ----
     exposed, recent = unprotected_now()

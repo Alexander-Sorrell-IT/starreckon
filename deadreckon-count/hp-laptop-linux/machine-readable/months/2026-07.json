@@ -1,0 +1,26 @@
+{
+ "tokens": 3860961436,
+ "sessions": 31,
+ "turns": 22023,
+ "minutes": 5544.8,
+ "by_cli": {
+  "claude": 3860506892,
+  "gemini": 56900,
+  "antigravity": 397644
+ },
+ "by_machine": {
+  "HP Laptop Linux": 3860961436
+ },
+ "by_model": {
+  "<synthetic>": 49995,
+  "deepseek-v4-pro": 73562652,
+  "gemini-2.5-flash": 56900,
+  "claude-opus-4-8": 171122944,
+  "claude-fable-5": 301265814,
+  "gemini-3.6-flash-high": 397644,
+  "claude-opus-5": 3314505487
+ },
+ "first": "2026-07-02T18:58:58.396Z",
+ "last": "2026-08-10T20:43:54.283Z",
+ "month": "2026-07"
+}

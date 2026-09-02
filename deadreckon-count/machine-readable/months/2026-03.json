@@ -1,18 +1,21 @@
 {
- "tokens": 45781707,
- "sessions": 7,
- "turns": 11728,
- "minutes": 2118.9,
+ "tokens": 51625154,
+ "sessions": 12,
+ "turns": 16086,
+ "minutes": 3242.5000000000005,
  "by_cli": {
-  "copilot": 45781707
+  "copilot": 51474547,
+  "gemini": 150607
  },
  "by_machine": {
+  "HP Laptop Linux": 5843447,
   "MacBook Air M1": 45781707
  },
  "by_model": {
-  "unknown": 45781707
+  "unknown": 51474547,
+  "gemini-2.5-flash": 150607
  },
  "first": "2026-03-03T15:49:58.687Z",
- "last": "2026-03-09T09:13:08.834Z",
+ "last": "2026-03-25T23:32:55.803Z",
  "month": "2026-03"
 }

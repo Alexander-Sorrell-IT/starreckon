@@ -1,0 +1,30 @@
+{
+ "tokens": 4900278820,
+ "sessions": 108,
+ "turns": 29182,
+ "minutes": 6889.300000000007,
+ "by_cli": {
+  "claude": 4614561572,
+  "bob": 229043592,
+  "antigravity": 56673656
+ },
+ "by_machine": {
+  "HP Laptop Linux": 4900278820
+ },
+ "by_model": {
+  "claude-fable-5": 1236136623,
+  "claude-opus-5": 3146910329,
+  "claude-sonnet-5": 177021920,
+  "claude-opus-4-8": 51906865,
+  "bob": 229043592,
+  "gemini-3.6-flash-high": 12068894,
+  "gemini-2.0-flash-lite-preview": 15700443,
+  "gemini-3.7-flash-safety-le": 12756639,
+  "gemini-antigravity-brain__f0854d3d": 12859068,
+  "gemini_model": 3288612,
+  "claude-opus-4-7": 2585835
+ },
+ "first": "2026-08-03T02:34:23.852Z",
+ "last": "2026-09-01T11:48:16.396Z",
+ "month": "2026-08"
+}

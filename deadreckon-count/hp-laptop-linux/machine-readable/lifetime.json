@@ -1,0 +1,85 @@
+{
+ "tokens": 38545076029,
+ "sessions": 347,
+ "turns": 76194,
+ "minutes": 30061.09999999998,
+ "by_cli": {
+  "lmstudio": 119774,
+  "kilocode": 7074501,
+  "codex": 1454074,
+  "gemini": 1468362549,
+  "copilot": 295831967,
+  "claude": 36198656291,
+  "clawspring": 258502806,
+  "antigravity": 83601215,
+  "bob": 229043592,
+  "copilot-chat": 1214160
+ },
+ "by_machine": {
+  "HP Laptop Linux": 38545076029
+ },
+ "by_model": {
+  "Mixtral-8x7B-Instruct-v0.1.Q6_K.gguf": 116185,
+  "deepseek-coder-6.7b-instruct.Q6_K.gguf": 3530,
+  "Llama-3-13B-Instruct-v0.1.Q4_K_S.gguf": 59,
+  "gemini-2.5-pro-preview": 7025122,
+  "gpt-5.1-codex": 17563,
+  "gemini-2.5-pro": 66610041,
+  "gemini-3-flash-preview": 1200420521,
+  "gemini-3-pro-preview": 201035389,
+  "codex": 456,
+  "grok-code-fast-1": 10646,
+  "gpt-5.1-codex-max": 1436055,
+  "devstral-2512:free": 38733,
+  "unknown": 264442058,
+  "gemini-2.5-flash": 296598,
+  "claude-opus-4-7": 2442555117,
+  "deepseek-v4-pro": 534671153,
+  "gpt-5.5": 225314053,
+  "gpt-5.4-mini": 64578662,
+  "claude-sonnet-4-6": 170325751,
+  "gemini-3-flash-d": 20218246,
+  "claude-opus-4-8": 227833205,
+  "claude-fable-5": 1537543647,
+  "gemini-3-flash-a": 3362293,
+  "<synthetic>": 49995,
+  "gemini-3.5-flash-low": 2949376,
+  "gemini-3.6-flash-high": 12466538,
+  "claude-opus-5": 6461415816,
+  "claude-sonnet-5": 177021920,
+  "bob": 229043592,
+  "gemini-2.0-flash-lite-preview": 15700443,
+  "gemini-3.7-flash-safety-le": 12756639,
+  "gemini-antigravity-brain__f0854d3d": 12859068,
+  "gemini_model": 3288612
+ },
+ "fields": {
+  "input_tokens": 24303172,
+  "cache_creation_input_tokens": 266408747,
+  "cache_read_input_tokens": 11200981609,
+  "output_tokens": 59723076
+ },
+ "first": "2025-07-01T06:58:19.695000Z",
+ "last": "2026-09-01T11:48:16.396Z",
+ "machines": {},
+ "scanned_tokens": 13895407082,
+ "ledger_unread_cli": 1214160,
+ "ledger": {
+  "HP Laptop Linux": {
+   "present": true,
+   "total": 13367051701,
+   "sessions": 374,
+   "scanned": 13895407082,
+   "beyond_scan": 0,
+   "unread_cli_tokens": 1214160,
+   "unread_clis": [
+    "copilot-chat"
+   ]
+  }
+ },
+ "ledger_beyond_scan": 1214160,
+ "statscache_floor_delta": 24648454787,
+ "statscache_claude_floor_delta": 24647239687,
+ "scanner_version": "1db5dde1cc04",
+ "hardware_uuid": "4a5b5dc6-8401-43cb-b62b-45fa5d974c11"
+}

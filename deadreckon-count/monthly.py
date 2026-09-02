@@ -164,7 +164,6 @@ def fold_ledger(mdir, name, life, scan_cli):
     lt = token_ledger.lifetime(mdir)
     beyond = unread = 0
     unread_clis = []
-    beyond_by_cli = defaultdict(int)
     for cli, n in lt["by_cli"].items():
         # A CLI THE SCAN NEVER READ IS NOT A CLI WHOSE TRANSCRIPTS WERE DELETED.
         #
@@ -191,14 +190,12 @@ def fold_ledger(mdir, name, life, scan_cli):
             unread_clis.append(cli)
             life["by_cli"][cli] += n
             life["by_machine"][name] += n
-            beyond_by_cli[cli] += n
             continue
         d = n - scan_cli[cli]
         if d > 0:
             beyond += d
             life["by_cli"][cli] += d
             life["by_machine"][name] += d
-            beyond_by_cli[cli] += d
     life["tokens"] += beyond + unread
     life["ledger_unread_cli"] = life.get("ledger_unread_cli", 0) + unread
     return {
@@ -212,13 +209,6 @@ def fold_ledger(mdir, name, life, scan_cli):
         # reader shows up as this number FALLING rather than as tokens
         # mysteriously moving between categories.
         "unread_cli_tokens": unread, "unread_clis": sorted(unread_clis),
-        # WHAT THIS FOLD ADDED, PER CLI. The stats-cache floor below has to
-        # compare its floor against what the bucket ALREADY holds, and this is
-        # the only record of what the ledger contributed to it. Reading the
-        # ledger a second time there is how two slightly different definitions
-        # of "what the ledger added" get into one report — the same trap
-        # collect() names above. Passed, not recomputed.
-        "beyond_by_cli": dict(beyond_by_cli),
     }
 
 
@@ -244,9 +234,6 @@ def fold_ledger_fleet(root, life):
     # Kept so nothing downstream that reads the old key silently changes meaning:
     # it is the sum, and it is named as the sum.
     life["ledger_beyond_scan_total"] = life["tokens"] - life["scanned_tokens"]
-    # AFTER the two lines above, which are defined against the scan, and BEFORE
-    # the floor, which has to compare against a bucket that already holds them.
-    fold_undated(life)
     # STATS-CACHE FLOOR. The ledger above only adds what the ledger recorded
     # beyond the scan. stats-cache.json (one file per Claude profile) is a
     # separate counter that accumulates from the first session ever and survives
@@ -258,96 +245,6 @@ def fold_ledger_fleet(root, life):
     # if the floor is higher, the difference is real deleted work.
     apply_statscache_floor_fleet(root, life)
     return block
-
-
-def fold_undated(bucket):
-    """Undated tokens into the headline, attributed to the CLI that spent them.
-
-    collect() parks sessions with no start timestamp in bucket["undated"] and
-    nothing folded them back in, so the only way they reached a published total
-    was by accident: stats_page.machine_floor() computes its claude floor over
-    ALL of a machine's sessions, so undated CLAUDE work arrived inside a floor
-    delta, and undated non-claude work arrived as that function's `d_other`,
-    which lands in life["tokens"] and in NO by_cli bucket at all. Two things
-    were wrong with that. It made a CLAUDE counter the switch for whether
-    NON-CLAUDE tokens were counted — a machine with no stats-cache dropped them
-    — and it published a total its own By-CLI table could not add up to:
-    lifetime.json tokens 80,868,273,906 vs sum(by_cli) 80,867,059,746, a gap of
-    1,214,160, which is exactly copilot-chat's undated total.
-
-    Tokens only. The session, turn and minute counters stay on the dated
-    sessions, because a session with no start has no duration either and
-    LIFETIME.md says so where it prints them.
-    """
-    ud = bucket.get("undated") or {}
-    if not ud.get("tokens"):
-        return
-    bucket["tokens"] += ud["tokens"]
-    for cli, n in (ud.get("by_cli") or {}).items():
-        bucket["by_cli"][cli] += n
-    for mach, n in (ud.get("by_machine") or {}).items():
-        bucket["by_machine"][mach] += n
-    # So render() can SAY whether they are in the headline instead of asserting
-    # it. This function is the only thing that puts them there.
-    bucket["undated_in_headline"] = True
-
-
-def apply_statscache_floor(mdir, d, bucket, beyond_by_cli):
-    """One machine's stats-cache floor, applied as the MAX it is documented as.
-
-    THE COMPARISON HAS TO BE AGAINST WHAT THE BUCKET ALREADY HOLDS.
-
-    This read `cur_claude` off the scanned sessions alone, while fold_ledger had
-    already added (ledger - scan) into bucket["by_cli"]["claude"] a few lines
-    earlier. The published figure was therefore `ledger_beyond + floor`, never
-    the `max(scan + ledger, floor)` its own comment claimed. Measured on this
-    fleet: HP's ledger holds 197,584,681 claude tokens beyond its scan and its
-    floor (30,023,504,643) stands above both, so those 197,584,681 were counted
-    twice in the published lifetime. `beyond_by_cli` is fold_ledger's own record
-    of what it added, passed in rather than re-derived.
-
-    Undated sessions are in the bucket by now (fold_undated), so both sides of
-    the max cover the same sessions and `s.get("start")` no longer filters here.
-    Returns (claude delta, other delta); the caller owns the running totals.
-    """
-    import stats_page
-    sc = d.get("stats_cache", [])
-    if not sc:
-        return 0, 0
-    tf = paths.find(mdir, "totals.json")
-    try:
-        t = json.loads(tf.read_text(encoding="utf-8")) if tf else {}
-    except Exception:
-        t = {}
-    sessions_here = d.get("sessions", [])
-    floor, claude_floor, other_floor, _ = stats_page.machine_floor(
-        t, sessions_here, sc)
-    cur_claude = (sum(s.get("total", 0) for s in sessions_here
-                      if s.get("cli") == "claude")
-                  + beyond_by_cli.get("claude", 0))
-    cur_other  = (sum(s.get("total", 0) for s in sessions_here
-                      if s.get("cli") != "claude")
-                  + sum(v for c, v in beyond_by_cli.items() if c != "claude"))
-    # Take the larger of what we already have (scan + ledger) vs the floor.
-    # machine_floor already does max(grand_total, per_acct_sessions) internally,
-    # so cur_claude here is a lower bound; the floor may be higher if
-    # pre-daemon sessions were deleted.
-    d_claude = max(0, claude_floor - cur_claude)
-    d_other  = max(0, other_floor  - cur_other)
-    name = d.get("machine", mdir.name)
-    if d_claude:
-        bucket["by_cli"]["claude"]          += d_claude
-        bucket["by_machine"][name]          += d_claude
-    if d_other:
-        # Other CLIs have no named counter; the delta goes into the total
-        # but not into any named CLI bucket, so it is visible as a gap.
-        # other_floor is the sum of this machine's non-claude sessions and
-        # cur_other now holds every one of them, so this is 0 on both machines
-        # that have a stats-cache — where it was the unattributed 1,214,160
-        # before. A non-zero value here is a real gap and stays visible as the
-        # difference between the two statscache_*_delta keys.
-        bucket["by_machine"][name]          += d_other
-    return d_claude, d_other
 
 
 def apply_statscache_floor_fleet(root, life):
@@ -362,6 +259,7 @@ def apply_statscache_floor_fleet(root, life):
     Applied after the ledger fold so the floor is compared against the best
     number we already have rather than the bare scan.
     """
+    import stats_page
     total_floor_delta = 0
     total_other_delta = 0
     for mdir in paths.machine_folders(root):
@@ -372,15 +270,41 @@ def apply_statscache_floor_fleet(root, life):
             d = json.loads(sf.read_text(encoding="utf-8"))
         except Exception:
             continue
-        name = d.get("machine", mdir.name)
-        # An empty map here is not a silent zero: fold_ledger_fleet walked this
-        # same machine_folders(root) list moments ago and keyed its block by
-        # this same d["machine"], so a machine with no row is a machine whose
-        # ledger added nothing. The two loops cannot disagree about which
-        # machines exist.
-        beyond_by_cli = ((life.get("ledger") or {}).get(name)
-                         or {}).get("beyond_by_cli", {})
-        d_claude, d_other = apply_statscache_floor(mdir, d, life, beyond_by_cli)
+        sc = d.get("stats_cache", [])
+        if not sc:
+            continue
+        tf = paths.find(mdir, "totals.json")
+        try:
+            t = json.loads(tf.read_text(encoding="utf-8")) if tf else {}
+        except Exception:
+            t = {}
+        sessions_here = d.get("sessions", [])
+        floor, claude_floor, other_floor, _ = stats_page.machine_floor(
+            t, sessions_here, sc)
+        # Compare the floor against DATED sessions only — the same subset that
+        # collect() put into life["by_cli"]["claude"]. Undated sessions are
+        # tracked in life["undated"] and excluded from the headline; comparing
+        # against all sessions would understate the delta and leave life["tokens"]
+        # below the floor.  `s.get("start")` is the date filter collect() uses.
+        cur_claude = sum(s.get("total", 0) for s in sessions_here
+                        if s.get("cli") == "claude" and s.get("start"))
+        cur_other  = sum(s.get("total", 0) for s in sessions_here
+                        if s.get("cli") != "claude" and s.get("start"))
+        # Take the larger of what we already have (scan + ledger) vs the floor.
+        # machine_floor already does max(grand_total, per_acct_sessions) internally,
+        # so cur_claude here is a lower bound; the floor may be higher if
+        # pre-daemon sessions were deleted.
+        d_claude = max(0, claude_floor - cur_claude)
+        d_other  = max(0, other_floor  - cur_other)
+        if d_claude:
+            life["by_cli"]["claude"]          += d_claude
+            name = d.get("machine", mdir.name)
+            life["by_machine"][name]          += d_claude
+        if d_other:
+            # Other CLIs have no named counter; the delta goes into the total
+            # but not into any named CLI bucket, so it is visible as a gap.
+            name = d.get("machine", mdir.name)
+            life["by_machine"][name]          += d_other
         total_floor_delta += d_claude
         total_other_delta += d_other
     added = total_floor_delta + total_other_delta
@@ -399,20 +323,11 @@ def collect_from(sessions, name, totals_path):
             "by_cli": defaultdict(int), "by_machine": defaultdict(int),
             "by_model": defaultdict(int), "fields": dict.fromkeys(FIELDS, 0),
             "first": None, "last": None, "machines": {}}
-    # The same undated bucket collect() keeps, for the same reason: this
-    # machine's own LIFETIME.md is written from this dict, and `continue` alone
-    # dropped 4,173,546,193 tokens on HP out of a document that never said so.
-    undated = {"tokens": 0, "sessions": 0, "by_cli": defaultdict(int),
-               "by_machine": defaultdict(int)}
     for s in sessions:
         m = month_of(s.get("start"))
-        tok = s.get("total", 0)
         if not m:
-            undated["tokens"] += tok
-            undated["sessions"] += 1
-            undated["by_cli"][s.get("cli", "?")] += tok
-            undated["by_machine"][name] += tok
             continue
+        tok = s.get("total", 0)
         for b in (months[m], life):
             b["tokens"] += tok
             b["sessions"] += 1
@@ -436,8 +351,6 @@ def collect_from(sessions, name, totals_path):
                         life["fields"][k] += v
         except Exception:
             pass
-    life["undated"] = {k: (dict(v) if isinstance(v, defaultdict) else v)
-                       for k, v in undated.items()}
     return months, life
 
 
@@ -515,23 +428,6 @@ def render(title, b, note="", by_machine=None):
                           f"transcript deletion  "
                           f"† {started_note} — no vendor counter exists; "
                           f"the ledger is the only record", ""]
-                    # SAY WHAT HAPPENS IF THE DAEMON STOPS.
-                    #
-                    # The legend explains what † MEANS and not what it DEPENDS
-                    # ON. Every † figure is held up by the ledger, the ledger
-                    # only grows when the daemon records, and transcripts keep
-                    # expiring either way — so a dead daemon does not freeze
-                    # these numbers, it makes them FALL, silently, while every
-                    # check still passes because each scan is internally
-                    # consistent. A reader is entitled to know the figure has a
-                    # running process behind it.
-                    L += ["> **† figures depend on the retention daemon.** The "
-                          "ledger only grows when the daemon records, while "
-                          "transcripts keep expiring regardless. If it stops, "
-                          "these totals do not freeze — they decay, and "
-                          "nothing else will say so. "
-                          "`python3 run.py status` reports whether it is "
-                          "running on the machine you are on.", ""]
                 continue    # skip the generic table below
             except ImportError:
                 pass
@@ -539,61 +435,6 @@ def render(title, b, note="", by_machine=None):
         for k, v in rows:
             L.append(f"| {k} | {v:,} | {v/max(1,b['tokens'])*100:5.1f}% |")
         L.append("")
-    # MEASURED AND ADJUSTED, SIDE BY SIDE, OR NEITHER. PLAN item 10.2.
-    #
-    # The headline above is MEASURED: scanners, ledger, vendor counters. Manual
-    # entries are added here, after it, and never folded into it — the
-    # measuring modules do not read the adjustments file at all, which
-    # test_manual_adjust.py asserts by grepping them.
-    #
-    # Both figures are printed together or the section does not appear. A
-    # report showing `adjusted` alone would be a measured-looking number that
-    # no scanner produced, which is the one thing this whole design exists to
-    # prevent. The audit columns are not optional either: an adjustment whose
-    # author and reason are not visible beside it is indistinguishable from a
-    # measurement, and that is exactly the confusion being avoided.
-    try:
-        import manual_adjust as _ma
-        adjustments, problems, adj_total = [], [], 0
-        # The machine FOLDERS, not by_machine's keys — those are display
-        # labels ("Dell Latitude 7480 Linux") and this file lives in a folder
-        # ("dell-latitude-7480-linux"). Looking one up by the other silently
-        # found nothing and rendered no section, which is how a manual
-        # adjustment could have been recorded and then never published.
-        _root = pathlib.Path(__file__).resolve().parent
-        for _d in paths.machine_folders(_root):
-            for _e in _ma.load(_d):
-                if "_malformed" not in _e:
-                    adjustments.append(_e)
-            problems += [f"{_d.name}: {x}" for x in _ma.verify(_d)]
-            adj_total += _ma.totals(_d)[1]
-        if adjustments or problems:
-            L += ["## Manual adjustments", "",
-                  "Usage that is real and was never measured — recorded here, "
-                  "never inside the figure above.", "",
-                  f"| | tokens |", "|---|---:|",
-                  f"| measured (scanners, ledger, vendor counters) | "
-                  f"{b['tokens']:,} |",
-                  f"| manual adjustments | {adj_total:,} |",
-                  f"| **adjusted total** | **{b['tokens'] + adj_total:,}** |",
-                  ""]
-            if adjustments:
-                L += ["| when | machine | cli | tokens | author | reason | id |",
-                      "|---|---|---|---:|---|---|---|"]
-                for _e in adjustments:
-                    L.append(
-                        f"| {str(_e.get('ts'))[:10]} | {_e.get('machine','')} "
-                        f"| {_e.get('cli','')} | {_e.get('tokens',0):,} "
-                        f"| {_e.get('author','')} | {_e.get('reason','')} "
-                        f"| `{str(_e.get('id',''))[:12]}` |")
-                L.append("")
-            if problems:
-                L += ["> **These entries do not count toward the adjusted "
-                      "total and are listed so the reason is visible:**", ""]
-                L += [f"> - {x}" for x in problems] + [""]
-    except ImportError:
-        pass
-
     # Undated sessions — real tokens that cannot be attributed to a month.
     # They are in the every-CLI total (sessions.json) and excluded from the
     # dated lifetime above. Shown here so the reader can see the gap and its
@@ -601,23 +442,12 @@ def render(title, b, note="", by_machine=None):
     ud = b.get("undated") or {}
     if ud.get("tokens"):
         ud_rows = sorted(ud.get("by_cli", {}).items(), key=lambda x: -x[1])
-        # WHETHER THEY ARE IN THE HEADLINE IS A FACT, NOT A SENTENCE. This said
-        # "included" unconditionally while nothing folded them in, so a bucket
-        # that had dropped 1,214,160 of them published a claim they were there.
-        # fold_undated() is the only thing that puts them in, and it is the only
-        # thing that sets this flag.
-        in_headline = (
-            "They are included in the headline token figure above; the session, "
-            "turn and duration counts there cover dated sessions only."
-            if b.get("undated_in_headline") else
-            "They are NOT in the headline figure above — nothing folded them in, "
-            "so it is short by exactly this much.")
         L += ["## Undated sessions", "",
               f"**{ud['tokens']:,} tokens** across **{ud['sessions']:,} session(s)** "
               f"have no start timestamp and cannot be placed in any month. "
               f"They are real work — counted in the every-CLI total — but their "
               f"transcripts carried no `timestamp` field, so the month is unknown. "
-              + in_headline, ""]
+              f"They are included in the headline figure above.", ""]
         if ud_rows:
             L += ["| CLI | tokens |", "|---|---:|"]
             for k, v in ud_rows:
@@ -856,34 +686,32 @@ def main():
         mm, ml = collect_from(d.get("sessions", []), name,
                               paths.find(md, "totals.json"))
         ml["scanned_tokens"] = ml["tokens"]
-        # THE SAME SCAN BASELINE THE FLEET USES: every session on this machine,
-        # dated or not, exactly as collect() builds `per_cli`. This passed
-        # dict(ml["by_cli"]), which collect_from() had built from DATED sessions
-        # only, so the ledger fold re-added work the scan had already read. On
-        # HP: 4,172,332,033 undated claude tokens booked a second time as
-        # "beyond the scan", and copilot-chat — every one of whose sessions here
-        # is undated — was missing from the baseline entirely, so its 1,214,160
-        # were published as a CLI the scanner has no reader for. This machine's
-        # own lifetime.json read 36,492,905,749 where the fleet's held
-        # 32,319,359,556 for it: 4,173,546,193 apart, its whole undated total.
-        _scan_cli = defaultdict(int)
-        for _s in d.get("sessions", []):
-            _scan_cli[_s.get("cli", "?")] += _s.get("total", 0)
-        _led = fold_ledger(md, name, ml, _scan_cli)
-        ml["ledger"] = {name: _led}
+        ml["ledger"] = {name: fold_ledger(md, name, ml, dict(ml["by_cli"]))}
         ml["ledger_beyond_scan"] = ml["tokens"] - ml["scanned_tokens"]
-        # Undated tokens into the headline before the floor, outside the
-        # stats-cache gate below — same order as the fleet path.
-        fold_undated(ml)
-        # STATS-CACHE FLOOR — the fleet path's function, not a second copy of
-        # its arithmetic. The copy that lived here had the same defect: it
-        # compared the floor against dated sessions while the ledger fold above
-        # had already been added, so it published floor + ledger instead of
-        # max(scan + ledger, floor).
+        # STATS-CACHE FLOOR — same logic as the fleet path. Apply after the
+        # ledger fold so the floor is compared against scan+ledger together.
         _sc = d.get("stats_cache", [])
         if _sc:
-            _d_claude, _d_other = apply_statscache_floor(
-                md, d, ml, _led["beyond_by_cli"])
+            import stats_page
+            _tf = paths.find(md, "totals.json")
+            try:
+                _t = json.loads(_tf.read_text(encoding="utf-8")) if _tf else {}
+            except Exception:
+                _t = {}
+            _floor, _claude_floor, _other_floor, _ = stats_page.machine_floor(
+                _t, d.get("sessions", []), _sc)
+            # Dated sessions only — same subset as collect_from() used to build ml.
+            _cur_claude = sum(s.get("total", 0) for s in d.get("sessions", [])
+                              if s.get("cli") == "claude" and s.get("start"))
+            _cur_other  = sum(s.get("total", 0) for s in d.get("sessions", [])
+                              if s.get("cli") != "claude" and s.get("start"))
+            _d_claude = max(0, _claude_floor - _cur_claude)
+            _d_other  = max(0, _other_floor  - _cur_other)
+            if _d_claude:
+                ml["by_cli"]["claude"]     += _d_claude
+                ml["by_machine"][name]     += _d_claude
+            if _d_other:
+                ml["by_machine"][name]     += _d_other
             _added = _d_claude + _d_other
             ml["tokens"]                   += _added
             ml["statscache_floor_delta"]    = _added

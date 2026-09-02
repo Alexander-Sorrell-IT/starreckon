@@ -1,0 +1,176 @@
+{
+  "generated_at": "2026-08-14T18:56:00-05:00",
+  "grand_total_tokens": 15251673339,
+  "ledger_total": 19821697841,
+  "ledger_beyond_scan": 3952282,
+  "ledger_beyond_scan_unknown_on": [],
+  "machines_without_ledger": [],
+  "machines": [
+    {
+      "machine": "MacBook Air M1",
+      "folder": "macbook-air-m1",
+      "total": 15251673339,
+      "ledger_total": 19821697841,
+      "ledger_sessions": 252,
+      "ledger_present": true,
+      "ledger_beyond_scan": 3952282,
+      "scanned": "2026-08-14T18:52:17-05:00",
+      "sessions_scanned": true
+    }
+  ],
+  "accounts": [
+    {
+      "account": "broodierchip@gmail.com",
+      "total": 9686425191,
+      "sessions": 32,
+      "turns": 51206,
+      "by_machine": {
+        "MacBook Air M1": 9686425191
+      },
+      "totals": {
+        "input_tokens": 3780583,
+        "cache_creation_input_tokens": 288310886,
+        "cache_read_input_tokens": 9342630501,
+        "output_tokens": 51703221
+      }
+    },
+    {
+      "account": "codehunterextreme@gmail.com",
+      "total": 5321298979,
+      "sessions": 25,
+      "turns": 13265,
+      "by_machine": {
+        "MacBook Air M1": 5321298979
+      },
+      "totals": {
+        "input_tokens": 434300,
+        "cache_creation_input_tokens": 161543121,
+        "cache_read_input_tokens": 5143134863,
+        "output_tokens": 16186695
+      }
+    },
+    {
+      "account": "alexander.sorrell.it@gmail.com",
+      "total": 243949169,
+      "sessions": 4,
+      "turns": 1124,
+      "by_machine": {
+        "MacBook Air M1": 243949169
+      },
+      "totals": {
+        "input_tokens": 28533,
+        "cache_creation_input_tokens": 5274501,
+        "cache_read_input_tokens": 237710186,
+        "output_tokens": 935949
+      }
+    }
+  ],
+  "by_cli": {
+    "claude": {
+      "sessions": 77,
+      "tokens": 16426489244,
+      "active_min": 29650.7
+    },
+    "codex": {
+      "sessions": 125,
+      "tokens": 1633604881,
+      "active_min": 1783.2
+    },
+    "gemini": {
+      "sessions": 4,
+      "tokens": 995360683,
+      "active_min": 578.4
+    },
+    "copilot": {
+      "sessions": 36,
+      "tokens": 497696783,
+      "active_min": 4786.3
+    },
+    "antigravity": {
+      "sessions": 35,
+      "tokens": 135111522,
+      "active_min": 818.4
+    },
+    "grok": {
+      "sessions": 8,
+      "tokens": 100222322,
+      "active_min": 609.4
+    },
+    "bob": {
+      "sessions": 1,
+      "tokens": 29206965,
+      "active_min": 0.0
+    },
+    "lmstudio": {
+      "sessions": 3,
+      "tokens": 53159,
+      "active_min": 0.0
+    },
+    "kilocode": {
+      "sessions": 0,
+      "tokens": 0,
+      "active_min": 0.0
+    },
+    "clawspring": {
+      "sessions": 0,
+      "tokens": 0,
+      "active_min": 0.0
+    },
+    "copilot-chat": {
+      "sessions": 0,
+      "tokens": 0,
+      "active_min": 0.0
+    },
+    "claude-orphans": {
+      "sessions": 0,
+      "tokens": 0,
+      "active_min": 0.0
+    }
+  },
+  "by_provider": {
+    "anthropic": 15251673339
+  },
+  "by_machine_provider": {
+    "MacBook Air M1": {
+      "anthropic": 15251673339
+    }
+  },
+  "cli_by_provider": {
+    "anthropic": {
+      "sessions": 100,
+      "tokens": 16864152791,
+      "active_min": 32203.9
+    },
+    "openai": {
+      "sessions": 127,
+      "tokens": 1634265708,
+      "active_min": 1800.2
+    },
+    "google": {
+      "sessions": 39,
+      "tokens": 1130472205,
+      "active_min": 1396.8
+    },
+    "xai": {
+      "sessions": 8,
+      "tokens": 100222322,
+      "active_min": 609.4
+    },
+    "synthetic": {
+      "sessions": 11,
+      "tokens": 59372409,
+      "active_min": 2216.1
+    },
+    "-": {
+      "sessions": 1,
+      "tokens": 29206965,
+      "active_min": 0.0
+    },
+    "other": {
+      "sessions": 3,
+      "tokens": 53159,
+      "active_min": 0.0
+    }
+  },
+  "uncountable_tools": []
+}

@@ -6,7 +6,7 @@ _Claude Code only: it is the one tool that records which account a session belon
 
 | account | tokens | share | sessions |
 |---|---:|---:|---:|
-| broodierchip@gmail.com | 17,557,582,699 |  60.2% | 29 |
-| codehunterextreme@gmail.com | 11,031,562,217 |  37.8% | 21 |
-| alexander.sorrell.it@gmail.com | 571,753,755 |   2.0% | 4 |
-| codehunterextreme@gmail.com | 9,428,950 |   0.0% | 2,126 |
+| second@example.com | 17,557,582,699 |  60.2% | 29 |
+| third@example.com | 11,031,562,217 |  37.8% | 21 |
+| owner@example.com | 571,753,755 |   2.0% | 4 |
+| third@example.com | 9,428,950 |   0.0% | 2,126 |

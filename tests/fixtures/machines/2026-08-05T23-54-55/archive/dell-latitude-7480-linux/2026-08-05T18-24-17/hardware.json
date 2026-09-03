@@ -17,7 +17,7 @@
   "python": "3.12.3",
   "accounts": [
     {
-      "account": "broodierchip@gmail.com",
+      "account": "second@example.com",
       "config_dir": "/home/phantom-orchestrator/.claude",
       "profile_env": "unset (default)",
       "sessions": 16441,
@@ -25,7 +25,7 @@
       "projects": 17
     },
     {
-      "account": "alexander.sorrell.it@gmail.com",
+      "account": "owner@example.com",
       "config_dir": "/home/phantom-orchestrator/.claude-it",
       "profile_env": "CLAUDE_CONFIG_DIR=/home/phantom-orchestrator/.claude-it",
       "sessions": 70,
@@ -33,7 +33,7 @@
       "projects": 6
     },
     {
-      "account": "codehunterextreme@gmail.com",
+      "account": "third@example.com",
       "config_dir": "/home/phantom-orchestrator/.claude-alt",
       "profile_env": "CLAUDE_CONFIG_DIR=/home/phantom-orchestrator/.claude-alt",
       "sessions": 2,

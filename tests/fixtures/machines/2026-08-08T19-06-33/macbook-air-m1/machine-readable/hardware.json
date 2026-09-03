@@ -1,6 +1,6 @@
 {
   "machine": "MacBook Air M1",
-  "hostname": "MacBookAir.attlocal.net",
+  "hostname": "macbook.local",
   "hardware": {
     "model_identifier": "MacBookAir10,1",
     "chip": "Apple M1",
@@ -15,7 +15,7 @@
     "os_build": "24G806"
   },
   "disk": {
-    "volume": "/Users/broodierchip-m1air",
+    "volume": "/Users/testuser",
     "total_gb": 1858.2,
     "used_gb": 1733.6,
     "free_gb": 124.6
@@ -23,33 +23,33 @@
   "python": "3.11.3",
   "accounts": [
     {
-      "account": "broodierchip@gmail.com",
-      "config_dir": "/Users/broodierchip-m1air/.claude-main",
-      "profile_env": "CLAUDE_CONFIG_DIR=/Users/broodierchip-m1air/.claude-main",
+      "account": "second@example.com",
+      "config_dir": "/Users/testuser/.claude-main",
+      "profile_env": "CLAUDE_CONFIG_DIR=/Users/testuser/.claude-main",
       "sessions": 29,
       "transcript_files": 2705,
       "projects": 26
     },
     {
-      "account": "codehunterextreme@gmail.com",
-      "config_dir": "/Users/broodierchip-m1air/Desktop/standout_sandbox/.claude",
+      "account": "third@example.com",
+      "config_dir": "/Users/testuser/Desktop/standout_sandbox/.claude",
       "profile_env": "unset (default)",
       "sessions": 2126,
       "transcript_files": 2126,
       "projects": 1
     },
     {
-      "account": "codehunterextreme@gmail.com",
-      "config_dir": "/Users/broodierchip-m1air/.claude",
+      "account": "third@example.com",
+      "config_dir": "/Users/testuser/.claude",
       "profile_env": "unset (default)",
       "sessions": 21,
       "transcript_files": 108,
       "projects": 8
     },
     {
-      "account": "alexander.sorrell.it@gmail.com",
-      "config_dir": "/Users/broodierchip-m1air/.claude-it",
-      "profile_env": "CLAUDE_CONFIG_DIR=/Users/broodierchip-m1air/.claude-it",
+      "account": "owner@example.com",
+      "config_dir": "/Users/testuser/.claude-it",
+      "profile_env": "CLAUDE_CONFIG_DIR=/Users/testuser/.claude-it",
       "sessions": 4,
       "transcript_files": 5,
       "projects": 2

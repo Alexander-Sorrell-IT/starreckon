@@ -1,10 +1,10 @@
 account,project,input_tokens,cache_creation_input_tokens,cache_read_input_tokens,output_tokens,total
-broodierchip@gmail.com,-Users-broodierchip-m1air,3651706,203167853,6543372131,38645174,6788836864
-broodierchip@gmail.com,-Users-broodierchip-m1air-Desktop-vulcan-delta-tests,57948,50016035,1583321373,9260989,1642656345
-codehunterextreme@gmail.com,-Users-broodierchip-m1air,136897,155627342,5059576298,15555653,5230896190
-codehunterextreme@gmail.com,-Users-broodierchip-m1air-Documents-Hackthon,296751,3495782,34781456,240080,38814069
-codehunterextreme@gmail.com,-Users-broodierchip-m1air-Documents-tools,2,19909,21214,803,41928
-alexander.sorrell.it@gmail.com,-Users-broodierchip-m1air-Desktop-Bug,28533,5274501,237710186,935949,243949169
+second@example.com,-Users-testuser,3651706,203167853,6543372131,38645174,6788836864
+second@example.com,-Users-testuser-Desktop-vulcan-delta-tests,57948,50016035,1583321373,9260989,1642656345
+third@example.com,-Users-testuser,136897,155627342,5059576298,15555653,5230896190
+third@example.com,-Users-testuser-Documents-Hackthon,296751,3495782,34781456,240080,38814069
+third@example.com,-Users-testuser-Documents-tools,2,19909,21214,803,41928
+owner@example.com,-Users-testuser-Desktop-Bug,28533,5274501,237710186,935949,243949169
 unknown (Documents),token-usage,62,106705,5935687,20178,6062632
 unknown (Desktop_standout_sandbox_.claude),work,25837,377188,3505480,43777,3952282
-unknown (claude-main),-Users-broodierchip-m1air,2,376,112355,1013,113746
+unknown (claude-main),-Users-testuser,2,376,112355,1013,113746

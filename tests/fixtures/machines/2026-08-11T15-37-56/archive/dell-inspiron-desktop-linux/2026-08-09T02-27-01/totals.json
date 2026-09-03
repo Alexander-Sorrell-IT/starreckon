@@ -78,13 +78,13 @@
           "output_tokens": 145
         }
       },
-      "account": "broodierchip@gmail.com",
+      "account": "second@example.com",
       "user_id": "c27b4a9d126ec2d32ffc8f20d6ec0ee4496d81705319298a5d7361b510c1c9c8",
       "identity": {
         "auth": "oauth",
-        "email": "broodierchip@gmail.com",
+        "email": "second@example.com",
         "org_uuid": "6bfc754e-a205-41c3-9dac-80e593f494e0",
-        "org_name": "broodierchip@gmail.com's Organization",
+        "org_name": "second@example.com's Organization",
         "account_uuid": "a9fec27d-ab5d-48bb-9679-a9bf60bfb97e",
         "user_id": "c27b4a9d126ec2d32ffc8f20d6ec0ee4496d81705319298a5d7361b510c1c9c8",
         "approved_api_keys": []

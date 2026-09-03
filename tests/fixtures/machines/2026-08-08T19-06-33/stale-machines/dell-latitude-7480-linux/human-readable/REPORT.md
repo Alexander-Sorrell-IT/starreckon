@@ -13,10 +13,10 @@ accounting, deduplicated by message uuid.
 
 | Account | Sessions | Turns | Input | Cache write | Cache read | Output | Total |
 |---|---:|---:|---:|---:|---:|---:|---:|
-| alexander.sorrell.it@gmail.com | 73 | 9,203 | 482.90K | 96.90M | 2.13B | 12.83M | **2.24B** |
-| broodierchip@gmail.com | 31 | 19,237 | 1.74M | 143.88M | 1.39B | 1.43M | **1.54B** |
-| broodierchip@gmail.com | 16,441 | 32,475 | 321.50M | 252.69M | 919.53M | 17.63M | **1.51B** |
-| codehunterextreme@gmail.com | 2 | 223 | 11.07K | 3.40M | 23.16M | 206.90K | **26.78M** |
+| owner@example.com | 73 | 9,203 | 482.90K | 96.90M | 2.13B | 12.83M | **2.24B** |
+| second@example.com | 31 | 19,237 | 1.74M | 143.88M | 1.39B | 1.43M | **1.54B** |
+| second@example.com | 16,441 | 32,475 | 321.50M | 252.69M | 919.53M | 17.63M | **1.51B** |
+| third@example.com | 2 | 223 | 11.07K | 3.40M | 23.16M | 206.90K | **26.78M** |
 | user:2d4777822844 | 1 | 111 | 457 | 1.21M | 5.94M | 135.01K | **7.28M** |
 | user:283b8e5b8e48 | 1 | 3 | 0 | 0 | 0 | 0 | **0** |
 
@@ -55,14 +55,14 @@ linked to an account only when their organization UUIDs match.
 
 | Account | Auth | Organization | Org UUID | Linked to |
 |---|---|---|---|---|
-| alexander.sorrell.it@gmail.com | oauth | alexander.sorrell.it@gmail.com's Organization | `66565064-263e-4d54-b06f-15cae4b2febc` | — |
-| broodierchip@gmail.com | oauth | broodierchip@gmail.com's Organization | `6bfc754e-a205-41c3-9dac-80e593f494e0` | — |
-| broodierchip@gmail.com | oauth | broodierchip@gmail.com's Organization | `6bfc754e-a205-41c3-9dac-80e593f494e0` | — |
-| codehunterextreme@gmail.com | oauth | codehunterextreme@gmail.com's Organization | `ba511861-53b4-4599-8019-93db6389d991` | — |
+| owner@example.com | oauth | owner@example.com's Organization | `66565064-263e-4d54-b06f-15cae4b2febc` | — |
+| second@example.com | oauth | second@example.com's Organization | `6bfc754e-a205-41c3-9dac-80e593f494e0` | — |
+| second@example.com | oauth | second@example.com's Organization | `6bfc754e-a205-41c3-9dac-80e593f494e0` | — |
+| third@example.com | oauth | third@example.com's Organization | `ba511861-53b4-4599-8019-93db6389d991` | — |
 | user:2d4777822844 | api_key | — | `—` | — |
 | user:283b8e5b8e48 | api_key | — | `—` | — |
 
-### alexander.sorrell.it@gmail.com
+### owner@example.com
 
 **2,239,476,898 tokens** (2.24B) — `/home/phantom-orchestrator/.claude-it`
 
@@ -93,7 +93,7 @@ Active 2026-07-04 → 2026-08-06 (26 days). Busiest day 2026-07-23 at 278.30M.
 | `-home-phantom-orchestrator-token-usage` | 987.89K |
 | `-home-phantom-orchestrator-Documents-Transcript-engine` | 428.77K |
 
-### broodierchip@gmail.com
+### second@example.com
 
 **1,539,728,749 tokens** (1.54B) — `/home/phantom-orchestrator/old/.claude`
 
@@ -126,7 +126,7 @@ Active 2026-01-17 → 2026-02-24 (21 days). Busiest day 2026-02-22 at 472.41M.
 | `-media-phantom-orchestrator-BitcoinNode-Claude-workspace-BIOS-upgrade` | 49.27M |
 | `-media-phantom-orchestrator-BitcoinNode-copilot` | 45.86M |
 
-### broodierchip@gmail.com
+### second@example.com
 
 **1,511,346,979 tokens** (1.51B) — `/home/phantom-orchestrator/.claude`
 
@@ -155,7 +155,7 @@ Active 2026-07-03 → 2026-08-02 (20 days). Busiest day 2026-07-26 at 172.42M.
 | `-tmp` | 2.40M |
 | `-media-phantom-orchestrator-Elements1-logistis-App` | 689.30K |
 
-### codehunterextreme@gmail.com
+### third@example.com
 
 **26,776,064 tokens** (26.78M) — `/home/phantom-orchestrator/.claude-alt`
 

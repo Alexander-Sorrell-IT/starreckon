@@ -48,9 +48,9 @@ scanned **2026-08-11 15:39:21** · sessions 2026-08-11 16:04:12
 
 | Account | Tokens | Share of machine |
 |---|---:|---:|
-| broodierchip@gmail.com | 9,211,228,521 | 62.4% |
-| codehunterextreme@gmail.com | 5,301,645,600 | 35.9% |
-| alexander.sorrell.it@gmail.com | 243,949,169 | 1.7% |
+| second@example.com | 9,211,228,521 | 62.4% |
+| third@example.com | 5,301,645,600 | 35.9% |
+| owner@example.com | 243,949,169 | 1.7% |
 | unknown (Documents) | 10,014,914 | 0.1% |
 
 ### Companies on this computer
@@ -132,9 +132,9 @@ It is a floor and not a total for three reasons, all measured rather than assume
 
 | Account | Counter | Counter ends | Transcripts after | Floor |
 |---|---:|---|---:|---:|
-| broodierchip@gmail.com | 28,833,190,364 | 2026-07-21 | 6,728,718,222 | 35,561,908,586 |
-| codehunterextreme@gmail.com | 6,946,344,675 | 2026-07-30 | 2,387,298,123 | 9,333,642,798 |
-| alexander.sorrell.it@gmail.com | 571,753,755 | 2026-07-19 | 0 | 571,753,755 |
+| second@example.com | 28,833,190,364 | 2026-07-21 | 6,728,718,222 | 35,561,908,586 |
+| third@example.com | 6,946,344,675 | 2026-07-30 | 2,387,298,123 | 9,333,642,798 |
+| owner@example.com | 571,753,755 | 2026-07-19 | 0 | 571,753,755 |
 | unknown (Documents) | _none_ | — | 10,014,914 | 10,014,914 |
 
 </details>
@@ -147,9 +147,9 @@ Every profile keeps `stats-cache.json`. It is not a transcript, so the cleanup s
 
 | Profile | Account | Own counter | Counter covers | From transcripts |
 |---|---|---:|---|---:|
-| `.claude-main` | broodierchip@gmail.com | 28,833,190,364 | 2026-05-26 → 2026-07-21 | 9,211,228,521 |
-| `.claude` | codehunterextreme@gmail.com | 6,946,344,675 | 2026-05-26 → 2026-07-30 | 5,301,645,600 |
-| `.claude-it` | alexander.sorrell.it@gmail.com | 571,753,755 | 2026-06-10 → 2026-07-19 | 243,949,169 |
+| `.claude-main` | second@example.com | 28,833,190,364 | 2026-05-26 → 2026-07-21 | 9,211,228,521 |
+| `.claude` | third@example.com | 6,946,344,675 | 2026-05-26 → 2026-07-30 | 5,301,645,600 |
+| `.claude-it` | owner@example.com | 571,753,755 | 2026-06-10 → 2026-07-19 | 243,949,169 |
 
 **Do not subtract these columns.** The two cover different periods: the counter runs from the first session to its own `lastComputedDate` and then stops, while the transcripts hold whatever has not expired, which includes days after that date. Neither contains the other — each holds usage the other lacks — so their difference is not a quantity of anything.
 
@@ -174,9 +174,9 @@ It carries **no token counts**, so a lost session's cost is gone for good. What 
 
 | Account | Sessions ever | Transcript gone | Span |
 |---|---:|---:|---|
-| broodierchip@gmail.com | 174 | 125 | 2026-05-26 → 2026-08-11 |
-| codehunterextreme@gmail.com | 61 | 36 | 2026-02-11 → 2026-08-11 |
-| alexander.sorrell.it@gmail.com | 6 | 2 | 2026-06-10 → 2026-08-06 |
+| second@example.com | 174 | 125 | 2026-05-26 → 2026-08-11 |
+| third@example.com | 61 | 36 | 2026-02-11 → 2026-08-11 |
+| owner@example.com | 6 | 2 | 2026-06-10 → 2026-08-06 |
 
 ---
 

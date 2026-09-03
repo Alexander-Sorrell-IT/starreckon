@@ -1,6 +1,6 @@
 {
   "machine": "MacBook Air M1",
-  "hostname": "MacBookAir.attlocal.net",
+  "hostname": "macbook.local",
   "hardware": {
     "model_identifier": "MacBookAir10,1",
     "chip": "Apple M1",
@@ -15,7 +15,7 @@
     "os_build": "24G806"
   },
   "disk": {
-    "volume": "/Users/broodierchip-m1air",
+    "volume": "/Users/testuser",
     "total_gb": 1858.2,
     "used_gb": 1719.4,
     "free_gb": 138.8
@@ -23,25 +23,25 @@
   "python": "3.11.3",
   "accounts": [
     {
-      "account": "broodierchip@gmail.com",
-      "config_dir": "/Users/broodierchip-m1air/.claude-main",
-      "profile_env": "CLAUDE_CONFIG_DIR=/Users/broodierchip-m1air/.claude-main",
+      "account": "second@example.com",
+      "config_dir": "/Users/testuser/.claude-main",
+      "profile_env": "CLAUDE_CONFIG_DIR=/Users/testuser/.claude-main",
       "sessions": 29,
       "transcript_files": 2682,
       "projects": 25
     },
     {
-      "account": "codehunterextreme@gmail.com",
-      "config_dir": "/Users/broodierchip-m1air/.claude",
+      "account": "third@example.com",
+      "config_dir": "/Users/testuser/.claude",
       "profile_env": "unset (default)",
       "sessions": 21,
       "transcript_files": 108,
       "projects": 8
     },
     {
-      "account": "alexander.sorrell.it@gmail.com",
-      "config_dir": "/Users/broodierchip-m1air/.claude-it",
-      "profile_env": "CLAUDE_CONFIG_DIR=/Users/broodierchip-m1air/.claude-it",
+      "account": "owner@example.com",
+      "config_dir": "/Users/testuser/.claude-it",
+      "profile_env": "CLAUDE_CONFIG_DIR=/Users/testuser/.claude-it",
       "sessions": 3,
       "transcript_files": 4,
       "projects": 2

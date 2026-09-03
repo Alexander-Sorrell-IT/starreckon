@@ -13,16 +13,16 @@ accounting, deduplicated by message uuid.
 
 | Account | Sessions | Turns | Input | Cache write | Cache read | Output | Total |
 |---|---:|---:|---:|---:|---:|---:|---:|
-| codehunterextreme@gmail.com | 27 | 13,821 | 546.73K | 76.58M | 2.88B | 14.52M | **2.97B** |
-| broodierchip@gmail.com | 84 | 7,912 | 1.54M | 58.26M | 2.52B | 9.32M | **2.58B** |
+| third@example.com | 27 | 13,821 | 546.73K | 76.58M | 2.88B | 14.52M | **2.97B** |
+| second@example.com | 84 | 7,912 | 1.54M | 58.26M | 2.52B | 9.32M | **2.58B** |
 | user:73ae64bf180b | 6 | 5,101 | 21.80M | 0 | 493.71M | 4.99M | **520.50M** |
 | unknown (Desktop_standout_clean_.claude) | 420 | 2,098 | 557.02K | 14.27M | 304.38M | 1.90M | **321.10M** |
 | unknown (Desktop_standout_full_.claude) | 805 | 2,477 | 728.43K | 15.64M | 148.94M | 2.52M | **167.83M** |
-| alexander.sorrell.it@gmail.com | 2 | 454 | 11.54K | 1.05M | 42.55M | 222.19K | **43.83M** |
+| owner@example.com | 2 | 454 | 11.54K | 1.05M | 42.55M | 222.19K | **43.83M** |
 | unknown (Desktop_standout_max_.claude) | 805 | 20 | 4.53K | 52.35K | 4.58M | 30.33K | **4.67M** |
 | unknown (.claude-alt) | 27 | 1 | 2 | 428 | 935.49K | 293 | **936.21K** |
 | user:4be462f3a2f9 | 1 | 6 | 1.92K | 10.86K | 125.20K | 3.23K | **141.21K** |
-| broodierchip@gmail.com | 84 | 0 | 0 | 0 | 0 | 0 | **0** |
+| second@example.com | 84 | 0 | 0 | 0 | 0 | 0 | **0** |
 | unknown (.claude-alt-api) | 1 | 0 | 0 | 0 | 0 | 0 | **0** |
 | unknown (.claude-it) | 2 | 0 | 0 | 0 | 0 | 0 | **0** |
 | unknown (.my-claude) | 6 | 0 | 0 | 0 | 0 | 0 | **0** |
@@ -32,10 +32,10 @@ accounting, deduplicated by message uuid.
 | unknown (claude-alt-api) | 1 | 0 | 0 | 0 | 0 | 0 | **0** |
 | unknown (claude-it) | 2 | 0 | 0 | 0 | 0 | 0 | **0** |
 | unknown (my-claude) | 6 | 0 | 0 | 0 | 0 | 0 | **0** |
-| broodierchip@gmail.com | 420 | 0 | 0 | 0 | 0 | 0 | **0** |
-| broodierchip@gmail.com | 805 | 0 | 0 | 0 | 0 | 0 | **0** |
-| broodierchip@gmail.com | 805 | 0 | 0 | 0 | 0 | 0 | **0** |
-| broodierchip@gmail.com | 576 | 0 | 0 | 0 | 0 | 0 | **0** |
+| second@example.com | 420 | 0 | 0 | 0 | 0 | 0 | **0** |
+| second@example.com | 805 | 0 | 0 | 0 | 0 | 0 | **0** |
+| second@example.com | 805 | 0 | 0 | 0 | 0 | 0 | **0** |
+| second@example.com | 576 | 0 | 0 | 0 | 0 | 0 | **0** |
 
 ## By provider
 
@@ -72,16 +72,16 @@ linked to an account only when their organization UUIDs match.
 
 | Account | Auth | Organization | Org UUID | Linked to |
 |---|---|---|---|---|
-| codehunterextreme@gmail.com | oauth | codehunterextreme@gmail.com's Organization | `ba511861-53b4-4599-8019-93db6389d991` | — |
-| broodierchip@gmail.com | oauth | broodierchip@gmail.com's Organization | `6bfc754e-a205-41c3-9dac-80e593f494e0` | — |
+| third@example.com | oauth | third@example.com's Organization | `ba511861-53b4-4599-8019-93db6389d991` | — |
+| second@example.com | oauth | second@example.com's Organization | `6bfc754e-a205-41c3-9dac-80e593f494e0` | — |
 | user:73ae64bf180b | unknown | — | `—` | — |
 | unknown (Desktop_standout_clean_.claude) | unknown | — | `—` | — |
 | unknown (Desktop_standout_full_.claude) | unknown | — | `—` | — |
-| alexander.sorrell.it@gmail.com | oauth | alexander.sorrell.it@gmail.com's Organization | `66565064-263e-4d54-b06f-15cae4b2febc` | — |
+| owner@example.com | oauth | owner@example.com's Organization | `66565064-263e-4d54-b06f-15cae4b2febc` | — |
 | unknown (Desktop_standout_max_.claude) | unknown | — | `—` | — |
 | unknown (.claude-alt) | unknown | — | `—` | — |
 | user:4be462f3a2f9 | api_key | — | `—` | — |
-| broodierchip@gmail.com | oauth | broodierchip@gmail.com's Organization | `6bfc754e-a205-41c3-9dac-80e593f494e0` | — |
+| second@example.com | oauth | second@example.com's Organization | `6bfc754e-a205-41c3-9dac-80e593f494e0` | — |
 | unknown (.claude-alt-api) | unknown | — | `—` | — |
 | unknown (.claude-it) | unknown | — | `—` | — |
 | unknown (.my-claude) | unknown | — | `—` | — |
@@ -91,12 +91,12 @@ linked to an account only when their organization UUIDs match.
 | unknown (claude-alt-api) | unknown | — | `—` | — |
 | unknown (claude-it) | unknown | — | `—` | — |
 | unknown (my-claude) | unknown | — | `—` | — |
-| broodierchip@gmail.com | oauth | broodierchip@gmail.com's Organization | `6bfc754e-a205-41c3-9dac-80e593f494e0` | — |
-| broodierchip@gmail.com | oauth | broodierchip@gmail.com's Organization | `6bfc754e-a205-41c3-9dac-80e593f494e0` | — |
-| broodierchip@gmail.com | oauth | broodierchip@gmail.com's Organization | `6bfc754e-a205-41c3-9dac-80e593f494e0` | — |
-| broodierchip@gmail.com | oauth | broodierchip@gmail.com's Organization | `6bfc754e-a205-41c3-9dac-80e593f494e0` | — |
+| second@example.com | oauth | second@example.com's Organization | `6bfc754e-a205-41c3-9dac-80e593f494e0` | — |
+| second@example.com | oauth | second@example.com's Organization | `6bfc754e-a205-41c3-9dac-80e593f494e0` | — |
+| second@example.com | oauth | second@example.com's Organization | `6bfc754e-a205-41c3-9dac-80e593f494e0` | — |
+| second@example.com | oauth | second@example.com's Organization | `6bfc754e-a205-41c3-9dac-80e593f494e0` | — |
 
-### codehunterextreme@gmail.com
+### third@example.com
 
 **2,971,668,539 tokens** (2.97B) — `/home/testuser/.claude-alt`
 
@@ -128,7 +128,7 @@ Active 2026-07-07 → 2026-08-08 (21 days). Busiest day 2026-08-07 at 855.10M.
 | `-media-testuser-AI-DRIVE-hackathons-mantle` | 167.26K |
 | `-media-testuser-AI-DRIVE-hackathons-Pacto-secto` | 64.96K |
 
-### broodierchip@gmail.com
+### second@example.com
 
 **2,584,957,850 tokens** (2.58B) — `/home/testuser/.claude`
 
@@ -243,7 +243,7 @@ Active 2026-06-26 → 2026-07-07 (11 days). Busiest day 2026-06-27 at 100.51M.
 | `alt__-media-testuser-AI-DRIVE-VORTEX-SYSTEM__db6723e4-a658-4a0e-8977-7e7758b27be5__subagents__workflows__wf_1ba5b953-248` | 4.85M |
 | `alt__-media-testuser-AI-DRIVE-VORTEX-SYSTEM__c2b6343a-e599-421c-8d80-0c91fff7a15d__subagents` | 3.21M |
 
-### alexander.sorrell.it@gmail.com
+### owner@example.com
 
 **43,831,821 tokens** (43.83M) — `/home/testuser/.claude-it`
 
@@ -333,7 +333,7 @@ Active 2026-06-09 → 2026-06-09 (1 days). Busiest day 2026-06-09 at 141.21K.
 |---|---:|
 | `-media-testuser-AI-DRIVE-DeepSeek-work-my-claude-seek-fable` | 141.21K |
 
-### broodierchip@gmail.com
+### second@example.com
 
 **0 tokens** (0) — `/home/testuser/.ai-logs-archive/claude/.claude`
 
@@ -375,25 +375,25 @@ userID `9fe225ab991233bf703aa663b6bf06bb04ddab782025753b968e194eeb2b0173`
 
 **0 tokens** (0) — `/home/testuser/.ai-logs-archive/claude/my-claude`
 
-### broodierchip@gmail.com
+### second@example.com
 
 **0 tokens** (0) — `/home/testuser/Desktop/standout_clean/.claude`
 
 userID `9fe225ab991233bf703aa663b6bf06bb04ddab782025753b968e194eeb2b0173`
 
-### broodierchip@gmail.com
+### second@example.com
 
 **0 tokens** (0) — `/home/testuser/Desktop/standout_full/.claude`
 
 userID `9fe225ab991233bf703aa663b6bf06bb04ddab782025753b968e194eeb2b0173`
 
-### broodierchip@gmail.com
+### second@example.com
 
 **0 tokens** (0) — `/home/testuser/Desktop/standout_max/.claude`
 
 userID `9fe225ab991233bf703aa663b6bf06bb04ddab782025753b968e194eeb2b0173`
 
-### broodierchip@gmail.com
+### second@example.com
 
 **0 tokens** (0) — `/home/testuser/Desktop/standout_sandbox/.claude`
 

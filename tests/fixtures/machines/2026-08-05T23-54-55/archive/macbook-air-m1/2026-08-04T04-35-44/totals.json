@@ -10,35 +10,35 @@
     {
       "vendor": "gemini",
       "label": "Gemini CLI",
-      "dir": "/Users/broodierchip-m1air/.gemini",
+      "dir": "/Users/testuser/.gemini",
       "files": 238,
       "records_usage": false
     },
     {
       "vendor": "copilot",
       "label": "GitHub Copilot CLI",
-      "dir": "/Users/broodierchip-m1air/.copilot",
+      "dir": "/Users/testuser/.copilot",
       "files": 215,
       "records_usage": false
     },
     {
       "vendor": "antigravity",
       "label": "Antigravity CLI",
-      "dir": "/Users/broodierchip-m1air/.antigravitycli",
+      "dir": "/Users/testuser/.antigravitycli",
       "files": 1,
       "records_usage": false
     },
     {
       "vendor": "openai",
       "label": "OpenAI Codex CLI",
-      "dir": "/Users/broodierchip-m1air/.codex",
+      "dir": "/Users/testuser/.codex",
       "files": 983,
       "records_usage": true
     },
     {
       "vendor": "xai",
       "label": "Grok CLI",
-      "dir": "/Users/broodierchip-m1air/.grok",
+      "dir": "/Users/testuser/.grok",
       "files": 410,
       "records_usage": false
     }
@@ -46,7 +46,7 @@
   "grand_total_tokens": 28004982986,
   "accounts": [
     {
-      "config_dir": "/Users/broodierchip-m1air/.claude-main",
+      "config_dir": "/Users/testuser/.claude-main",
       "sessions": 29,
       "files": {
         "main": 29,
@@ -291,26 +291,26 @@
         }
       },
       "by_project": {
-        "-Users-broodierchip-m1air": {
+        "-Users-testuser": {
           "input_tokens": 9741501,
           "cache_creation_input_tokens": 505796959,
           "cache_read_input_tokens": 13209098544,
           "output_tokens": 49667783
         },
-        "-Users-broodierchip-m1air-Desktop-vulcan-delta-tests": {
+        "-Users-testuser-Desktop-vulcan-delta-tests": {
           "input_tokens": 148002,
           "cache_creation_input_tokens": 134242676,
           "cache_read_input_tokens": 3561965661,
           "output_tokens": 13612460
         }
       },
-      "account": "broodierchip@gmail.com",
+      "account": "second@example.com",
       "user_id": "f2c6d8a64f23fdea16f037b8edd329f7f3f592a0f7cadfcdb2dbf51d256502f7",
       "identity": {
         "auth": "oauth",
-        "email": "broodierchip@gmail.com",
+        "email": "second@example.com",
         "org_uuid": "6bfc754e-a205-41c3-9dac-80e593f494e0",
-        "org_name": "broodierchip@gmail.com's Organization",
+        "org_name": "second@example.com's Organization",
         "account_uuid": "a9fec27d-ab5d-48bb-9679-a9bf60bfb97e",
         "user_id": "f2c6d8a64f23fdea16f037b8edd329f7f3f592a0f7cadfcdb2dbf51d256502f7",
         "approved_api_keys": []
@@ -318,7 +318,7 @@
       "grand_total": 17484273586
     },
     {
-      "config_dir": "/Users/broodierchip-m1air/.claude",
+      "config_dir": "/Users/testuser/.claude",
       "sessions": 21,
       "files": {
         "subagent": 87,
@@ -544,32 +544,32 @@
         }
       },
       "by_project": {
-        "-Users-broodierchip-m1air": {
+        "-Users-testuser": {
           "input_tokens": 339764,
           "cache_creation_input_tokens": 295810014,
           "cache_read_input_tokens": 9525419391,
           "output_tokens": 30872516
         },
-        "-Users-broodierchip-m1air-Documents-Hackthon": {
+        "-Users-testuser-Documents-Hackthon": {
           "input_tokens": 873222,
           "cache_creation_input_tokens": 10691629,
           "cache_read_input_tokens": 84327902,
           "output_tokens": 537351
         },
-        "-Users-broodierchip-m1air-Documents-tools": {
+        "-Users-testuser-Documents-tools": {
           "input_tokens": 4,
           "cache_creation_input_tokens": 39818,
           "cache_read_input_tokens": 42428,
           "output_tokens": 1606
         }
       },
-      "account": "codehunterextreme@gmail.com",
+      "account": "third@example.com",
       "user_id": "c6ce9918ed51217d1701e1b6217b35699f346b95e2d17fec3b261d9ea2bea739",
       "identity": {
         "auth": "oauth",
-        "email": "codehunterextreme@gmail.com",
+        "email": "third@example.com",
         "org_uuid": "ba511861-53b4-4599-8019-93db6389d991",
-        "org_name": "codehunterextreme@gmail.com's Organization",
+        "org_name": "third@example.com's Organization",
         "account_uuid": "cf12fe66-594f-449a-b951-c9bb2ce5db76",
         "user_id": "c6ce9918ed51217d1701e1b6217b35699f346b95e2d17fec3b261d9ea2bea739",
         "approved_api_keys": []
@@ -577,7 +577,7 @@
       "grand_total": 9948955645
     },
     {
-      "config_dir": "/Users/broodierchip-m1air/.claude-it",
+      "config_dir": "/Users/testuser/.claude-it",
       "sessions": 3,
       "files": {
         "main": 3,
@@ -671,26 +671,26 @@
         }
       },
       "by_project": {
-        "-Users-broodierchip-m1air": {
+        "-Users-testuser": {
           "input_tokens": 0,
           "cache_creation_input_tokens": 0,
           "cache_read_input_tokens": 0,
           "output_tokens": 0
         },
-        "-Users-broodierchip-m1air-Desktop-Bug": {
+        "-Users-testuser-Desktop-Bug": {
           "input_tokens": 75203,
           "cache_creation_input_tokens": 13238593,
           "cache_read_input_tokens": 556042764,
           "output_tokens": 2397195
         }
       },
-      "account": "alexander.sorrell.it@gmail.com",
+      "account": "owner@example.com",
       "user_id": "a842a0db1ce2f3e19742aa78893f10cf921a9d7e15a1412fec7c7cc4cf09525a",
       "identity": {
         "auth": "oauth",
-        "email": "alexander.sorrell.it@gmail.com",
+        "email": "owner@example.com",
         "org_uuid": "66565064-263e-4d54-b06f-15cae4b2febc",
-        "org_name": "alexander.sorrell.it@gmail.com's Organization",
+        "org_name": "owner@example.com's Organization",
         "account_uuid": "55c75c9e-b932-41e8-a80c-e3abf56861d8",
         "user_id": "a842a0db1ce2f3e19742aa78893f10cf921a9d7e15a1412fec7c7cc4cf09525a",
         "approved_api_keys": []

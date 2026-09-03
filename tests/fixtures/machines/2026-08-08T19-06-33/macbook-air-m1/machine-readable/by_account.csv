@@ -1,5 +1,5 @@
 account,config_dir,sessions,turns,input_tokens,cache_creation_input_tokens,cache_read_input_tokens,output_tokens,total
-broodierchip@gmail.com,/Users/broodierchip-m1air/.claude-main,29,107067,9913187,645967793,16837748665,63953054,17557582699
-codehunterextreme@gmail.com,/Users/broodierchip-m1air/.claude,21,24773,1219176,383137597,10614056485,33148959,11031562217
-alexander.sorrell.it@gmail.com,/Users/broodierchip-m1air/.claude-it,4,2331,75203,13238593,556042764,2397195,571753755
-codehunterextreme@gmail.com,/Users/broodierchip-m1air/Desktop/standout_sandbox/.claude,2126,174,58730,957959,8304902,107359,9428950
+second@example.com,/Users/testuser/.claude-main,29,107067,9913187,645967793,16837748665,63953054,17557582699
+third@example.com,/Users/testuser/.claude,21,24773,1219176,383137597,10614056485,33148959,11031562217
+owner@example.com,/Users/testuser/.claude-it,4,2331,75203,13238593,556042764,2397195,571753755
+third@example.com,/Users/testuser/Desktop/standout_sandbox/.claude,2126,174,58730,957959,8304902,107359,9428950

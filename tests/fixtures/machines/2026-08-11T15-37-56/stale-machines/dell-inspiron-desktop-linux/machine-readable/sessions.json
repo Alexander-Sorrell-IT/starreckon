@@ -261,7 +261,7 @@
  "history_ledger": [
   {
    "session_id": "ebda40ef-5ab3-4b9c-b0eb-8e72030efb52",
-   "account": "broodierchip@gmail.com",
+   "account": "second@example.com",
    "profile": ".claude",
    "project": "/media/phantom-gramps/2TB_Storage/VS code projects/custom wifi router mesh/The Un-Ending",
    "first_day": "2026-01-20",
@@ -271,7 +271,7 @@
   },
   {
    "session_id": "f692bc74-ee1f-4ec2-a5ce-338cd9bc6d9c",
-   "account": "broodierchip@gmail.com",
+   "account": "second@example.com",
    "profile": ".claude",
    "project": "/media/phantom-gramps/2TB_Storage/VS code projects/custom wifi router mesh/The Un-Ending",
    "first_day": "2026-01-21",
@@ -281,7 +281,7 @@
   },
   {
    "session_id": "cb9328ce-a8b5-477d-8670-3fe47bb08645",
-   "account": "broodierchip@gmail.com",
+   "account": "second@example.com",
    "profile": ".claude",
    "project": "/media/phantom-gramps/2TB_Storage/the ultimate open source",
    "first_day": "2026-01-31",
@@ -291,7 +291,7 @@
   },
   {
    "session_id": "89b32dd4-394f-4b2d-b4ee-a71637983a94",
-   "account": "broodierchip@gmail.com",
+   "account": "second@example.com",
    "profile": ".claude",
    "project": "/home/phantom-gramps",
    "first_day": "2026-08-04",
@@ -303,7 +303,7 @@
  "stats_cache": [
   {
    "profile": ".claude",
-   "account": "broodierchip@gmail.com",
+   "account": "second@example.com",
    "total": 37850653,
    "input_output_only": 6818,
    "by_model": {
@@ -367,7 +367,7 @@
   {
    "cli": "claude",
    "session_id": "ebda40ef-5ab3-4b9c-b0eb-8e72030efb52",
-   "account": "broodierchip@gmail.com",
+   "account": "second@example.com",
    "project": "-media-phantom-gramps-2TB-Storage-VS-code-projects-custom-wifi-router-mesh-The-Un-Ending",
    "start": "2026-01-21T05:40:03.887Z",
    "end": "2026-01-21T07:04:43.681Z",
@@ -391,7 +391,7 @@
   {
    "cli": "claude",
    "session_id": "f692bc74-ee1f-4ec2-a5ce-338cd9bc6d9c",
-   "account": "broodierchip@gmail.com",
+   "account": "second@example.com",
    "project": "-media-phantom-gramps-2TB-Storage-VS-code-projects-custom-wifi-router-mesh-The-Un-Ending",
    "start": "2026-01-21T20:10:09.897Z",
    "end": "2026-01-21T20:15:35.691Z",
@@ -463,7 +463,7 @@
   {
    "cli": "claude",
    "session_id": "89b32dd4-394f-4b2d-b4ee-a71637983a94",
-   "account": "broodierchip@gmail.com",
+   "account": "second@example.com",
    "project": "-home-phantom-gramps",
    "start": "2026-08-04T07:06:14.954Z",
    "end": "2026-08-04T07:06:14.954Z",

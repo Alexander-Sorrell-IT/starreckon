@@ -1,16 +1,16 @@
 account,model,input_tokens,cache_creation_input_tokens,cache_read_input_tokens,output_tokens,total
-alexander.sorrell.it@gmail.com,claude-opus-4-8,71329,17889386,427908641,1811249,447680605
-alexander.sorrell.it@gmail.com,claude-opus-5,10628,8358519,236273842,1674577,246317566
-alexander.sorrell.it@gmail.com,claude-fable-5,81647,5225879,197485284,975318,203768128
-alexander.sorrell.it@gmail.com,claude-opus-4-7,4040,1949679,8048015,110961,10112695
-broodierchip@gmail.com,claude-opus-4-8,159907867,118862679,325854857,8087437,612712840
-broodierchip@gmail.com,claude-opus-5,4421,3188610,106907043,519189,110619263
-broodierchip@gmail.com,claude-haiku-4-5-20251001,261,543442,597428,59920,1201051
-broodierchip@gmail.com,claude-opus-4-6,12,223005,0,229,223246
+owner@example.com,claude-opus-4-8,71329,17889386,427908641,1811249,447680605
+owner@example.com,claude-opus-5,10628,8358519,236273842,1674577,246317566
+owner@example.com,claude-fable-5,81647,5225879,197485284,975318,203768128
+owner@example.com,claude-opus-4-7,4040,1949679,8048015,110961,10112695
+second@example.com,claude-opus-4-8,159907867,118862679,325854857,8087437,612712840
+second@example.com,claude-opus-5,4421,3188610,106907043,519189,110619263
+second@example.com,claude-haiku-4-5-20251001,261,543442,597428,59920,1201051
+second@example.com,claude-opus-4-6,12,223005,0,229,223246
 unknown (old_.claude),claude-opus-4-6,132974,14328046,417613073,1367411,433441504
 unknown (old_.claude),claude-opus-4-5-20251101,174789,28889386,195949769,6045,225019989
 unknown (old_.claude),claude-haiku-4-5-20251001,148258,4992626,33319876,3436,38464196
 unknown (old_.claude),claude-sonnet-4-5-20250929,56674,1145126,5240886,638,6443324
 unknown (old_.claude),claude-sonnet-4-6,403,283378,2307987,569,2592337
-codehunterextreme@gmail.com,claude-opus-4-8,3556,1435644,10271582,75344,11786126
+third@example.com,claude-opus-4-8,3556,1435644,10271582,75344,11786126
 user:2d4777822844,claude-sonnet-4-6,174,506204,2927342,52283,3486003

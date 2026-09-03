@@ -17,7 +17,7 @@
   "python": "3.12.3",
   "accounts": [
     {
-      "account": "broodierchip@gmail.com",
+      "account": "second@example.com",
       "config_dir": "/home/phantom-eternal/.claude",
       "profile_env": "unset (default)",
       "sessions": 28,

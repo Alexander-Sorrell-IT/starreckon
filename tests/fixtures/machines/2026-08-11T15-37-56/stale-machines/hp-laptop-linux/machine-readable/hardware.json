@@ -33,7 +33,7 @@
       "projects": 110
     },
     {
-      "account": "broodierchip@gmail.com",
+      "account": "second@example.com",
       "config_dir": "/home/testuser/Desktop/standout_full/.claude",
       "profile_env": "unset (default)",
       "sessions": 805,
@@ -41,7 +41,7 @@
       "projects": 110
     },
     {
-      "account": "broodierchip@gmail.com",
+      "account": "second@example.com",
       "config_dir": "/home/testuser/Desktop/standout_max/.claude",
       "profile_env": "unset (default)",
       "sessions": 805,
@@ -57,7 +57,7 @@
       "projects": 45
     },
     {
-      "account": "broodierchip@gmail.com",
+      "account": "second@example.com",
       "config_dir": "/home/testuser/Desktop/standout_sandbox/.claude",
       "profile_env": "unset (default)",
       "sessions": 576,
@@ -65,7 +65,7 @@
       "projects": 45
     },
     {
-      "account": "codehunterextreme@gmail.com",
+      "account": "third@example.com",
       "config_dir": "/home/testuser/.claude-alt",
       "profile_env": "CLAUDE_CONFIG_DIR=/home/testuser/.claude-alt",
       "sessions": 27,
@@ -97,7 +97,7 @@
       "projects": 55
     },
     {
-      "account": "broodierchip@gmail.com",
+      "account": "second@example.com",
       "config_dir": "/home/testuser/Desktop/standout_clean/.claude",
       "profile_env": "unset (default)",
       "sessions": 420,
@@ -105,7 +105,7 @@
       "projects": 55
     },
     {
-      "account": "broodierchip@gmail.com",
+      "account": "second@example.com",
       "config_dir": "/home/testuser/.claude",
       "profile_env": "unset (default)",
       "sessions": 84,
@@ -113,7 +113,7 @@
       "projects": 46
     },
     {
-      "account": "broodierchip@gmail.com",
+      "account": "second@example.com",
       "config_dir": "/home/testuser/.ai-logs-archive/claude/.claude",
       "profile_env": "unset (default)",
       "sessions": 84,
@@ -153,7 +153,7 @@
       "projects": 14
     },
     {
-      "account": "alexander.sorrell.it@gmail.com",
+      "account": "owner@example.com",
       "config_dir": "/home/testuser/.claude-it",
       "profile_env": "CLAUDE_CONFIG_DIR=/home/testuser/.claude-it",
       "sessions": 2,

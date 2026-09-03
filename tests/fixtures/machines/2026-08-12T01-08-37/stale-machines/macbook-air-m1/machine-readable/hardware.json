@@ -1,6 +1,6 @@
 {
  "machine": "MacBook Air M1",
- "hostname": "MacBookAir.attlocal.net",
+ "hostname": "macbook.local",
  "hardware": {
   "model_identifier": "MacBookAir10,1",
   "chip": "Apple M1",
@@ -15,7 +15,7 @@
   "os_build": "24G806"
  },
  "disk": {
-  "volume": "/Users/broodierchip-m1air",
+  "volume": "/Users/testuser",
   "total_gb": 1858.2,
   "used_gb": 1744.4,
   "free_gb": 113.8
@@ -24,65 +24,65 @@
  "store_env": {},
  "accounts": [
   {
-   "account": "broodierchip@gmail.com",
-   "config_dir": "/Users/broodierchip-m1air/.claude-main",
-   "profile_env": "CLAUDE_CONFIG_DIR=/Users/broodierchip-m1air/.claude-main",
+   "account": "second@example.com",
+   "config_dir": "/Users/testuser/.claude-main",
+   "profile_env": "CLAUDE_CONFIG_DIR=/Users/testuser/.claude-main",
    "sessions": 32,
    "transcript_files": 3005,
    "projects": 27
   },
   {
-   "account": "broodierchip@gmail.com",
-   "config_dir": "/Users/broodierchip-m1air/.ai-logs-archive/claude/claude-main",
-   "profile_env": "CLAUDE_CONFIG_DIR=/Users/broodierchip-m1air/.ai-logs-archive/claude/claude-main",
+   "account": "second@example.com",
+   "config_dir": "/Users/testuser/.ai-logs-archive/claude/claude-main",
+   "profile_env": "CLAUDE_CONFIG_DIR=/Users/testuser/.ai-logs-archive/claude/claude-main",
    "sessions": 32,
    "transcript_files": 3005,
    "projects": 27
   },
   {
    "account": "unknown (Documents)",
-   "config_dir": "/Users/broodierchip-m1air/.ai-logs-archive/claude/Documents",
-   "profile_env": "CLAUDE_CONFIG_DIR=/Users/broodierchip-m1air/.ai-logs-archive/claude/Documents",
+   "config_dir": "/Users/testuser/.ai-logs-archive/claude/Documents",
+   "profile_env": "CLAUDE_CONFIG_DIR=/Users/testuser/.ai-logs-archive/claude/Documents",
    "sessions": 2180,
    "transcript_files": 2180,
    "projects": 7
   },
   {
    "account": "unknown (Documents)",
-   "config_dir": "/Users/broodierchip-m1air/Documents",
-   "profile_env": "CLAUDE_CONFIG_DIR=/Users/broodierchip-m1air/Documents",
+   "config_dir": "/Users/testuser/Documents",
+   "profile_env": "CLAUDE_CONFIG_DIR=/Users/testuser/Documents",
    "sessions": 2180,
    "transcript_files": 2180,
    "projects": 9
   },
   {
-   "account": "codehunterextreme@gmail.com",
-   "config_dir": "/Users/broodierchip-m1air/.claude",
+   "account": "third@example.com",
+   "config_dir": "/Users/testuser/.claude",
    "profile_env": "unset (default)",
    "sessions": 25,
    "transcript_files": 180,
    "projects": 9
   },
   {
-   "account": "codehunterextreme@gmail.com",
-   "config_dir": "/Users/broodierchip-m1air/.ai-logs-archive/claude/claude",
-   "profile_env": "CLAUDE_CONFIG_DIR=/Users/broodierchip-m1air/.ai-logs-archive/claude/claude",
+   "account": "third@example.com",
+   "config_dir": "/Users/testuser/.ai-logs-archive/claude/claude",
+   "profile_env": "CLAUDE_CONFIG_DIR=/Users/testuser/.ai-logs-archive/claude/claude",
    "sessions": 24,
    "transcript_files": 179,
    "projects": 9
   },
   {
-   "account": "alexander.sorrell.it@gmail.com",
-   "config_dir": "/Users/broodierchip-m1air/.claude-it",
-   "profile_env": "CLAUDE_CONFIG_DIR=/Users/broodierchip-m1air/.claude-it",
+   "account": "owner@example.com",
+   "config_dir": "/Users/testuser/.claude-it",
+   "profile_env": "CLAUDE_CONFIG_DIR=/Users/testuser/.claude-it",
    "sessions": 4,
    "transcript_files": 5,
    "projects": 2
   },
   {
-   "account": "alexander.sorrell.it@gmail.com",
-   "config_dir": "/Users/broodierchip-m1air/.ai-logs-archive/claude/claude-it",
-   "profile_env": "CLAUDE_CONFIG_DIR=/Users/broodierchip-m1air/.ai-logs-archive/claude/claude-it",
+   "account": "owner@example.com",
+   "config_dir": "/Users/testuser/.ai-logs-archive/claude/claude-it",
+   "profile_env": "CLAUDE_CONFIG_DIR=/Users/testuser/.ai-logs-archive/claude/claude-it",
    "sessions": 4,
    "transcript_files": 5,
    "projects": 2

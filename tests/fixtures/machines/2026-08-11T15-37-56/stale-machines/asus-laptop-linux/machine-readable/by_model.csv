@@ -1,4 +1,4 @@
 account,model,input_tokens,cache_creation_input_tokens,cache_read_input_tokens,output_tokens,total
-broodierchip@gmail.com,claude-opus-4-7,21287,6232303,122491011,746598,129491199
-broodierchip@gmail.com,claude-haiku-4-5-20251001,5337,1238762,2020430,67017,3331546
-broodierchip@gmail.com,claude-opus-4-5-20251101,10544,94293,267767,261,372865
+second@example.com,claude-opus-4-7,21287,6232303,122491011,746598,129491199
+second@example.com,claude-haiku-4-5-20251001,5337,1238762,2020430,67017,3331546
+second@example.com,claude-opus-4-5-20251101,10544,94293,267767,261,372865

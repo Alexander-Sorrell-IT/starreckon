@@ -13,10 +13,10 @@ accounting, deduplicated by message uuid.
 
 | Account | Sessions | Turns | Input | Cache write | Cache read | Output | Total |
 |---|---:|---:|---:|---:|---:|---:|---:|
-| broodierchip@gmail.com | 29 | 107,067 | 9.91M | 645.97M | 16.84B | 63.95M | **17.56B** |
-| codehunterextreme@gmail.com | 21 | 24,773 | 1.22M | 383.14M | 10.61B | 33.15M | **11.03B** |
-| alexander.sorrell.it@gmail.com | 4 | 2,331 | 75.20K | 13.24M | 556.04M | 2.40M | **571.75M** |
-| codehunterextreme@gmail.com | 2,126 | 174 | 58.73K | 957.96K | 8.30M | 107.36K | **9.43M** |
+| second@example.com | 29 | 107,067 | 9.91M | 645.97M | 16.84B | 63.95M | **17.56B** |
+| third@example.com | 21 | 24,773 | 1.22M | 383.14M | 10.61B | 33.15M | **11.03B** |
+| owner@example.com | 4 | 2,331 | 75.20K | 13.24M | 556.04M | 2.40M | **571.75M** |
+| third@example.com | 2,126 | 174 | 58.73K | 957.96K | 8.30M | 107.36K | **9.43M** |
 
 ## By provider
 
@@ -40,11 +40,11 @@ from a tool that was never used.
 
 | Tool | Directory | Files | Token usage on disk |
 |---|---|---:|---|
-| Gemini CLI | `/Users/broodierchip-m1air/.gemini` | 238 | **no — not countable** |
-| GitHub Copilot CLI | `/Users/broodierchip-m1air/.copilot` | 215 | **no — not countable** |
-| Antigravity CLI | `/Users/broodierchip-m1air/.antigravitycli` | 1 | **no — not countable** |
-| OpenAI Codex CLI | `/Users/broodierchip-m1air/.codex` | 983 | yes — countable |
-| Grok CLI | `/Users/broodierchip-m1air/.grok` | 495 | **no — not countable** |
+| Gemini CLI | `/Users/testuser/.gemini` | 238 | **no — not countable** |
+| GitHub Copilot CLI | `/Users/testuser/.copilot` | 215 | **no — not countable** |
+| Antigravity CLI | `/Users/testuser/.antigravitycli` | 1 | **no — not countable** |
+| OpenAI Codex CLI | `/Users/testuser/.codex` | 983 | yes — countable |
+| Grok CLI | `/Users/testuser/.grok` | 495 | **no — not countable** |
 
 ## Authentication and organization
 
@@ -54,14 +54,14 @@ linked to an account only when their organization UUIDs match.
 
 | Account | Auth | Organization | Org UUID | Linked to |
 |---|---|---|---|---|
-| broodierchip@gmail.com | oauth | broodierchip@gmail.com's Organization | `6bfc754e-a205-41c3-9dac-80e593f494e0` | — |
-| codehunterextreme@gmail.com | oauth | codehunterextreme@gmail.com's Organization | `ba511861-53b4-4599-8019-93db6389d991` | — |
-| alexander.sorrell.it@gmail.com | oauth | alexander.sorrell.it@gmail.com's Organization | `66565064-263e-4d54-b06f-15cae4b2febc` | — |
-| codehunterextreme@gmail.com | oauth | codehunterextreme@gmail.com's Organization | `ba511861-53b4-4599-8019-93db6389d991` | — |
+| second@example.com | oauth | second@example.com's Organization | `6bfc754e-a205-41c3-9dac-80e593f494e0` | — |
+| third@example.com | oauth | third@example.com's Organization | `ba511861-53b4-4599-8019-93db6389d991` | — |
+| owner@example.com | oauth | owner@example.com's Organization | `66565064-263e-4d54-b06f-15cae4b2febc` | — |
+| third@example.com | oauth | third@example.com's Organization | `ba511861-53b4-4599-8019-93db6389d991` | — |
 
-### broodierchip@gmail.com
+### second@example.com
 
-**17,557,582,699 tokens** (17.56B) — `/Users/broodierchip-m1air/.claude-main`
+**17,557,582,699 tokens** (17.56B) — `/Users/testuser/.claude-main`
 
 userID `f2c6d8a64f23fdea16f037b8edd329f7f3f592a0f7cadfcdb2dbf51d256502f7`
 
@@ -83,12 +83,12 @@ Active 2026-07-05 → 2026-08-06 (29 days). Busiest day 2026-08-02 at 2.44B.
 
 | Project | Total |
 |---|---:|
-| `-Users-broodierchip-m1air` | 13.85B |
-| `-Users-broodierchip-m1air-Desktop-vulcan-delta-tests` | 3.71B |
+| `-Users-testuser` | 13.85B |
+| `-Users-testuser-Desktop-vulcan-delta-tests` | 3.71B |
 
-### codehunterextreme@gmail.com
+### third@example.com
 
-**11,031,562,217 tokens** (11.03B) — `/Users/broodierchip-m1air/.claude`
+**11,031,562,217 tokens** (11.03B) — `/Users/testuser/.claude`
 
 userID `c6ce9918ed51217d1701e1b6217b35699f346b95e2d17fec3b261d9ea2bea739`
 
@@ -109,13 +109,13 @@ Active 2026-05-26 → 2026-08-06 (27 days). Busiest day 2026-07-18 at 1.31B.
 
 | Project | Total |
 |---|---:|
-| `-Users-broodierchip-m1air` | 10.94B |
-| `-Users-broodierchip-m1air-Documents-Hackthon` | 96.43M |
-| `-Users-broodierchip-m1air-Documents-tools` | 83.86K |
+| `-Users-testuser` | 10.94B |
+| `-Users-testuser-Documents-Hackthon` | 96.43M |
+| `-Users-testuser-Documents-tools` | 83.86K |
 
-### alexander.sorrell.it@gmail.com
+### owner@example.com
 
-**571,753,755 tokens** (571.75M) — `/Users/broodierchip-m1air/.claude-it`
+**571,753,755 tokens** (571.75M) — `/Users/testuser/.claude-it`
 
 userID `a842a0db1ce2f3e19742aa78893f10cf921a9d7e15a1412fec7c7cc4cf09525a`
 
@@ -134,12 +134,12 @@ Active 2026-06-18 → 2026-08-06 (6 days). Busiest day 2026-06-20 at 297.83M.
 
 | Project | Total |
 |---|---:|
-| `-Users-broodierchip-m1air-Desktop-Bug` | 571.75M |
-| `-Users-broodierchip-m1air` | 0 |
+| `-Users-testuser-Desktop-Bug` | 571.75M |
+| `-Users-testuser` | 0 |
 
-### codehunterextreme@gmail.com
+### third@example.com
 
-**9,428,950 tokens** (9.43M) — `/Users/broodierchip-m1air/Desktop/standout_sandbox/.claude`
+**9,428,950 tokens** (9.43M) — `/Users/testuser/Desktop/standout_sandbox/.claude`
 
 userID `c6ce9918ed51217d1701e1b6217b35699f346b95e2d17fec3b261d9ea2bea739`
 

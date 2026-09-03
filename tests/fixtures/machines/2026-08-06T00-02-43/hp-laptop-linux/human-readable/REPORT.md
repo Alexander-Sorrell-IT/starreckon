@@ -13,15 +13,15 @@ accounting, deduplicated by message uuid.
 
 | Account | Sessions | Turns | Input | Cache write | Cache read | Output | Total |
 |---|---:|---:|---:|---:|---:|---:|---:|
-| broodierchip@gmail.com | 84 | 17,008 | 4.00M | 163.18M | 5.36B | 25.35M | **5.55B** |
-| codehunterextreme@gmail.com | 40 | 22,517 | 3.44M | 168.06M | 3.51B | 18.57M | **3.70B** |
+| second@example.com | 84 | 17,008 | 4.00M | 163.18M | 5.36B | 25.35M | **5.55B** |
+| third@example.com | 40 | 22,517 | 3.44M | 168.06M | 3.51B | 18.57M | **3.70B** |
 | user:73ae64bf180b | 6 | 14,797 | 61.32M | 0 | 1.34B | 4.99M | **1.41B** |
-| broodierchip@gmail.com | 420 | 3,348 | 1.27M | 22.02M | 462.81M | 2.18M | **488.28M** |
-| broodierchip@gmail.com | 805 | 4,750 | 1.39M | 34.78M | 291.24M | 2.20M | **329.61M** |
-| alexander.sorrell.it@gmail.com | 2 | 885 | 25.88K | 2.43M | 80.24M | 515.71K | **83.21M** |
+| second@example.com | 420 | 3,348 | 1.27M | 22.02M | 462.81M | 2.18M | **488.28M** |
+| second@example.com | 805 | 4,750 | 1.39M | 34.78M | 291.24M | 2.20M | **329.61M** |
+| owner@example.com | 2 | 885 | 25.88K | 2.43M | 80.24M | 515.71K | **83.21M** |
 | user:4be462f3a2f9 | 1 | 18 | 3.86K | 28.70K | 394.81K | 10.24K | **437.62K** |
-| broodierchip@gmail.com | 805 | 0 | 0 | 0 | 0 | 0 | **0** |
-| broodierchip@gmail.com | 576 | 0 | 0 | 0 | 0 | 0 | **0** |
+| second@example.com | 805 | 0 | 0 | 0 | 0 | 0 | **0** |
+| second@example.com | 576 | 0 | 0 | 0 | 0 | 0 | **0** |
 
 ## By provider
 
@@ -59,17 +59,17 @@ linked to an account only when their organization UUIDs match.
 
 | Account | Auth | Organization | Org UUID | Linked to |
 |---|---|---|---|---|
-| broodierchip@gmail.com | oauth | broodierchip@gmail.com's Organization | `6bfc754e-a205-41c3-9dac-80e593f494e0` | — |
-| codehunterextreme@gmail.com | oauth | codehunterextreme@gmail.com's Organization | `ba511861-53b4-4599-8019-93db6389d991` | — |
+| second@example.com | oauth | second@example.com's Organization | `6bfc754e-a205-41c3-9dac-80e593f494e0` | — |
+| third@example.com | oauth | third@example.com's Organization | `ba511861-53b4-4599-8019-93db6389d991` | — |
 | user:73ae64bf180b | unknown | — | `—` | — |
-| broodierchip@gmail.com | oauth | broodierchip@gmail.com's Organization | `6bfc754e-a205-41c3-9dac-80e593f494e0` | — |
-| broodierchip@gmail.com | oauth | broodierchip@gmail.com's Organization | `6bfc754e-a205-41c3-9dac-80e593f494e0` | — |
-| alexander.sorrell.it@gmail.com | oauth | alexander.sorrell.it@gmail.com's Organization | `66565064-263e-4d54-b06f-15cae4b2febc` | — |
+| second@example.com | oauth | second@example.com's Organization | `6bfc754e-a205-41c3-9dac-80e593f494e0` | — |
+| second@example.com | oauth | second@example.com's Organization | `6bfc754e-a205-41c3-9dac-80e593f494e0` | — |
+| owner@example.com | oauth | owner@example.com's Organization | `66565064-263e-4d54-b06f-15cae4b2febc` | — |
 | user:4be462f3a2f9 | api_key | — | `—` | — |
-| broodierchip@gmail.com | oauth | broodierchip@gmail.com's Organization | `6bfc754e-a205-41c3-9dac-80e593f494e0` | — |
-| broodierchip@gmail.com | oauth | broodierchip@gmail.com's Organization | `6bfc754e-a205-41c3-9dac-80e593f494e0` | — |
+| second@example.com | oauth | second@example.com's Organization | `6bfc754e-a205-41c3-9dac-80e593f494e0` | — |
+| second@example.com | oauth | second@example.com's Organization | `6bfc754e-a205-41c3-9dac-80e593f494e0` | — |
 
-### broodierchip@gmail.com
+### second@example.com
 
 **5,547,678,789 tokens** (5.55B) — `/home/testuser/.claude`
 
@@ -103,7 +103,7 @@ Active 2026-05-04 → 2026-07-02 (21 days). Busiest day 2026-05-13 at 1.13B.
 | `-media-testuser-AI-DRIVE-hackathons-Slack` | 366.01M |
 | `-media-testuser-AI-DRIVE-hackathons-mind` | 333.77M |
 
-### codehunterextreme@gmail.com
+### third@example.com
 
 **3,696,810,000 tokens** (3.70B) — `/home/testuser/.claude-alt`
 
@@ -165,7 +165,7 @@ Active 2026-05-12 → 2026-07-20 (22 days). Busiest day 2026-05-13 at 279.14M.
 | `-media-testuser-AI-DRIVE-DeepSeek-work` | 35.08M |
 | `-media-testuser-AI-DRIVE-DeepSeek-work-my-claude-seek-reddit` | 32.85M |
 
-### broodierchip@gmail.com
+### second@example.com
 
 **488,276,416 tokens** (488.28M) — `/home/testuser/Desktop/standout_clean/.claude`
 
@@ -194,7 +194,7 @@ Active 2026-06-27 → 2026-07-04 (7 days). Busiest day 2026-06-29 at 350.33M.
 | `alt__-tmp-claude-1000--media-testuser-AI-DRIVE-pip-c9b9dba0-12af-4bbc-975b-6a4dc2996eaa-scratchpad` | 92.61K |
 | `alt__-media-testuser-AI-DRIVE-fable` | 88.21K |
 
-### broodierchip@gmail.com
+### second@example.com
 
 **329,613,027 tokens** (329.61M) — `/home/testuser/Desktop/standout_full/.claude`
 
@@ -224,7 +224,7 @@ Active 2026-06-27 → 2026-07-02 (5 days). Busiest day 2026-06-27 at 311.32M.
 | `alt__-media-testuser-AI-DRIVE-VORTEX-SYSTEM__6e61c0f7-6283-4005-b056-8aacc175c5d3__subagents__workflows__wf_3470e2d8-ac5` | 4.20M |
 | `alt__-media-testuser-AI-DRIVE-hackathons-CodeCrusher__00e1fa7b-fc1e-48a9-b4a6-1f1eff13e305__subagents` | 4.18M |
 
-### alexander.sorrell.it@gmail.com
+### owner@example.com
 
 **83,212,683 tokens** (83.21M) — `/home/testuser/.claude-it`
 
@@ -268,13 +268,13 @@ Active 2026-06-09 → 2026-06-09 (1 days). Busiest day 2026-06-09 at 437.62K.
 |---|---:|
 | `-media-testuser-AI-DRIVE-DeepSeek-work-my-claude-seek-fable` | 437.62K |
 
-### broodierchip@gmail.com
+### second@example.com
 
 **0 tokens** (0) — `/home/testuser/Desktop/standout_max/.claude`
 
 userID `9fe225ab991233bf703aa663b6bf06bb04ddab782025753b968e194eeb2b0173`
 
-### broodierchip@gmail.com
+### second@example.com
 
 **0 tokens** (0) — `/home/testuser/Desktop/standout_sandbox/.claude`
 

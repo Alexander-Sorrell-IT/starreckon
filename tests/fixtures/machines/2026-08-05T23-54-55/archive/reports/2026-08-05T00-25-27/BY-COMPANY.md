@@ -66,9 +66,9 @@ Different questions. Copilot runs Claude models: that is GitHub spend and Anthro
 
 | Account | Tokens |
 |---|---:|
-| broodierchip@gmail.com | 24,775,930,006 |
-| codehunterextreme@gmail.com | 13,672,715,264 |
-| alexander.sorrell.it@gmail.com | 2,835,737,509 |
+| second@example.com | 24,775,930,006 |
+| third@example.com | 13,672,715,264 |
+| owner@example.com | 2,835,737,509 |
 | user:2d4777822844 | 7,281,866 |
 | API key (org 15a93e14-aabb-4293-8228-8c56a803d972) | 437,619 |
 
@@ -90,5 +90,5 @@ Different questions. Copilot runs Claude models: that is GitHub spend and Anthro
 | Account | Tokens |
 |---|---:|
 | DeepSeek backend (~/.my-claude) | 1,409,787,623 |
-| broodierchip@gmail.com | 36,164,393 |
+| second@example.com | 36,164,393 |
 

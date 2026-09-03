@@ -13,7 +13,7 @@ accounting, deduplicated by message uuid.
 
 | Account | Sessions | Turns | Input | Cache write | Cache read | Output | Total |
 |---|---:|---:|---:|---:|---:|---:|---:|
-| broodierchip@gmail.com | 1 | 67 | 15.20K | 476.57K | 1.64M | 252 | **2.13M** |
+| second@example.com | 1 | 67 | 15.20K | 476.57K | 1.64M | 252 | **2.13M** |
 
 ## By provider
 
@@ -47,9 +47,9 @@ linked to an account only when their organization UUIDs match.
 
 | Account | Auth | Organization | Org UUID | Linked to |
 |---|---|---|---|---|
-| broodierchip@gmail.com | oauth | broodierchip@gmail.com's Organization | `6bfc754e-a205-41c3-9dac-80e593f494e0` | — |
+| second@example.com | oauth | second@example.com's Organization | `6bfc754e-a205-41c3-9dac-80e593f494e0` | — |
 
-### broodierchip@gmail.com
+### second@example.com
 
 **2,130,613 tokens** (2.13M) — `/home/phantom-gramps/.claude`
 

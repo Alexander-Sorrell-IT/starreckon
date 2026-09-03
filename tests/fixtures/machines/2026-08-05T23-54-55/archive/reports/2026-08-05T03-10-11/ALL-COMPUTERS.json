@@ -40,7 +40,7 @@
   ],
   "accounts": [
     {
-      "account": "broodierchip@gmail.com",
+      "account": "second@example.com",
       "total": 25629466086,
       "sessions": 19189,
       "turns": 165417,
@@ -59,7 +59,7 @@
       }
     },
     {
-      "account": "codehunterextreme@gmail.com",
+      "account": "third@example.com",
       "total": 13292112941,
       "sessions": 63,
       "turns": 44860,
@@ -76,7 +76,7 @@
       }
     },
     {
-      "account": "alexander.sorrell.it@gmail.com",
+      "account": "owner@example.com",
       "total": 2974432873,
       "sessions": 74,
       "turns": 12602,

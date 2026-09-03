@@ -298,13 +298,13 @@
           "output_tokens": 1231404
         }
       },
-      "account": "codehunterextreme@gmail.com",
+      "account": "third@example.com",
       "user_id": "7332676f0b84f06017ed5ef60ae6c498a7f6b1ea73c9ab98be498d78883ab952",
       "identity": {
         "auth": "oauth",
-        "email": "codehunterextreme@gmail.com",
+        "email": "third@example.com",
         "org_uuid": "ba511861-53b4-4599-8019-93db6389d991",
-        "org_name": "codehunterextreme@gmail.com's Organization",
+        "org_name": "third@example.com's Organization",
         "account_uuid": "cf12fe66-594f-449a-b951-c9bb2ce5db76",
         "user_id": "7332676f0b84f06017ed5ef60ae6c498a7f6b1ea73c9ab98be498d78883ab952",
         "approved_api_keys": []
@@ -647,13 +647,13 @@
           "output_tokens": 732130
         }
       },
-      "account": "broodierchip@gmail.com",
+      "account": "second@example.com",
       "user_id": "9fe225ab991233bf703aa663b6bf06bb04ddab782025753b968e194eeb2b0173",
       "identity": {
         "auth": "oauth",
-        "email": "broodierchip@gmail.com",
+        "email": "second@example.com",
         "org_uuid": "6bfc754e-a205-41c3-9dac-80e593f494e0",
-        "org_name": "broodierchip@gmail.com's Organization",
+        "org_name": "second@example.com's Organization",
         "account_uuid": "a9fec27d-ab5d-48bb-9679-a9bf60bfb97e",
         "user_id": "9fe225ab991233bf703aa663b6bf06bb04ddab782025753b968e194eeb2b0173",
         "approved_api_keys": []
@@ -1465,13 +1465,13 @@
           "output_tokens": 78308
         }
       },
-      "account": "alexander.sorrell.it@gmail.com",
+      "account": "owner@example.com",
       "user_id": "53a6fc28c93264480360b0eac01b9f6ce310137e8581f22ff931dbaa003fd4fe",
       "identity": {
         "auth": "oauth",
-        "email": "alexander.sorrell.it@gmail.com",
+        "email": "owner@example.com",
         "org_uuid": "66565064-263e-4d54-b06f-15cae4b2febc",
-        "org_name": "alexander.sorrell.it@gmail.com's Organization",
+        "org_name": "owner@example.com's Organization",
         "account_uuid": "55c75c9e-b932-41e8-a80c-e3abf56861d8",
         "user_id": "53a6fc28c93264480360b0eac01b9f6ce310137e8581f22ff931dbaa003fd4fe",
         "approved_api_keys": []
@@ -1790,13 +1790,13 @@
       "by_model": {},
       "by_day": {},
       "by_project": {},
-      "account": "broodierchip@gmail.com",
+      "account": "second@example.com",
       "user_id": "9fe225ab991233bf703aa663b6bf06bb04ddab782025753b968e194eeb2b0173",
       "identity": {
         "auth": "oauth",
-        "email": "broodierchip@gmail.com",
+        "email": "second@example.com",
         "org_uuid": "6bfc754e-a205-41c3-9dac-80e593f494e0",
-        "org_name": "broodierchip@gmail.com's Organization",
+        "org_name": "second@example.com's Organization",
         "account_uuid": "a9fec27d-ab5d-48bb-9679-a9bf60bfb97e",
         "user_id": "9fe225ab991233bf703aa663b6bf06bb04ddab782025753b968e194eeb2b0173",
         "approved_api_keys": []
@@ -2141,13 +2141,13 @@
       "by_model": {},
       "by_day": {},
       "by_project": {},
-      "account": "broodierchip@gmail.com",
+      "account": "second@example.com",
       "user_id": "9fe225ab991233bf703aa663b6bf06bb04ddab782025753b968e194eeb2b0173",
       "identity": {
         "auth": "oauth",
-        "email": "broodierchip@gmail.com",
+        "email": "second@example.com",
         "org_uuid": "6bfc754e-a205-41c3-9dac-80e593f494e0",
-        "org_name": "broodierchip@gmail.com's Organization",
+        "org_name": "second@example.com's Organization",
         "account_uuid": "a9fec27d-ab5d-48bb-9679-a9bf60bfb97e",
         "user_id": "9fe225ab991233bf703aa663b6bf06bb04ddab782025753b968e194eeb2b0173",
         "approved_api_keys": []
@@ -2172,13 +2172,13 @@
       "by_model": {},
       "by_day": {},
       "by_project": {},
-      "account": "broodierchip@gmail.com",
+      "account": "second@example.com",
       "user_id": "9fe225ab991233bf703aa663b6bf06bb04ddab782025753b968e194eeb2b0173",
       "identity": {
         "auth": "oauth",
-        "email": "broodierchip@gmail.com",
+        "email": "second@example.com",
         "org_uuid": "6bfc754e-a205-41c3-9dac-80e593f494e0",
-        "org_name": "broodierchip@gmail.com's Organization",
+        "org_name": "second@example.com's Organization",
         "account_uuid": "a9fec27d-ab5d-48bb-9679-a9bf60bfb97e",
         "user_id": "9fe225ab991233bf703aa663b6bf06bb04ddab782025753b968e194eeb2b0173",
         "approved_api_keys": []
@@ -2203,13 +2203,13 @@
       "by_model": {},
       "by_day": {},
       "by_project": {},
-      "account": "broodierchip@gmail.com",
+      "account": "second@example.com",
       "user_id": "9fe225ab991233bf703aa663b6bf06bb04ddab782025753b968e194eeb2b0173",
       "identity": {
         "auth": "oauth",
-        "email": "broodierchip@gmail.com",
+        "email": "second@example.com",
         "org_uuid": "6bfc754e-a205-41c3-9dac-80e593f494e0",
-        "org_name": "broodierchip@gmail.com's Organization",
+        "org_name": "second@example.com's Organization",
         "account_uuid": "a9fec27d-ab5d-48bb-9679-a9bf60bfb97e",
         "user_id": "9fe225ab991233bf703aa663b6bf06bb04ddab782025753b968e194eeb2b0173",
         "approved_api_keys": []
@@ -2235,13 +2235,13 @@
       "by_model": {},
       "by_day": {},
       "by_project": {},
-      "account": "broodierchip@gmail.com",
+      "account": "second@example.com",
       "user_id": "9fe225ab991233bf703aa663b6bf06bb04ddab782025753b968e194eeb2b0173",
       "identity": {
         "auth": "oauth",
-        "email": "broodierchip@gmail.com",
+        "email": "second@example.com",
         "org_uuid": "6bfc754e-a205-41c3-9dac-80e593f494e0",
-        "org_name": "broodierchip@gmail.com's Organization",
+        "org_name": "second@example.com's Organization",
         "account_uuid": "a9fec27d-ab5d-48bb-9679-a9bf60bfb97e",
         "user_id": "9fe225ab991233bf703aa663b6bf06bb04ddab782025753b968e194eeb2b0173",
         "approved_api_keys": []

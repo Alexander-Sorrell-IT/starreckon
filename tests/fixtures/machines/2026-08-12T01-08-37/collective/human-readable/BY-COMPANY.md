@@ -56,9 +56,9 @@ Different questions. Copilot runs Claude models: that is GitHub spend and Anthro
 
 | Account | Tokens |
 |---|---:|
-| broodierchip@gmail.com | 9,211,228,521 |
-| codehunterextreme@gmail.com | 5,301,645,600 |
-| alexander.sorrell.it@gmail.com | 243,949,169 |
+| second@example.com | 9,211,228,521 |
+| third@example.com | 5,301,645,600 |
+| owner@example.com | 243,949,169 |
 | unknown (Documents) | 10,014,914 |
 
 ---

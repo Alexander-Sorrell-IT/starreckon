@@ -13,10 +13,10 @@ accounting, deduplicated by message uuid.
 
 | Account | Sessions | Turns | Input | Cache write | Cache read | Output | Total |
 |---|---:|---:|---:|---:|---:|---:|---:|
-| alexander.sorrell.it@gmail.com | 62 | 3,677 | 167.64K | 33.42M | 869.72M | 4.57M | **907.88M** |
-| broodierchip@gmail.com | 16,441 | 17,594 | 159.91M | 122.82M | 433.36M | 8.67M | **724.76M** |
+| owner@example.com | 62 | 3,677 | 167.64K | 33.42M | 869.72M | 4.57M | **907.88M** |
+| second@example.com | 16,441 | 17,594 | 159.91M | 122.82M | 433.36M | 8.67M | **724.76M** |
 | unknown (old_.claude) | 31 | 8,254 | 513.10K | 49.64M | 654.43M | 1.38M | **705.96M** |
-| codehunterextreme@gmail.com | 2 | 99 | 3.56K | 1.44M | 10.27M | 75.34K | **11.79M** |
+| third@example.com | 2 | 99 | 3.56K | 1.44M | 10.27M | 75.34K | **11.79M** |
 | user:2d4777822844 | 1 | 50 | 174 | 506.20K | 2.93M | 52.28K | **3.49M** |
 | user:283b8e5b8e48 | 1 | 3 | 0 | 0 | 0 | 0 | **0** |
 | unknown (claude) | 16,441 | 0 | 0 | 0 | 0 | 0 | **0** |
@@ -24,7 +24,7 @@ accounting, deduplicated by message uuid.
 | unknown (claude-alt-api) | 1 | 0 | 0 | 0 | 0 | 0 | **0** |
 | unknown (claude-api) | 1 | 0 | 0 | 0 | 0 | 0 | **0** |
 | unknown (claude-it) | 62 | 0 | 0 | 0 | 0 | 0 | **0** |
-| broodierchip@gmail.com | 31 | 0 | 0 | 0 | 0 | 0 | **0** |
+| second@example.com | 31 | 0 | 0 | 0 | 0 | 0 | **0** |
 
 ## By provider
 
@@ -60,10 +60,10 @@ linked to an account only when their organization UUIDs match.
 
 | Account | Auth | Organization | Org UUID | Linked to |
 |---|---|---|---|---|
-| alexander.sorrell.it@gmail.com | oauth | alexander.sorrell.it@gmail.com's Organization | `66565064-263e-4d54-b06f-15cae4b2febc` | — |
-| broodierchip@gmail.com | oauth | broodierchip@gmail.com's Organization | `6bfc754e-a205-41c3-9dac-80e593f494e0` | — |
+| owner@example.com | oauth | owner@example.com's Organization | `66565064-263e-4d54-b06f-15cae4b2febc` | — |
+| second@example.com | oauth | second@example.com's Organization | `6bfc754e-a205-41c3-9dac-80e593f494e0` | — |
 | unknown (old_.claude) | unknown | — | `—` | — |
-| codehunterextreme@gmail.com | oauth | codehunterextreme@gmail.com's Organization | `ba511861-53b4-4599-8019-93db6389d991` | — |
+| third@example.com | oauth | third@example.com's Organization | `ba511861-53b4-4599-8019-93db6389d991` | — |
 | user:2d4777822844 | api_key | — | `—` | — |
 | user:283b8e5b8e48 | api_key | — | `—` | — |
 | unknown (claude) | unknown | — | `—` | — |
@@ -71,9 +71,9 @@ linked to an account only when their organization UUIDs match.
 | unknown (claude-alt-api) | unknown | — | `—` | — |
 | unknown (claude-api) | unknown | — | `—` | — |
 | unknown (claude-it) | unknown | — | `—` | — |
-| broodierchip@gmail.com | oauth | broodierchip@gmail.com's Organization | `6bfc754e-a205-41c3-9dac-80e593f494e0` | — |
+| second@example.com | oauth | second@example.com's Organization | `6bfc754e-a205-41c3-9dac-80e593f494e0` | — |
 
-### alexander.sorrell.it@gmail.com
+### owner@example.com
 
 **907,878,994 tokens** (907.88M) — `/home/phantom-orchestrator/.claude-it`
 
@@ -103,7 +103,7 @@ Active 2026-07-04 → 2026-08-09 (28 days). Busiest day 2026-07-23 at 106.65M.
 | `-home-phantom-orchestrator-token-usage` | 1.97M |
 | `-home-phantom-orchestrator-Documents-Transcript-engine` | 231.75K |
 
-### broodierchip@gmail.com
+### second@example.com
 
 **724,756,400 tokens** (724.76M) — `/home/phantom-orchestrator/.claude`
 
@@ -161,7 +161,7 @@ Active 2026-01-17 → 2026-02-24 (21 days). Busiest day 2026-02-22 at 233.48M.
 | `-media-phantom-orchestrator-BitcoinNode-Claude-workspace-BIOS-upgrade` | 26.63M |
 | `-media-phantom-orchestrator-BitcoinNode-copilot` | 18.56M |
 
-### codehunterextreme@gmail.com
+### third@example.com
 
 **11,786,126 tokens** (11.79M) — `/home/phantom-orchestrator/.claude-alt`
 
@@ -227,7 +227,7 @@ userID `283b8e5b8e48d17836c99894017f4ce322b58772226367f320d5373a1104bd43`
 
 **0 tokens** (0) — `/home/phantom-orchestrator/.ai-logs-archive/claude/claude-it`
 
-### broodierchip@gmail.com
+### second@example.com
 
 **0 tokens** (0) — `/home/phantom-orchestrator/old/.claude`
 

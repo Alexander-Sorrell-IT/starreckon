@@ -48,10 +48,10 @@ scanned **2026-08-06 01:29:54** · sessions 2026-08-06 01:30:18
 
 | Account | Tokens | Share of machine |
 |---|---:|---:|
-| broodierchip@gmail.com | 6,366,517,046 | 54.3% |
-| codehunterextreme@gmail.com | 3,865,285,522 | 33.0% |
+| second@example.com | 6,366,517,046 | 54.3% |
+| third@example.com | 3,865,285,522 | 33.0% |
 | DeepSeek backend (~/.my-claude) | 1,409,787,623 | 12.0% |
-| alexander.sorrell.it@gmail.com | 83,212,683 | 0.7% |
+| owner@example.com | 83,212,683 | 0.7% |
 | API key (org 15a93e14-aabb-4293-8228-8c56a803d972) | 437,619 | 0.0% |
 
 ### Companies on this computer
@@ -109,7 +109,7 @@ scanned **2026-08-06 00:50:35** · sessions 2026-08-06 00:50:53
 
 | Account | Tokens | Share of machine |
 |---|---:|---:|
-| broodierchip@gmail.com | 266,146,676 | 100.0% |
+| second@example.com | 266,146,676 | 100.0% |
 
 ### Companies on this computer
 
@@ -156,7 +156,7 @@ scanned **2026-08-06 01:00:55** · sessions 2026-08-06 01:00:57
 
 | Account | Tokens | Share of machine |
 |---|---:|---:|
-| broodierchip@gmail.com | 2,130,613 | 100.0% |
+| second@example.com | 2,130,613 | 100.0% |
 
 ### Companies on this computer
 
@@ -234,10 +234,10 @@ It is a floor and not a total for three reasons, all measured rather than assume
 
 | Account | Counter | Counter ends | Transcripts after | Floor |
 |---|---:|---|---:|---:|
-| broodierchip@gmail.com | 12,290,485,337 | 2026-05-17 | 2,283,190,813 | 14,573,676,150 |
-| codehunterextreme@gmail.com | 11,440,918,343 | 2026-07-11 | 3,098,536,096 | 14,539,454,439 |
+| second@example.com | 12,290,485,337 | 2026-05-17 | 2,283,190,813 | 14,573,676,150 |
+| third@example.com | 11,440,918,343 | 2026-07-11 | 3,098,536,096 | 14,539,454,439 |
 | DeepSeek backend (~/.my-claude) | _none_ | — | 1,409,787,623 | 1,409,787,623 |
-| alexander.sorrell.it@gmail.com | _none_ | — | 83,212,683 | 83,212,683 |
+| owner@example.com | _none_ | — | 83,212,683 | 83,212,683 |
 | API key (org 15a93e14-aabb-4293-8228-8c56a803d972) | _none_ | — | 437,619 | 437,619 |
 
 </details>
@@ -246,7 +246,7 @@ It is a floor and not a total for three reasons, all measured rather than assume
 
 | Account | Counter | Counter ends | Transcripts after | Floor |
 |---|---:|---|---:|---:|
-| broodierchip@gmail.com | 158,006,803 | 2026-04-30 | 256,523,747 | 414,530,550 |
+| second@example.com | 158,006,803 | 2026-04-30 | 256,523,747 | 414,530,550 |
 
 </details>
 
@@ -254,7 +254,7 @@ It is a floor and not a total for three reasons, all measured rather than assume
 
 | Account | Counter | Counter ends | Transcripts after | Floor |
 |---|---:|---|---:|---:|
-| broodierchip@gmail.com | 37,850,653 | 2026-08-03 | 0 | 37,850,653 |
+| second@example.com | 37,850,653 | 2026-08-03 | 0 | 37,850,653 |
 
 </details>
 
@@ -266,10 +266,10 @@ Every profile keeps `stats-cache.json`. It is not a transcript, so the cleanup s
 
 | Profile | Account | Own counter | Counter covers | From transcripts |
 |---|---|---:|---|---:|
-| `.claude` | broodierchip@gmail.com | 12,290,485,337 | 2026-01-14 → 2026-05-17 | 6,366,517,046 |
-| `.claude-alt` | codehunterextreme@gmail.com | 11,440,918,343 | 2026-06-09 → 2026-07-11 | 3,865,285,522 |
-| `.claude` | broodierchip@gmail.com | 158,006,803 | 2026-01-17 → 2026-04-30 | 266,146,676 |
-| `.claude` | broodierchip@gmail.com | 37,850,653 | 2026-01-20 → 2026-08-03 | 2,130,613 |
+| `.claude` | second@example.com | 12,290,485,337 | 2026-01-14 → 2026-05-17 | 6,366,517,046 |
+| `.claude-alt` | third@example.com | 11,440,918,343 | 2026-06-09 → 2026-07-11 | 3,865,285,522 |
+| `.claude` | second@example.com | 158,006,803 | 2026-01-17 → 2026-04-30 | 266,146,676 |
+| `.claude` | second@example.com | 37,850,653 | 2026-01-20 → 2026-08-03 | 2,130,613 |
 
 **Do not subtract these columns.** The two cover different periods: the counter runs from the first session to its own `lastComputedDate` and then stops, while the transcripts hold whatever has not expired, which includes days after that date. Neither contains the other — each holds usage the other lacks — so their difference is not a quantity of anything.
 
@@ -294,10 +294,10 @@ It carries **no token counts**, so a lost session's cost is gone for good. What 
 
 | Account | Sessions ever | Transcript gone | Span |
 |---|---:|---:|---|
-| broodierchip@gmail.com | 324 | 276 | 2026-01-14 → 2026-08-04 |
-| codehunterextreme@gmail.com | 220 | 170 | 2026-02-26 → 2026-08-06 |
+| second@example.com | 324 | 276 | 2026-01-14 → 2026-08-04 |
+| third@example.com | 220 | 170 | 2026-02-26 → 2026-08-06 |
 | user:73ae64bf180b | 31 | 14 | 2026-05-12 → 2026-07-18 |
-| alexander.sorrell.it@gmail.com | 3 | 1 | 2026-06-09 → 2026-06-10 |
+| owner@example.com | 3 | 1 | 2026-06-09 → 2026-06-10 |
 | user:4be462f3a2f9 | 1 | 0 | 2026-06-09 → 2026-06-09 |
 
 ---

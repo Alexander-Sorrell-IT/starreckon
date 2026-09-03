@@ -1,11 +1,11 @@
 account,config_dir,sessions,turns,input_tokens,cache_creation_input_tokens,cache_read_input_tokens,output_tokens,total
-broodierchip@gmail.com,/Users/broodierchip-m1air/.claude-main,31,46646,3709654,253183888,8126693504,47906163,8431493209
-codehunterextreme@gmail.com,/Users/broodierchip-m1air/.claude,24,12911,433650,159143033,5094378968,15796536,5269752187
-alexander.sorrell.it@gmail.com,/Users/broodierchip-m1air/.claude-it,4,1124,28533,5274501,237710186,935949,243949169
-unknown (Documents),/Users/broodierchip-m1air/.ai-logs-archive/claude/Documents,2180,31,62,106705,5935687,20178,6062632
-unknown (Desktop_standout_sandbox_.claude),/Users/broodierchip-m1air/.ai-logs-archive/claude/Desktop_standout_sandbox_.claude,2126,75,25837,377188,3505480,43777,3952282
-unknown (claude-main),/Users/broodierchip-m1air/.ai-logs-archive/claude/claude-main,31,1,2,376,112355,1013,113746
-unknown (claude),/Users/broodierchip-m1air/.ai-logs-archive/claude/claude,24,0,0,0,0,0,0
-unknown (claude-it),/Users/broodierchip-m1air/.ai-logs-archive/claude/claude-it,4,0,0,0,0,0,0
-codehunterextreme@gmail.com,/Users/broodierchip-m1air/Desktop/standout_sandbox/.claude,2126,0,0,0,0,0,0
-unknown (Documents),/Users/broodierchip-m1air/Documents,2180,0,0,0,0,0,0
+second@example.com,/Users/testuser/.claude-main,31,46646,3709654,253183888,8126693504,47906163,8431493209
+third@example.com,/Users/testuser/.claude,24,12911,433650,159143033,5094378968,15796536,5269752187
+owner@example.com,/Users/testuser/.claude-it,4,1124,28533,5274501,237710186,935949,243949169
+unknown (Documents),/Users/testuser/.ai-logs-archive/claude/Documents,2180,31,62,106705,5935687,20178,6062632
+unknown (Desktop_standout_sandbox_.claude),/Users/testuser/.ai-logs-archive/claude/Desktop_standout_sandbox_.claude,2126,75,25837,377188,3505480,43777,3952282
+unknown (claude-main),/Users/testuser/.ai-logs-archive/claude/claude-main,31,1,2,376,112355,1013,113746
+unknown (claude),/Users/testuser/.ai-logs-archive/claude/claude,24,0,0,0,0,0,0
+unknown (claude-it),/Users/testuser/.ai-logs-archive/claude/claude-it,4,0,0,0,0,0,0
+third@example.com,/Users/testuser/Desktop/standout_sandbox/.claude,2126,0,0,0,0,0,0
+unknown (Documents),/Users/testuser/Documents,2180,0,0,0,0,0,0

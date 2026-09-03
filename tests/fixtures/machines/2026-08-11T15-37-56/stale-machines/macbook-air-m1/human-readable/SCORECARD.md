@@ -15,7 +15,7 @@ _2026-08-09T03:41:05-05:00_
 | readers | no CLI is installed-but-silent | ✅ | none |
 | readers | no reader raised | ✅ | none |
 | agreement | analyze_tokens == sessions | ✅ | 13,955,323,225 vs 13,986,083,796 — 30,760,571 apart (0.22%) |
-| corpus | export exists | ✅ | /Users/broodierchip-m1air/token-corpus/macbook-air-m1 |
+| corpus | export exists | ✅ | /Users/testuser/token-corpus/macbook-air-m1 |
 | corpus | export is recent | ✅ | 2026-08-09T03:38:04-05:00 |
 | corpus | profiles match the scan | ❌ | 8 exported / 10 scanned |
 | corpus | redaction ran | ✅ | topic 209,000, span 16,710, path 704,209, email 13,853 |

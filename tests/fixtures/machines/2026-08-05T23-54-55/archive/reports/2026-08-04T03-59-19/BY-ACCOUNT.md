@@ -16,9 +16,9 @@ The per-account total across computers is the number that matters: the same logi
 
 | Account | Tokens | Share | Computers | Sessions | Turns | |
 |---|---:|---:|---:|---:|---:|---|
-| **broodierchip@gmail.com** | 24,811,576,643 | 59.2% | 5 | 16,583 | 157,319 | █████████████████··········· |
-| **codehunterextreme@gmail.com** | 12,678,387,484 | 30.3% | 3 | 61 | 41,901 | ████████···················· |
-| **alexander.sorrell.it@gmail.com** | 2,974,432,873 | 7.1% | 3 | 74 | 12,602 | ██·························· |
+| **second@example.com** | 24,811,576,643 | 59.2% | 5 | 16,583 | 157,319 | █████████████████··········· |
+| **third@example.com** | 12,678,387,484 | 30.3% | 3 | 61 | 41,901 | ████████···················· |
+| **owner@example.com** | 2,974,432,873 | 7.1% | 3 | 74 | 12,602 | ██·························· |
 | **DeepSeek backend (~/.my-claude)** | 1,409,787,623 | 3.4% | 1 | 6 | 14,797 | █··························· |
 | **unknown** | 7,281,866 | 0.0% | 1 | 2 | 114 | █··························· |
 | **API key (org 15a93e14-aabb-4293-8228-8c56a803d972)** | 437,619 | 0.0% | 1 | 1 | 18 | █··························· |
@@ -30,10 +30,10 @@ The table above is Claude Code only, because it is the one tool that writes its 
 
 | Account | Tokens | Sessions | Via |
 |---|---:|---:|---|
-| **broodierchip@gmail.com** | 25,769,191,925 | 192 | claude 23.26B, gemini 2.47B _file_, claude → DeepSeek 36.16M |
-| **codehunterextreme@gmail.com** | 12,731,616,520 | 54 | claude 12.73B |
-| **alexander.sorrell.it@gmail.com** | 654,966,438 | 5 | claude 654.97M |
-| **nefabious@gmail.com** | 76,724,862 | 5 | grok 76.72M _owner_ |
+| **second@example.com** | 25,769,191,925 | 192 | claude 23.26B, gemini 2.47B _file_, claude → DeepSeek 36.16M |
+| **third@example.com** | 12,731,616,520 | 54 | claude 12.73B |
+| **owner@example.com** | 654,966,438 | 5 | claude 654.97M |
+| **fourth@example.com** | 76,724,862 | 5 | grok 76.72M _owner_ |
 | **All attributed** | **39,232,499,745** | | |
 
 `file` means the email was read out of that tool's own account file. `owner` means it was stated by the account holder and cannot be checked against anything on disk. Claude Code rows carry neither because the email is in the session record itself.
@@ -63,9 +63,9 @@ Add a `services` entry to the right account in `accounts.json` to fold any of th
 
 | Account | MacBook Air M1 | HP Laptop Linux | Dell Latitude 7480 Linux | ASUS Laptop Linux | Dell Inspiron Desktop Linux | Total |
 |---|---|---|---|---|---|---|
-| broodierchip@gmail.com | 17.48B | 5.55B | 1.51B | 266.15M | 2.13M | **24,811,576,643** |
-| codehunterextreme@gmail.com | 9.95B | 2.70B | 26.78M | — | — | **12,678,387,484** |
-| alexander.sorrell.it@gmail.com | 571.75M | 83.21M | 2.32B | — | — | **2,974,432,873** |
+| second@example.com | 17.48B | 5.55B | 1.51B | 266.15M | 2.13M | **24,811,576,643** |
+| third@example.com | 9.95B | 2.70B | 26.78M | — | — | **12,678,387,484** |
+| owner@example.com | 571.75M | 83.21M | 2.32B | — | — | **2,974,432,873** |
 | DeepSeek backend (~/.my-claude) | — | 1.41B | — | — | — | **1,409,787,623** |
 | unknown | — | — | 7.28M | — | — | **7,281,866** |
 | API key (org 15a93e14-aabb-4293-8228-8c56a803d972) | — | 437.62K | — | — | — | **437,619** |
@@ -73,7 +73,7 @@ Add a `services` entry to the right account in `accounts.json` to fold any of th
 
 ---
 
-## broodierchip@gmail.com
+## second@example.com
 
 **24,811,576,643 tokens** (59.2%) · 16,583 sessions · 157,319 turns · 60 active days
 
@@ -113,7 +113,7 @@ All four are billed. Cache reads dominate because every turn re-reads the whole 
 
 ---
 
-## codehunterextreme@gmail.com
+## third@example.com
 
 **12,678,387,484 tokens** (30.3%) · 61 sessions · 41,901 turns · 39 active days
 
@@ -145,7 +145,7 @@ All four are billed. Cache reads dominate because every turn re-reads the whole 
 
 ---
 
-## alexander.sorrell.it@gmail.com
+## owner@example.com
 
 **2,974,432,873 tokens** (7.1%) · 74 sessions · 12,602 turns · 31 active days
 

@@ -18,9 +18,9 @@ The per-account total across computers is the number that matters: the same logi
 
 | Account | Tokens | Share | Computers | Sessions | Turns | |
 |---|---:|---:|---:|---:|---:|---|
-| **broodierchip@gmail.com** | 9,211,228,521 | 62.4% | 1 | 64 | 50,228 | █████████████████··········· |
-| **codehunterextreme@gmail.com** | 5,301,645,600 | 35.9% | 1 | 49 | 13,140 | ██████████·················· |
-| **alexander.sorrell.it@gmail.com** | 243,949,169 | 1.7% | 1 | 8 | 1,124 | █··························· |
+| **second@example.com** | 9,211,228,521 | 62.4% | 1 | 64 | 50,228 | █████████████████··········· |
+| **third@example.com** | 5,301,645,600 | 35.9% | 1 | 49 | 13,140 | ██████████·················· |
+| **owner@example.com** | 243,949,169 | 1.7% | 1 | 8 | 1,124 | █··························· |
 | **unknown (Documents)** | 10,014,914 | 0.1% | 1 | 4,360 | 106 | █··························· |
 | **All** | **14,766,838,204** | 100% | | | | |
 
@@ -30,10 +30,10 @@ The table above is Claude Code only, because it is the one tool that writes its 
 
 | Account | Tokens | Sessions | Via |
 |---|---:|---:|---|
-| **broodierchip@gmail.com** | 10,730,490,661 | 48 | claude 9.74B, gemini 995.36M _file_ |
-| **codehunterextreme@gmail.com** | 5,958,231,752 | 29 | claude 5.96B |
-| **alexander.sorrell.it@gmail.com** | 243,949,169 | 4 | claude 243.95M |
-| **nefabious@gmail.com** | 99,062,873 | 7 | grok 99.06M _owner_ |
+| **second@example.com** | 10,730,490,661 | 48 | claude 9.74B, gemini 995.36M _file_ |
+| **third@example.com** | 5,958,231,752 | 29 | claude 5.96B |
+| **owner@example.com** | 243,949,169 | 4 | claude 243.95M |
+| **fourth@example.com** | 99,062,873 | 7 | grok 99.06M _owner_ |
 | **All attributed** | **17,031,734,455** | | |
 
 `file` means the email was read out of that tool's own account file. `owner` means it was stated by the account holder and cannot be checked against anything on disk. Claude Code rows carry neither because the email is in the session record itself.
@@ -59,15 +59,15 @@ Add a `services` entry to the right account in `accounts.json` to fold any of th
 
 | Account | MacBook Air M1 | Total |
 |---|---|---|
-| broodierchip@gmail.com | 9.21B | **9,211,228,521** |
-| codehunterextreme@gmail.com | 5.30B | **5,301,645,600** |
-| alexander.sorrell.it@gmail.com | 243.95M | **243,949,169** |
+| second@example.com | 9.21B | **9,211,228,521** |
+| third@example.com | 5.30B | **5,301,645,600** |
+| owner@example.com | 243.95M | **243,949,169** |
 | unknown (Documents) | 10.01M | **10,014,914** |
 | **All** | **14.77B** | **14,766,838,204** |
 
 ---
 
-## broodierchip@gmail.com
+## second@example.com
 
 **9,211,228,521 tokens** (62.4%) · 64 sessions · 50,228 turns · 33 active days
 
@@ -94,7 +94,7 @@ All four are billed. Cache reads dominate because every turn re-reads the whole 
 
 ---
 
-## codehunterextreme@gmail.com
+## third@example.com
 
 **5,301,645,600 tokens** (35.9%) · 49 sessions · 13,140 turns · 30 active days
 
@@ -121,7 +121,7 @@ All four are billed. Cache reads dominate because every turn re-reads the whole 
 
 ---
 
-## alexander.sorrell.it@gmail.com
+## owner@example.com
 
 **243,949,169 tokens** (1.7%) · 8 sessions · 1,124 turns · 3 active days
 
@@ -182,8 +182,8 @@ _The same accounts, grouped by machine. One login is usually driven from several
 
 | Account | Tokens | Share |
 |---|---:|---:|
-| broodierchip@gmail.com | 9,211,228,521 |  62.4% |
-| codehunterextreme@gmail.com | 5,301,645,600 |  35.9% |
-| alexander.sorrell.it@gmail.com | 243,949,169 |   1.7% |
+| second@example.com | 9,211,228,521 |  62.4% |
+| third@example.com | 5,301,645,600 |  35.9% |
+| owner@example.com | 243,949,169 |   1.7% |
 | unknown (Documents) | 10,014,914 |   0.1% |
 

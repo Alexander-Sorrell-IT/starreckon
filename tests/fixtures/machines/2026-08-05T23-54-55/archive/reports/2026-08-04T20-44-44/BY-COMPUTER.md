@@ -50,9 +50,9 @@ scanned **2026-08-04 20:44:23** · sessions 2026-08-04 20:44:43
 
 | Account | Tokens | Share of machine |
 |---|---:|---:|
-| broodierchip@gmail.com | 17,484,791,342 | 61.4% |
-| codehunterextreme@gmail.com | 10,435,790,468 | 36.6% |
-| alexander.sorrell.it@gmail.com | 571,753,755 | 2.0% |
+| second@example.com | 17,484,791,342 | 61.4% |
+| third@example.com | 10,435,790,468 | 36.6% |
+| owner@example.com | 571,753,755 | 2.0% |
 
 ### Companies on this computer
 
@@ -102,10 +102,10 @@ scanned **2026-08-04 17:30:52** · sessions 2026-08-04 17:31:02
 
 | Account | Tokens | Share of machine |
 |---|---:|---:|
-| broodierchip@gmail.com | 5,547,678,789 | 54.1% |
-| codehunterextreme@gmail.com | 3,210,148,732 | 31.3% |
+| second@example.com | 5,547,678,789 | 54.1% |
+| third@example.com | 3,210,148,732 | 31.3% |
 | DeepSeek backend (~/.my-claude) | 1,409,787,623 | 13.8% |
-| alexander.sorrell.it@gmail.com | 83,212,683 | 0.8% |
+| owner@example.com | 83,212,683 | 0.8% |
 | API key (org 15a93e14-aabb-4293-8228-8c56a803d972) | 437,619 | 0.0% |
 
 ### Companies on this computer
@@ -161,9 +161,9 @@ Presence is separate from usage: a tool with no token column is installed and no
 
 | Account | Tokens | Share of machine |
 |---|---:|---:|
-| alexander.sorrell.it@gmail.com | 2,319,466,435 | 60.0% |
-| broodierchip@gmail.com | 1,511,346,979 | 39.1% |
-| codehunterextreme@gmail.com | 26,776,064 | 0.7% |
+| owner@example.com | 2,319,466,435 | 60.0% |
+| second@example.com | 1,511,346,979 | 39.1% |
+| third@example.com | 26,776,064 | 0.7% |
 | unknown | 7,281,866 | 0.2% |
 
 ### Companies on this computer
@@ -189,7 +189,7 @@ scanned **2026-08-04 01:46:32**
 
 | Account | Tokens | Share of machine |
 |---|---:|---:|
-| broodierchip@gmail.com | 266,146,676 | 100.0% |
+| second@example.com | 266,146,676 | 100.0% |
 
 ### Companies on this computer
 
@@ -221,7 +221,7 @@ scanned **2026-08-04 02:05:52** · sessions 2026-08-04 02:05:53
 
 | Account | Tokens | Share of machine |
 |---|---:|---:|
-| broodierchip@gmail.com | 2,130,613 | 100.0% |
+| second@example.com | 2,130,613 | 100.0% |
 
 ### Companies on this computer
 
@@ -288,9 +288,9 @@ It is a floor and not a total for three reasons, all measured rather than assume
 
 | Account | Counter | Counter ends | Transcripts after | Floor |
 |---|---:|---|---:|---:|
-| broodierchip@gmail.com | 28,833,190,364 | 2026-07-21 | 11,410,715,714 | 40,243,906,078 |
-| codehunterextreme@gmail.com | 6,946,344,675 | 2026-07-30 | 2,837,892,190 | 10,515,795,568 |
-| alexander.sorrell.it@gmail.com | 571,753,755 | 2026-07-19 | 0 | 571,753,755 |
+| second@example.com | 28,833,190,364 | 2026-07-21 | 11,410,715,714 | 40,243,906,078 |
+| third@example.com | 6,946,344,675 | 2026-07-30 | 2,837,892,190 | 10,515,795,568 |
+| owner@example.com | 571,753,755 | 2026-07-19 | 0 | 571,753,755 |
 
 </details>
 
@@ -298,10 +298,10 @@ It is a floor and not a total for three reasons, all measured rather than assume
 
 | Account | Counter | Counter ends | Transcripts after | Floor |
 |---|---:|---|---:|---:|
-| broodierchip@gmail.com | 12,290,485,337 | 2026-05-17 | 1,464,352,556 | 13,754,837,893 |
-| codehunterextreme@gmail.com | 11,440,918,343 | 2026-07-11 | 2,443,399,306 | 13,884,317,649 |
+| second@example.com | 12,290,485,337 | 2026-05-17 | 1,464,352,556 | 13,754,837,893 |
+| third@example.com | 11,440,918,343 | 2026-07-11 | 2,443,399,306 | 13,884,317,649 |
 | DeepSeek backend (~/.my-claude) | _none_ | — | 1,409,787,623 | 1,409,787,623 |
-| alexander.sorrell.it@gmail.com | _none_ | — | 83,212,683 | 83,212,683 |
+| owner@example.com | _none_ | — | 83,212,683 | 83,212,683 |
 | API key (org 15a93e14-aabb-4293-8228-8c56a803d972) | _none_ | — | 437,619 | 437,619 |
 
 </details>
@@ -314,11 +314,11 @@ Every profile keeps `stats-cache.json`. It is not a transcript, so the cleanup s
 
 | Profile | Account | Own counter | Counter covers | From transcripts |
 |---|---|---:|---|---:|
-| `.claude-main` | broodierchip@gmail.com | 28,833,190,364 | 2026-05-26 → 2026-07-21 | 17,484,791,342 |
-| `.claude` | broodierchip@gmail.com | 12,290,485,337 | 2026-01-14 → 2026-05-17 | 5,547,678,789 |
-| `.claude-alt` | codehunterextreme@gmail.com | 11,440,918,343 | 2026-06-09 → 2026-07-11 | 3,210,148,732 |
-| `.claude` | codehunterextreme@gmail.com | 6,946,344,675 | 2026-05-26 → 2026-07-30 | 10,435,790,468 |
-| `.claude-it` | alexander.sorrell.it@gmail.com | 571,753,755 | 2026-06-10 → 2026-07-19 | 571,753,755 |
+| `.claude-main` | second@example.com | 28,833,190,364 | 2026-05-26 → 2026-07-21 | 17,484,791,342 |
+| `.claude` | second@example.com | 12,290,485,337 | 2026-01-14 → 2026-05-17 | 5,547,678,789 |
+| `.claude-alt` | third@example.com | 11,440,918,343 | 2026-06-09 → 2026-07-11 | 3,210,148,732 |
+| `.claude` | third@example.com | 6,946,344,675 | 2026-05-26 → 2026-07-30 | 10,435,790,468 |
+| `.claude-it` | owner@example.com | 571,753,755 | 2026-06-10 → 2026-07-19 | 571,753,755 |
 
 **Do not subtract these columns.** The two cover different periods: the counter runs from the first session to its own `lastComputedDate` and then stops, while the transcripts hold whatever has not expired, which includes days after that date. Neither contains the other — each holds usage the other lacks — so their difference is not a quantity of anything.
 
@@ -343,10 +343,10 @@ It carries **no token counts**, so a lost session's cost is gone for good. What 
 
 | Account | Sessions ever | Transcript gone | Span |
 |---|---:|---:|---|
-| broodierchip@gmail.com | 479 | 411 | 2026-01-14 → 2026-08-05 |
-| codehunterextreme@gmail.com | 277 | 226 | 2026-02-11 → 2026-08-05 |
+| second@example.com | 479 | 411 | 2026-01-14 → 2026-08-05 |
+| third@example.com | 277 | 226 | 2026-02-11 → 2026-08-05 |
 | user:73ae64bf180b | 31 | 14 | 2026-05-12 → 2026-07-18 |
-| alexander.sorrell.it@gmail.com | 8 | 3 | 2026-06-09 → 2026-08-04 |
+| owner@example.com | 8 | 3 | 2026-06-09 → 2026-08-04 |
 | user:4be462f3a2f9 | 1 | 0 | 2026-06-09 → 2026-06-09 |
 
 ---

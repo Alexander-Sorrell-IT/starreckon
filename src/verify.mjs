@@ -1410,6 +1410,16 @@ export function verifyCli({ run = runVerify, print = printVerify, opts = {}, exi
   let results;
   try {
     results = run(opts);
+    // stdout is ASYNC when it is a pipe and synchronous when it is a file or a
+    // TTY, so `process.exit()` below discarded whatever was still buffered:
+    // `starreckon verify` printed 151,349 bytes to a file and 67,213 through a
+    // pipe — the output scrub and the summary line, the two things a reader is
+    // looking for, were the half that got dropped. A report that silently loses
+    // 56% of itself under `| tee` or in CI is worse than one that fails loudly.
+    // Blocking the handle makes the writes synchronous so exit cannot truncate.
+    try {
+      process.stdout._handle?.setBlocking?.(true);
+    } catch {}
     print(results);
   } catch (e) {
     // maskText, never the raw stack: a stack trace names absolute module paths

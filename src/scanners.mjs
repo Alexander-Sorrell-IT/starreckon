@@ -224,7 +224,7 @@ function listDirs(p) {
   try { names = readdirSync(p).sort(); } catch { return []; }
   return names.map((n) => join(p, n)).filter(isDir);
 }
-function readTextSafe(p, maxBytes = 10 * 1024 * 1024) {
+function readTextSafe(p, maxBytes = 500 * 1024 * 1024) {
   try {
     const stat = statSync(p);
     if (stat.size > maxBytes) {

@@ -70,6 +70,17 @@ export function buildShareUrl(levels, agg, contact, budget = QR_BUDGET_BYTES) {
     params.set("h", String(Math.round(a.total_duration_hours ?? 0)));
     params.set("d", String(a.active_days ?? 0));
     if (a.longest_streak_days) params.set("k", String(a.longest_streak_days));
+    const work = (a.total_input_tokens ?? 0) + (a.total_output_tokens ?? 0);
+    const cache = (a.total_cache_read_tokens ?? 0) + (a.total_cache_write_tokens ?? 0);
+    const totalTokens = work + cache;
+    if (totalTokens > 0) {
+      const tokStr = totalTokens >= 1e9
+        ? (totalTokens / 1e9).toFixed(1) + "B"
+        : totalTokens >= 1e6
+        ? (totalTokens / 1e6).toFixed(1) + "M"
+        : String(totalTokens);
+      params.set("tok", tokStr);
+    }
   }
   // CONTACT RIDES IN THE URL, so the QR stays a clickable link a phone can
   // open AND carries what the [R] screen says it carries. Before this, the
@@ -138,6 +149,7 @@ export function parseShareUrl(url) {
       hours:    parseInt(p.get("h") ?? "0", 10),
       days:     parseInt(p.get("d") ?? "0", 10),
       streak:   parseInt(p.get("k") ?? "0", 10),
+      tokens:   p.get("tok") ?? "",
       name:     p.get("n") ?? null,
       // A URL that encodes six contact fields and parses back one is not a
       // round trip. This returned only `name`, so github/email/phone/website/

@@ -613,11 +613,14 @@ export function cardShare(rawLevels, agg, url, contact) {
   const levels = lv5(rawLevels);
   const total = levels.reduce((a, b) => a + b, 0);
   const shape = AXES.map((_, i) => "▁▂▃▄▅▆▇█"[Math.min(7, Math.round((levels[i] / MAX_LEVEL) * 7))]).join("");
+  const a = agg ?? {};
+  const work = (a.total_input_tokens ?? 0) + (a.total_output_tokens ?? 0);
+  const cache = (a.total_cache_read_tokens ?? 0) + (a.total_cache_write_tokens ?? 0);
+  const totalTokens = work + cache;
   const ct = contact ?? {};
-  const hasContact = Object.keys(ct).length > 0;
-  const contactSummary = hasContact
-    ? Object.entries(ct).map(([k, v]) => `${k}: ${v}`).join("  ·  ")
-    : null;
+  const name = ct.name ?? "";
+  const gh = ct.github ?? "";
+
   const lines = [
     head("SEND IT"),
     "",
@@ -625,12 +628,18 @@ export function cardShare(rawLevels, agg, url, contact) {
     `  ${WH}${archetype(levels).name}${R}`,
     `  ${D}${AXES.map((a, i) => `${a.split(" ")[0].slice(0, 4).toLowerCase()} ${levels[i]}`).join(" · ")}${R}`,
     "",
+    totalTokens > 0
+      ? `  ${WH}${human(totalTokens)} lifetime tokens${R} (${human(work)} work · ${human(cache)} cache)`
+      : "",
+    a.total_sessions
+      ? `  ${D}${a.total_sessions} sessions · ${Math.round(a.total_duration_hours ?? 0)}h active · ${a.longest_streak_days ?? 0}d streak${R}`
+      : "",
     `  ${CY}npx starreckon${R}`,
     url ? `  ${D}${url}${R}` : "",
     "",
     `  ${D}the QR points to your results page — opens in any browser${R}`,
     `  ${D}the numbers are in the URL, not on a server. press [X] to copy${R}`,
-    hasContact ? `  ${D}contact fields in QR: ${contactSummary}${R}` : `  ${D}add contact info: press [R] in the menu${R}`,
+    (name || gh) ? `  ${D}audited for: ${name}${gh ? ` (@${gh})` : ""}${R}` : "",
   ].filter(keep);
   return lines;
 }

@@ -73,7 +73,29 @@
   .score-sub {
     font-size: 0.8rem;
     color: #64748b;
-    margin-bottom: 0.8rem;
+    margin-bottom: 0.5rem;
+  }
+  .tokens-hero {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    font-size: 0.95rem;
+    font-weight: 800;
+    color: #38bdf8;
+    background: rgba(56,189,248,0.12);
+    border: 1px solid rgba(56,189,248,0.35);
+    padding: 0.35rem 0.95rem;
+    border-radius: 999px;
+    letter-spacing: 0.08em;
+    margin: 0.4rem 0 0.8rem;
+    box-shadow: 0 0 16px rgba(56,189,248,0.15);
+  }
+  .stat-item.stat-highlight {
+    color: #38bdf8;
+    font-weight: 700;
+  }
+  .stat-item.stat-highlight b {
+    color: #38bdf8;
   }
 
   /* SVG Star */
@@ -242,6 +264,72 @@
   .btn-sec.copied {
     border-color: #10b981;
     color: #10b981;
+  }
+
+  /* Story Cards Deck */
+  .story-deck-panel {
+    text-align: left;
+  }
+  .deck-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 1.1rem;
+    margin-top: 1.2rem;
+  }
+  .story-card {
+    background: #090e1a;
+    border: 1px solid #1e293b;
+    border-radius: 12px;
+    padding: 1.25rem 1.4rem;
+    position: relative;
+    box-shadow: inset 0 0 20px rgba(0,0,0,0.3);
+    transition: border-color 0.2s;
+  }
+  .story-card:hover {
+    border-color: #38bdf8;
+  }
+  .story-card-title {
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 0.16em;
+    color: #38bdf8;
+    margin-bottom: 0.5rem;
+    text-transform: uppercase;
+  }
+  .story-card-hero {
+    font-size: 1.35rem;
+    font-weight: 800;
+    color: #f8fafc;
+    line-height: 1.2;
+    margin-bottom: 0.35rem;
+  }
+  .story-card-body {
+    font-size: 0.82rem;
+    color: #94a3b8;
+    line-height: 1.55;
+  }
+  .story-card-breakdown {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(115px, 1fr));
+    gap: 0.6rem;
+    margin-top: 0.85rem;
+    padding-top: 0.85rem;
+    border-top: 1px dashed rgba(255,255,255,0.08);
+  }
+  .substat {
+    display: flex;
+    flex-direction: column;
+  }
+  .substat-val {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: #f1f5f9;
+  }
+  .substat-label {
+    font-size: 0.68rem;
+    color: #64748b;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
   }
 
   /* How It Works Section */
@@ -455,6 +543,10 @@
       <div id="tier-badge-el" class="tier-badge">TEMPERED</div>
       <div id="score-el" class="score">29.6</div>
       <div class="score-sub">out of 35 skill points</div>
+      <div class="tokens-hero">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+        <span id="tokens-hero-val">20.8B</span> LIFETIME TOKENS
+      </div>
     </div>
 
     <!-- Skill Star SVG -->
@@ -499,7 +591,85 @@
     </div>
   </div>
 
-  <!-- 2. SECOND PANEL: How It Works & NPX Command Tool -->
+  <!-- 2. WRAPPED STORY CARDS PANEL: Developer Wrapped Story Deck -->
+  <div class="panel story-deck-panel">
+    <div class="section-label">★ DEVELOPER WRAPPED STORY CARDS ★</div>
+    <div class="section-desc">Audited on-device from session logs across all AI tools on this machine. Zero cloud upload.</div>
+
+    <div class="deck-grid">
+      <!-- Card 1: THE WEIGHT OF IT -->
+      <div class="story-card">
+        <div class="story-card-title">★ THE WEIGHT OF IT — LIFETIME TOKENS</div>
+        <div class="story-card-hero"><span id="card-tokens-hero">20.8B</span> Tokens</div>
+        <div class="story-card-body">
+          <b>186.1M</b> generated work tokens · <b>20.6B</b> cache read/write (99.1% cached).
+          <br>
+          <span style="color:#38bdf8;">Multi-Agent Ledger:</span> <b>2.57B</b> lifetime tokens across Gemini (995M), Antigravity (827M), Copilot (647M), Grok (101M), and Bob (2.55M).
+        </div>
+        <div class="story-card-breakdown">
+          <div class="substat"><span class="substat-val" id="card-cache-val">20.6B</span><span class="substat-label">Cache Read/Write</span></div>
+          <div class="substat"><span class="substat-val" id="card-work-val">186.1M</span><span class="substat-label">Generated Work</span></div>
+          <div class="substat"><span class="substat-val">2.57B</span><span class="substat-label">Multi-CLI Ledger</span></div>
+        </div>
+      </div>
+
+      <!-- Card 2: WHAT YOU BUILT -->
+      <div class="story-card">
+        <div class="story-card-title">★ WHAT YOU BUILT — ARCHETYPE</div>
+        <div class="story-card-hero" id="card-arch-hero">The Systems Architect</div>
+        <div class="story-card-body">
+          <b id="card-score-body">29.6 / 35</b> Skill Points (<span id="card-tier-body">TEMPERED</span> Tier). Deep engine architecture, AST parsers, and test-enforced zero-LLM verdicts.
+        </div>
+        <div class="story-card-breakdown">
+          <div class="substat"><span class="substat-val">Lv 6.7</span><span class="substat-label">First Principles</span></div>
+          <div class="substat"><span class="substat-val">Lv 6.6</span><span class="substat-label">Engineering</span></div>
+          <div class="substat"><span class="substat-val">Lv 6.1</span><span class="substat-label">Raw Coding</span></div>
+          <div class="substat"><span class="substat-val">Lv 5.3</span><span class="substat-label">Tenacity</span></div>
+        </div>
+      </div>
+
+      <!-- Card 3: MOMENTUM & VELOCITY -->
+      <div class="story-card">
+        <div class="story-card-title">★ MOMENTUM & RHYTHM</div>
+        <div class="story-card-hero"><span id="card-streak-hero">49-Day</span> Streak</div>
+        <div class="story-card-body">
+          <b id="card-hours-body">1,015</b> active hours logged across <b id="card-sessions-body">210</b> deep-work sessions (<span id="card-days-body">68</span> active days). Longitudinal velocity tracked month over month.
+        </div>
+        <div class="story-card-breakdown">
+          <div class="substat"><span class="substat-val" id="card-hours-val">1,015h</span><span class="substat-label">Active Time</span></div>
+          <div class="substat"><span class="substat-val" id="card-sessions-val">210</span><span class="substat-label">Sessions</span></div>
+          <div class="substat"><span class="substat-val" id="card-days-val">68</span><span class="substat-label">Active Days</span></div>
+          <div class="substat"><span class="substat-val" id="card-streak-val">49d</span><span class="substat-label">Max Streak</span></div>
+        </div>
+      </div>
+
+      <!-- Card 4: MULTI-AGENT WORKSPACE AUDIT -->
+      <div class="story-card">
+        <div class="story-card-title">★ WORKSPACE & MULTI-AGENT STACK</div>
+        <div class="story-card-hero">6,953 Sessions Audited</div>
+        <div class="story-card-body">
+          Discovered and audited across Claude Code (6,824 files), Codex (125 files), Cowork (4 files), Gemini CLI, Antigravity, and Grok.
+        </div>
+        <div class="story-card-breakdown">
+          <div class="substat"><span class="substat-val">15,332</span><span class="substat-label">Python Files</span></div>
+          <div class="substat"><span class="substat-val">13,088</span><span class="substat-label">Markdown Docs</span></div>
+          <div class="substat"><span class="substat-val">3,116</span><span class="substat-label">JavaScript</span></div>
+          <div class="substat"><span class="substat-val">1,824</span><span class="substat-label">Shell Scripts</span></div>
+        </div>
+      </div>
+
+      <!-- Card 5: DETERMINISTIC PROOF -->
+      <div class="story-card">
+        <div class="story-card-title">★ THE PROOF — ZERO EGRESS</div>
+        <div class="story-card-hero" style="font-size:1.05rem; font-style:italic;">"The model proposes; deterministic executed checks own the verdict."</div>
+        <div class="story-card-body" style="margin-top:0.5rem;">
+          Pure local check. No process can prove zero egress about itself, so StarReckon prints a kernel confinement command (<code>sh bin/starreckon-proof.sh</code>) where the kernel denies outbound sockets with <code>EPERM</code>.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3. THIRD PANEL: How It Works & NPX Command Tool -->
   <div class="panel how-it-works-panel">
     <div class="section-label">ENGINEERING PHILOSOPHY & TOOLING</div>
     <h3>★ How StarReckon Works</h3>
@@ -533,19 +703,19 @@
     </div>
   </div>
 
-  <!-- 3. THIRD PANEL: Verified Contact & Socials + Public User Customizer -->
+  <!-- 4. FOURTH PANEL: Direct Outreach & Recruiter Messages (Optional) -->
   <div class="panel" id="contact-panel">
-    <div class="section-label">VERIFIED CONTACT & SOCIALS</div>
-    <div class="section-desc">Direct channels to reach out, connect, or review the engineering portfolio.</div>
+    <div class="section-label">DIRECT OUTREACH & RECRUITER CHANNELS (OPTIONAL)</div>
+    <div class="section-desc">Direct channels for 1-on-1 recruiter or product messages (e.g. sharing directly with a hiring team). Default public shares only display verified stats, tokens, and GitHub profile.</div>
 
-    <!-- Active Contact Chips -->
+    <!-- Active Contact Chips (only shown if specified in hash or entered) -->
     <div id="chips-grid" class="chips-grid"></div>
 
     <!-- Interactive Customizer for Public Users -->
     <div class="form-container">
       <div class="form-title">Customize Your Card / Share Your Star</div>
       <div class="form-subtitle">
-        StarReckon is open source. Any developer can enter their name, email, phone, website, and socials below. Changes immediately update your share URL and regenerate the scannable QR code live. Zero data leaves your machine.
+        StarReckon is open source. Any developer can enter their details below. Changes immediately update your share URL and regenerate the scannable QR code live. Zero data leaves your machine.
       </div>
 
       <div class="form-grid">
@@ -978,11 +1148,12 @@ function parseState() {
     hours:     parseInt(p.get("h") || "1014", 10),
     days:      parseInt(p.get("d") || "68", 10),
     streak:    parseInt(p.get("k") || "49", 10),
+    tokens:    p.get("tok") || "20.8B",
     name:      p.get("n") || "Alexander Sorrell",
     github:    p.get("gh") || "Alexander-Sorrell-IT",
-    email:     p.get("em") || "alexander.sorrell.it@gmail.com",
-    phone:     p.get("tel") || "(817) 996-6123",
-    website:   p.get("web") || "https://github.com/Alexander-Sorrell-IT",
+    email:     p.get("em") || null,
+    phone:     p.get("tel") || null,
+    website:   p.get("web") || null,
     linkedin:  p.get("li") || "alex-sorrell-computers",
     twitter:   p.get("tw") || null,
   };
@@ -997,22 +1168,30 @@ function buildUrl(state, forQr = false) {
   p.set("g", state.tier);
   p.set("a", state.archetype.replace(/\s+/g, "_"));
   p.set("v", state.levels.map((x) => clamp(x).toFixed(1)).join(","));
+  if (state.tokens) p.set("tok", String(state.tokens));
   if (state.sessions) p.set("ss", String(state.sessions));
   if (state.hours) p.set("h", String(state.hours));
   if (state.days) p.set("d", String(state.days));
   if (state.streak) p.set("k", String(state.streak));
 
   // Field prioritization within QR budget:
-  // Name, GitHub, LinkedIn, Email, Phone, Website, Twitter
-  const contactSpecs = [
-    { key: "n",   val: state.name },
-    { key: "gh",  val: state.github },
-    { key: "li",  val: state.linkedin },
-    { key: "em",  val: state.email },
-    { key: "tel", val: state.phone },
-    { key: "web", val: state.website },
-    { key: "tw",  val: state.twitter },
-  ];
+  // Public social QR code prioritizes developer identity (Name, GitHub, LinkedIn).
+  // Private contact (Email, Phone, Website) is NOT forced into public QR codes.
+  const contactSpecs = forQr
+    ? [
+        { key: "n",   val: state.name },
+        { key: "gh",  val: state.github },
+        { key: "li",  val: state.linkedin },
+      ]
+    : [
+        { key: "n",   val: state.name },
+        { key: "gh",  val: state.github },
+        { key: "li",  val: state.linkedin },
+        { key: "em",  val: state.email },
+        { key: "tel", val: state.phone },
+        { key: "web", val: state.website },
+        { key: "tw",  val: state.twitter },
+      ];
 
   for (const item of contactSpecs) {
     if (!item.val || !String(item.val).trim()) continue;
@@ -1062,6 +1241,10 @@ function render() {
   badge.style.color = col;
   document.getElementById("score-el").textContent = d.total.toFixed(1);
 
+  // Tokens Hero
+  const tokensHero = document.getElementById("tokens-hero-val");
+  if (tokensHero) tokensHero.textContent = d.tokens || "20.8B";
+
   // 2. Axes Breakdown Grid
   const axesEl = document.getElementById("axes-grid");
   axesEl.innerHTML = "";
@@ -1075,11 +1258,38 @@ function render() {
   // 3. Stats Row
   const statsEl = document.getElementById("stats-row");
   const statsParts = [];
+  if (d.tokens)   statsParts.push(`<span class="stat-item stat-highlight"><b id="tokens-stat-el">${d.tokens}</b> lifetime tokens</span>`);
   if (d.sessions) statsParts.push(`<span class="stat-item"><b>${fmt(d.sessions)}</b> sessions</span>`);
   if (d.hours)    statsParts.push(`<span class="stat-item"><b>${fmt(d.hours)}h</b> active</span>`);
   if (d.days)     statsParts.push(`<span class="stat-item"><b>${fmt(d.days)}</b> days</span>`);
   if (d.streak)   statsParts.push(`<span class="stat-item"><b>${fmt(d.streak)}d</b> streak</span>`);
   statsEl.innerHTML = statsParts.length ? statsParts.join(" · ") : `<span class="stat-item">Local Developer Audit</span>`;
+
+  // Story Cards Dynamic Update
+  const cardTokensHero = document.getElementById("card-tokens-hero");
+  if (cardTokensHero) cardTokensHero.textContent = d.tokens || "20.8B";
+  const cardArchHero = document.getElementById("card-arch-hero");
+  if (cardArchHero) cardArchHero.textContent = d.archetype;
+  const cardScoreBody = document.getElementById("card-score-body");
+  if (cardScoreBody) cardScoreBody.textContent = d.total.toFixed(1) + " / 35";
+  const cardTierBody = document.getElementById("card-tier-body");
+  if (cardTierBody) cardTierBody.textContent = d.tier;
+  const cardStreakHero = document.getElementById("card-streak-hero");
+  if (cardStreakHero) cardStreakHero.textContent = (d.streak || 49) + "-Day";
+  const cardHoursBody = document.getElementById("card-hours-body");
+  if (cardHoursBody) cardHoursBody.textContent = fmt(d.hours || 1015);
+  const cardSessionsBody = document.getElementById("card-sessions-body");
+  if (cardSessionsBody) cardSessionsBody.textContent = fmt(d.sessions || 210);
+  const cardDaysBody = document.getElementById("card-days-body");
+  if (cardDaysBody) cardDaysBody.textContent = fmt(d.days || 68);
+  const cardHoursVal = document.getElementById("card-hours-val");
+  if (cardHoursVal) cardHoursVal.textContent = fmt(d.hours || 1015) + "h";
+  const cardSessionsVal = document.getElementById("card-sessions-val");
+  if (cardSessionsVal) cardSessionsVal.textContent = fmt(d.sessions || 210);
+  const cardDaysVal = document.getElementById("card-days-val");
+  if (cardDaysVal) cardDaysVal.textContent = fmt(d.days || 68);
+  const cardStreakVal = document.getElementById("card-streak-val");
+  if (cardStreakVal) cardStreakVal.textContent = (d.streak || 49) + "d";
 
   // 4. Render SVG Skill Star
   const R = 85, cx = 100, cy = 100;
@@ -1202,13 +1412,15 @@ function render() {
     const liHref = d.linkedin.startsWith("http") ? d.linkedin : "https://linkedin.com/in/" + d.linkedin;
     addChip("LinkedIn", liHref, liSvg);
   }
-  if (d.email) addChip(d.email, "mailto:" + d.email, emSvg);
-  if (d.phone) addChip(d.phone, "tel:" + d.phone.replace(/[^0-9+]/g, ""), telSvg);
-  if (d.website) {
+  // Private contact channels only render if explicitly set in the hash (e.g. 1-on-1 recruiter outreach)
+  const curHash = location.hash;
+  if (d.email && curHash.includes("em=")) addChip(d.email, "mailto:" + d.email, emSvg);
+  if (d.phone && curHash.includes("tel=")) addChip(d.phone, "tel:" + d.phone.replace(/[^0-9+]/g, ""), telSvg);
+  if (d.website && curHash.includes("web=")) {
     const webHref = d.website.startsWith("http") ? d.website : "https://" + d.website;
     addChip(d.website.replace(/^https?:\/\//, ""), webHref, webSvg);
   }
-  if (d.twitter) {
+  if (d.twitter && curHash.includes("tw=")) {
     const twHandle = d.twitter.replace(/^@/, "");
     addChip("@" + twHandle, "https://x.com/" + twHandle, twSvg);
   }

@@ -402,7 +402,7 @@ export function qrToTerminal(text, { quiet = 2, color = true, href = null } = {}
   const lines = [];
   // Dark modules must be the LIGHT glyph on a dark terminal or scanners fail:
   // a QR is read as dark-on-light, so invert deliberately rather than by taste.
-  const W = color ? "\x1b[97m" : "";
+  const W = color ? "\x1b[97;40m" : "";
   const RESET = color ? "\x1b[0m" : "";
   const link = (href && color && !process.env.NO_COLOR) ? href : null;
   const OSC8_START = link ? `\x1b]8;;${link}\x1b\\` : "";

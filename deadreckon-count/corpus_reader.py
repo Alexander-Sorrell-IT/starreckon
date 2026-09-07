@@ -50,7 +50,8 @@ def read_starreckon_corpus(filepath):
 def compare_corpora(deadreckon_file, starreckon_file):
     """Compare two corpus files and report discrepancies."""
     dr_entries = {}
-    sr_entries = read_starreckon_corpus(starreckon_file)
+    sr_list = read_starreckon_corpus(starreckon_file)
+    sr_entries = {e["id"]: e for e in sr_list if isinstance(e, dict) and "id" in e}
     
     # Load deadreckon corpus
     if Path(deadreckon_file).exists():
@@ -71,7 +72,7 @@ def compare_corpora(deadreckon_file, starreckon_file):
     
     for entry_id, dr_entry in dr_entries.items():
         if entry_id in sr_entries:
-            sr_entry = sr_entries[entry_id] if isinstance(sr_entries, dict) else next((e for e in sr_entries if e.get("id") == entry_id), None)
+            sr_entry = sr_entries[entry_id]
             if sr_entry:
                 dr_tokens = dr_entry.get("counts", {}).get("raw_tokens_est", 0)
                 sr_tokens = sr_entry.get("counts", {}).get("raw_tokens_est", 0)

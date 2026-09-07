@@ -816,26 +816,32 @@ export function coworkProfileDirs(home) {
 export async function readDeadreckonArchive(corpusPath, pr) {
   try {
     const result = await readDeadreckonCorpus(corpusPath);
-    
-    if (!result.sessions || result.sessions.length === 0) {
-      return { state: "empty", sessions: [], totals: result.totals };
+    const sessions = Array.isArray(result) ? result : (result.sessions || []);
+
+    if (sessions.length === 0) {
+      return { state: "empty", sessions: [], totals: result.totals || null };
     }
     
     // Add evidence for the imported source
-    if (pr && result.sourceFile) {
+    if (pr && (result.sourceFile || corpusPath)) {
       addSourceEvidence(pr, {
         source: 'deadreckon-archive',
-        path: result.sourceFile,
-        sessionCount: result.sessions.length
+        path: result.sourceFile || corpusPath,
+        sessionCount: sessions.length
       });
     }
     
+    let totalTokens = 0;
+    for (const s of sessions) {
+      totalTokens += (s.counts?.model_specific_tokens ?? s.counts?.raw_tokens_est ?? 0);
+    }
+
     return {
       state: "counted",
-      sessions: result.sessions,
-      totals: result.totals,
-      source: result.source,
-      importedAt: result.importedAt
+      sessions,
+      totals: result.totals || { total_tokens: totalTokens },
+      source: result.source || 'deadreckon-archive',
+      importedAt: result.importedAt || new Date().toISOString()
     };
   } catch (error) {
     return {

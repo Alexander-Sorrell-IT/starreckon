@@ -38,6 +38,9 @@
 //                                 transcript deletion cannot lower the lifetime
 //                                 total. the daemon scan passes this by default.
 //   starreckon --roots=a,b     extra home roots (other accounts/machines)
+//   starreckon --corpus[=FILE] read a JSONL corpus (Deadreckon or Starreckon format)
+//   starreckon --export-corpus[=FILE] export sessions to a standardized JSONL corpus
+//   starreckon --no-local      skip local filesystem scan (use with --corpus)
 //   starreckon --json          write baseline + expanded JSON reports
 //   starreckon --sessions      write the PER-SESSION export: one record per
 //                                 session with its four token counters kept
@@ -228,6 +231,7 @@ import { effectiveRoots } from "./config.mjs";
 import { startServe, sanitizeFolderName } from "./serve.mjs";
 import { modelLayers, installLayer, layerState, modelsStatus } from "./models.mjs";
 import { fleetAggregates, FLEET_MEASURES, FLEET_MEASURES_MONTH } from "./fleetstar.mjs";
+import { readDeadreckonCorpus, ingestCorpusEntries, exportCorpusFromScan } from "./deadreckon-reader.mjs";
 import { ARMS, MAX_LEVEL } from "./starsvg.mjs";
 const ARMS_TOTAL = ARMS * MAX_LEVEL;
 import { collectProfileSignals, computeProfile } from "./profile.mjs";
@@ -347,6 +351,9 @@ const FLAG_SPEC = Object.freeze({
   "--no-snapshot": "bool",
   "--contact": "opt",
   "--roots": "value",
+  "--corpus": "opt",
+  "--export-corpus": "opt",
+  "--no-local": "bool",
   "--name": "value",
   "--fleet": "opt",
   "--join-fleet": "opt",
@@ -477,6 +484,10 @@ console.log(`\n${B}OPTIONAL LAYERS${R} ${D}(consent screen first — every one o
   console.log(`  --join-fleet=DIR         write this machine's folder into the fleet`);
   console.log(`  --machine=NAME           machine name for --join-fleet`);
   console.log(`  --label=LABEL            display label for --join-fleet`);
+  console.log(`\n${B}CORPUS${R}`);
+  console.log(`  --corpus[=FILE]          read a JSONL corpus (Deadreckon or Starreckon format)`);
+  console.log(`  --export-corpus[=FILE]   export scanned sessions to a standardized JSONL corpus`);
+  console.log(`  --no-local               skip local filesystem scan (use with --corpus)`);
   console.log(`\n${B}LAN BEACON${R}`);
   console.log(`  --beacon   after scan: broadcast result on LAN, collect peer stars (8s)`);
   console.log(`  --live     after scan: stay connected — live peer join/leave + combined star`);
@@ -1378,9 +1389,36 @@ async function main() {
   // Contact info — read once, used by the QR and the [C] menu.
   const contact = readContact();
 
-  const roots = effectiveRoots(opt("roots")?.split(",").filter(Boolean) ?? []);
-  const sources = discoverSources(roots);
-  if (sources.length === 0) {
+  // ---- corpus ingestion ----------------------------------------------------
+  const _corpusRaw = optOrFlag("corpus");
+  let corpusPath = null;
+  let corpusEntries = [];
+  if (_corpusRaw !== null) {
+    if (_corpusRaw) {
+      corpusPath = _corpusRaw;
+    } else {
+      const candidates = ["deadreckon_corpus.jsonl", "corpus.jsonl", "starreckon_corpus.jsonl"];
+      corpusPath = candidates.find((c) => existsSync(c)) ?? null;
+      if (!corpusPath && !starOnly) {
+        console.log(`Corpus: no default corpus file found (looked for deadreckon_corpus.jsonl, corpus.jsonl, starreckon_corpus.jsonl). Pass --corpus=FILE.jsonl to specify.`);
+      }
+    }
+    if (corpusPath && existsSync(corpusPath)) {
+      corpusEntries = readDeadreckonCorpus(corpusPath);
+      if (!starOnly) {
+        console.log(`Corpus: read ${corpusEntries.length} entries from ${maskPath(corpusPath)}`);
+      }
+    }
+  }
+
+  const noLocal = flag("--no-local");
+  const roots = noLocal ? [] : effectiveRoots(opt("roots")?.split(",").filter(Boolean) ?? []);
+  if (!noLocal && !starOnly) {
+    console.log(`\n${DIM}discovering session logs across ${roots.map(maskPath).join(", ")}…${RESET}`);
+  }
+  const sources = noLocal ? [] : discoverSources(roots);
+
+  if (sources.length === 0 && corpusEntries.length === 0) {
     // Having nothing to scan is NOT an error, and this path exits 0.
     // It used to exit 1, which meant bin/starreckon-proof.sh printed
     // "FAIL: … do not trust the no-egress claim" on any clean machine — a
@@ -1463,6 +1501,9 @@ async function main() {
 
   // ---- scan with live star -------------------------------------------------
   const stats = emptyStats();
+  if (corpusEntries.length > 0) {
+    ingestCorpusEntries(corpusEntries, stats);
+  }
   const star = new LiveStar();
   // In star-only mode the animation is "something else" too: its last frame
   // stays on screen above the star we actually want.
@@ -1474,8 +1515,12 @@ async function main() {
   // not say: the first read "scan complete", a progress message, not an
   // identity. Each star gets a heading stating what it was computed FROM.
   const thisMonth = localDayKey(new Date()).slice(0, 7);
-  if (!starOnly) starHeading("this month", `${thisMonth} · ${sources.length} files`);
-  star.draw(computeLevels(finalize(stats)), `scanning 0/${sources.length}`);
+  const totalItems = sources.length + (corpusEntries.length ? corpusEntries.length : 0);
+  const headingDetail = sources.length
+    ? `${thisMonth} · ${sources.length} files${corpusEntries.length ? ` + ${corpusEntries.length} corpus entries` : ""}`
+    : `corpus · ${corpusEntries.length} entries`;
+  if (!starOnly) starHeading("this month", headingDetail);
+  star.draw(computeLevels(finalize(stats)), `scanning 0/${sources.length || corpusEntries.length}`);
   for (const src of sources) {
     try {
       auditRead(audit, src.source);
@@ -1516,7 +1561,7 @@ async function main() {
 
   // ---- multi-CLI providers (fast, on by default) ---------------------------
   let providers = null;
-  if (!flag("--no-providers")) {
+  if (!flag("--no-providers") && !noLocal) {
     try {
       providers = scanAllProviders(roots);
     } catch {}
@@ -1582,7 +1627,7 @@ async function main() {
   // Conditions: any Claude profile has cleanupPeriodDays < 36500 AND the
   // protect daemon is not installed. One line only. Skipped in star-only modes
   // where the star IS the whole output.
-  if (!starOnly) {
+  if (!starOnly && !noLocal) {
     try {
       const pst = daemonStatus();
       if (pst.supported && needsProtection() && !pst.protectInstalled) {
@@ -2136,7 +2181,7 @@ async function main() {
 
   // ---- profile + stats page ------------------------------------------------
   let profile = null;
-  if (flag("--page") || flag("--profile")) {
+  if ((flag("--page") || flag("--profile")) && sources.length > 0) {
     try {
       const signals = await collectProfileSignals(
         sources.map((s) => ({ source: s.source, path: s.path })),
@@ -2274,6 +2319,16 @@ async function main() {
       `${DIM}         ${records.length} sessions, four token counters kept apart per session. ${
         noProjects ? "Projects are proj-<hash>" : "This names your PROJECTS (pass --no-projects for proj-<hash>)"
       }.${RESET}`
+    );
+  }
+
+  const _exportCorpusRaw = optOrFlag("export-corpus");
+  if (_exportCorpusRaw !== null) {
+    const exportFile = _exportCorpusRaw || "starreckon_corpus.jsonl";
+    const count = exportCorpusFromScan(stats, providers, exportFile, { noProjects });
+    console.log(`\nper-corpus export: ${maskPath(exportFile)}`);
+    console.log(
+      `${DIM}         ${count} entries written to standardized JSONL corpus.${RESET}`
     );
   }
 

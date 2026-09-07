@@ -3,244 +3,1299 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>starreckon skill star</title>
-<meta name="description" content="Privacy-first developer wrapped — skill star shared from starreckon">
-<!-- OG tags so social media unfurls the card -->
-<meta property="og:title" content="starreckon skill star">
+<title>starreckon — developer skill star & audit</title>
+<meta name="description" content="Privacy-first developer wrapped — skill star computed on-device by starreckon, zero upload.">
+<meta property="og:title" content="starreckon developer skill star">
 <meta property="og:description" content="Local AI-coding skill star — computed on-device by starreckon, zero upload.">
 <meta property="og:type" content="website">
 <style>
-  :root{color-scheme:dark}
-  *{box-sizing:border-box;margin:0;padding:0}
-  body{background:#0d0d0d;color:#e8e8e8;font-family:'SF Mono',ui-monospace,monospace;
-       min-height:100vh;display:flex;flex-direction:column;align-items:center;
-       justify-content:center;padding:2rem 1rem}
-  #card{background:#111;border:1px solid #2a2a2a;border-radius:12px;
-        padding:2rem;max-width:520px;width:100%;text-align:center}
-  #star-wrap{margin:1.5rem auto;max-width:320px}
-  svg{width:100%;height:auto}
-  .tier{font-size:.75rem;letter-spacing:.15em;color:#888;text-transform:uppercase;
-        margin-bottom:.4rem}
-  .score{font-size:2.4rem;font-weight:700;color:#fff;line-height:1}
-  .arch{font-size:.9rem;color:#aaa;margin-top:.35rem;letter-spacing:.05em}
-  .axes{display:grid;grid-template-columns:1fr 1fr;gap:.35rem .8rem;
-        margin:1.2rem 0;text-align:left;font-size:.78rem;color:#888}
-  .axes span b{color:#ddd;font-weight:600}
-  .stats{font-size:.78rem;color:#666;margin:.8rem 0 1.2rem;line-height:1.6}
-  .npx{background:#1a1a1a;border:1px solid #2a2a2a;border-radius:6px;
-       padding:.55rem 1rem;font-size:.82rem;color:#5af;margin:.8rem 0;
-       display:inline-block;user-select:all;cursor:pointer}
-  .npx:hover{border-color:#5af;color:#8cf}
-  .copy-btn{margin-top:1rem;background:#1e1e1e;border:1px solid #333;
-            border-radius:6px;padding:.5rem 1.2rem;color:#aaa;font-size:.8rem;
-            font-family:inherit;cursor:pointer;transition:all .15s}
-  .copy-btn:hover{border-color:#5af;color:#5af}
-  .copy-btn.copied{border-color:#4a4;color:#4a4}
-  .note{margin-top:1.5rem;font-size:.72rem;color:#444;line-height:1.6}
-  .note a{color:#666;text-decoration:none}
-  .note a:hover{color:#aaa}
-  #no-data{display:none;font-size:.9rem;color:#666;text-align:center;padding:2rem}
-  .name{font-size:.85rem;color:#777;margin-bottom:.6rem;letter-spacing:.05em}
+  :root { color-scheme: dark; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: #080c14;
+    color: #e2e8f0;
+    font-family: 'SF Mono', 'JetBrains Mono', Menlo, Consolas, Monaco, monospace;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 2.5rem 1rem;
+    line-height: 1.5;
+  }
+  .card-container {
+    max-width: 620px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+  .panel {
+    background: #0f172a;
+    border: 1px solid #1e293b;
+    border-radius: 16px;
+    padding: 2rem 1.6rem;
+    text-align: center;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.05);
+  }
+  .header { margin-bottom: 1rem; }
+  .name {
+    font-size: 1.45rem;
+    font-weight: 700;
+    color: #f8fafc;
+    letter-spacing: 0.02em;
+    margin-bottom: 0.35rem;
+  }
+  .arch {
+    font-size: 0.94rem;
+    color: #94a3b8;
+    letter-spacing: 0.04em;
+  }
+  .tier-badge {
+    display: inline-block;
+    font-size: 0.74rem;
+    letter-spacing: 0.18em;
+    font-weight: 700;
+    text-transform: uppercase;
+    padding: 0.25rem 0.85rem;
+    border-radius: 999px;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.15);
+    margin: 0.75rem 0 0.4rem;
+  }
+  .score {
+    font-size: 3rem;
+    font-weight: 800;
+    color: #ffffff;
+    line-height: 1;
+    margin: 0.25rem 0;
+  }
+  .score-sub {
+    font-size: 0.8rem;
+    color: #64748b;
+    margin-bottom: 0.8rem;
+  }
+
+  /* SVG Star */
+  #star-wrap {
+    margin: 1rem auto;
+    max-width: 320px;
+  }
+  svg.star {
+    width: 100%;
+    height: auto;
+    filter: drop-shadow(0 0 18px rgba(56,189,248,0.18));
+  }
+
+  /* Axes Breakdown */
+  .axes-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem 0.8rem;
+    margin: 1.2rem 0;
+    text-align: left;
+    font-size: 0.78rem;
+  }
+  .axis-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.4rem 0.65rem;
+    background: rgba(15,23,42,0.7);
+    border: 1px solid #1e293b;
+    border-radius: 6px;
+  }
+  .axis-label { font-size: 0.72rem; color: #64748b; letter-spacing: 0.04em; }
+  .axis-val { color: #f1f5f9; font-weight: 700; font-size: 0.86rem; }
+
+  /* Stats row */
+  .stats-row {
+    font-size: 0.8rem;
+    color: #94a3b8;
+    background: rgba(30,41,59,0.5);
+    border: 1px solid #1e293b;
+    border-radius: 8px;
+    padding: 0.6rem 0.9rem;
+    margin: 1rem 0;
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+  .stat-item b { color: #f8fafc; font-weight: 700; }
+
+  /* Section Titles */
+  .section-label {
+    font-size: 0.72rem;
+    letter-spacing: 0.16em;
+    font-weight: 700;
+    color: #38bdf8;
+    text-transform: uppercase;
+    margin-bottom: 0.5rem;
+  }
+  .section-desc {
+    font-size: 0.82rem;
+    color: #94a3b8;
+    margin-bottom: 1.2rem;
+    line-height: 1.5;
+  }
+
+  /* QR Code Section */
+  .qr-card {
+    background: rgba(15,23,42,0.8);
+    border: 1px solid #1e293b;
+    border-radius: 12px;
+    padding: 1.4rem 1rem;
+    margin: 1.2rem 0 0.8rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+  }
+  .qr-box-link {
+    display: inline-block;
+    padding: 14px;
+    background: #ffffff;
+    border-radius: 14px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.6);
+    transition: transform 0.18s ease, box-shadow 0.18s ease;
+    cursor: pointer;
+    text-decoration: none;
+    line-height: 0;
+  }
+  .qr-box-link:hover {
+    transform: translateY(-3px) scale(1.02);
+    box-shadow: 0 14px 30px rgba(56,189,248,0.3);
+  }
+  #qr-svg-wrap svg {
+    display: block;
+    width: 210px;
+    height: 210px;
+  }
+  .qr-caption {
+    font-size: 0.75rem;
+    color: #64748b;
+  }
+  .qr-caption b { color: #94a3b8; }
+
+  /* GitHub CTA Button */
+  .gh-cta-wrap {
+    margin: 0.4rem 0 0.2rem;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+  }
+  .btn-github {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.6rem;
+    background: linear-gradient(135deg, #1d4ed8, #2563eb);
+    color: #ffffff;
+    font-size: 0.88rem;
+    font-weight: 600;
+    font-family: inherit;
+    text-decoration: none;
+    padding: 0.8rem 1.4rem;
+    border-radius: 8px;
+    border: 1px solid rgba(255,255,255,0.25);
+    box-shadow: 0 4px 14px rgba(37,99,235,0.4);
+    transition: transform 0.15s, box-shadow 0.15s, background 0.15s;
+    cursor: pointer;
+    width: 100%;
+    max-width: 440px;
+  }
+  .btn-github:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 22px rgba(37,99,235,0.6);
+    background: linear-gradient(135deg, #2563eb, #3b82f6);
+  }
+  .btn-github svg { fill: currentColor; width: 19px; height: 19px; flex-shrink: 0; }
+
+  /* Actions Buttons */
+  .actions-row {
+    display: flex;
+    gap: 0.6rem;
+    justify-content: center;
+    margin-top: 0.6rem;
+    flex-wrap: wrap;
+  }
+  .btn-sec {
+    background: #1e293b;
+    border: 1px solid #334155;
+    border-radius: 6px;
+    padding: 0.5rem 1.1rem;
+    color: #cbd5e1;
+    font-size: 0.78rem;
+    font-family: inherit;
+    cursor: pointer;
+    transition: all 0.15s;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+  }
+  .btn-sec:hover {
+    border-color: #38bdf8;
+    color: #ffffff;
+  }
+  .btn-sec.copied {
+    border-color: #10b981;
+    color: #10b981;
+  }
+
+  /* How It Works Section */
+  .how-it-works-panel {
+    text-align: left;
+  }
+  .how-it-works-panel h3 {
+    font-size: 1.05rem;
+    color: #f8fafc;
+    margin-bottom: 0.4rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .thesis-quote {
+    background: rgba(30,41,59,0.4);
+    border-left: 3px solid #38bdf8;
+    padding: 0.6rem 0.8rem;
+    margin: 0.8rem 0 1.2rem;
+    font-size: 0.82rem;
+    color: #cbd5e1;
+    font-style: italic;
+  }
+  .feature-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.7rem;
+    margin-bottom: 1.4rem;
+    font-size: 0.8rem;
+    color: #94a3b8;
+  }
+  .feature-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.6rem;
+    line-height: 1.45;
+  }
+  .feature-bullet {
+    color: #38bdf8;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+  .feature-item b { color: #f1f5f9; }
+
+  /* NPX Command Block */
+  .npx-box {
+    background: #020617;
+    border: 1px solid #1e293b;
+    border-radius: 8px;
+    padding: 0.8rem 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.8rem;
+  }
+  .npx-code {
+    font-size: 0.88rem;
+    color: #38bdf8;
+    font-weight: 600;
+    user-select: all;
+    word-break: break-all;
+  }
+  .btn-copy-sm {
+    background: #1e293b;
+    border: 1px solid #334155;
+    border-radius: 5px;
+    color: #cbd5e1;
+    font-size: 0.72rem;
+    font-family: inherit;
+    padding: 0.35rem 0.75rem;
+    cursor: pointer;
+    transition: all 0.15s;
+    flex-shrink: 0;
+  }
+  .btn-copy-sm:hover {
+    border-color: #38bdf8;
+    color: #38bdf8;
+  }
+  .btn-copy-sm.copied {
+    border-color: #10b981;
+    color: #10b981;
+  }
+
+  /* Contact Chips */
+  .chips-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.45rem;
+    justify-content: center;
+    margin: 0.8rem 0 1.2rem;
+  }
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    padding: 0.45rem 0.85rem;
+    border-radius: 7px;
+    background: #1e293b;
+    border: 1px solid #334155;
+    color: #cbd5e1;
+    font-size: 0.78rem;
+    text-decoration: none;
+    transition: all 0.15s;
+  }
+  .chip:hover {
+    border-color: #38bdf8;
+    color: #38bdf8;
+    background: rgba(56,189,248,0.08);
+  }
+  .chip svg { width: 14px; height: 14px; fill: currentColor; flex-shrink: 0; }
+
+  /* Interactive Customize Form */
+  .form-container {
+    background: rgba(15,23,42,0.7);
+    border: 1px solid #1e293b;
+    border-radius: 12px;
+    padding: 1.2rem;
+    margin-top: 1rem;
+    text-align: left;
+  }
+  .form-title {
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    color: #f8fafc;
+    text-transform: uppercase;
+    margin-bottom: 0.3rem;
+  }
+  .form-subtitle {
+    font-size: 0.74rem;
+    color: #64748b;
+    margin-bottom: 1rem;
+    line-height: 1.4;
+  }
+  .form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.7rem;
+  }
+  @media (max-width: 520px) {
+    .form-grid { grid-template-columns: 1fr; }
+    .axes-grid { grid-template-columns: 1fr; }
+  }
+  .field-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+  }
+  .field-group.full-width {
+    grid-column: 1 / -1;
+  }
+  .field-label {
+    font-size: 0.7rem;
+    color: #94a3b8;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+  .field-input {
+    background: #020617;
+    border: 1px solid #334155;
+    border-radius: 6px;
+    padding: 0.45rem 0.7rem;
+    color: #f8fafc;
+    font-family: inherit;
+    font-size: 0.78rem;
+    transition: border-color 0.15s;
+    width: 100%;
+  }
+  .field-input:focus {
+    outline: none;
+    border-color: #38bdf8;
+    box-shadow: 0 0 0 2px rgba(56,189,248,0.15);
+  }
+  .form-tip {
+    font-size: 0.7rem;
+    color: #64748b;
+    margin-top: 0.8rem;
+  }
+
+  /* Creator / Anchor Footer */
+  .footer-panel {
+    border-top: 1px solid #1e293b;
+    padding-top: 1.5rem;
+    text-align: center;
+    font-size: 0.75rem;
+    color: #64748b;
+    line-height: 1.7;
+  }
+  .footer-panel a {
+    color: #94a3b8;
+    text-decoration: underline;
+    transition: color 0.15s;
+  }
+  .footer-panel a:hover { color: #38bdf8; }
+  .footer-brand {
+    font-weight: 700;
+    color: #e2e8f0;
+    margin-bottom: 0.3rem;
+  }
 </style>
 </head>
 <body>
-<div id="card">
-  <div id="no-data">
-    <p>No results in this URL.</p>
-    <p style="margin-top:.5rem">Run <span class="npx">npx starreckon</span> to generate your star.</p>
+
+<div class="card-container">
+
+  <!-- 1. TOP PANEL: Results, Star, Axes, Stats, and Clickable QR Code -->
+  <div class="panel" id="result-panel">
+    <div class="header">
+      <div id="name-el" class="name">Alexander Sorrell</div>
+      <div id="arch-el" class="arch">The Systems Architect</div>
+      <div id="tier-badge-el" class="tier-badge">TEMPERED</div>
+      <div id="score-el" class="score">29.6</div>
+      <div class="score-sub">out of 35 skill points</div>
+    </div>
+
+    <!-- Skill Star SVG -->
+    <div id="star-wrap">
+      <svg id="star-svg" class="star" viewBox="0 0 200 200" role="img" aria-label="Skill Star Radar Chart"></svg>
+    </div>
+
+    <!-- 5 Axes Breakdown -->
+    <div id="axes-grid" class="axes-grid"></div>
+
+    <!-- Stats Summary Row -->
+    <div id="stats-row" class="stats-row"></div>
+
+    <!-- The QR Code Card: Scannable off screen & Clickable -->
+    <div class="qr-card">
+      <div class="section-label">★ SCAN OR CLICK TO SHARE ★</div>
+      <a id="qr-click-anchor" class="qr-box-link" href="#" target="_blank" rel="noopener noreferrer" title="Click to open or scan with phone">
+        <div id="qr-svg-wrap"></div>
+      </a>
+      <div class="qr-caption">
+        <b>Clickable QR code</b> · Scan with camera or click to open card
+      </div>
+
+      <!-- Alex's GitHub Link directly under the QR code -->
+      <div class="gh-cta-wrap">
+        <a id="gh-under-qr-btn" class="btn-github" href="https://github.com/Alexander-Sorrell-IT" target="_blank" rel="noopener noreferrer">
+          <svg viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+          <span id="gh-under-qr-text">View Alexander Sorrell on GitHub (@Alexander-Sorrell-IT)</span>
+        </a>
+      </div>
+
+      <div class="actions-row">
+        <button class="btn-sec" id="copy-share-btn">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+          <span id="copy-share-text">Copy Share Link</span>
+        </button>
+        <button class="btn-sec" id="download-qr-btn">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          <span>Download QR</span>
+        </button>
+      </div>
+    </div>
   </div>
-  <div id="result" style="display:none">
-    <div id="name-el" class="name"></div>
-    <div id="tier-el" class="tier"></div>
-    <div id="score-el" class="score"></div>
-    <div id="arch-el" class="arch"></div>
-    <div id="star-wrap"><svg id="star-svg" viewBox="0 0 200 200"></svg></div>
-    <div id="axes-el" class="axes"></div>
-    <div id="stats-el" class="stats"></div>
-    <div><span class="npx" title="click to copy" id="npx-el">npx starreckon</span></div>
-    <button class="copy-btn" id="copy-btn">copy share link</button>
-    <p class="note">
-      computed locally by <a href="https://github.com/Alexander-Sorrell-IT/starreckon">starreckon</a>
-      — no upload, no account.<br>
-      the numbers in the URL are <em>your</em> numbers, not a link to them.
-    </p>
+
+  <!-- 2. SECOND PANEL: How It Works & NPX Command Tool -->
+  <div class="panel how-it-works-panel">
+    <div class="section-label">ENGINEERING PHILOSOPHY & TOOLING</div>
+    <h3>★ How StarReckon Works</h3>
+    <div class="thesis-quote">
+      "The model proposes; deterministic executed checks own the verdict."
+    </div>
+
+    <div class="feature-list">
+      <div class="feature-item">
+        <span class="feature-bullet">▸</span>
+        <div><b>100% On-Device & Zero Egress:</b> No cloud servers, no account logins, zero telemetry. Every metric is computed locally from your filesystem.</div>
+      </div>
+      <div class="feature-item">
+        <span class="feature-bullet">▸</span>
+        <div><b>Multi-Agent Audit:</b> Automatically scans local session JSONL logs across Claude Code, Cursor, Codex, Gemini CLI, OpenCode, and Grok.</div>
+      </div>
+      <div class="feature-item">
+        <span class="feature-bullet">▸</span>
+        <div><b>Deterministic Skill Star:</b> Calculates depth across 5 core engineering axes: First Principles, Systems Engineering, Raw Coding, Creative Leaps, and Tenacity.</div>
+      </div>
+      <div class="feature-item">
+        <span class="feature-bullet">▸</span>
+        <div><b>Auditable & Pin-Gated:</b> Zero runtime dependencies, with SHA256 integrity pinning and built-in network tripwires.</div>
+      </div>
+    </div>
+
+    <div class="section-label" style="font-size:0.68rem; margin-bottom:0.35rem;">RUN LOCALLY IN TERMINAL</div>
+    <div class="npx-box">
+      <span class="npx-code" id="npx-code-text">npx starreckon</span>
+      <button class="btn-copy-sm" id="npx-copy-btn">Copy</button>
+    </div>
   </div>
+
+  <!-- 3. THIRD PANEL: Verified Contact & Socials + Public User Customizer -->
+  <div class="panel" id="contact-panel">
+    <div class="section-label">VERIFIED CONTACT & SOCIALS</div>
+    <div class="section-desc">Direct channels to reach out, connect, or review the engineering portfolio.</div>
+
+    <!-- Active Contact Chips -->
+    <div id="chips-grid" class="chips-grid"></div>
+
+    <!-- Interactive Customizer for Public Users -->
+    <div class="form-container">
+      <div class="form-title">Customize Your Card / Share Your Star</div>
+      <div class="form-subtitle">
+        StarReckon is open source. Any developer can enter their name, email, phone, website, and socials below. Changes immediately update your share URL and regenerate the scannable QR code live. Zero data leaves your machine.
+      </div>
+
+      <div class="form-grid">
+        <div class="field-group">
+          <label class="field-label" for="inp-name">Full Name</label>
+          <input type="text" id="inp-name" class="field-input" placeholder="Alexander Sorrell" maxlength="40">
+        </div>
+        <div class="field-group">
+          <label class="field-label" for="inp-github">GitHub Handle</label>
+          <input type="text" id="inp-github" class="field-input" placeholder="Alexander-Sorrell-IT" maxlength="39">
+        </div>
+        <div class="field-group">
+          <label class="field-label" for="inp-email">Email Address</label>
+          <input type="email" id="inp-email" class="field-input" placeholder="alexander.sorrell.it@gmail.com" maxlength="60">
+        </div>
+        <div class="field-group">
+          <label class="field-label" for="inp-phone">Phone Number</label>
+          <input type="tel" id="inp-phone" class="field-input" placeholder="(817) 996-6123" maxlength="25">
+        </div>
+        <div class="field-group">
+          <label class="field-label" for="inp-linkedin">LinkedIn Username / URL</label>
+          <input type="text" id="inp-linkedin" class="field-input" placeholder="alex-sorrell-computers" maxlength="60">
+        </div>
+        <div class="field-group">
+          <label class="field-label" for="inp-twitter">Twitter / X Handle</label>
+          <input type="text" id="inp-twitter" class="field-input" placeholder="@handle" maxlength="30">
+        </div>
+        <div class="field-group full-width">
+          <label class="field-label" for="inp-website">Website / Portfolio</label>
+          <input type="text" id="inp-website" class="field-input" placeholder="https://github.com/Alexander-Sorrell-IT" maxlength="80">
+        </div>
+      </div>
+      <div class="form-tip">
+        ⚡ All edits stay in your browser hash fragment. You can copy the generated URL or share the QR code directly.
+      </div>
+    </div>
+  </div>
+
+  <!-- 4. FOOTER: Permanent Alexander Sorrell Attribution & Repository Anchors -->
+  <div class="footer-panel">
+    <div class="footer-brand">
+      ★ StarReckon — Built by <a href="https://github.com/Alexander-Sorrell-IT" target="_blank" rel="noopener noreferrer">Alexander Sorrell (@Alexander-Sorrell-IT)</a>
+    </div>
+    <div>
+      Open-source developer audit tooling · Zero telemetry · Pure deterministic verifier
+    </div>
+    <div>
+      Repository: <a href="https://github.com/Alexander-Sorrell-IT/starreckon" target="_blank" rel="noopener noreferrer">github.com/Alexander-Sorrell-IT/starreckon</a>
+    </div>
+  </div>
+
 </div>
+
 <script>
-const AXES   = ["FIRST PRINCIPLES","ENGINEERING","CODING","OUTSIDE THE BOX","TENACITY"];
+// ============================================================================
+// ZERO-DEPENDENCY QR CODE ENCODER (Levels L & M, Versions 1..10)
+// Extracted from src/qr.mjs — pure client-side deterministic SVG generation.
+// ============================================================================
+const EC_TABLE_M = {
+  1: [10, 1, 16, 0, 0], 2: [16, 1, 28, 0, 0], 3: [26, 1, 44, 0, 0],
+  4: [18, 2, 32, 0, 0], 5: [24, 2, 43, 0, 0], 6: [16, 4, 27, 0, 0],
+  7: [18, 4, 31, 0, 0], 8: [22, 2, 38, 2, 39], 9: [22, 3, 36, 2, 37],
+  10: [26, 4, 43, 1, 44],
+};
+const EC_TABLE_L = {
+  1: [7, 1, 19, 0, 0], 2: [10, 1, 34, 0, 0], 3: [15, 1, 55, 0, 0],
+  4: [20, 1, 80, 0, 0], 5: [26, 1, 108, 0, 0], 6: [18, 2, 68, 0, 0],
+  7: [20, 2, 78, 0, 0], 8: [24, 2, 97, 0, 0], 9: [30, 2, 116, 0, 0],
+  10: [18, 2, 68, 2, 69],
+};
+const TABLES = { M: EC_TABLE_M, L: EC_TABLE_L };
+const LEVEL_BITS = { M: 0b00, L: 0b01 };
+const ALIGN = {
+  1: [], 2: [6, 18], 3: [6, 22], 4: [6, 26], 5: [6, 30],
+  6: [6, 34], 7: [6, 22, 38], 8: [6, 24, 42], 9: [6, 26, 46], 10: [6, 28, 50],
+};
+
+const EXP = new Uint8Array(512);
+const LOG = new Uint8Array(256);
+(() => {
+  let x = 1;
+  for (let i = 0; i < 255; i++) {
+    EXP[i] = x;
+    LOG[x] = i;
+    x <<= 1;
+    if (x & 0x100) x ^= 0x11d;
+  }
+  for (let i = 255; i < 512; i++) EXP[i] = EXP[i - 255];
+})();
+
+const gfMul = (a, b) => (a === 0 || b === 0 ? 0 : EXP[LOG[a] + LOG[b]]);
+
+function rsGenerator(degree) {
+  let poly = [1];
+  for (let i = 0; i < degree; i++) {
+    const next = new Array(poly.length + 1).fill(0);
+    for (let j = 0; j < poly.length; j++) {
+      next[j] ^= poly[j];
+      next[j + 1] ^= gfMul(poly[j], EXP[i]);
+    }
+    poly = next;
+  }
+  return poly;
+}
+
+function rsEncode(data, ecLen) {
+  const gen = rsGenerator(ecLen);
+  const res = new Array(ecLen).fill(0);
+  for (const byte of data) {
+    const factor = byte ^ res[0];
+    res.shift();
+    res.push(0);
+    for (let i = 0; i < ecLen; i++) res[i] ^= gfMul(gen[i + 1], factor);
+  }
+  return res;
+}
+
+class Bits {
+  constructor() { this.bits = []; }
+  put(value, length) {
+    for (let i = length - 1; i >= 0; i--) this.bits.push((value >>> i) & 1);
+  }
+  get length() { return this.bits.length; }
+}
+
+function dataCodewords(version, level = "M") {
+  const [ec, b1, d1, b2, d2] = TABLES[level][version];
+  return b1 * d1 + b2 * d2;
+}
+
+function chooseVersion(byteLen) {
+  for (const level of ["M", "L"]) {
+    for (let v = 1; v <= 10; v++) {
+      const countBits = v < 10 ? 8 : 16;
+      if (4 + countBits + byteLen * 8 <= dataCodewords(v, level) * 8) return { version: v, level };
+    }
+  }
+  return null;
+}
+
+function makeMatrix(size) {
+  return { m: Array.from({ length: size }, () => new Array(size).fill(null)), size };
+}
+
+function placeFinder(mx, row, col) {
+  for (let r = -1; r <= 7; r++) {
+    for (let c = -1; c <= 7; c++) {
+      const rr = row + r, cc = col + c;
+      if (rr < 0 || rr >= mx.size || cc < 0 || cc >= mx.size) continue;
+      const inner =
+        (r >= 0 && r <= 6 && (c === 0 || c === 6)) ||
+        (c >= 0 && c <= 6 && (r === 0 || r === 6)) ||
+        (r >= 2 && r <= 4 && c >= 2 && c <= 4);
+      mx.m[rr][cc] = inner ? 1 : 0;
+    }
+  }
+}
+
+function placeAlignment(mx, version) {
+  const centers = ALIGN[version];
+  for (const r of centers) {
+    for (const c of centers) {
+      if ((r <= 8 && c <= 8) || (r <= 8 && c >= mx.size - 9) || (r >= mx.size - 9 && c <= 8)) continue;
+      for (let dr = -2; dr <= 2; dr++)
+        for (let dc = -2; dc <= 2; dc++)
+          mx.m[r + dr][c + dc] = Math.max(Math.abs(dr), Math.abs(dc)) !== 1 ? 1 : 0;
+    }
+  }
+}
+
+function placeTiming(mx) {
+  for (let i = 8; i < mx.size - 8; i++) {
+    const v = i % 2 === 0 ? 1 : 0;
+    if (mx.m[6][i] === null) mx.m[6][i] = v;
+    if (mx.m[i][6] === null) mx.m[i][6] = v;
+  }
+}
+
+function formatBits(ecLevel, mask) {
+  let data = (ecLevel << 3) | mask;
+  let rem = data;
+  for (let i = 0; i < 10; i++) rem = (rem << 1) ^ ((rem >>> 9) * 0x537);
+  return ((data << 10) | rem) ^ 0x5412;
+}
+
+function versionBits(version) {
+  let rem = version;
+  for (let i = 0; i < 12; i++) rem = (rem << 1) ^ ((rem >>> 11) * 0x1f25);
+  return (version << 12) | rem;
+}
+
+function reserveFormatAreas(mx, version) {
+  for (let i = 0; i < 9; i++) {
+    if (mx.m[8][i] === null) mx.m[8][i] = 0;
+    if (mx.m[i][8] === null) mx.m[i][8] = 0;
+  }
+  for (let i = 0; i < 8; i++) {
+    if (mx.m[8][mx.size - 1 - i] === null) mx.m[8][mx.size - 1 - i] = 0;
+    if (mx.m[mx.size - 1 - i][8] === null) mx.m[mx.size - 1 - i][8] = 0;
+  }
+  mx.m[mx.size - 8][8] = 1;
+  if (version >= 7) {
+    for (let i = 0; i < 18; i++) {
+      const r = Math.floor(i / 3), c = i % 3;
+      mx.m[mx.size - 11 + c][r] = 0;
+      mx.m[r][mx.size - 11 + c] = 0;
+    }
+  }
+}
+
+function writeFormat(mx, ecLevel, mask) {
+  const bits = formatBits(ecLevel, mask);
+  for (let i = 0; i < 15; i++) {
+    const bit = (bits >>> i) & 1;
+    if (i < 6) mx.m[i][8] = bit;
+    else if (i < 8) mx.m[i + 1][8] = bit;
+    else if (i === 8) mx.m[8][7] = bit;
+    else mx.m[8][14 - i] = bit;
+
+    if (i < 8) mx.m[8][mx.size - 1 - i] = bit;
+    else mx.m[mx.size - 15 + i][8] = bit;
+  }
+}
+
+function writeVersion(mx, version) {
+  if (version < 7) return;
+  const bits = versionBits(version);
+  for (let i = 0; i < 18; i++) {
+    const bit = (bits >>> i) & 1;
+    const r = Math.floor(i / 3), c = i % 3;
+    mx.m[mx.size - 11 + c][r] = bit;
+    mx.m[r][mx.size - 11 + c] = bit;
+  }
+}
+
+const MASKS = [
+  (r, c) => (r + c) % 2 === 0,
+  (r) => r % 2 === 0,
+  (r, c) => c % 3 === 0,
+  (r, c) => (r + c) % 3 === 0,
+  (r, c) => (Math.floor(r / 2) + Math.floor(c / 3)) % 2 === 0,
+  (r, c) => ((r * c) % 2) + ((r * c) % 3) === 0,
+  (r, c) => (((r * c) % 2) + ((r * c) % 3)) % 2 === 0,
+  (r, c) => (((r + c) % 2) + ((r * c) % 3)) % 2 === 0,
+];
+
+function placeData(mx, bits) {
+  let idx = 0;
+  let upward = true;
+  for (let right = mx.size - 1; right >= 1; right -= 2) {
+    if (right === 6) right = 5;
+    for (let step = 0; step < mx.size; step++) {
+      const row = upward ? mx.size - 1 - step : step;
+      for (const col of [right, right - 1]) {
+        if (mx.m[row][col] !== null) continue;
+        mx.m[row][col] = idx < bits.length ? bits[idx] : 0;
+        idx++;
+      }
+    }
+    upward = !upward;
+  }
+}
+
+function penalty(m, size) {
+  let score = 0;
+  for (let i = 0; i < size; i++) {
+    for (const line of [m[i], m.map((row) => row[i])]) {
+      let run = 1;
+      for (let j = 1; j < size; j++) {
+        if (line[j] === line[j - 1]) run++;
+        else { if (run >= 5) score += run - 2; run = 1; }
+      }
+      if (run >= 5) score += run - 2;
+    }
+  }
+  for (let r = 0; r < size - 1; r++)
+    for (let c = 0; c < size - 1; c++)
+      if (m[r][c] === m[r][c + 1] && m[r][c] === m[r + 1][c] && m[r][c] === m[r + 1][c + 1])
+        score += 3;
+  const p1 = [1, 0, 1, 1, 1, 0, 1, 0, 0, 0, 0];
+  const p2 = [0, 0, 0, 0, 1, 0, 1, 1, 1, 0, 1];
+  const matches = (line, pat, at) => pat.every((v, k) => line[at + k] === v);
+  for (let i = 0; i < size; i++) {
+    const row = m[i], col = m.map((r) => r[i]);
+    for (let j = 0; j + 11 <= size; j++) {
+      if (matches(row, p1, j) || matches(row, p2, j)) score += 40;
+      if (matches(col, p1, j) || matches(col, p2, j)) score += 40;
+    }
+  }
+  let dark = 0;
+  for (const row of m) for (const v of row) dark += v;
+  const pct = (dark * 100) / (size * size);
+  score += Math.floor(Math.abs(pct - 50) / 5) * 10;
+  return score;
+}
+
+function encodeQR(text) {
+  const bytes = [...new TextEncoder().encode(String(text))];
+  const chosen = chooseVersion(bytes.length);
+  if (!chosen) throw new Error("Payload too large for QR encoder");
+  const { version, level } = chosen;
+  const [ecLen, b1, d1, b2, d2] = TABLES[level][version];
+  const totalData = dataCodewords(version, level);
+
+  const bb = new Bits();
+  bb.put(0b0100, 4);
+  bb.put(bytes.length, version < 10 ? 8 : 16);
+  for (const b of bytes) bb.put(b, 8);
+  bb.put(0, Math.min(4, totalData * 8 - bb.length));
+  while (bb.length % 8 !== 0) bb.bits.push(0);
+
+  const codewords = [];
+  for (let i = 0; i < bb.length; i += 8) {
+    let byte = 0;
+    for (let j = 0; j < 8; j++) byte = (byte << 1) | bb.bits[i + j];
+    codewords.push(byte);
+  }
+  const PAD = [0xec, 0x11];
+  for (let p = 0; codewords.length < totalData; p++) codewords.push(PAD[p % 2]);
+
+  const blocks = [];
+  let pos = 0;
+  for (let i = 0; i < b1; i++) { blocks.push(codewords.slice(pos, pos + d1)); pos += d1; }
+  for (let i = 0; i < b2; i++) { blocks.push(codewords.slice(pos, pos + d2)); pos += d2; }
+  const ecBlocks = blocks.map((b) => rsEncode(b, ecLen));
+
+  const interleaved = [];
+  const maxData = Math.max(...blocks.map((b) => b.length));
+  for (let i = 0; i < maxData; i++)
+    for (const b of blocks) if (i < b.length) interleaved.push(b[i]);
+  for (let i = 0; i < ecLen; i++) for (const b of ecBlocks) interleaved.push(b[i]);
+
+  const bits = [];
+  for (const byte of interleaved)
+    for (let i = 7; i >= 0; i--) bits.push((byte >>> i) & 1);
+
+  const size = version * 4 + 17;
+  let best = null;
+  for (let mask = 0; mask < 8; mask++) {
+    const mx = makeMatrix(size);
+    placeFinder(mx, 0, 0);
+    placeFinder(mx, 0, size - 7);
+    placeFinder(mx, size - 7, 0);
+    placeAlignment(mx, version);
+    placeTiming(mx);
+    reserveFormatAreas(mx, version);
+    const reservedAll = mx.m.map((row) => row.map((v) => v !== null));
+    placeData(mx, bits);
+    for (let r = 0; r < size; r++)
+      for (let c = 0; c < size; c++)
+        if (!reservedAll[r][c] && MASKS[mask](r, c)) mx.m[r][c] ^= 1;
+    writeFormat(mx, LEVEL_BITS[level], mask);
+    writeVersion(mx, version);
+    const score = penalty(mx.m, size);
+    if (!best || score < best.score) best = { score, modules: mx.m };
+  }
+  return { size, modules: best.modules };
+}
+
+function renderQrSvg(text, px = 210) {
+  const { size, modules } = encodeQR(text);
+  const quiet = 2;
+  const n = size + quiet * 2;
+  const s = px / n;
+  let rects = "";
+  for (let r = 0; r < size; r++) {
+    let c = 0;
+    while (c < size) {
+      if (!modules[r][c]) { c++; continue; }
+      let run = 0;
+      while (c + run < size && modules[r][c + run]) run++;
+      const x = (c + quiet) * s, y = (r + quiet) * s;
+      rects += `<rect x="${x.toFixed(2)}" y="${y.toFixed(2)}" width="${(run * s).toFixed(2)}" height="${s.toFixed(2)}"/>`;
+      c += run;
+    }
+  }
+  return `<svg xmlns="http://www.w3.org/2000/svg" width="${px}" height="${px}" viewBox="0 0 ${px} ${px}" shape-rendering="crispEdges" role="img"><title>StarReckon QR code</title><rect width="${px}" height="${px}" fill="#ffffff"/><g fill="#090d16">${rects}</g></svg>`;
+}
+
+// ============================================================================
+// STARRECKON APPLICATION LOGIC
+// ============================================================================
+const AXES   = ["FIRST PRINCIPLES", "ENGINEERING", "CODING", "OUTSIDE THE BOX", "TENACITY"];
 const ARMS   = 5;
 const MAX_LV = 7;
 const TAU    = Math.PI * 2;
 const VR     = 0.3; // valley ratio
+const QR_BUDGET = 260; // Max payload bytes for safe QR encoding
 
-function clamp(v){ return Math.min(MAX_LV,Math.max(0,+v||0)); }
-function armAngle(i){ return -Math.PI/2 + (i*TAU)/ARMS; }
-function valleyAngle(i){ return -Math.PI/2 + ((i+0.5)*TAU)/ARMS; }
-function armR(lv,R){ return R*VR + (clamp(lv)/MAX_LV)*R*(1-VR); }
+function clamp(v){ return Math.min(MAX_LV, Math.max(0, +v || 0)); }
+function armAngle(i){ return -Math.PI / 2 + (i * TAU) / ARMS; }
+function valleyAngle(i){ return -Math.PI / 2 + ((i + 0.5) * TAU) / ARMS; }
+function armR(lv, R){ return R * VR + (clamp(lv) / MAX_LV) * R * (1 - VR); }
 
-function starPath(levels,R,cx,cy){
-  const pts=[];
-  for(let i=0;i<ARMS;i++){
-    const a=armAngle(i), r=armR(levels[i]||0,R);
-    pts.push([cx+r*Math.cos(a), cy+r*Math.sin(a)]);
-    const va=valleyAngle(i), vr=R*VR;
-    pts.push([cx+vr*Math.cos(va), cy+vr*Math.sin(va)]);
+function starPath(levels, R, cx, cy) {
+  const pts = [];
+  for (let i = 0; i < ARMS; i++) {
+    const a = armAngle(i), r = armR(levels[i] || 0, R);
+    pts.push([cx + r * Math.cos(a), cy + r * Math.sin(a)]);
+    const va = valleyAngle(i), vr = R * VR;
+    pts.push([cx + vr * Math.cos(va), cy + vr * Math.sin(va)]);
   }
-  return pts.map((p,i)=>(i===0?"M":"L")+p[0].toFixed(2)+","+p[1].toFixed(2)).join(" ")+"Z";
+  return pts.map((p, i) => (i === 0 ? "M" : "L") + p[0].toFixed(2) + "," + p[1].toFixed(2)).join(" ") + "Z";
 }
 
 function fmt(n){ return Number(n).toLocaleString("en-US"); }
 
-function render(d){
-  if(!d||!d.levels||d.levels.length<ARMS){
-    document.getElementById("no-data").style.display="block";
-    return;
+// Global application state
+let currentState = null;
+
+// Parse parameters from location hash or fall back to defaults
+function parseState() {
+  const hash = location.hash.replace(/^#/, "");
+  const p = new URLSearchParams(hash);
+  const vRaw = p.get("v");
+  const levels = vRaw ? vRaw.split(",").map(Number).filter((n) => !isNaN(n)) : [6.7, 6.2, 5.8, 5.4, 5.5];
+
+  return {
+    total:     parseFloat(p.get("s") || "29.6"),
+    tier:      p.get("g") || "TEMPERED",
+    archetype: (p.get("a") || "The_Systems_Architect").replace(/_/g, " "),
+    levels:    levels.length === 5 ? levels : [6.7, 6.2, 5.8, 5.4, 5.5],
+    sessions:  parseInt(p.get("ss") || "210", 10),
+    hours:     parseInt(p.get("h") || "1014", 10),
+    days:      parseInt(p.get("d") || "68", 10),
+    streak:    parseInt(p.get("k") || "49", 10),
+    name:      p.get("n") || "Alexander Sorrell",
+    github:    p.get("gh") || "Alexander-Sorrell-IT",
+    email:     p.get("em") || "alexander.sorrell.it@gmail.com",
+    phone:     p.get("tel") || "(817) 996-6123",
+    website:   p.get("web") || "https://github.com/Alexander-Sorrell-IT",
+    linkedin:  p.get("li") || "alex-sorrell-computers",
+    twitter:   p.get("tw") || null,
+  };
+}
+
+// Build URL string for sharing & QR code (with budget prioritization)
+function buildUrl(state, forQr = false) {
+  const base = location.origin + location.pathname;
+  const p = new URLSearchParams();
+
+  p.set("s", state.total.toFixed(1));
+  p.set("g", state.tier);
+  p.set("a", state.archetype.replace(/\s+/g, "_"));
+  p.set("v", state.levels.map((x) => clamp(x).toFixed(1)).join(","));
+  if (state.sessions) p.set("ss", String(state.sessions));
+  if (state.hours) p.set("h", String(state.hours));
+  if (state.days) p.set("d", String(state.days));
+  if (state.streak) p.set("k", String(state.streak));
+
+  // Field prioritization within QR budget:
+  // Name, GitHub, LinkedIn, Email, Phone, Website, Twitter
+  const contactSpecs = [
+    { key: "n",   val: state.name },
+    { key: "gh",  val: state.github },
+    { key: "li",  val: state.linkedin },
+    { key: "em",  val: state.email },
+    { key: "tel", val: state.phone },
+    { key: "web", val: state.website },
+    { key: "tw",  val: state.twitter },
+  ];
+
+  for (const item of contactSpecs) {
+    if (!item.val || !String(item.val).trim()) continue;
+    const clean = String(item.val).trim().slice(0, 36);
+    p.set(item.key, clean);
+
+    if (forQr) {
+      const candidate = base + "#" + p.toString();
+      if (candidate.length > QR_BUDGET) {
+        p.delete(item.key);
+      }
+    }
   }
 
-  document.getElementById("result").style.display="block";
+  return base + "#" + p.toString();
+}
 
-  const tierColors={MASTERWORK:"#c8a84b",TEMPERED:"#aaa",FORGED:"#c87941",
-                    CAST:"#7aa",RAW:"#777"};
-  const col=tierColors[d.tier]||"#5af";
+// Render the UI from currentState
+function render() {
+  const d = currentState;
+  if (!d) return;
 
-  if(d.name){ document.getElementById("name-el").textContent=d.name; }
-  document.getElementById("tier-el").textContent=d.tier;
-  document.getElementById("score-el").textContent=
-    d.total.toFixed(1)+" / "+(ARMS*MAX_LV);
-  document.getElementById("arch-el").textContent=d.archetype;
+  const tierColors = {
+    MASTERWORK: "#f59e0b",
+    TEMPERED:   "#94a3b8",
+    FORGED:     "#ea580c",
+    CAST:       "#06b6d4",
+    RAW:        "#64748b",
+  };
+  const tierBorderColors = {
+    MASTERWORK: "rgba(245,158,11,0.3)",
+    TEMPERED:   "rgba(148,163,184,0.3)",
+    FORGED:     "rgba(234,88,12,0.3)",
+    CAST:       "rgba(6,182,212,0.3)",
+    RAW:        "rgba(100,116,139,0.3)",
+  };
 
-  // Axes grid
-  const axEl=document.getElementById("axes-el");
-  d.levels.forEach((lv,i)=>{
-    const sp=document.createElement("span");
-    sp.innerHTML=`${AXES[i]}<br><b>${(+lv).toFixed(1)}</b>`;
-    axEl.appendChild(sp);
+  const col = tierColors[d.tier] || "#38bdf8";
+  const borderCol = tierBorderColors[d.tier] || "rgba(56,189,248,0.3)";
+
+  // 1. Identity & Header
+  document.getElementById("name-el").textContent = d.name;
+  document.getElementById("arch-el").textContent = d.archetype;
+  const badge = document.getElementById("tier-badge-el");
+  badge.textContent = d.tier;
+  badge.style.borderColor = borderCol;
+  badge.style.color = col;
+  document.getElementById("score-el").textContent = d.total.toFixed(1);
+
+  // 2. Axes Breakdown Grid
+  const axesEl = document.getElementById("axes-grid");
+  axesEl.innerHTML = "";
+  d.levels.forEach((lv, i) => {
+    const row = document.createElement("div");
+    row.className = "axis-row";
+    row.innerHTML = `<span class="axis-label">${AXES[i] || "AXIS " + (i + 1)}</span><span class="axis-val">${(+lv).toFixed(1)}</span>`;
+    axesEl.appendChild(row);
   });
 
-  // Stats
-  const parts=[];
-  if(d.sessions) parts.push(fmt(d.sessions)+" sessions");
-  if(d.hours)    parts.push(d.hours+"h active");
-  if(d.days)     parts.push(d.days+" days");
-  if(d.streak)   parts.push("streak "+d.streak+"d");
-  document.getElementById("stats-el").textContent=parts.join(" · ");
+  // 3. Stats Row
+  const statsEl = document.getElementById("stats-row");
+  const statsParts = [];
+  if (d.sessions) statsParts.push(`<span class="stat-item"><b>${fmt(d.sessions)}</b> sessions</span>`);
+  if (d.hours)    statsParts.push(`<span class="stat-item"><b>${fmt(d.hours)}h</b> active</span>`);
+  if (d.days)     statsParts.push(`<span class="stat-item"><b>${fmt(d.days)}</b> days</span>`);
+  if (d.streak)   statsParts.push(`<span class="stat-item"><b>${fmt(d.streak)}d</b> streak</span>`);
+  statsEl.innerHTML = statsParts.length ? statsParts.join(" · ") : `<span class="stat-item">Local Developer Audit</span>`;
 
-  // SVG star
-  const R=90, cx=100, cy=100;
-  const svg=document.getElementById("star-svg");
-  const ns="http://www.w3.org/2000/svg";
+  // 4. Render SVG Skill Star
+  const R = 85, cx = 100, cy = 100;
+  const svg = document.getElementById("star-svg");
+  svg.innerHTML = "";
+  const ns = "http://www.w3.org/2000/svg";
 
-  // ghost hull
-  const ghost=document.createElementNS(ns,"path");
-  ghost.setAttribute("d",starPath(new Array(ARMS).fill(MAX_LV),R,cx,cy));
-  ghost.setAttribute("fill","none");
-  ghost.setAttribute("stroke","#333");
-  ghost.setAttribute("stroke-width","0.8");
+  // Ghost hull (max bounds)
+  const ghost = document.createElementNS(ns, "path");
+  ghost.setAttribute("d", starPath(new Array(ARMS).fill(MAX_LV), R, cx, cy));
+  ghost.setAttribute("fill", "none");
+  ghost.setAttribute("stroke", "#1e293b");
+  ghost.setAttribute("stroke-width", "0.8");
   svg.appendChild(ghost);
 
-  // rings at 25% 50% 75%
-  [0.25,0.5,0.75].forEach(f=>{
-    const rg=document.createElementNS(ns,"path");
-    rg.setAttribute("d",starPath(new Array(ARMS).fill(MAX_LV*f),R,cx,cy));
-    rg.setAttribute("fill","none");
-    rg.setAttribute("stroke","#222");
-    rg.setAttribute("stroke-width","0.6");
+  // Reference rings
+  [0.25, 0.5, 0.75].forEach((f) => {
+    const rg = document.createElementNS(ns, "path");
+    rg.setAttribute("d", starPath(new Array(ARMS).fill(MAX_LV * f), R, cx, cy));
+    rg.setAttribute("fill", "none");
+    rg.setAttribute("stroke", "#131d2e");
+    rg.setAttribute("stroke-width", "0.6");
     svg.appendChild(rg);
   });
 
-  // glow
-  const defs=document.createElementNS(ns,"defs");
-  defs.innerHTML=`<filter id="glow"><feGaussianBlur stdDeviation="4" result="blur"/>
+  // Glow filter
+  const defs = document.createElementNS(ns, "defs");
+  defs.innerHTML = `<filter id="glow"><feGaussianBlur stdDeviation="5" result="blur"/>
     <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>`;
   svg.appendChild(defs);
 
-  // fill
-  const fill=document.createElementNS(ns,"path");
-  fill.setAttribute("d",starPath(d.levels,R,cx,cy));
-  fill.setAttribute("fill",col+"22");
-  fill.setAttribute("stroke",col);
-  fill.setAttribute("stroke-width","1.5");
-  fill.setAttribute("filter","url(#glow)");
+  // Active polygon
+  const fill = document.createElementNS(ns, "path");
+  fill.setAttribute("d", starPath(d.levels, R, cx, cy));
+  fill.setAttribute("fill", col + "26");
+  fill.setAttribute("stroke", col);
+  fill.setAttribute("stroke-width", "1.6");
+  fill.setAttribute("filter", "url(#glow)");
   svg.appendChild(fill);
 
-  // axis labels at tip
-  d.levels.forEach((lv,i)=>{
-    const a=armAngle(i), r=armR(lv,R)+14;
-    const lx=cx+r*Math.cos(a), ly=cy+r*Math.sin(a);
-    const t=document.createElementNS(ns,"text");
-    t.setAttribute("x",lx.toFixed(1));
-    t.setAttribute("y",ly.toFixed(1));
-    t.setAttribute("text-anchor","middle");
-    t.setAttribute("dominant-baseline","central");
-    t.setAttribute("fill","#666");
-    t.setAttribute("font-size","7");
-    t.setAttribute("font-family","monospace");
-    t.textContent=AXES[i].split(" ")[0].slice(0,4).toUpperCase();
+  // Axis Labels at tips
+  d.levels.forEach((lv, i) => {
+    const a = armAngle(i), r = armR(lv, R) + 13;
+    const lx = cx + r * Math.cos(a), ly = cy + r * Math.sin(a);
+    const t = document.createElementNS(ns, "text");
+    t.setAttribute("x", lx.toFixed(1));
+    t.setAttribute("y", ly.toFixed(1));
+    t.setAttribute("text-anchor", "middle");
+    t.setAttribute("dominant-baseline", "central");
+    t.setAttribute("fill", "#64748b");
+    t.setAttribute("font-size", "6.5");
+    t.setAttribute("font-family", "monospace");
+    t.textContent = AXES[i].split(" ")[0].slice(0, 4).toUpperCase();
     svg.appendChild(t);
   });
 
-  // centre score
-  const ct=document.createElementNS(ns,"text");
-  ct.setAttribute("x","100"); ct.setAttribute("y","100");
-  ct.setAttribute("text-anchor","middle"); ct.setAttribute("dominant-baseline","central");
-  ct.setAttribute("fill",col); ct.setAttribute("font-size","11");
-  ct.setAttribute("font-family","monospace"); ct.setAttribute("font-weight","600");
-  ct.textContent=d.total.toFixed(1);
+  // Center score
+  const ct = document.createElementNS(ns, "text");
+  ct.setAttribute("x", "100"); ct.setAttribute("y", "100");
+  ct.setAttribute("text-anchor", "middle"); ct.setAttribute("dominant-baseline", "central");
+  ct.setAttribute("fill", col); ct.setAttribute("font-size", "12");
+  ct.setAttribute("font-family", "monospace"); ct.setAttribute("font-weight", "700");
+  ct.textContent = d.total.toFixed(1);
   svg.appendChild(ct);
+
+  // 5. Generate & Render SVG QR Code (Clickable + Scannable)
+  const fullShareUrl = buildUrl(d, false);
+  const qrShareUrl = buildUrl(d, true);
+
+  const qrAnchor = document.getElementById("qr-click-anchor");
+  qrAnchor.href = fullShareUrl;
+
+  const qrWrap = document.getElementById("qr-svg-wrap");
+  try {
+    qrWrap.innerHTML = renderQrSvg(qrShareUrl, 210);
+  } catch (err) {
+    console.error("QR Generation error:", err);
+    // Fallback if URL still exceeds budget
+    const fallbackUrl = (location.origin + location.pathname) + "#s=" + d.total.toFixed(1) + "&g=" + d.tier;
+    qrWrap.innerHTML = renderQrSvg(fallbackUrl, 210);
+  }
+
+  // 6. Direct GitHub link under QR Code (Alex's GitHub)
+  const ghUnderQr = document.getElementById("gh-under-qr-btn");
+  ghUnderQr.href = "https://github.com/Alexander-Sorrell-IT";
+  document.getElementById("gh-under-qr-text").textContent = "View Alexander Sorrell on GitHub (@Alexander-Sorrell-IT)";
+
+  // 7. Contact Chips
+  const chipsEl = document.getElementById("chips-grid");
+  chipsEl.innerHTML = "";
+
+  const addChip = (label, href, iconSvg) => {
+    const a = document.createElement("a");
+    a.className = "chip";
+    a.href = href;
+    a.target = href.startsWith("mailto:") || href.startsWith("tel:") ? "_self" : "_blank";
+    a.rel = "noopener noreferrer";
+    a.innerHTML = iconSvg + `<span>${label}</span>`;
+    chipsEl.appendChild(a);
+  };
+
+  const ghSvg = `<svg viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>`;
+  const liSvg = `<svg viewBox="0 0 24 24"><path d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14m-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.28 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 0 1 1.4 1.4v4.93h2.75M6.46 10.9v8.37H9.2V10.9H6.46M7.83 6.45a1.6 1.6 0 0 0-1.6 1.6 1.6 1.6 0 0 0 1.6 1.6 1.6 1.6 0 0 0 1.6-1.6 1.6 1.6 0 0 0-1.6-1.6z"/></svg>`;
+  const emSvg = `<svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>`;
+  const telSvg = `<svg viewBox="0 0 24 24"><path d="M6.62 10.79c1.44 2.83 3.76 5.15 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>`;
+  const webSvg = `<svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>`;
+  const twSvg = `<svg viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>`;
+
+  if (d.github) addChip("@" + d.github, "https://github.com/" + d.github, ghSvg);
+  if (d.linkedin) {
+    const liHref = d.linkedin.startsWith("http") ? d.linkedin : "https://linkedin.com/in/" + d.linkedin;
+    addChip("LinkedIn", liHref, liSvg);
+  }
+  if (d.email) addChip(d.email, "mailto:" + d.email, emSvg);
+  if (d.phone) addChip(d.phone, "tel:" + d.phone.replace(/[^0-9+]/g, ""), telSvg);
+  if (d.website) {
+    const webHref = d.website.startsWith("http") ? d.website : "https://" + d.website;
+    addChip(d.website.replace(/^https?:\/\//, ""), webHref, webSvg);
+  }
+  if (d.twitter) {
+    const twHandle = d.twitter.replace(/^@/, "");
+    addChip("@" + twHandle, "https://x.com/" + twHandle, twSvg);
+  }
+
+  // 8. Update Form Inputs (without replacing if user is focused)
+  syncInputIfNotFocused("inp-name", d.name);
+  syncInputIfNotFocused("inp-github", d.github);
+  syncInputIfNotFocused("inp-email", d.email || "");
+  syncInputIfNotFocused("inp-phone", d.phone || "");
+  syncInputIfNotFocused("inp-website", d.website || "");
+  syncInputIfNotFocused("inp-linkedin", d.linkedin || "");
+  syncInputIfNotFocused("inp-twitter", d.twitter || "");
+
+  // Dynamic Browser Title
+  document.title = `${d.name} — StarReckon ${d.total.toFixed(1)}/35 (${d.tier})`;
 }
 
-// Parse fragment
-function parse(){
-  try{
-    const hash=location.hash.replace(/^#/,"");
-    if(!hash) return null;
-    const p=new URLSearchParams(hash);
-    const v=(p.get("v")||"").split(",").map(Number).filter(n=>!isNaN(n));
-    return{
-      total:parseFloat(p.get("s")||"0"),
-      tier:p.get("g")||"",
-      archetype:(p.get("a")||"").replace(/_/g," "),
-      levels:v,
-      sessions:parseInt(p.get("ss")||"0",10),
-      hours:parseInt(p.get("h")||"0",10),
-      days:parseInt(p.get("d")||"0",10),
-      streak:parseInt(p.get("k")||"0",10),
-      name:p.get("n")||null,
-    };
-  }catch{return null;}
+function syncInputIfNotFocused(id, val) {
+  const el = document.getElementById(id);
+  if (el && document.activeElement !== el) {
+    el.value = val;
+  }
 }
 
-const data=parse();
-render(data);
+// Bind interactive user input events to live-update state, URL hash, and QR code
+function setupFormListeners() {
+  const fields = [
+    { id: "inp-name",     key: "name" },
+    { id: "inp-github",   key: "github" },
+    { id: "inp-email",    key: "email" },
+    { id: "inp-phone",    key: "phone" },
+    { id: "inp-website",  key: "website" },
+    { id: "inp-linkedin", key: "linkedin" },
+    { id: "inp-twitter",  key: "twitter" },
+  ];
 
-// npx click to copy
-document.getElementById("npx-el").addEventListener("click",()=>{
-  navigator.clipboard?.writeText("npx starreckon").catch(()=>{});
-});
-
-// Copy share link button
-const copyBtn=document.getElementById("copy-btn");
-copyBtn.addEventListener("click",()=>{
-  const url=location.href;
-  navigator.clipboard?.writeText(url).then(()=>{
-    copyBtn.textContent="copied!";
-    copyBtn.classList.add("copied");
-    setTimeout(()=>{
-      copyBtn.textContent="copy share link";
-      copyBtn.classList.remove("copied");
-    },2000);
-  }).catch(()=>{
-    copyBtn.textContent="copy: "+url;
+  fields.forEach(({ id, key }) => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.addEventListener("input", (e) => {
+      currentState[key] = e.target.value.trim();
+      const newUrl = buildUrl(currentState, false);
+      try {
+        history.replaceState(null, "", newUrl);
+      } catch {}
+      render();
+    });
   });
+}
+
+// Clipboard copy helper
+function setupCopyButtons() {
+  const setup = (btnId, textGetter, successMsg, resetMsg) => {
+    const btn = document.getElementById(btnId);
+    if (!btn) return;
+    btn.addEventListener("click", () => {
+      const text = typeof textGetter === "function" ? textGetter() : textGetter;
+      navigator.clipboard?.writeText(text).then(() => {
+        btn.textContent = successMsg;
+        btn.classList.add("copied");
+        setTimeout(() => {
+          btn.textContent = resetMsg;
+          btn.classList.remove("copied");
+        }, 2000);
+      }).catch(() => {});
+    });
+  };
+
+  setup("copy-share-btn", () => buildUrl(currentState, false), "Copied Link!", "Copy Share Link");
+  setup("npx-copy-btn", "npx starreckon", "Copied!", "Copy");
+
+  // Download QR SVG
+  const dlBtn = document.getElementById("download-qr-btn");
+  if (dlBtn) {
+    dlBtn.addEventListener("click", () => {
+      const svgEl = document.querySelector("#qr-svg-wrap svg");
+      if (!svgEl) return;
+      const svgData = new XMLSerializer().serializeToString(svgEl);
+      const blob = new Blob([svgData], { type: "image/svg+xml;charset=utf-8" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `starreckon-qr-${(currentState.name || "card").toLowerCase().replace(/[^a-z0-9]/g, "-")}.svg`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    });
+  }
+}
+
+// Listen to browser hash changes (e.g. back/forward navigation)
+window.addEventListener("hashchange", () => {
+  currentState = parseState();
+  render();
 });
 
-// Update OG title dynamically if data present
-if(data&&data.total){
-  const t=data.name
-    ? `${data.name} — starreckon ${data.total.toFixed(1)}/${ARMS*MAX_LV} ${data.tier}`
-    : `starreckon ${data.total.toFixed(1)}/${ARMS*MAX_LV} ${data.tier}`;
-  document.title=t;
-}
+// Initialization
+currentState = parseState();
+render();
+setupFormListeners();
+setupCopyButtons();
 </script>
 </body>
 </html>

@@ -392,7 +392,7 @@ export function encodeQR(text, { forceMask = null } = {}) {
 }
 
 /** Terminal rendering: two module rows per character cell, via half-blocks. */
-export function qrToTerminal(text, { quiet = 2, color = true } = {}) {
+export function qrToTerminal(text, { quiet = 2, color = true, href = null } = {}) {
   const { size, modules } = encodeQR(text);
   const n = size + quiet * 2;
   const at = (r, c) =>
@@ -404,13 +404,16 @@ export function qrToTerminal(text, { quiet = 2, color = true } = {}) {
   // a QR is read as dark-on-light, so invert deliberately rather than by taste.
   const W = color ? "\x1b[97m" : "";
   const RESET = color ? "\x1b[0m" : "";
+  const link = (href && color && !process.env.NO_COLOR) ? href : null;
+  const OSC8_START = link ? `\x1b]8;;${link}\x1b\\` : "";
+  const OSC8_END = link ? "\x1b]8;;\x1b\\" : "";
   for (let r = 0; r < n; r += 2) {
     let line = W;
     for (let c = 0; c < n; c++) {
       const top = at(r, c), bot = at(r + 1, c);
       line += top && bot ? " " : top ? "▄" : bot ? "▀" : "█";
     }
-    lines.push(line + RESET);
+    lines.push(OSC8_START + line + RESET + OSC8_END);
   }
   return lines.join("\n");
 }

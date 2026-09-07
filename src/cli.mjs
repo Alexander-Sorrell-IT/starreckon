@@ -1282,24 +1282,6 @@ async function openDoor(doorKey, ask) {
 }
 
 async function main() {
-  // Startup delay with helpful tips for first-time users
-  if (!starOnly && !process.env.STARRECKON_SKIP_WELCOME && process.stdout.isTTY) {
-    const config = await import("./config.mjs").then(m => m.loadConfig()).catch(() => ({}));
-    const delayMs = config.startup?.delayMs ?? 2000;
-    
-    console.log(`${BOLD}${CYAN}⏳ Starting StarReckon...${RESET}\\n`);
-    console.log(`${BOLD}💡 Quick Tips:${RESET}`);
-    console.log(`   ${CYAN}starreckon --help${RESET}              ${DIM}see all commands and flags${RESET}`);
-    console.log(`   ${CYAN}starreckon --download-all-models${RESET}  ${DIM}get all 4 Cisco AI models (~600MB, one-time)${RESET}`);
-    console.log(`   ${CYAN}starreckon --setup-daemon${RESET}      ${DIM}schedule monthly scans so history outlives 30-day logs${RESET}`);
-    console.log(`   ${CYAN}starreckon --setup-complete${RESET}    ${DIM}do both above in one go (recommended)${RESET}`);
-    console.log(`\\n${DIM}   why models? SecureBERT search, forecaster, Antares vuln scan, NER entity extraction${RESET}`);
-    console.log(`${DIM}   why daemon? AI session logs age off disk after ~30 days. Monthly snapshots preserve your history.${RESET}`);
-    console.log(`\\n${DIM}   or select [B] below for \"Before You Go\" setup menu${RESET}\\n`);
-    
-    await new Promise(resolve => setTimeout(resolve, delayMs));
-  }
-  
   // Welcome banner for first-time users — shows once per session unless --yes or star-only
   if (!starOnly && !process.env.STARRECKON_SKIP_WELCOME && args.length === 0 && process.stdout.isTTY) {
     console.log(`${BOLD}${CYAN}★ welcome to starreckon${RESET}`);
@@ -1520,7 +1502,9 @@ async function main() {
     ? `${thisMonth} · ${sources.length} files${corpusEntries.length ? ` + ${corpusEntries.length} corpus entries` : ""}`
     : `corpus · ${corpusEntries.length} entries`;
   if (!starOnly) starHeading("this month", headingDetail);
-  star.draw(computeLevels(finalize(stats)), `scanning 0/${sources.length || corpusEntries.length}`);
+  if (star.enabled) {
+    star.draw(computeLevels(finalize(stats)), `scanning 0/${sources.length || corpusEntries.length}`);
+  }
   for (const src of sources) {
     try {
       auditRead(audit, src.source);
@@ -1543,13 +1527,15 @@ async function main() {
     // ~12 frames a second is smooth to the eye and costs the same whether the
     // corpus is 200 files or 200,000. The last frame is always drawn, so the
     // finished star is never a stale one.
-    const now = Date.now();
-    if (done === sources.length || now - lastDraw >= 80) {
-      lastDraw = now;
-      star.draw(
-        computeLevels(finalize(stats)),
-        `scanning ${done}/${sources.length}`
-      );
+    if (star.enabled) {
+      const now = Date.now();
+      if (done === sources.length || now - lastDraw >= 80) {
+        lastDraw = now;
+        star.draw(
+          computeLevels(finalize(stats)),
+          `scanning ${done}/${sources.length}`
+        );
+      }
     }
   }
   const agg = finalize(stats);
@@ -1557,7 +1543,7 @@ async function main() {
   // The star-only modes print their own star, deliberately labelled and drawn
   // from the LIFETIME numbers. Letting finish() land here too would leave the
   // scan's star sitting above it — two stars for --star, three for --dual.
-  if (!starOnly) star.finish(levels, `this month · ${thisMonth}`);
+  if (!starOnly) await star.finish(levels, `this month · ${thisMonth}`);
 
   // ---- multi-CLI providers (fast, on by default) ---------------------------
   let providers = null;

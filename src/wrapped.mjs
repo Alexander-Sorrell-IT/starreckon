@@ -661,38 +661,26 @@ export function shareQrLines(rawLevels, agg, url, contact) {
   const shareUrl = buildShareUrl(lv5(rawLevels), agg, contact);
   const payload = shareUrl ?? sharePayload(lv5(rawLevels), agg, url ?? PAGES_BASE, contact);
   try {
-    const qr = qrToTerminal(payload, { color: !plain() }).split("\n").map((r) => "  " + r);
-    // PRINT THE RESULTS URL UNDER THE QR.
-    //
-    // The card carries two links and only ever showed one. `npx starreckon` and
-    // the project repo answer "what is this and where do I get it" — they are
-    // the same on every user's card, and they belong there. The OTHER link, the
-    // one this QR actually encodes and the only one that is YOURS, was never
-    // printed anywhere: the sole route to it was [X] copy link, which shells out
-    // to a clipboard binary. clipboard.mjs defaults to xclip on Linux/X11, which
-    // is frequently absent — and on a headless box, a container, or an SSH
-    // session there is then no way to obtain your own link at all. You cannot
-    // even select it off the screen, because it is not on the screen.
-    //
-    // It goes BELOW the frame, next to the QR, for the same reason the QR does:
-    // a version-10 symbol needs 61 columns and the card is 60, and this URL is
-    // ~190-250 characters. Inside the frame it would be clipped, and a clipped
-    // URL is worse than none — it looks copyable and is not.
-    //
-    // serve.mjs:255 already prints its URL this way ("or open <url> in a
-    // browser"), so this is an established pattern here, not a new one. Most
-    // terminals linkify a bare https:// , which is also the tappable answer to
-    // "I do not want to scan it with a second device".
+    const qr = qrToTerminal(payload, { color: !plain(), href: shareUrl }).split("\n").map((r) => "  " + r);
     if (!shareUrl) return qr;
+    const gh = (typeof contact === "object" && contact?.github) || "Alexander-Sorrell-IT";
+    const ghUrl = `https://github.com/${gh}`;
+    const clickShare = plain()
+      ? `  ${shareUrl}`
+      : `  \x1b]8;;${shareUrl}\x1b\\${CY}${shareUrl}${R}\x1b]8;;\x1b\\`;
+    const clickGh = plain()
+      ? `  github: ${ghUrl}`
+      : `  github: \x1b]8;;${ghUrl}\x1b\\${CY}${ghUrl}${R}\x1b]8;;\x1b\\`;
     return [
       ...qr,
       "",
       // plain() gated, matching the frame drawing above (:61, :87, :89).
       // NO_COLOR means NOT ONE escape sequence, and the suite asserts it.
       plain()
-        ? "  your results — the same page the QR opens:"
-        : `  ${D}your results — the same page the QR opens:${R}`,
-      `  ${shareUrl}`,
+        ? "  your results — the same page the QR opens (click or scan):"
+        : `  ${D}your results — the same page the QR opens (${B}click QR or link below${R}${D}):${R}`,
+      clickShare,
+      clickGh,
     ];
   } catch (e) {
     // plain() gated like the success path above. Bob caught this: I fixed the

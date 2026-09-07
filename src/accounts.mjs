@@ -160,7 +160,12 @@ function claudeGlobNames(home) {
 // ---- profile discovery (analyze_tokens.find_config_dirs) -------------------
 
 // Lazy shape test: at least one *.jsonl anywhere under dir, first hit wins.
-function hasJsonlBeneath(dir) {
+// Capped at depth 3: Claude Code stores session transcripts at
+// projects/<proj>/<session>.jsonl (depth 2) or
+// projects/<proj>/<session>/subagents/... (depth 3+). An unbounded walk
+// crawls entire developer trees (like ~/Documents/Projects) to infinite depth.
+function hasJsonlBeneath(dir, depth = 3) {
+  if (depth <= 0) return false;
   let entries;
   try {
     entries = readdirSync(dir);
@@ -169,6 +174,7 @@ function hasJsonlBeneath(dir) {
   }
   const subdirs = [];
   for (const name of entries) {
+    if (COPY_DIRS.has(name)) continue;
     const full = join(dir, name);
     let st;
     try {
@@ -179,7 +185,7 @@ function hasJsonlBeneath(dir) {
     if (st.isFile() && name.endsWith(".jsonl")) return true;
     if (st.isDirectory()) subdirs.push(full);
   }
-  for (const d of subdirs) if (hasJsonlBeneath(d)) return true;
+  for (const d of subdirs) if (hasJsonlBeneath(d, depth - 1)) return true;
   return false;
 }
 

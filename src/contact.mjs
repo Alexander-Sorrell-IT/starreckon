@@ -18,7 +18,7 @@ import { homedir } from "node:os";
 
 // Canonical field order — also the priority order for QR packing (most
 // important first, so if the payload is tight the useful fields survive).
-export const FIELDS = ["name", "github", "email", "phone", "website", "linkedin", "twitter"];
+export const FIELDS = ["name", "github", "linkedin", "email", "phone", "website", "twitter"];
 
 // Short tag prefix for each field in the QR payload. Kept as short as possible
 // to maximise how much fits in the 260-byte cap.

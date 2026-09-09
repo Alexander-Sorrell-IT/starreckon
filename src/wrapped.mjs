@@ -21,7 +21,7 @@ import { explainLevels, computeLevels } from "./star.mjs";
 import { FLEET_MEASURES, FLEET_MEASURES_MONTH } from "./fleetstar.mjs";
 import { qrToTerminal } from "./qr.mjs";
 import { readContact, contactLines } from "./contact.mjs";
-import { buildShareUrl, PAGES_BASE } from "./shareurl.mjs";
+import { buildShareUrl, PAGES_BASE, QR_BUDGET_BYTES } from "./shareurl.mjs";
 
 const R = "\x1b[0m";
 const B = "\x1b[1m";
@@ -344,16 +344,19 @@ export function cardHistory(rawTimeline) {
   ].filter(keep);
 }
 
-export function cardTokens(rawAgg, providers) {
+export function cardTokens(rawAgg, providers, floorData = null) {
   const agg = obj(rawAgg);
   const work = (agg.total_input_tokens ?? 0) + (agg.total_output_tokens ?? 0);
   const cache = (agg.total_cache_read_tokens ?? 0) + (agg.total_cache_write_tokens ?? 0);
-  if (work + cache === 0) return null;
-  const cachePct = ((cache / (work + cache)) * 100).toFixed(1);
+  const onDisk = work + cache;
+  const floorVal = Number(floorData?.floor) || 0;
+  if (onDisk === 0 && floorVal === 0) return null;
+  const displayTotal = Math.max(onDisk, floorVal);
+  const cachePct = onDisk > 0 ? ((cache / onDisk) * 100).toFixed(1) : 0;
   const lines = [
     head("THE WEIGHT OF IT"),
     "",
-    `  ${big(human(work + cache))} ${WH}tokens${R}`,
+    `  ${big(human(displayTotal))} ${WH}tokens${R}${floorVal > onDisk ? ` ${D}(${human(floorVal)} fleet floor)${R}` : ""}`,
     `  ${WH}${human(work)}${R} actually generated · ${WH}${cachePct}%${R} served from cache`,
     "",
     // wrapWords, not hand-counted lines — box() clips instead of wrapping, and
@@ -508,14 +511,12 @@ export function cardStack(rawAgg, profile) {
 
 export function cardProjects(rawAgg) {
   const agg = obj(rawAgg);
-  // Prefer live scan projects (full names, current sessions). Fall back to
-  // top_projects stored in the snapshot/lifetime aggregate when logs have
-  // aged off — those were written at scan time so they carry real names.
+  const isReal = (p) => p && typeof p.name === "string" && p.name !== "corpus" && p.name !== "unknown" && p.name !== "~" && p.name !== "[excluded]";
   const projects = (
-    arr(agg.projects).filter((p) => p && typeof p.name === "string").length
-      ? arr(agg.projects)
-      : arr(agg.top_projects)
-  ).filter((p) => p && typeof p.name === "string").slice(0, 5);
+    arr(agg.projects).filter(isReal).length
+      ? arr(agg.projects).filter(isReal)
+      : arr(agg.top_projects).filter(isReal)
+  ).slice(0, 5);
   if (!projects.length) return null;
   const max = Math.max(...projects.map((p) => p.sessions));
   return [
@@ -609,17 +610,23 @@ export function sharePayload(rawLevels, agg, url, contact) {
   return text;
 }
 
-export function cardShare(rawLevels, agg, url, contact) {
+export function cardShare(rawLevels, agg, url, contact, floorData = null) {
   const levels = lv5(rawLevels);
   const total = levels.reduce((a, b) => a + b, 0);
   const shape = AXES.map((_, i) => "▁▂▃▄▅▆▇█"[Math.min(7, Math.round((levels[i] / MAX_LEVEL) * 7))]).join("");
   const a = agg ?? {};
   const work = (a.total_input_tokens ?? 0) + (a.total_output_tokens ?? 0);
   const cache = (a.total_cache_read_tokens ?? 0) + (a.total_cache_write_tokens ?? 0);
-  const totalTokens = work + cache;
+  const onDiskTokens = work + cache;
+  const floorVal = Number(floorData?.floor) || 0;
+  const totalTokens = Math.max(onDiskTokens, floorVal);
   const ct = contact ?? {};
   const name = ct.name ?? "";
   const gh = ct.github ?? "";
+
+  const tokenSubtitle = floorVal > onDiskTokens
+    ? `  ${WH}${human(totalTokens)} lifetime tokens${R} (${human(floorVal)} floor · ${human(onDiskTokens)} on disk)`
+    : (totalTokens > 0 ? `  ${WH}${human(totalTokens)} lifetime tokens${R} (${human(work)} work · ${human(cache)} cache)` : "");
 
   const lines = [
     head("SEND IT"),
@@ -628,9 +635,7 @@ export function cardShare(rawLevels, agg, url, contact) {
     `  ${WH}${archetype(levels).name}${R}`,
     `  ${D}${AXES.map((a, i) => `${a.split(" ")[0].slice(0, 4).toLowerCase()} ${levels[i]}`).join(" · ")}${R}`,
     "",
-    totalTokens > 0
-      ? `  ${WH}${human(totalTokens)} lifetime tokens${R} (${human(work)} work · ${human(cache)} cache)`
-      : "",
+    tokenSubtitle,
     a.total_sessions
       ? `  ${D}${a.total_sessions} sessions · ${Math.round(a.total_duration_hours ?? 0)}h active · ${a.longest_streak_days ?? 0}d streak${R}`
       : "",
@@ -653,21 +658,11 @@ export function cardShare(rawLevels, agg, url, contact) {
  * will not scan. Rather than shrink the payload or the margin, the code gets
  * the width it needs by living below the frame.
  */
-export function shareQrLines(rawLevels, agg, url, contact) {
+export function shareQrLines(rawLevels, agg, url, contact, floorData = null) {
   // Prefer encoding the GitHub Pages URL (short, clickable, renders the star
   // in a browser) over the raw-text payload. Fall back to raw text if the
   // URL can't be built (e.g. levels missing).
-  // THE CONTACT GOES IN. It used to be passed as `null` here and could only
-  // reach the QR through `sharePayload` on the right of the `??` — which is
-  // unreachable: buildShareUrl returns null only for an empty levels array, and
-  // lv5() always returns ARMS entries. So every field typed into the [R] screen,
-  // whose heading reads "reach out (shown in QR)", was written to disk and
-  // encoded nowhere.
-  //
-  // It stays a URL rather than becoming a raw vCard so a phone that scans it can
-  // still just open the page. buildShareUrl drops whole fields, lowest priority
-  // first, if the contact would push it past the QR byte cap.
-  const shareUrl = buildShareUrl(lv5(rawLevels), agg, contact);
+  const shareUrl = buildShareUrl(lv5(rawLevels), agg, contact, QR_BUDGET_BYTES, floorData);
   const payload = shareUrl ?? sharePayload(lv5(rawLevels), agg, url ?? PAGES_BASE, contact);
   try {
     const qr = qrToTerminal(payload, { color: !plain(), href: shareUrl }).split("\n").map((r) => "  " + r);
@@ -798,7 +793,9 @@ export function cardWhatYouBuilt(rawAgg, rawLevels, rawTimeline) {
   if (!days || !sessions) return null;
 
   const topLang = Object.entries(agg.languages ?? {}).sort((a, b) => b[1] - a[1])[0]?.[0];
-  const topProj = arr(agg.projects)[0]?.name;
+  const isRealProj = (name) => typeof name === "string" && name && name !== "corpus" && name !== "unknown" && name !== "~" && name !== "[excluded]";
+  const rawTopProj = arr(agg.projects).find((p) => isRealProj(p?.name))?.name ?? arr(agg.top_projects).find((p) => isRealProj(p?.name))?.name;
+  const topProj = isRealProj(rawTopProj) ? rawTopProj : null;
   const hours = Math.round(num(agg.total_duration_hours));
   const arc = archetype(levels);
   const months = timeline.length;
@@ -842,7 +839,7 @@ export function buildCards(input) {
     [cardManaged(agg, timeline), GOLD],
     [cardMomentum(agg, timeline), CY],
     [cardHistory(timeline), CY],
-    [cardTokens(agg, providers), "\x1b[38;5;213m"],
+    [cardTokens(agg, providers, input.floorData ?? null), "\x1b[38;5;213m"],
     [cardShapeOverTime(timeline), CY],
     [cardRhythm(profile, agg), "\x1b[38;5;213m"],
     [cardHowYouDrive(profile), GOLD],
@@ -851,7 +848,7 @@ export function buildCards(input) {
     [cardProjects(agg), "\x1b[38;5;120m"],
     [cardProof(confinement), GOLD],
     [cardRank(levels, agg, timeline), "\x1b[38;5;213m"],
-    [cardShare(levels, agg, url ?? "https://github.com/Alexander-Sorrell-IT/starreckon", contact), CY],
+    [cardShare(levels, agg, url ?? "https://github.com/Alexander-Sorrell-IT/starreckon", contact, input.floorData ?? null), CY],
   ];
   return specs.filter(([lines]) => Array.isArray(lines) && lines.length).map(([lines, color]) => ({ lines, color }));
 }
@@ -882,7 +879,7 @@ export function buildCardsSafe(input) {
       ["YOU SHOWED UP", () => cardManaged(input.agg, input.timeline)],
       ["THE STREAK", () => cardMomentum(input.agg, input.timeline)],
       ["THE RECORD", () => cardHistory(input.timeline)],
-      ["THE WEIGHT OF IT", () => cardTokens(input.agg, input.providers)],
+      ["THE WEIGHT OF IT", () => cardTokens(input.agg, input.providers, input.floorData ?? null)],
       ["THE SHAPE OVER TIME", () => cardShapeOverTime(input.timeline)],
       ["WHEN YOU CODE", () => cardRhythm(input.profile, input.agg)],
       ["YOUR HAND ON IT", () => cardHowYouDrive(input.profile)],
@@ -891,7 +888,7 @@ export function buildCardsSafe(input) {
       ["YOUR TOP PROJECTS", () => cardProjects(input.agg)],
       ["ZERO", () => cardProof(input.confinement)],
       ["YOUR FORGE RANK", () => cardRank(input.levels, input.agg, input.timeline)],
-      ["SEND IT", () => cardShare(input.levels, input.agg, input.url ?? "https://github.com/Alexander-Sorrell-IT/starreckon", input.contact ?? null)],
+      ["SEND IT", () => cardShare(input.levels, input.agg, input.url ?? "https://github.com/Alexander-Sorrell-IT/starreckon", input.contact ?? null, input.floorData ?? null)],
     ];
     for (const [name, fn] of each) {
       try {

@@ -206,7 +206,7 @@ export function ingestCorpusEntries(entries, stats) {
         const day = iso.slice(0, 10);
         const minute = iso.slice(0, 16);
         const hour = new Date(validTs).getUTCHours();
-        const project = entry.relative_path || entry.project || 'corpus';
+        const project = entry.relative_path || entry.project || null;
         const model = entry.counts?.model_name || entry.model || 'generic';
         const origin = entry.tool_origin || entry.cli || 'corpus';
 
@@ -221,7 +221,7 @@ export function ingestCorpusEntries(entries, stats) {
                 stats.nightMinutesByMonth.get(mKey).add(minute);
             }
         }
-        if (stats.projectsSeen instanceof Map) {
+        if (project && project !== "corpus" && stats.projectsSeen instanceof Map) {
             stats.projectsSeen.set(project, project);
         }
 

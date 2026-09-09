@@ -1712,10 +1712,41 @@ async function main() {
   // just need the levels; they exit before the summary ever prints.
   // --fleet / --join-fleet without =DIR default to ~/Desktop/starreckon/fleet/
   const _fleetRaw   = optOrFlag("fleet");
-  const fleetDir    = _fleetRaw === null ? null : (_fleetRaw || DESKTOP_FLEET_DIR);
+  let fleetDir    = null;
+  if (_fleetRaw !== null) {
+    if (_fleetRaw) {
+      fleetDir = _fleetRaw;
+    } else {
+      // ORDER IS THE FLOOR, and the floor is the number that leaves the
+      // machine — it rides in the QR and onto a resume. These four
+      // directories do NOT agree: the 5-machine snapshot reads a
+      // 109,394,493,211 floor, ~/deadreckon-count reads 56,558,631,007 and
+      // ~/token-usage 52,377,343,279. Falling from the first to the second
+      // silently would halve a published number, so an auto-pick below the
+      // top preference SAYS SO on stderr rather than quietly scoring a
+      // different fleet. Pass --fleet=DIR to choose deliberately and skip
+      // this entirely.
+      const candidates = [
+        DESKTOP_FLEET_DIR,
+        join(process.env.HOME || "", "deadreckon-count/testing-archive/2026-08-11T15-37-56"),
+        join(process.env.HOME || "", "deadreckon-count"),
+        join(process.env.HOME || "", "token-usage"),
+      ];
+      const _hit = candidates.findIndex((c) => existsSync(c));
+      fleetDir = _hit === -1 ? DESKTOP_FLEET_DIR : candidates[_hit];
+      if (_hit > 0) {
+        console.error(
+          `${DIM}fleet: ${maskPath(candidates[_hit])} (auto) — preferred source not found; ` +
+          `totals come from this directory. --fleet=DIR to pick another.${RESET}`
+        );
+      }
+    }
+  }
   let fleetStars = null;
+  let fleetView  = null;
   if (fleetDir) {
     try { fleetStars = fleetAggregates(fleetDir); } catch {}
+    try { fleetView = readFleet(fleetDir); } catch {}
   }
 
   // ---- star-only modes -------------------------------------------------------
@@ -1848,6 +1879,20 @@ async function main() {
   console.log(`\n${BOLD}── profile ─────────────────────────────${RESET}`);
   console.log(`sessions        ${fmt(agg.total_sessions)}  (${agg.active_days} active days, ${agg.total_duration_hours}h active)`);
   console.log(`tokens          ${fmt(agg.total_input_tokens + agg.total_output_tokens)} in+out, ${fmt(agg.total_cache_read_tokens + agg.total_cache_write_tokens)} cache`);
+  if (fleetView?.fleetTotals?.floor && fleetView.fleetTotals.floor > (fleetView.fleetTotals.onDisk || 0)) {
+    const floorTotal = fleetView.fleetTotals.floor;
+    const onDiskTotal = fleetView.fleetTotals.onDisk || 0;
+    const frozen = floorTotal - onDiskTotal;
+    console.log(`fleet floor     ${fmt(floorTotal)} total (${fmt(frozen)} frozen counters across ${fleetView.machines.length} machines) — survives log deletion`);
+  } else if (accounts) {
+    const ft = floorTotals(accounts);
+    const g = (t) => t.input + t.output + t.cacheRead + t.cacheWrite;
+    const floorTotal = g(ft.floor);
+    const onDiskTotal = g(ft.onDisk);
+    if (floorTotal > onDiskTotal) {
+      console.log(`account floor   ${fmt(floorTotal)} total (${fmt(floorTotal - onDiskTotal)} frozen stats-cache counters) — survives log deletion`);
+    }
+  }
   {
     // Durable ledger total — survives log rotation and transcript deletion.
     // Shown only when the ledger has at least one record (i.e. --ledger ran at
@@ -1864,7 +1909,12 @@ async function main() {
   console.log(`streak          ${agg.longest_streak_days}d longest, ${agg.current_streak_days}d current`);
   const topLangs = Object.entries(agg.languages).sort((a, b) => b[1] - a[1]).slice(0, 5);
   if (topLangs.length) console.log(`languages       ${topLangs.map(([l, n]) => `${l}(${n})`).join(" ")}`);
-  const topProj = agg.projects.slice(0, 5);
+  const isRealProj = (p) => p && typeof p.name === "string" && p.name !== "corpus" && p.name !== "unknown" && p.name !== "~" && p.name !== "[excluded]";
+  const topProj = (
+    (agg.projects || []).filter(isRealProj).length
+      ? (agg.projects || []).filter(isRealProj)
+      : (agg.top_projects || []).filter(isRealProj)
+  ).slice(0, 5);
   if (topProj.length) {
     console.log(`top projects    ${topProj.map((p) => p.name).join(", ")}`);
     // The screen always shows the real names; say which of the two the FILES
@@ -2023,11 +2073,10 @@ async function main() {
   }
 
   // ---- fleet read (summary + fleetView for --page / --json) -----------------
-  // fleetDir and fleetStars are already computed above for --star/--dual.
-  let fleetView = null;
+  // fleetDir, fleetStars and fleetView are already computed above for --star/--dual and profile summary.
   if (fleetDir) {
     try {
-      fleetView = readFleet(fleetDir);
+      if (!fleetView) fleetView = readFleet(fleetDir);
       const g = (t) =>
         typeof t === "number" ? t : (t?.input_tokens ?? 0) + (t?.output_tokens ?? 0) + (t?.cache_read_input_tokens ?? 0) + (t?.cache_creation_input_tokens ?? 0);
       console.log(`\n${BOLD}── fleet (${maskPath(fleetDir)}) ──────${RESET}`);
@@ -2384,12 +2433,15 @@ async function main() {
   // that has never seen anyone else's data can honestly make.
   if (!flag("--no-wrapped")) {
     // floorData: passed to cardFloor — the gap between on-disk tokens and
-    // what the stats-cache floor knows. Only populated when --accounts ran.
+    // what the stats-cache floor knows. Populated when --accounts ran or --fleet provided floorTotals.
     const floorData = accounts ? (() => {
       const ft = floorTotals(accounts);
       const g = (t) => t.input + t.output + t.cacheRead + t.cacheWrite;
       return { onDisk: g(ft.onDisk), floor: g(ft.floor) };
-    })() : null;
+    })() : (fleetView?.fleetTotals?.floor && fleetView.fleetTotals.floor > (fleetView.fleetTotals.onDisk || 0) ? {
+      onDisk: fleetView.fleetTotals.onDisk,
+      floor: fleetView.fleetTotals.floor,
+    } : null);
     const cards = buildCardsSafe({
       levels,
       agg,
@@ -2410,7 +2462,7 @@ async function main() {
     // keypress that will never come.
     const paced = process.stdout.isTTY && process.stdin.isTTY && !flag("--no-pace");
     console.log("");
-    const qr = shareQrLines(levels, agg, "https://github.com/Alexander-Sorrell-IT/starreckon", contact);
+    const qr = shareQrLines(levels, agg, "https://github.com/Alexander-Sorrell-IT/starreckon", contact, floorData);
 
     // Shared data for both report helpers below.
     const _reportMonth = () => timeline.length ? timeline[timeline.length - 1] : null;

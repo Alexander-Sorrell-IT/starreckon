@@ -667,12 +667,22 @@ export function shareQrLines(rawLevels, agg, url, contact, floorData = null) {
   try {
     const qr = qrToTerminal(payload, { color: !plain(), href: shareUrl }).split("\n").map((r) => "  " + r);
     if (!shareUrl) return qr;
-    const gh = (typeof contact === "object" && contact?.github) || "Alexander-Sorrell-IT";
-    const ghUrl = `https://github.com/${gh}`;
+    // NO FALLBACK. This read `|| "Alexander-Sorrell-IT"`, so a user who had
+    // never filled in "reach out" got the AUTHOR's GitHub profile printed
+    // under their own QR, as though it were theirs. Personal identity comes
+    // from the contact file or it does not appear: an absent field is absent,
+    // never someone else's value. (The starreckon repo URL elsewhere in this
+    // file is the TOOL's source link, which is a different claim.)
+    const gh = typeof contact === "object" && typeof contact?.github === "string"
+      ? contact.github.trim()
+      : "";
+    const ghUrl = gh ? `https://github.com/${gh}` : "";
     const clickShare = plain()
       ? `  ${shareUrl}`
       : `  \x1b]8;;${shareUrl}\x1b\\${CY}${shareUrl}${R}\x1b]8;;\x1b\\`;
-    const clickGh = plain()
+    const clickGh = !ghUrl
+      ? ""
+      : plain()
       ? `  github: ${ghUrl}`
       : `  github: \x1b]8;;${ghUrl}\x1b\\${CY}${ghUrl}${R}\x1b]8;;\x1b\\`;
     return [
@@ -684,7 +694,9 @@ export function shareQrLines(rawLevels, agg, url, contact, floorData = null) {
         ? "  your results — the same page the QR opens (click or scan):"
         : `  ${D}your results — the same page the QR opens (${B}click QR or link below${R}${D}):${R}`,
       clickShare,
-      clickGh,
+      // Omitted entirely when the contact file carries no github, rather than
+      // printed as an empty line under the share link.
+      ...(clickGh ? [clickGh] : []),
     ];
   } catch (e) {
     // plain() gated like the success path above. Bob caught this: I fixed the

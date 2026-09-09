@@ -292,3 +292,29 @@ test("a full contact puts the email in the QR, and the payload still encodes", a
     "a partial email must never be written");
   assert.equal(encodeQR(url).size, 57, "must still be a version-10 symbol");
 });
+
+// ---------------------------------------------------------------------------
+// Personal identity comes from the contact file or it does not appear. The
+// github line fell back to a hardcoded "Alexander-Sorrell-IT", so any user who
+// had not filled in "reach out" got the AUTHOR's profile printed under their
+// own QR as though it were theirs.
+// ---------------------------------------------------------------------------
+
+test("no contact means no github line — never the author's profile", async () => {
+  const { shareQrLines } = await import("../src/wrapped.mjs");
+  const agg = { total_sessions: 10, total_input_tokens: 1e6, total_output_tokens: 1e5 };
+  for (const contact of [null, undefined, {}, { name: "Someone Else" }, { github: "   " }]) {
+    const out = shareQrLines([3, 3, 3, 3, 3], agg, undefined, contact).join("\n");
+    assert.ok(!/Alexander-Sorrell-IT/.test(out.replace(/github\.com\/Alexander-Sorrell-IT\/starreckon/g, "")),
+      `author identity leaked for contact=${JSON.stringify(contact)}`);
+    assert.ok(!/github:\s*https:\/\/github\.com\/\s*$/m.test(out), "empty github line rendered");
+  }
+});
+
+test("a contact's own github is the one that renders", async () => {
+  const { shareQrLines } = await import("../src/wrapped.mjs");
+  const agg = { total_sessions: 10, total_input_tokens: 1e6, total_output_tokens: 1e5 };
+  const out = shareQrLines([3, 3, 3, 3, 3], agg, undefined, { name: "Someone Else", github: "someone-else" }).join("\n");
+  assert.match(out, /github:.*github\.com\/someone-else/);
+  assert.ok(!out.includes("github.com/Alexander-Sorrell-IT/"), "author identity leaked");
+});

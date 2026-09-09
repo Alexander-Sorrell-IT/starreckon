@@ -260,10 +260,19 @@ test("budget holds for multi-byte values", () => {
 // use — so the card carried a phone number and no address.
 // ---------------------------------------------------------------------------
 
-test("the URL budget is the encoder's real capacity, not a second copy of it", async () => {
+test("the card's budget is a printable size, and never past what the encoder can hold", async () => {
   const { QR_BUDGET_BYTES } = await import("../src/shareurl.mjs");
-  const { MAX_BYTES } = await import("../src/qr.mjs");
-  assert.equal(QR_BUDGET_BYTES, MAX_BYTES);
+  const { MAX_BYTES, encodeQR } = await import("../src/qr.mjs");
+  // These were briefly the same number, and that was the bug: raising the
+  // encoder to version 40 silently raised the RESUME QR to 2,953 bytes and a
+  // 177x177 grid, which prints at about 0.14mm a module and cannot be read.
+  // What the encoder can carry and what this card should spend are separate
+  // decisions.
+  assert.ok(QR_BUDGET_BYTES <= MAX_BYTES, "the budget must be encodable");
+  assert.ok(QR_BUDGET_BYTES < MAX_BYTES, "the budget must be a deliberate choice, not the ceiling");
+  const atBudget = encodeQR("x".repeat(QR_BUDGET_BYTES));
+  assert.ok(atBudget.size <= 69,
+    `a full card must stay inside a printable symbol, got ${atBudget.size}x${atBudget.size}`);
 });
 
 test("a full contact puts the email in the QR, and the payload still encodes", async () => {
@@ -290,7 +299,10 @@ test("a full contact puts the email in the QR, and the payload still encodes", a
   // A skipped field is skipped whole — never a fragment of an address.
   assert.ok(!/[#&]em=[^&]*%40[^&]*$/.test(url) || url.includes("%40gmail.com"),
     "a partial email must never be written");
-  assert.equal(encodeQR(url).size, 57, "must still be a version-10 symbol");
+  // The card budget is 331 bytes (version 13, 69x69), chosen so a printed
+  // QR stays inside what a phone camera resolves. Assert it is scannable-
+  // sized, not that it is one exact version.
+  assert.ok(encodeQR(url).size <= 69, `symbol grew to ${encodeQR(url).size}, past a printable size`);
 });
 
 // ---------------------------------------------------------------------------

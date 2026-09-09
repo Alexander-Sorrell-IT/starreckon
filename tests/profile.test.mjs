@@ -523,9 +523,10 @@ test("renderStatsPage: the share QR is an <a> wrapping an <svg>, and nothing is 
 
 test("renderStatsPage: no share URL means no QR section, not a broken one", () => {
   // buildShareUrl returns null when there are no levels (cli.mjs passes its
-  // result straight through), and encodeQR THROWS past ~271 bytes. Both must
-  // cost the section and nothing else — same rule as every other panel here.
-  for (const shareUrl of [undefined, null, "", "   ", 42, "x".repeat(400)]) {
+  // result straight through), and encodeQR THROWS past its ceiling — 2,953
+  // bytes since the EC tables reached version 40. Both must cost the section
+  // and nothing else — same rule as every other panel here.
+  for (const shareUrl of [undefined, null, "", "   ", 42, "x".repeat(3000)]) {
     const html = renderStatsPage({ agg: { total_sessions: 3 }, shareUrl });
     assert.ok(html.startsWith("<!doctype html>"), `crashed on shareUrl=${String(shareUrl).slice(0, 12)}`);
     assert.doesNotMatch(html, /<a href=/, `emitted an anchor for shareUrl=${String(shareUrl).slice(0, 12)}`);

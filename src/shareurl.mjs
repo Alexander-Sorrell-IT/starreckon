@@ -26,7 +26,7 @@
 
 import { AXES, ARMS, MAX_LEVEL } from "./starsvg.mjs";
 import { archetype, rating } from "./archetype.mjs";
-import { FIELDS as CONTACT_FIELDS, URL_KEYS } from "./contact.mjs";
+import { FIELDS as CONTACT_FIELDS, URL_KEYS, SOCIAL_FIELDS, compactSocial } from "./contact.mjs";
 import { MAX_BYTES as QR_MAX_BYTES } from "./qr.mjs";
 
 export const PAGES_BASE = "https://alexander-sorrell-it.github.io/starreckon/";
@@ -119,7 +119,17 @@ export function buildShareUrl(levels, agg, contact, budget = QR_BUDGET_BYTES, fl
     // 32, matching the name cap this file already had and shareurl.test.mjs
     // asserts. Uniform across fields: one number is easier to reason about
     // against the byte budget than a per-field table.
-    const val = raw.trim().slice(0, 32);
+    //
+    // A social slot is the exception, and only in FORM, not in length: it
+    // travels without its scheme or a leading www., because
+    // "x.com/someone" and "https://www.x.com/someone" open the same page and
+    // the second costs 12 bytes that another social could have used. Its cap
+    // is larger because a profile path is not a handle — 32 would cut
+    // "linkedin.com/in/alex-sorrell-computers" mid-slug, and a truncated URL
+    // is a broken link, which is worse than an absent one.
+    const isSocial = SOCIAL_FIELDS.includes(f);
+    const val = isSocial ? compactSocial(raw).slice(0, 48) : raw.trim().slice(0, 32);
+    if (!val) continue;
     // MEASURE WHAT IS ACTUALLY WRITTEN. This estimated the cost with
     // encodeURIComponent and then wrote with params.set(), and the two do not
     // agree: encodeURIComponent leaves ! ( ) ~ \' unescaped at 1 byte each while

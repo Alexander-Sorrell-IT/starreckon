@@ -18,7 +18,14 @@ import { homedir } from "node:os";
 
 // Canonical field order — also the priority order for QR packing (most
 // important first, so if the payload is tight the useful fields survive).
-export const FIELDS = ["name", "github", "linkedin", "email", "phone", "website", "twitter"];
+export const SOCIAL_SLOTS = 5;
+export const SOCIAL_FIELDS = Array.from({ length: SOCIAL_SLOTS }, (_, i) => `social${i + 1}`);
+
+export const FIELDS = [
+  "name", "github", "linkedin", "email",
+  ...SOCIAL_FIELDS,
+  "phone", "website", "twitter",
+];
 
 // Short key for each field. ONE map, used by both outputs: the share URL
 // (shareurl.mjs imports this) and the text payload (TAGS below derives from it).
@@ -27,7 +34,101 @@ export const FIELDS = ["name", "github", "linkedin", "email", "phone", "website"
 export const URL_KEYS = {
   name: "n", github: "gh", email: "em", phone: "tel",
   website: "web", linkedin: "li", twitter: "tw",
+  ...Object.fromEntries(SOCIAL_FIELDS.map((f, i) => [f, `s${i + 1}`])),
 };
+
+// A social slot holds a URL and NOTHING ELSE. There is no "which platform"
+// field to keep in step with it, because the URL already says: the host is the
+// answer, and a stored label could disagree with the link beside it.
+//
+// Byte-mode QR is the constraint, so what travels is the URL with the scheme
+// and a leading www. stripped — "twitter.com/someone" instead of
+// "https://www.twitter.com/someone", which is 12 bytes cheaper per social and
+// re-expands to the same place.
+export const SOCIAL_HOSTS = [
+  [/(^|\.)x\.com$/,              "X"],
+  [/(^|\.)twitter\.com$/,        "Twitter"],
+  [/(^|\.)github\.com$/,         "GitHub"],
+  [/(^|\.)gitlab\.com$/,         "GitLab"],
+  [/(^|\.)linkedin\.com$/,       "LinkedIn"],
+  [/(^|\.)youtube\.com$/,        "YouTube"],
+  [/(^|\.)youtu\.be$/,           "YouTube"],
+  [/(^|\.)instagram\.com$/,      "Instagram"],
+  [/(^|\.)facebook\.com$/,       "Facebook"],
+  [/(^|\.)tiktok\.com$/,         "TikTok"],
+  [/(^|\.)reddit\.com$/,         "Reddit"],
+  [/(^|\.)twitch\.tv$/,          "Twitch"],
+  [/(^|\.)bsky\.app$/,           "Bluesky"],
+  [/(^|\.)threads\.net$/,        "Threads"],
+  [/(^|\.)mastodon\.(social|online|world)$/, "Mastodon"],
+  [/(^|\.)t\.me$/,               "Telegram"],
+  [/(^|\.)discord\.(gg|com)$/,   "Discord"],
+  [/(^|\.)medium\.com$/,         "Medium"],
+  [/(^|\.)substack\.com$/,       "Substack"],
+  [/(^|\.)dev\.to$/,             "DEV"],
+  [/(^|\.)hashnode\.(dev|com)$/, "Hashnode"],
+  [/(^|\.)stackoverflow\.com$/,  "Stack Overflow"],
+  [/(^|\.)huggingface\.co$/,     "Hugging Face"],
+  [/(^|\.)kaggle\.com$/,         "Kaggle"],
+  [/(^|\.)npmjs\.com$/,          "npm"],
+  [/(^|\.)pypi\.org$/,           "PyPI"],
+  [/(^|\.)crates\.io$/,          "crates.io"],
+  [/(^|\.)news\.ycombinator\.com$/, "Hacker News"],
+];
+
+/** Host of a social URL, with or without a scheme, lowercased, www. stripped. */
+export function socialHost(url) {
+  if (typeof url !== "string" || !url.trim()) return "";
+  const s = url.trim();
+  const withScheme = /^[a-z][a-z0-9+.-]*:\/\//i.test(s) ? s : "https://" + s;
+  let host;
+  try {
+    host = new URL(withScheme).hostname.toLowerCase();
+  } catch {
+    return "";
+  }
+  return host.replace(/^www\./, "");
+}
+
+/**
+ * What the site IS, read off the link itself.
+ *
+ * A known host gets its proper name ("X", "Hugging Face"). Anything else gets
+ * its own registrable domain, so a personal site or a niche network still gets
+ * a truthful heading instead of being labelled "Other" or dropped. An
+ * unparseable value has no label — it is not guessed at.
+ */
+export function labelForUrl(url) {
+  const host = socialHost(url);
+  if (!host) return "";
+  for (const [re, name] of SOCIAL_HOSTS) if (re.test(host)) return name;
+  const parts = host.split(".");
+  const base = parts.length > 2 ? parts.slice(-2).join(".") : host;
+  return base;
+}
+
+/** The compact form that travels in the QR: no scheme, no leading www. */
+export function compactSocial(url) {
+  if (typeof url !== "string" || !url.trim()) return "";
+  return url.trim().replace(/^[a-z][a-z0-9+.-]*:\/\//i, "").replace(/^www\./i, "").replace(/\/+$/, "");
+}
+
+/**
+ * The socials on a contact, in slot order, each with the label read off its
+ * own URL. Slots that are empty or unparseable are omitted entirely.
+ */
+export function socialsOf(contact) {
+  const c = contact ?? {};
+  const out = [];
+  for (const f of SOCIAL_FIELDS) {
+    const v = c[f];
+    if (typeof v !== "string" || !v.trim()) continue;
+    const label = labelForUrl(v);
+    if (!label) continue;
+    out.push({ field: f, label, url: v.trim(), compact: compactSocial(v) });
+  }
+  return out;
+}
 
 // Tag prefix for the text QR payload. DERIVED, never hand-written: the same key
 // as the URL plus a colon, with name unprefixed because it leads the block.
@@ -44,6 +145,7 @@ export const LABELS = {
   website:  "Website",
   linkedin: "LinkedIn",
   twitter:  "Twitter/X",
+  ...Object.fromEntries(SOCIAL_FIELDS.map((f, i) => [f, `Social ${i + 1} (URL)`])),
 };
 
 // Menu key bindings — single letter, unique, shown in [brackets].
@@ -55,6 +157,7 @@ export const KEYS = {
   W: "website",
   L: "linkedin",
   T: "twitter",
+  ...Object.fromEntries(SOCIAL_FIELDS.map((f, i) => [String(i + 1), f])),
 };
 
 export function contactPath(home) {

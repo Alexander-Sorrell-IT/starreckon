@@ -987,7 +987,12 @@ export function cardScoring(agg) {
     const cap = r.capped ? `  ${D}maxed${over ? ` · raw ${r.raw.toFixed(1)}` : ""}${R}` : "";
     lines.push(`  ${WH}${pad(r.axis, 18)}${R}${bar(r.level, MAX_LEVEL, 8)} ${WH}${r.level}${R}${cap}`);
     for (const t of r.terms) {
-      const val = `${human(t.value)}${t.unit}`;
+      // tokensM arrives ALREADY divided by 1e6 and carries unit "M", so the
+      // generic path formatted 2,833.7 as "2.8K" and then appended the M —
+      // printing "2.8KM" for 2.8 BILLION tokens. It only goes wrong above
+      // 1000M, which is why it survived: it is correct for every corpus
+      // smaller than this one. Re-expand and let human() pick the one suffix.
+      const val = t.unit === "M" ? human(t.value * 1e6) : `${human(t.value)}${t.unit}`;
       lines.push(`    ${D}${pad(t.label, 15)} ${pad(val, 8)} +${t.contribution.toFixed(2)}${R}`);
     }
   }

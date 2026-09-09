@@ -122,3 +122,35 @@ test("no line of the card is clipped by the frame", () => {
   for (const l of lines) assert.ok(l.length <= 60, `"${l}" is ${l.length} cols`);
   assert.match(lines.join("\n"), /doing more of one/, "the footer must survive intact");
 });
+
+// ---------------------------------------------------------------------------
+// The tokens term arrives ALREADY divided by 1e6 and carries unit "M". Running
+// it through human() and then appending that M printed "2.8KM" for 2.8 billion
+// tokens — a unit that does not exist. It is correct below 1000M, which is why
+// it survived: only a corpus past a billion in+out tokens ever renders it.
+// ---------------------------------------------------------------------------
+
+test("a billion-token corpus prints a real unit, never a doubled one", () => {
+  const agg = {
+    total_input_tokens: 2_800_000_000,
+    total_output_tokens: 33_733_206,
+    projects_count: 36,
+    languages: { python: 15332 },
+    tool_call_counts: { Bash: 180300 },
+    models: { "claude-opus-5": 1 },
+    night_hours: 114,
+    longest_streak_days: 49,
+    active_days: 74,
+  };
+  const text = strip(cardScoring(agg).join("\n"));
+  assert.ok(!/\d+(\.\d+)?KM\b/.test(text), `doubled unit in:\n${text}`);
+  assert.ok(!/\d+(\.\d+)?MM\b/.test(text), `doubled unit in:\n${text}`);
+  assert.ok(!/\d+(\.\d+)?BM\b/.test(text), `doubled unit in:\n${text}`);
+  assert.match(text, /tokens in\+out\s+2\.8B/, `expected 2.8B in:\n${text}`);
+});
+
+test("the tokens term stays correct below the billion boundary", () => {
+  const text = strip(cardScoring({ total_input_tokens: 230e6, total_output_tokens: 15e6 }).join("\n"));
+  assert.match(text, /tokens in\+out\s+245\.0M/, `expected 245.0M in:\n${text}`);
+  assert.ok(!/KM\b/.test(text), `doubled unit in:\n${text}`);
+});

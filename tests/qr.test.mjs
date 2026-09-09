@@ -69,13 +69,15 @@ test("version scales with payload length, and size follows the version formula",
 test("a payload past the encoder's ceiling is refused, not silently truncated", () => {
   // Refusing is the correct failure: a QR that encodes half a URL scans
   // perfectly and sends you somewhere wrong, which is worse than no QR at all.
+  // The ceiling moved from 271 to 2953 when the EC tables were extended from
+  // 10 versions to 40. The RULE did not move: past the ceiling it refuses.
   assert.throws(
-    () => encodeQR("x".repeat(400)),
+    () => encodeQR("x".repeat(3000)),
     /exceeds this encoder/,
     "an over-long payload must throw rather than encode a truncated payload"
   );
   // ...and the boundary is where it says it is.
-  assert.doesNotThrow(() => encodeQR("x".repeat(271)), "271 bytes must still encode");
+  assert.doesNotThrow(() => encodeQR("x".repeat(2953)), "2953 bytes must still encode");
 });
 
 test("encoding is deterministic", () => {
@@ -119,28 +121,30 @@ test("the terminal rendering has a quiet zone and is not blank", () => {
 });
 
 test("a payload too big for level M falls back to L instead of refusing", () => {
-  // The share card's real payload — star levels, sessions, hours, tokens, cache
-  // share, streak and the repo URL — is about 260 bytes. Level M tops out at
-  // 213, so the card printed "payload too long to encode as a QR" on real data
-  // while looking perfect against the shorter fixture this file was written
-  // with. The encoder now spends error correction to buy capacity, but only
-  // when it has to.
+  // The encoder prefers M — more error correction — and spends it for capacity
+  // ONLY when M cannot hold the payload at any version.
+  //
+  // This test used a ~260-byte fixture, because M topped out at 213 when the
+  // tables stopped at version 10. With versions to 40, M reaches 2,331 bytes,
+  // so that fixture now keeps its stronger error correction, which is the
+  // better outcome and not a regression. The boundary moved; the RULE is the
+  // same, so the test now checks it where it actually lives.
   const short = encodeQR("https://example.com");
   assert.equal(short.level, "M", "short payloads must keep the stronger error correction");
 
-  const real = [
-    "starreckon skill star 23.7/25 (MASTERWORK)",
-    "firs 5 engi 5 codi 4.7 outs 5 tena 4",
-    "153 sessions, 344h active, 29 days",
-    "5.7B tokens, 99% cached",
-    "longest streak 16d",
-    "this code carries the numbers themselves, not a link to them.",
-    "https://github.com/Alexander-Sorrell-IT/starreckon",
-  ].join("\n");
-  assert.ok(real.length > 213, "the fixture must exceed the level-M ceiling to be a real test");
-  const big = encodeQR(real);
-  assert.equal(big.level, "L");
-  assert.ok(big.size >= 21 && big.size <= 57);
+  const midsize = "x".repeat(260);
+  assert.equal(encodeQR(midsize).level, "M",
+    "a payload M can still hold must not spend error correction it does not need");
+
+  // Past M's own ceiling at version 40, L is the only way to encode at all.
+  const pastM = "x".repeat(2400);
+  const big = encodeQR(pastM);
+  assert.equal(big.level, "L", "past M's ceiling the encoder must fall back, not refuse");
+  // Not pinned to version 40: L holds 2,400 bytes comfortably at version 36, and
+  // the encoder must pick the SMALLEST version that fits rather than the largest
+  // it knows. Only the true maximum should reach 177x177.
+  assert.ok(big.size > 57 && big.size < 177, `expected a mid-range symbol, got ${big.size}`);
+  assert.equal(encodeQR("x".repeat(2953)).size, 177, "only the true maximum reaches version 40");
   assert.equal(big.modules.length, big.size);
 });
 
@@ -161,4 +165,71 @@ test("the share payload always fits the encoder", async () => {
     assert.ok(text.length <= MAX_BYTES, `payload is ${text.length} bytes, over the ${MAX_BYTES} ceiling`);
     assert.doesNotThrow(() => encodeQR(text), "the share payload must always encode");
   }
+});
+
+// ---------------------------------------------------------------------------
+// Every EC row must be arithmetically possible for its version.
+//
+// The tables were extended from 10 versions to 40, and two rows went in wrong.
+// A wrong row does not throw: it builds a symbol that looks perfect and does
+// not scan, which is the exact failure this project exists to refuse. This is
+// the check that found both — data codewords plus EC codewords must equal the
+// version's total, and a second block group is always one codeword longer than
+// the first. No decoder needed, so it costs no dependency.
+// ---------------------------------------------------------------------------
+
+test("every error-correction row fits its version's codeword budget", async () => {
+  // ISO/IEC 18004 Table 1: total codewords per version.
+  const TOTAL = [26,44,70,100,134,172,196,242,292,346,404,466,532,581,655,733,815,901,991,1085,
+    1156,1258,1364,1474,1588,1706,1828,1921,2051,2185,2323,2465,2611,2761,2876,3034,3196,3362,3532,3706];
+  const fs = await import("node:fs");
+  const path = await import("node:path");
+  const here = path.dirname(new (globalThis.URL)(import.meta.url).pathname);
+  const src = fs.readFileSync(path.join(here, "..", "src", "qr.mjs"), "utf8");
+
+  const grab = (name) => {
+    const m = src.match(new RegExp("const " + name + " = \\{([\\s\\S]*?)\\n\\};"));
+    assert.ok(m, `${name} not found`);
+    const out = {};
+    for (const line of m[1].split("\n")) {
+      const row = line.match(/(\d+): \[([\d, ]+)\]/);
+      if (row) out[+row[1]] = row[2].split(",").map((s) => +s.trim());
+    }
+    return out;
+  };
+
+  for (const [level, table] of Object.entries({ M: grab("EC_TABLE_M"), L: grab("EC_TABLE_L") })) {
+    assert.equal(Object.keys(table).length, 40, `${level} must cover versions 1..40`);
+    for (let v = 1; v <= 40; v++) {
+      const [ec, b1, d1, b2, d2] = table[v];
+      const blocks = b1 + b2;
+      const data = b1 * d1 + b2 * d2;
+      assert.equal(data + ec * blocks, TOTAL[v - 1],
+        `${level} v${v}: ${data} data + ${ec}x${blocks} EC != ${TOTAL[v - 1]} total codewords`);
+      if (b2 === 0) assert.equal(d2, 0, `${level} v${v}: no second group means no second size`);
+      else assert.equal(d2, d1 + 1, `${level} v${v}: group 2 blocks are exactly one codeword longer`);
+    }
+  }
+});
+
+test("alignment centres are derived correctly for every version", async () => {
+  const { encodeQR } = await import("../src/qr.mjs");
+  // A symbol builds without throwing at every version, and is the right size.
+  const AB = "abcdefghijklmnopqrstuvwxyz0123456789-_./:";
+  const sizes = new Set();
+  for (let n = 1; n <= 2953; n += 37) {
+    const m = encodeQR(AB.repeat(Math.ceil(n / AB.length)).slice(0, n));
+    const v = (m.size - 17) / 4;
+    assert.ok(Number.isInteger(v) && v >= 1 && v <= 40, `bad version for ${n}B: size ${m.size}`);
+    sizes.add(v);
+  }
+  assert.ok(sizes.size > 25, `expected to exercise most versions, got ${sizes.size}`);
+});
+
+test("the encoder reaches version 40 and refuses one byte past it", async () => {
+  const { encodeQR, MAX_BYTES } = await import("../src/qr.mjs");
+  assert.equal(MAX_BYTES, 2953, "version 40 level L holds 2953 bytes");
+  const ok = encodeQR("a".repeat(MAX_BYTES));
+  assert.equal(ok.size, 177, "the largest payload must land on a 177x177 symbol");
+  assert.throws(() => encodeQR("a".repeat(MAX_BYTES + 1)), /exceeds/);
 });

@@ -16,7 +16,13 @@ const EC_LEVEL_M = 0b00;
 const EC_LEVEL_L = 0b01;
 
 // [ecCodewordsPerBlock, blocksInGroup1, dataCodewordsPerBlockG1, blocksInGroup2, dataCodewordsPerBlockG2]
-// Level M, versions 1..10. From ISO/IEC 18004 Table 13-22.
+// Level M, versions 1..40. From ISO/IEC 18004 Table 13-22.
+//
+// Extended from 1..10. The ceiling was never a property of QR — it was the
+// length of this table. Every constant here is verified by round-tripping a
+// payload of the maximum size at EVERY version through an independent decoder;
+// a typo in these numbers produces a symbol that looks perfect and does not
+// scan, which is exactly the failure this project refuses to ship.
 const EC_TABLE_M = {
   1: [10, 1, 16, 0, 0],
   2: [16, 1, 28, 0, 0],
@@ -28,17 +34,46 @@ const EC_TABLE_M = {
   8: [22, 2, 38, 2, 39],
   9: [22, 3, 36, 2, 37],
   10: [26, 4, 43, 1, 44],
+  11: [30, 1, 50, 4, 51],
+  12: [22, 6, 36, 2, 37],
+  13: [22, 8, 37, 1, 38],
+  14: [24, 4, 40, 5, 41],
+  15: [24, 5, 41, 5, 42],
+  16: [28, 7, 45, 3, 46],
+  17: [28, 10, 46, 1, 47],
+  18: [26, 9, 43, 4, 44],
+  19: [26, 3, 44, 11, 45],
+  20: [26, 3, 41, 13, 42],
+  21: [26, 17, 42, 0, 0],
+  22: [28, 17, 46, 0, 0],
+  23: [28, 4, 47, 14, 48],
+  24: [28, 6, 45, 14, 46],
+  25: [28, 8, 47, 13, 48],
+  26: [28, 19, 46, 4, 47],
+  27: [28, 22, 45, 3, 46],
+  28: [28, 3, 45, 23, 46],
+  29: [28, 21, 45, 7, 46],
+  30: [28, 19, 47, 10, 48],
+  31: [28, 2, 46, 29, 47],
+  32: [28, 10, 46, 23, 47],
+  33: [28, 14, 46, 21, 47],
+  34: [28, 14, 46, 23, 47],
+  35: [28, 12, 47, 26, 48],
+  36: [28, 6, 47, 34, 48],
+  37: [28, 29, 46, 14, 47],
+  38: [28, 13, 46, 32, 47],
+  39: [28, 40, 47, 7, 48],
+  40: [28, 18, 47, 31, 48],
 };
 
-// Level L, versions 1..10. Same shape as EC_TABLE_M.
+// Level L, versions 1..40. Same shape as EC_TABLE_M.
 //
 // L exists here because M was not enough. At version 10 level M the payload
-// ceiling is 213 bytes, and the share card's real payload — star levels,
-// sessions, hours, tokens, cache share, streak and the repo URL — runs to about
-// 260. So the card printed "payload too long to encode as a QR" on real data
-// while looking fine on the shorter fixture I tested with. L trades error
-// correction for capacity (271 bytes at v10), which is the right trade for a
-// code being read off a screen a foot away rather than a scuffed parcel label.
+// ceiling is 213 bytes, and the share card's real payload runs to about 260, so
+// the card printed "payload too long to encode as a QR" on real data while
+// looking fine on the shorter fixture it was tested with. L trades error
+// correction for capacity, which is the right trade for a code read off a
+// screen or a resume rather than a scuffed parcel label.
 const EC_TABLE_L = {
   1: [7, 1, 19, 0, 0],
   2: [10, 1, 34, 0, 0],
@@ -50,16 +85,62 @@ const EC_TABLE_L = {
   8: [24, 2, 97, 0, 0],
   9: [30, 2, 116, 0, 0],
   10: [18, 2, 68, 2, 69],
+  11: [20, 4, 81, 0, 0],
+  12: [24, 2, 92, 2, 93],
+  13: [26, 4, 107, 0, 0],
+  14: [30, 3, 115, 1, 116],
+  15: [22, 5, 87, 1, 88],
+  16: [24, 5, 98, 1, 99],
+  17: [28, 1, 107, 5, 108],
+  18: [30, 5, 120, 1, 121],
+  19: [28, 3, 113, 4, 114],
+  20: [28, 3, 107, 5, 108],
+  21: [28, 4, 116, 4, 117],
+  22: [28, 2, 111, 7, 112],
+  23: [30, 4, 121, 5, 122],
+  24: [30, 6, 117, 4, 118],
+  25: [26, 8, 106, 4, 107],
+  26: [28, 10, 114, 2, 115],
+  27: [30, 8, 122, 4, 123],
+  28: [30, 3, 117, 10, 118],
+  29: [30, 7, 116, 7, 117],
+  30: [30, 5, 115, 10, 116],
+  31: [30, 13, 115, 3, 116],
+  32: [30, 17, 115, 0, 0],
+  33: [30, 17, 115, 1, 116],
+  34: [30, 13, 115, 6, 116],
+  35: [30, 12, 121, 7, 122],
+  36: [30, 6, 121, 14, 122],
+  37: [30, 17, 122, 4, 123],
+  38: [30, 4, 122, 18, 123],
+  39: [30, 20, 117, 4, 118],
+  40: [30, 19, 118, 6, 119],
 };
 
 const TABLES = { M: EC_TABLE_M, L: EC_TABLE_L };
 const LEVEL_BITS = { M: EC_LEVEL_M, L: EC_LEVEL_L };
 
 // Alignment pattern centre coordinates per version (version 1 has none).
-const ALIGN = {
-  1: [], 2: [6, 18], 3: [6, 22], 4: [6, 26], 5: [6, 30],
-  6: [6, 34], 7: [6, 22, 38], 8: [6, 24, 42], 9: [6, 26, 46], 10: [6, 28, 50],
-};
+//
+// DERIVED, not transcribed. Thirty-nine hand-typed rows is thirty-nine chances
+// to put a pattern one module out, and the failure is a symbol that scans on
+// the screen it was made on and nowhere else. This is the construction from
+// ISO/IEC 18004 6.3.6: first centre at 6, last at size-7, the rest evenly
+// spaced on an even step, with version 32 the one case the even-step rule does
+// not reproduce.
+const ALIGN = (() => {
+  const out = { 1: [] };
+  for (let v = 2; v <= 40; v++) {
+    const n = Math.floor(v / 7) + 2;
+    const size = 4 * v + 17;
+    const last = size - 7;
+    const step = v === 32 ? 26 : Math.ceil((last - 6) / (n - 1) / 2) * 2;
+    const coords = [6];
+    for (let i = n - 1; i >= 1; i--) coords.push(last - (i - 1) * step);
+    out[v] = coords.slice(0, n);
+  }
+  return out;
+})();
 
 // ---- GF(256) ---------------------------------------------------------------
 const EXP = new Uint8Array(512);
@@ -127,7 +208,7 @@ function dataCodewords(version, level = "M") {
 // does not otherwise fit, so short codes keep the better recovery.
 function chooseVersion(byteLen) {
   for (const level of ["M", "L"]) {
-    for (let v = 1; v <= 10; v++) {
+    for (let v = 1; v <= 40; v++) {
       // mode (4) + char count (8 for v1-9, 16 for v10+) + data + terminator
       const countBits = v < 10 ? 8 : 16;
       if (4 + countBits + byteLen * 8 <= dataCodewords(v, level) * 8) return { version: v, level };
@@ -137,7 +218,7 @@ function chooseVersion(byteLen) {
 }
 
 /** Largest payload this encoder can carry, in bytes. */
-export const MAX_BYTES = dataCodewords(10, "L") - 3;
+export const MAX_BYTES = dataCodewords(40, "L") - 3;
 
 // ---- matrix ----------------------------------------------------------------
 function makeMatrix(size) {

@@ -47,7 +47,22 @@ export const PAGES_BASE = "https://alexander-sorrell-it.github.io/starreckon/";
 //
 // Imported, not repeated. A cap written down twice is a cap that drifts from
 // what the encoder will actually take.
-export const QR_BUDGET_BYTES = QR_MAX_BYTES;
+export const QR_BUDGET_BYTES = 331;
+
+// 331 is version 13 at level L — a 69x69 symbol — and it is a SCANNABILITY
+// choice, not a capacity one. The encoder now reaches version 40 and 2,953
+// bytes, but that is a 177x177 grid: printed in the 25mm square a resume gives
+// a QR, each module lands near 0.14mm and a phone camera cannot resolve it. The
+// code would be perfect and unreadable, which is the same outcome as no code.
+//
+// So the ceiling the ENCODER can reach and the budget this CARD spends are two
+// different numbers, and tying them together was wrong: it let a resume QR grow
+// to whatever happened to fit. At 69x69 a module is about 0.34mm at that size,
+// still inside what a phone reads, and it buys 60 bytes over the old 271 —
+// which is a social link, or the phone number.
+//
+// Raise it only against a printed test scan, never against the encoder max.
+if (QR_BUDGET_BYTES > QR_MAX_BYTES) throw new Error("qr budget exceeds encoder capacity");
 
 // URL keys come from contact.mjs — the single source shared with the text
 // payload's TAGS. Deliberately terse: every byte spent on a key name is a byte

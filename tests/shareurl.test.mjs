@@ -202,17 +202,27 @@ test("a full contact still fits the QR byte cap", () => {
 
 test("over budget: whole fields are dropped, lowest priority first — never truncated", () => {
   const long = (n) => "x".repeat(n);
-  const url = buildShareUrl(levels, agg, {
+  // The fixture must actually EXCEED the cap or it proves nothing. It was sized
+  // against a 271-byte budget; the budget is 512 now, so every slot is filled
+  // to overflow it rather than the test quietly passing on a payload that fits.
+  const contact = {
     name: "Alexander Sorrell", github: long(30), email: `${long(20)}@${long(10)}.com`,
     phone: long(30), website: long(30), linkedin: long(30), twitter: long(30),
-  });
+  };
+  for (let i = 1; i <= 5; i++) contact[`social${i}`] = `${long(30)}.example/${long(14)}`;
+  const url = buildShareUrl(levels, agg, contact);
   const p = new URLSearchParams(url.split("#")[1]);
   assert.ok(Buffer.byteLength(url, "utf8") <= QR_BUDGET_BYTES, "must respect the cap");
   // name is first in CONTACT_FIELDS, so it is the last thing to go.
   assert.equal(p.get("n"), "Alexander Sorrell", "name must survive a tight budget");
   // and nothing that DID make it may be a fragment: every value is whole.
   for (const [, v] of p) assert.ok(!v.endsWith("�"), "no half-encoded value");
+  // twitter is last in CONTACT_FIELDS, so it is the first thing to go.
   assert.equal(p.get("tw"), null, "lowest-priority field drops when over budget");
+  // and the drop is per-field and whole: something got in, something did not.
+  const present = [...p.keys()].filter((k) => ["n","gh","li","em","tel","web","tw","s1","s2","s3","s4","s5"].includes(k));
+  assert.ok(present.length > 0, "a tight budget must still carry the top fields");
+  assert.ok(present.length < 12, "an over-budget contact must not carry every field");
 });
 
 test("the URL round-trips: every contact field encoded comes back out", () => {
@@ -271,7 +281,7 @@ test("the card's budget is a printable size, and never past what the encoder can
   assert.ok(QR_BUDGET_BYTES <= MAX_BYTES, "the budget must be encodable");
   assert.ok(QR_BUDGET_BYTES < MAX_BYTES, "the budget must be a deliberate choice, not the ceiling");
   const atBudget = encodeQR("x".repeat(QR_BUDGET_BYTES));
-  assert.ok(atBudget.size <= 69,
+  assert.ok(atBudget.size <= 89,
     `a full card must stay inside a printable symbol, got ${atBudget.size}x${atBudget.size}`);
 });
 
@@ -299,10 +309,10 @@ test("a full contact puts the email in the QR, and the payload still encodes", a
   // A skipped field is skipped whole — never a fragment of an address.
   assert.ok(!/[#&]em=[^&]*%40[^&]*$/.test(url) || url.includes("%40gmail.com"),
     "a partial email must never be written");
-  // The card budget is 331 bytes (version 13, 69x69), chosen so a printed
-  // QR stays inside what a phone camera resolves. Assert it is scannable-
-  // sized, not that it is one exact version.
-  assert.ok(encodeQR(url).size <= 69, `symbol grew to ${encodeQR(url).size}, past a printable size`);
+  // The card budget is 512 bytes, sized so a FULL contact travels with nothing
+  // dropped and still prints readably. Assert it is scannable-sized, not that
+  // it is one exact version.
+  assert.ok(encodeQR(url).size <= 89, `symbol grew to ${encodeQR(url).size}, past a printable size`);
 });
 
 // ---------------------------------------------------------------------------
@@ -329,4 +339,49 @@ test("a contact's own github is the one that renders", async () => {
   const out = shareQrLines([3, 3, 3, 3, 3], agg, undefined, { name: "Someone Else", github: "someone-else" }).join("\n");
   assert.match(out, /github:.*github\.com\/someone-else/);
   assert.ok(!out.includes("github.com/Alexander-Sorrell-IT/"), "author identity leaked");
+});
+
+// ---------------------------------------------------------------------------
+// A URL is never cut. `website` sat on the 32-character path built for handles,
+// so a real profile URL was written truncated — a link that goes nowhere, in a
+// code whose only job is to be followed. It hid while the field was being
+// dropped for budget anyway; raising the budget made it reachable and wrong.
+// ---------------------------------------------------------------------------
+
+test("a URL field is written whole or not at all — never cut mid-link", async () => {
+  const { buildShareUrl, QR_BUDGET_BYTES } = await import("../src/shareurl.mjs");
+  const { compactSocial, SOCIAL_FIELDS, URL_KEYS } = await import("../src/contact.mjs");
+  const site = "https://a-fairly-long-domain-name.example/a-real-path";
+  const contact = { name: "Someone", website: site };
+  SOCIAL_FIELDS.forEach((f, i) => { contact[f] = `https://n${i}.example/profile-path`; });
+
+  const url = buildShareUrl([3, 3, 3, 3, 3], { total_sessions: 5 }, contact, QR_BUDGET_BYTES);
+  const p = new URLSearchParams(url.split("#")[1]);
+
+  for (const f of ["website", ...SOCIAL_FIELDS]) {
+    const got = p.get(URL_KEYS[f]);
+    if (got == null) continue;                    // skipped whole: allowed
+    assert.equal(got, compactSocial(contact[f]),
+      `${f} must be written whole, got a fragment: ${got}`);
+  }
+});
+
+test("a full contact — every field populated — travels with nothing dropped", async () => {
+  const { buildShareUrl, QR_BUDGET_BYTES } = await import("../src/shareurl.mjs");
+  const { FIELDS, URL_KEYS } = await import("../src/contact.mjs");
+  const contact = {
+    name: "Alexander Sorrell", github: "Alexander-Sorrell-IT",
+    linkedin: "alex-sorrell-computers", email: "someone@a.example",
+    phone: "(817) 996-6123", website: "https://a.example/profile", twitter: "someone",
+    social1: "https://b.example/one", social2: "https://c.example/two",
+    social3: "https://d.example/three", social4: "https://e.example/four",
+    social5: "https://f.example/five",
+  };
+  const agg = { total_sessions: 14264, total_duration_hours: 1272, active_days: 74,
+    longest_streak_days: 49, total_input_tokens: 2833733206, total_output_tokens: 0 };
+  const url = buildShareUrl([7, 6.6, 6.1, 5.1, 5.3], agg, contact, QR_BUDGET_BYTES);
+  const p = new URLSearchParams(url.split("#")[1]);
+  const missing = FIELDS.filter((f) => contact[f] && p.get(URL_KEYS[f]) == null);
+  assert.deepEqual(missing, [], `the budget must carry a full contact; dropped: ${missing.join(", ")}`);
+  assert.ok(Buffer.byteLength(url, "utf8") <= QR_BUDGET_BYTES, "and still respect the cap");
 });

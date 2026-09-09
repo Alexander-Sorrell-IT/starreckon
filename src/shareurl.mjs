@@ -27,12 +27,27 @@
 import { AXES, ARMS, MAX_LEVEL } from "./starsvg.mjs";
 import { archetype, rating } from "./archetype.mjs";
 import { FIELDS as CONTACT_FIELDS, URL_KEYS } from "./contact.mjs";
+import { MAX_BYTES as QR_MAX_BYTES } from "./qr.mjs";
 
 export const PAGES_BASE = "https://alexander-sorrell-it.github.io/starreckon/";
 
-// The QR payload cap. contact.mjs documents the same 260 bytes for the raw-text
-// payload; the URL is held to it too so a scannable code stays scannable.
-export const QR_BUDGET_BYTES = 260;
+// The QR payload cap, taken from the ENCODER rather than restated.
+//
+// It was a hand-written 260 while qr.mjs encodes up to 271 (version 10, EC
+// level L), so 11 bytes were unreachable — and the field they cost was the
+// email. Priority order already puts email ahead of phone: at 260 the URL
+// reached 231 after linkedin, email needed 36 to make 267, was SKIPPED for
+// being 7 over, and phone then fit in the room email could not use. The card
+// carried a phone number and no address.
+//
+// Both payloads encode to the same 57x57 symbol, so this buys the field at no
+// cost in QR size or scannability — 267 and 254 are the same version 10. Phone
+// now falls off the end instead, which is the right way round: the resume
+// prints the number in its header, and nothing on the page carries the email.
+//
+// Imported, not repeated. A cap written down twice is a cap that drifts from
+// what the encoder will actually take.
+export const QR_BUDGET_BYTES = QR_MAX_BYTES;
 
 // URL keys come from contact.mjs — the single source shared with the text
 // payload's TAGS. Deliberately terse: every byte spent on a key name is a byte

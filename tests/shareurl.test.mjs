@@ -251,3 +251,44 @@ test("budget holds for multi-byte values", () => {
   assert.ok(Buffer.byteLength(url, "utf8") <= QR_BUDGET_BYTES,
     `${Buffer.byteLength(url, "utf8")} bytes exceeds the ${QR_BUDGET_BYTES}-byte cap`);
 });
+
+// ---------------------------------------------------------------------------
+// The budget must be the ENCODER's capacity, not a number written beside it.
+// A hand-written 260 sat 11 bytes under qr.mjs's 271, and those 11 bytes were
+// the email: priority puts email ahead of phone, email needed 36 to reach 267,
+// was skipped for being 7 over, and phone then fit in the room email could not
+// use — so the card carried a phone number and no address.
+// ---------------------------------------------------------------------------
+
+test("the URL budget is the encoder's real capacity, not a second copy of it", async () => {
+  const { QR_BUDGET_BYTES } = await import("../src/shareurl.mjs");
+  const { MAX_BYTES } = await import("../src/qr.mjs");
+  assert.equal(QR_BUDGET_BYTES, MAX_BYTES);
+});
+
+test("a full contact puts the email in the QR, and the payload still encodes", async () => {
+  const { buildShareUrl, QR_BUDGET_BYTES } = await import("../src/shareurl.mjs");
+  const { encodeQR } = await import("../src/qr.mjs");
+  const agg = {
+    total_sessions: 14264, total_duration_hours: 1272,
+    active_days: 74, longest_streak_days: 49,
+    total_input_tokens: 2_800_000_000, total_output_tokens: 33_733_206,
+  };
+  const contact = {
+    name: "Alexander Sorrell",
+    github: "Alexander-Sorrell-IT",
+    linkedin: "alex-sorrell-computers",
+    email: "alexander.sorrell.it@gmail.com",
+    phone: "(817) 996-6123",
+    website: "https://github.com/Alexander-Sorrell-IT",
+  };
+  const url = buildShareUrl([7, 6.6, 6.1, 5.1, 5.3], agg, contact, QR_BUDGET_BYTES,
+    { onDisk: 23_177_513_548, floor: 109_394_493_211 });
+  assert.ok(url, "a URL must be built");
+  assert.ok(url.length <= QR_BUDGET_BYTES, `${url.length} exceeds ${QR_BUDGET_BYTES}`);
+  assert.match(url, /[#&]em=/, `email missing from:\n${url}`);
+  // A skipped field is skipped whole — never a fragment of an address.
+  assert.ok(!/[#&]em=[^&]*%40[^&]*$/.test(url) || url.includes("%40gmail.com"),
+    "a partial email must never be written");
+  assert.equal(encodeQR(url).size, 57, "must still be a version-10 symbol");
+});

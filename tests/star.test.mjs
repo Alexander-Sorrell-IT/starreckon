@@ -17,7 +17,7 @@ import {
   renderStarSvg,
   clampLevel,
 } from "../src/starsvg.mjs";
-import { renderStar, computeLevels } from "../src/star.mjs";
+import { renderStar, computeLevels, computeLevelsRaw, explainLevels } from "../src/star.mjs";
 
 const R = 100;
 const dist = ([x, y]) => Math.hypot(x, y);
@@ -497,4 +497,72 @@ test("renderStar with progress=0 for all arms still shows labels at full target 
   assert.match(atZeroProgress, /LV\.2/, "arm 0 label must show full level at zero progress");
   assert.match(atZeroProgress, /LV\.3/, "arm 1 label must show full level at zero progress");
   assert.match(atZeroProgress, /LV\.5/, "arm 4 label must show full level at zero progress");
+});
+
+
+// ---------------------------------------------------------------------------
+// The ceiling hides magnitude. FIRST PRINCIPLES saturates at ~245M in+out
+// tokens, so a heavy corpus pins every big month to the same 7.0 and the arm
+// stops telling months apart. computeLevelsRaw is the same arithmetic with the
+// clamp off, so "maxed" can say by how much.
+// ---------------------------------------------------------------------------
+
+test("computeLevelsRaw equals computeLevels for every arm below the ceiling", () => {
+  const agg = {
+    total_input_tokens: 4_000_000,
+    total_output_tokens: 1_000_000,
+    languages: { python: 3, javascript: 2 },
+    projects_count: 3,
+    tool_calls: 1500,
+    models: { a: 1 },
+    night_hours: 10,
+    longest_streak_days: 4,
+    active_days: 9,
+  };
+  const lv = computeLevels(agg);
+  const raw = computeLevelsRaw(agg);
+  assert.equal(lv.length, raw.length);
+  for (let i = 0; i < lv.length; i++) {
+    assert.ok(lv[i] < 7, `arm ${i} was expected below the ceiling, got ${lv[i]}`);
+    assert.equal(raw[i], lv[i], `arm ${i}: raw ${raw[i]} must equal level ${lv[i]} when uncapped`);
+  }
+});
+
+test("a saturated arm reports a raw level above the ceiling, and the clamp still holds", () => {
+  // 3.01B in+out — the real lifetime scale that pinned this axis in April.
+  const agg = { total_input_tokens: 3_000_000_000, total_output_tokens: 13_045_378 };
+  const lv = computeLevels(agg);
+  const raw = computeLevelsRaw(agg);
+  assert.equal(lv[0], 7, "the published level must stay clamped at MAX_LEVEL");
+  assert.ok(raw[0] > 7, `raw was expected past the ceiling, got ${raw[0]}`);
+  assert.ok(raw[0] > 10 && raw[0] < 11, `raw ${raw[0]} should read ~10.2 at 3.01B tokens`);
+});
+
+test("two months that both pin at 7.0 are distinguishable by raw level", () => {
+  const apr = computeLevels({ total_input_tokens: 415_000_000, total_output_tokens: 0 });
+  const aug = computeLevels({ total_input_tokens: 2_039_000_000, total_output_tokens: 0 });
+  assert.equal(apr[0], aug[0], "premise: the clamp renders these identically");
+  const aprRaw = computeLevelsRaw({ total_input_tokens: 415_000_000, total_output_tokens: 0 });
+  const augRaw = computeLevelsRaw({ total_input_tokens: 2_039_000_000, total_output_tokens: 0 });
+  assert.ok(augRaw[0] > aprRaw[0], "a 5x bigger month must read higher raw");
+});
+
+test("explainLevels carries raw beside level, and marks the capped arm", () => {
+  const rows = explainLevels({ total_input_tokens: 3_000_000_000, total_output_tokens: 0 });
+  const fp = rows[0];
+  assert.equal(fp.axis, "FIRST PRINCIPLES");
+  assert.equal(fp.level, 7);
+  assert.equal(fp.capped, true);
+  assert.ok(fp.raw > fp.level, "raw must exceed the clamped level on a saturated arm");
+  const tenacity = rows[4];
+  assert.equal(tenacity.capped, false);
+  assert.equal(tenacity.raw, tenacity.level, "an uncapped arm's raw is its level");
+});
+
+test("computeLevelsRaw never returns NaN for hostile input", () => {
+  for (const bad of [null, undefined, {}, { total_input_tokens: -5, total_output_tokens: -5 }, { total_input_tokens: "x" }]) {
+    for (const v of computeLevelsRaw(bad)) {
+      assert.ok(Number.isFinite(v), `NaN/Infinity from ${JSON.stringify(bad)}`);
+    }
+  }
 });

@@ -548,6 +548,46 @@ export function computeLevels(agg) {
 }
 
 /**
+ * The SAME arithmetic as computeLevels with the ceiling taken off.
+ *
+ * An arm that hits MAX_LEVEL stops carrying information, and on a heavy corpus
+ * it stops early: FIRST PRINCIPLES saturates at ~245M in+out tokens, so a month
+ * of 415M and a month of 2,039M both render 7.0 and look identical. "maxed"
+ * says the axis stopped measuring; this says by how much, which is the part a
+ * reader needs to know the difference between clearing the bar and clearing it
+ * twelve times over.
+ *
+ * NOT a second copy of the scoring — same AXIS_SPEC, same lg(), and the only
+ * difference is clamp(). Every copy of this formula in this codebase has
+ * eventually disagreed with its original, so there is exactly one place the
+ * terms are summed, and both functions call it.
+ */
+export function computeLevelsRaw(agg) {
+  const a = agg && typeof agg === "object" ? agg : {};
+  const lg = (v, mid) => 5 * (Math.log1p(Math.max(0, v)) / Math.log1p(mid * 10));
+  const tokens =
+    (a.total_input_tokens ?? a.input_tokens ?? 0) +
+    (a.total_output_tokens ?? a.output_tokens ?? 0);
+  const inputs = {
+    tokensM: tokens / 1e6,
+    projects: a.projects_count ?? (a.projects ?? []).length,
+    langs: Object.keys(a.languages ?? {}).length,
+    toolCalls:
+      a.tool_calls ?? Object.values(a.tool_call_counts ?? {}).reduce((x, y) => x + y, 0),
+    models: Object.keys(a.models ?? {}).length,
+    nightHours: a.night_hours ?? 0,
+    streak: a.longest_streak_days ?? 0,
+    activeDays: a.active_days ?? 0,
+  };
+  return AXIS_SPEC.map(
+    (axis) =>
+      +axis.terms
+        .reduce((sum, t) => sum + lg(Math.max(0, Number(inputs[t.input]) || 0), t.mid) * t.weight, 0)
+        .toFixed(1)
+  );
+}
+
+/**
  * What each arm was measured FROM — same spec, same numbers as computeLevels.
  *
  * Returns one entry per axis: its level, and every term with the value that was
@@ -573,6 +613,7 @@ export function explainLevels(agg, opts = {}) {
     return true;
   };
   const levels = computeLevels(a);
+  const raws = computeLevelsRaw(a);
   const lg = (v, mid) => 5 * (Math.log1p(Math.max(0, v)) / Math.log1p(mid * 10));
   const tokens =
     (a.total_input_tokens ?? a.input_tokens ?? 0) + (a.total_output_tokens ?? a.output_tokens ?? 0);
@@ -590,6 +631,8 @@ export function explainLevels(agg, opts = {}) {
   return AXIS_SPEC.map((axis, i) => ({
     axis: AXES[i],
     level: levels[i],
+    // What the arm would read with no ceiling. Equal to `level` unless capped.
+    raw: raws[i],
     // An axis with NO measurable term is unmeasured; one with some is a FLOOR,
     // because every term is a non-negative addition and the missing ones can
     // only push the arm up.

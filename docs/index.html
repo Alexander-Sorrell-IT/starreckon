@@ -535,17 +535,32 @@
 
 <div class="card-container">
 
+  <!-- Shown when the hash carries no card. Nothing is invented to fill it. -->
+  <div class="panel" id="no-card" hidden>
+    <div class="section-label">NO CARD IN THIS LINK</div>
+    <div class="section-desc">
+      This page renders a starreckon card that a link carries with it. This link
+      carries none, so there is nothing to show — these numbers are never made up
+      to fill the space.
+    </div>
+    <div class="section-desc" style="margin-top:0.8rem">
+      To make your own, run <code>npx starreckon</code>, then press
+      <code>[X]</code> to copy your link or scan the QR it prints. You can also
+      fill in the card builder below.
+    </div>
+  </div>
+
   <!-- 1. TOP PANEL: Results, Star, Axes, Stats, and Clickable QR Code -->
   <div class="panel" id="result-panel">
     <div class="header">
-      <div id="name-el" class="name">Alexander Sorrell</div>
-      <div id="arch-el" class="arch">The Systems Architect</div>
-      <div id="tier-badge-el" class="tier-badge">TEMPERED</div>
-      <div id="score-el" class="score">29.6</div>
+      <div id="name-el" class="name"></div>
+      <div id="arch-el" class="arch"></div>
+      <div id="tier-badge-el" class="tier-badge"></div>
+      <div id="score-el" class="score">—</div>
       <div class="score-sub">out of 35 skill points</div>
       <div class="tokens-hero">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
-        <span id="tokens-hero-val">20.8B</span> LIFETIME TOKENS
+        <span id="tokens-hero-val">—</span> LIFETIME TOKENS
       </div>
     </div>
 
@@ -600,7 +615,7 @@
       <!-- Card 1: THE WEIGHT OF IT -->
       <div class="story-card">
         <div class="story-card-title">★ THE WEIGHT OF IT — LIFETIME TOKENS</div>
-        <div class="story-card-hero"><span id="card-tokens-hero">20.8B</span> Tokens</div>
+        <div class="story-card-hero"><span id="card-tokens-hero">—</span> Tokens</div>
         <div class="story-card-body">
           <b>186.1M</b> generated work tokens · <b>20.6B</b> cache read/write (99.1% cached).
           <br>
@@ -618,7 +633,7 @@
         <div class="story-card-title">★ WHAT YOU BUILT — ARCHETYPE</div>
         <div class="story-card-hero" id="card-arch-hero">The Systems Architect</div>
         <div class="story-card-body">
-          <b id="card-score-body">29.6 / 35</b> Skill Points (<span id="card-tier-body">TEMPERED</span> Tier). Deep engine architecture, AST parsers, and test-enforced zero-LLM verdicts.
+          <b id="card-score-body">— / 35</b> Skill Points (<span id="card-tier-body">—</span> Tier). Deep engine architecture, AST parsers, and test-enforced zero-LLM verdicts.
         </div>
         <div class="story-card-breakdown">
           <div class="substat"><span class="substat-val">Lv 6.7</span><span class="substat-label">First Principles</span></div>
@@ -711,8 +726,8 @@
     <!-- Active Contact Chips (only shown if specified in hash or entered) -->
     <div id="chips-grid" class="chips-grid"></div>
 
-    <!-- Interactive Customizer for Public Users -->
-    <div class="form-container">
+    <!-- Interactive Customizer — hidden while VIEWING someone's card -->
+    <div class="form-container" id="card-editor">
       <div class="form-title">Customize Your Card / Share Your Star</div>
       <div class="form-subtitle">
         StarReckon is open source. Any developer can enter their details below. Changes immediately update your share URL and regenerate the scannable QR code live. Zero data leaves your machine.
@@ -1133,29 +1148,61 @@ function fmt(n){ return Number(n).toLocaleString("en-US"); }
 let currentState = null;
 
 // Parse parameters from location hash or fall back to defaults
+// EVERY FIELD HERE ONCE HAD A FABRICATED DEFAULT.
+//
+// Opening this page with no hash — which is what visiting the bare URL does —
+// rendered levels [6.7, 6.2, 5.8, 5.4, 5.5], 29.6/35 TEMPERED, 210 sessions,
+// 1014 hours and 20.8B tokens, under a hardcoded name, GitHub and LinkedIn.
+// None of those numbers came from a scan. They were a designer's placeholder
+// wearing a real person's identity, on the landing page of a tool whose whole
+// claim is that a number is executable rather than asserted. It also produced
+// the "7.0 in the star, 6.7 on the page" mismatch, because 6.7 was never a
+// score at all.
+//
+// A card is now either SUPPLIED by the hash or ABSENT. Absent renders as
+// absent — never as a plausible-looking stranger's star.
 function parseState() {
   const hash = location.hash.replace(/^#/, "");
   const p = new URLSearchParams(hash);
+  const DATA_KEYS = ["s", "v", "g", "a", "ss", "h", "d", "k", "tok", "n", "gh", "em", "tel", "web", "li", "tw"];
+  const hasCard = DATA_KEYS.some((k) => {
+    const val = p.get(k);
+    return typeof val === "string" && val.trim() !== "";
+  });
+
   const vRaw = p.get("v");
-  const levels = vRaw ? vRaw.split(",").map(Number).filter((n) => !isNaN(n)) : [6.7, 6.2, 5.8, 5.4, 5.5];
+  const parsed = vRaw ? vRaw.split(",").map(Number).filter((n) => !isNaN(n)) : [];
+  const levels = parsed.length === 5 ? parsed : null;
+
+  const num = (key) => {
+    const raw = p.get(key);
+    if (raw == null || raw.trim() === "") return null;
+    const n = Number(raw);
+    return isNaN(n) ? null : n;
+  };
+  const str = (key) => {
+    const raw = p.get(key);
+    return raw != null && raw.trim() !== "" ? raw.trim() : null;
+  };
 
   return {
-    total:     parseFloat(p.get("s") || "29.6"),
-    tier:      p.get("g") || "TEMPERED",
-    archetype: (p.get("a") || "The_Systems_Architect").replace(/_/g, " "),
-    levels:    levels.length === 5 ? levels : [6.7, 6.2, 5.8, 5.4, 5.5],
-    sessions:  parseInt(p.get("ss") || "210", 10),
-    hours:     parseInt(p.get("h") || "1014", 10),
-    days:      parseInt(p.get("d") || "68", 10),
-    streak:    parseInt(p.get("k") || "49", 10),
-    tokens:    p.get("tok") || "20.8B",
-    name:      p.get("n") || "Alexander Sorrell",
-    github:    p.get("gh") || "Alexander-Sorrell-IT",
-    email:     p.get("em") || null,
-    phone:     p.get("tel") || null,
-    website:   p.get("web") || null,
-    linkedin:  p.get("li") || "alex-sorrell-computers",
-    twitter:   p.get("tw") || null,
+    hasCard,
+    total:     num("s"),
+    tier:      str("g"),
+    archetype: (str("a") || "").replace(/_/g, " ") || null,
+    levels,
+    sessions:  num("ss"),
+    hours:     num("h"),
+    days:      num("d"),
+    streak:    num("k"),
+    tokens:    str("tok"),
+    name:      str("n"),
+    github:    str("gh"),
+    email:     str("em"),
+    phone:     str("tel"),
+    website:   str("web"),
+    linkedin:  str("li"),
+    twitter:   str("tw"),
   };
 }
 
@@ -1214,6 +1261,32 @@ function render() {
   const d = currentState;
   if (!d) return;
 
+  // A CARD IS EITHER SUPPLIED OR IT IS NOT. With nothing in the hash there is
+  // nothing to show, so the page says so instead of drawing a placeholder star
+  // under a hardcoded name. The builder stays available: with no card to view,
+  // making your own is the only thing this page is for.
+  const resultPanel = document.getElementById("result-panel");
+  const storyPanel  = document.querySelector(".story-deck-panel");
+  const editor      = document.getElementById("card-editor");
+  const empty       = document.getElementById("no-card");
+  if (!d.hasCard) {
+    if (resultPanel) resultPanel.hidden = true;
+    if (storyPanel)  storyPanel.hidden  = true;
+    if (empty)       empty.hidden       = false;
+    if (editor)      editor.hidden      = false;
+    return;
+  }
+  if (resultPanel) resultPanel.hidden = false;
+  if (storyPanel)  storyPanel.hidden  = false;
+  if (empty)       empty.hidden       = true;
+  // SOMEONE ELSE'S CARD IS NOT A DRAFT OF YOURS. The customizer rewrote the
+  // hash and the QR on every keystroke, so anyone who scanned a card landed on
+  // a form pre-filled with that person's name, contact details and token
+  // totals, one edit away from re-sharing them as their own. A supplied card
+  // renders read-only; build your own from the bare page.
+  if (editor) editor.hidden = true;
+
+
   const tierColors = {
     MASTERWORK: "#f59e0b",
     TEMPERED:   "#94a3b8",
@@ -1243,7 +1316,7 @@ function render() {
 
   // Tokens Hero
   const tokensHero = document.getElementById("tokens-hero-val");
-  if (tokensHero) tokensHero.textContent = d.tokens || "20.8B";
+  if (tokensHero) tokensHero.textContent = d.tokens || "\u2014";
 
   // 2. Axes Breakdown Grid
   const axesEl = document.getElementById("axes-grid");
@@ -1267,7 +1340,7 @@ function render() {
 
   // Story Cards Dynamic Update
   const cardTokensHero = document.getElementById("card-tokens-hero");
-  if (cardTokensHero) cardTokensHero.textContent = d.tokens || "20.8B";
+  if (cardTokensHero) cardTokensHero.textContent = d.tokens || "\u2014";
   const cardArchHero = document.getElementById("card-arch-hero");
   if (cardArchHero) cardArchHero.textContent = d.archetype;
   const cardScoreBody = document.getElementById("card-score-body");

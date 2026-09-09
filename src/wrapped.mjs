@@ -979,7 +979,12 @@ export function cardScoring(agg) {
   }
   const lines = [head("HOW IT WAS SCORED"), ""];
   for (const r of rows) {
-    const cap = r.capped ? `  ${D}maxed${R}` : "";
+    // "maxed" alone reads the same at 1x over the ceiling and 12x over it.
+    // The raw figure is what separates clearing the bar from clearing it
+    // twelve times, and it is the only number on this card the star itself
+    // cannot show.
+    const over = r.capped && Number.isFinite(r.raw) && r.raw > r.level;
+    const cap = r.capped ? `  ${D}maxed${over ? ` · raw ${r.raw.toFixed(1)}` : ""}${R}` : "";
     lines.push(`  ${WH}${pad(r.axis, 18)}${R}${bar(r.level, MAX_LEVEL, 8)} ${WH}${r.level}${R}${cap}`);
     for (const t of r.terms) {
       const val = `${human(t.value)}${t.unit}`;

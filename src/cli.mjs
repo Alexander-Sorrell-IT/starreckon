@@ -221,6 +221,18 @@ const displayName = () => {
   // object) must not reach String() and land as "[object Object]" on the card.
   return (_nameCache = null);
 };
+// The full contact object, cached for the same reason displayName() is: it
+// cannot change mid-run. `--name` still wins over the stored name, matching
+// displayName()'s override-is-checked-first rule, so one flag cannot leave the
+// card and the QR disagreeing about who this is.
+let _contactCache;
+const shareContact = () => {
+  if (_contactCache !== undefined) return _contactCache;
+  const stored = readContact() ?? {};
+  const n = displayName();
+  return (_contactCache = n ? { ...stored, name: n } : stored);
+};
+
 import { readExclusions, addExclusion, removeExclusion, EXCLUDE_FILE } from "./exclude.mjs";
 import { buildShareUrl, PAGES_BASE } from "./shareurl.mjs";
 import { readFleet, writeMachineFolder } from "./fleet.mjs";
@@ -982,7 +994,7 @@ if (subcommand === "serve") {
       name: opt("name") ?? null,
       showAccounts: false,
       noProjects: flag("--no-projects"),
-      shareUrl: buildShareUrl(_serveLevels, _serveAgg, opt("name") ?? null),
+      shareUrl: buildShareUrl(_serveLevels, _serveAgg, shareContact()),
     });
     process.stdout.write(`${DIM}page ready — starting server${RESET}\n`);
   }

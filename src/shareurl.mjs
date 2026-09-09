@@ -47,19 +47,24 @@ export const PAGES_BASE = "https://alexander-sorrell-it.github.io/starreckon/";
 //
 // Imported, not repeated. A cap written down twice is a cap that drifts from
 // what the encoder will actually take.
-export const QR_BUDGET_BYTES = 331;
+export const QR_BUDGET_BYTES = 512;
 
-// 331 is version 13 at level L — a 69x69 symbol — and it is a SCANNABILITY
-// choice, not a capacity one. The encoder now reaches version 40 and 2,953
-// bytes, but that is a 177x177 grid: printed in the 25mm square a resume gives
-// a QR, each module lands near 0.14mm and a phone camera cannot resolve it. The
-// code would be perfect and unreadable, which is the same outcome as no code.
+// 512 bytes is version 18 — an 89x89 symbol — and it is a SCANNABILITY choice,
+// not a capacity one. The encoder reaches version 40 and 2,953 bytes, but that
+// is a 177x177 grid: printed in the square a resume gives a QR, each module
+// lands near 0.14mm and no phone camera resolves it. The code would be perfect
+// and unreadable, which is the same outcome as no code at all.
 //
 // So the ceiling the ENCODER can reach and the budget this CARD spends are two
 // different numbers, and tying them together was wrong: it let a resume QR grow
-// to whatever happened to fit. At 69x69 a module is about 0.34mm at that size,
-// still inside what a phone reads, and it buys 60 bytes over the old 271 —
-// which is a social link, or the phone number.
+// to whatever happened to fit.
+//
+// This number is set so a FULL contact — name, github, linkedin, email, five
+// socials, phone and website, alongside the stats — travels with nothing
+// dropped. That payload measures 478 bytes and lands on version 17 (85x85).
+// A module then needs about 0.33mm to stay readable, so the code must be
+// printed at 31mm or more; the resume templates use 104pt (36.7mm), which
+// leaves margin. At the old 74pt it would have been 0.28mm and marginal.
 //
 // Raise it only against a printed test scan, never against the encoder max.
 if (QR_BUDGET_BYTES > QR_MAX_BYTES) throw new Error("qr budget exceeds encoder capacity");
@@ -142,8 +147,16 @@ export function buildShareUrl(levels, agg, contact, budget = QR_BUDGET_BYTES, fl
     // is larger because a profile path is not a handle — 32 would cut
     // "linkedin.com/in/alex-sorrell-computers" mid-slug, and a truncated URL
     // is a broken link, which is worse than an absent one.
-    const isSocial = SOCIAL_FIELDS.includes(f);
-    const val = isSocial ? compactSocial(raw).slice(0, 48) : raw.trim().slice(0, 32);
+    // A URL FIELD IS NEVER CUT. `website` was on the 32-character path with the
+    // handles, so "https://github.com/Alexander-Sorrell-IT" was written as
+    // "https://github.com/Alexander-Sor" — a link that goes nowhere, in a code
+    // whose whole job is to be followed. It was invisible while the field was
+    // being dropped for budget anyway; raising the budget made it reachable and
+    // wrong. Every URL-shaped field now takes the social path: scheme stripped
+    // for bytes, a cap that fits a real profile path, and if it still does not
+    // fit it is skipped WHOLE by the budget check below.
+    const isUrlField = SOCIAL_FIELDS.includes(f) || f === "website";
+    const val = isUrlField ? compactSocial(raw).slice(0, 48) : raw.trim().slice(0, 32);
     if (!val) continue;
     // MEASURE WHAT IS ACTUALLY WRITTEN. This estimated the cost with
     // encodeURIComponent and then wrote with params.set(), and the two do not

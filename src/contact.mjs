@@ -20,17 +20,20 @@ import { homedir } from "node:os";
 // important first, so if the payload is tight the useful fields survive).
 export const FIELDS = ["name", "github", "linkedin", "email", "phone", "website", "twitter"];
 
-// Short tag prefix for each field in the QR payload. Kept as short as possible
-// to maximise how much fits in the 260-byte cap.
-export const TAGS = {
-  name:     "",
-  github:   "gh:",
-  email:    "em:",
-  phone:    "tel:",
-  website:  "web:",
-  linkedin: "li:",
-  twitter:  "tw:",
+// Short key for each field. ONE map, used by both outputs: the share URL
+// (shareurl.mjs imports this) and the text payload (TAGS below derives from it).
+// Two hand-maintained copies is how PROVIDER_PREFIXES drifted in deadreckon —
+// add an eighth field to FIELDS and there is now exactly one place to update.
+export const URL_KEYS = {
+  name: "n", github: "gh", email: "em", phone: "tel",
+  website: "web", linkedin: "li", twitter: "tw",
 };
+
+// Tag prefix for the text QR payload. DERIVED, never hand-written: the same key
+// as the URL plus a colon, with name unprefixed because it leads the block.
+export const TAGS = Object.fromEntries(
+  FIELDS.map((f) => [f, f === "name" ? "" : URL_KEYS[f] + ":"]),
+);
 
 // Human label for each field — used in the terminal menu.
 export const LABELS = {

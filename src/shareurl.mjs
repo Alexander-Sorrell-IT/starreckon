@@ -26,7 +26,7 @@
 
 import { AXES, ARMS, MAX_LEVEL } from "./starsvg.mjs";
 import { archetype, rating } from "./archetype.mjs";
-import { FIELDS as CONTACT_FIELDS } from "./contact.mjs";
+import { FIELDS as CONTACT_FIELDS, URL_KEYS } from "./contact.mjs";
 
 export const PAGES_BASE = "https://alexander-sorrell-it.github.io/starreckon/";
 
@@ -34,12 +34,9 @@ export const PAGES_BASE = "https://alexander-sorrell-it.github.io/starreckon/";
 // payload; the URL is held to it too so a scannable code stays scannable.
 export const QR_BUDGET_BYTES = 260;
 
-// Short URL keys for the contact fields. Deliberately terse: every byte spent
-// on a key name is a byte not available for a value inside the QR budget.
-const URL_KEYS = {
-  name: "n", github: "gh", email: "em", phone: "tel",
-  website: "web", linkedin: "li", twitter: "tw",
-};
+// URL keys come from contact.mjs — the single source shared with the text
+// payload's TAGS. Deliberately terse: every byte spent on a key name is a byte
+// not available for a value inside the QR budget.
 
 /**
  * Build the share URL for a set of scan results.
@@ -52,7 +49,7 @@ const URL_KEYS = {
  *           are added, in priority order, within the byte budget.
  * budget  — max URL bytes. Defaults to the QR cap.
  */
-export function buildShareUrl(levels, agg, contact, budget = QR_BUDGET_BYTES) {
+export function buildShareUrl(levels, agg, contact, budget = QR_BUDGET_BYTES, floorData = null) {
   if (!levels || !levels.length) return null;
   const lv = levels.map((v) => Math.min(MAX_LEVEL, Math.max(0, +v || 0)));
   const total = +lv.reduce((a, b) => a + b, 0).toFixed(1);
@@ -72,7 +69,8 @@ export function buildShareUrl(levels, agg, contact, budget = QR_BUDGET_BYTES) {
     if (a.longest_streak_days) params.set("k", String(a.longest_streak_days));
     const work = (a.total_input_tokens ?? 0) + (a.total_output_tokens ?? 0);
     const cache = (a.total_cache_read_tokens ?? 0) + (a.total_cache_write_tokens ?? 0);
-    const totalTokens = work + cache;
+    const floorVal = Number(floorData?.floor) || 0;
+    const totalTokens = Math.max(work + cache, floorVal);
     if (totalTokens > 0) {
       const tokStr = totalTokens >= 1e9
         ? (totalTokens / 1e9).toFixed(1) + "B"

@@ -662,7 +662,12 @@ export function shareQrLines(rawLevels, agg, url, contact, floorData = null) {
   // Prefer encoding the GitHub Pages URL (short, clickable, renders the star
   // in a browser) over the raw-text payload. Fall back to raw text if the
   // URL can't be built (e.g. levels missing).
-  const shareUrl = buildShareUrl(lv5(rawLevels), agg, contact, QR_BUDGET_BYTES, floorData);
+  // Fields the budget could not fit are collected here and NAMED under the QR.
+  // They used to fall off in silence — see the onSkip comment in shareurl.mjs.
+  const skipped = [];
+  const shareUrl = buildShareUrl(lv5(rawLevels), agg, contact, QR_BUDGET_BYTES, floorData, {
+    onSkip: (f) => skipped.push(f),
+  });
   const payload = shareUrl ?? sharePayload(lv5(rawLevels), agg, url ?? PAGES_BASE, contact);
   try {
     const qr = qrToTerminal(payload, { color: !plain(), href: shareUrl }).split("\n").map((r) => "  " + r);
@@ -697,6 +702,19 @@ export function shareQrLines(rawLevels, agg, url, contact, floorData = null) {
       // Omitted entirely when the contact file carries no github, rather than
       // printed as an empty line under the share link.
       ...(clickGh ? [clickGh] : []),
+      // A dropped field is stated, never implied by its absence. Without this
+      // the only way to learn the QR is missing your phone number is to scan it
+      // and read the page.
+      ...(skipped.length
+        ? [
+            plain()
+              ? `  not in the code (too long for the ${QR_BUDGET_BYTES}-byte budget): ${skipped.join(", ")}`
+              : `  ${D}not in the code (too long for the ${QR_BUDGET_BYTES}-byte budget): ${B}${skipped.join(", ")}${R}`,
+            plain()
+              ? "  shorten them in [R], or they stay off the card."
+              : `  ${D}shorten them in ${B}[R]${R}${D}, or they stay off the card.${R}`,
+          ]
+        : []),
     ];
   } catch (e) {
     // plain() gated like the success path above. Bob caught this: I fixed the

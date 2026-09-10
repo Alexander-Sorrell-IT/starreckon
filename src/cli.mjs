@@ -1047,6 +1047,7 @@ if (subcommand === "serve") {
       showAccounts: false,
       noProjects: flag("--no-projects"),
       shareUrl: buildShareUrl(_serveLevels, _serveAgg, shareContact(), QR_BUDGET_BYTES, serveFloorData),
+      floorData: serveFloorData,
     });
     process.stdout.write(`${DIM}page ready — starting server${RESET}\n`);
   }
@@ -2498,6 +2499,9 @@ async function main() {
         // floorData passed: the page's QR must carry the same total the terminal
         // QR does. Omitting it silently downgraded the number to on-disk only.
         shareUrl: buildShareUrl(levels, agg, readContact(), QR_BUDGET_BYTES, floorData),
+        // The page's token tile reads this, so the tile and the QR above it show
+        // the same number instead of 21.4B beside 109.4B.
+        floorData,
       })
     );
     const pagePath = join(outDir, `stats-${stamp}.html`);

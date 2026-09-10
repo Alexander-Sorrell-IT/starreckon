@@ -1200,7 +1200,45 @@ export function outputScrub(dataDir = join(homedir(), ".starreckon"), opts = {})
         }
       }
     } else {
-      prose(collapse(text), "as plain text");
+      // PLAIN TEXT IS TESTED ON ITS DISTINCT LINE SHAPES, NOT ITS REPETITION.
+      //
+      // collapse() turns the whole file into one string, so a status log that
+      // repeats four sentences a hundred times measures as a long, space-heavy
+      // "prose-like string" and fails. daemon/protect.log did exactly that:
+      // 77 lines, 4 distinct shapes, not one character of identity in it —
+      // "protect: 46 file(s) archived" over and over. This is the same class of
+      // defect as the token_ledger.jsonl case documented above, where the
+      // check was counting line breaks as spaces.
+      //
+      // A line's SHAPE is the line with digit runs replaced by N, so entries
+      // differing only in a count or a timestamp collapse together. The
+      // thresholds are unchanged and are applied to the first occurrence of
+      // each shape joined back together — the file's distinct content.
+      //
+      // This is a precision gain, not an exemption, and the padding attack is
+      // why it is written this way rather than as a ratio gate. A ratio gate
+      // ("skip files whose lines are mostly duplicates") is defeated by
+      // appending sixty copies of "ok" to a transcript; tested that, it passed
+      // the gate. Under this rule the transcript's own lines are still distinct
+      // shapes, so the padding changes nothing and the file still FAILS.
+      // Verified against: protect.log (pass), the old card-bearing scan.log
+      // (fail), a status-line scan.log (pass), a transcript (fail), and that
+      // transcript with sixty "ok" lines appended (fail).
+      //
+      // What it gives up: text under the length threshold repeated many times
+      // no longer reaches the threshold by repetition alone. A single line too
+      // short to be flagged on its own is too short whether it appears once or
+      // a hundred times.
+      const seen = new Set();
+      const firstOfEachShape = [];
+      for (const line of text.split("\n")) {
+        if (!line.trim()) continue;
+        const shape = line.replace(/\d+/g, "N");
+        if (seen.has(shape)) continue;
+        seen.add(shape);
+        firstOfEachShape.push(line);
+      }
+      prose(collapse(firstOfEachShape.join("\n")), "as plain text (distinct line shapes)");
     }
 
     // (d) account identity — an email address is not a "secret" (no redact.mjs
@@ -1253,7 +1291,7 @@ export function outputScrub(dataDir = join(homedir(), ".starreckon"), opts = {})
       "Pattern checks on the files as they exist NOW: an unknown secret format or a deliberate encoding can slip past, and files already deleted or already synced away are out of reach.",
       "Covers this data dir only — a --join-fleet directory you pointed somewhere else is not scanned.",
       `The walk reads EVERY file under this dir at any depth, whatever the extension. Four things it declines to read, each counted by name in the note above so you can see what you are not getting: files larger than ${SCRUB_MAX_LABEL}, files with a NUL byte in the first ${BINARY_SNIFF_BYTES} bytes (treated as binary), symlinks (not followed — a link can point outside this dir), and non-regular files. A leak parked in a 5 MB file, or after a NUL byte, is outside this check.`,
-      "The transcript heuristic (long, space-heavy strings) runs on JSON string values, on the reader-visible text of .html/.htm/.xhtml/.svg/.xml (tags stripped, entities decoded, whitespace collapsed), and on the whole text of any other file — but <script>/<style> bodies and geometry attributes are skipped as code, and it stays a heuristic: code-like or short leaked text passes it.",
+      "The transcript heuristic (long, space-heavy strings) runs on JSON string values, on the reader-visible text of .html/.htm/.xhtml/.svg/.xml (tags stripped, entities decoded, whitespace collapsed), and on any other file's DISTINCT LINE SHAPES — a line with digit runs replaced by N, so a status log that repeats four sentences a hundred times is measured as those four sentences and not as one long string. That keeps a repeating log from failing on its own repetition; a transcript's lines are distinct, so padding one with repeated filler does not hide it. The trade is that text under the length threshold no longer reaches it by repetition alone. <script>/<style> bodies and geometry attributes are still skipped as code, and it stays a heuristic: code-like or short leaked text passes it.",
       "Identity: it flags email addresses. It does NOT flag the things reports carry BY DESIGN — your project names (last two path segments of each working directory), this machine's hostname in every snapshot, and the acct-<hash> pseudonyms. Those are not leaks of secrets; they are still a list of what you work on and where. Re-run the scan with --no-projects to write proj-<hash> instead of project names; the hostname has no such switch today, because snapshots are keyed on it to merge machine histories. Read a report before you sync or share it.",
     ],
   };

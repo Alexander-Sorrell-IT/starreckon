@@ -157,7 +157,7 @@
 // FLAG_SPEC appears above (a test asserts both directions). An unregistered
 // flag EXITS 2 instead of being ignored — see the comment on FLAG_SPEC.
 import { createInterface } from "node:readline/promises";
-import { writeFileSync, mkdirSync, existsSync, copyFileSync } from "node:fs";
+import { writeFileSync, mkdirSync, existsSync, copyFileSync, appendFileSync } from "node:fs";
 import { homedir, hostname } from "node:os";
 import { join } from "node:path";
 // `new URL(...).pathname` URL-ENCODES. A checkout under a directory with a
@@ -3243,6 +3243,38 @@ ${BOLD}${CYAN}── reach out (shown in QR) ───────────�
   console.log(`\n${DIM}snapshots: ${maskPath(SNAP_DIR)} (sync this dir between machines to merge histories)${RESET}`);
   if (auditPath)
     console.log(`${DIM}run log:   ${maskPath(auditPath)} — verify it with \`starreckon verify\`${RESET}`);
+
+  // ---- scheduled-run status line -------------------------------------------
+  // The daemon plists used to redirect stdout into daemon/scan.log, so every
+  // scheduled run appended its ENTIRE rendered output: the star, the level
+  // lines, the totals, and the top-project names as written. That file grew
+  // without bound, nothing managed it, and verify's leak scan flagged it.
+  //
+  // stdout now goes to /dev/null (NUL on Windows) and the run writes this one
+  // line instead. COUNTS ONLY — no project names, no levels, no identity, and
+  // no path outside the daemon dir. A scheduled run still leaves a trace you
+  // can read to answer "did it run, and did it finish", which is the only
+  // question the log was ever useful for; the numbers themselves live in the
+  // snapshots and the audited run log, which are managed and scrubbed.
+  //
+  // Foreground runs write nothing here: scheduledRun() is null unless the
+  // schedule file set the trigger env var, and a command someone typed and
+  // watched does not need a log of itself.
+  if (scheduledRun()) {
+    try {
+      const line = `scan: ${new Date().toISOString()} ${sources.length} file(s), ${Object.keys(bySource).length} source(s), complete\n`;
+      const dir = join(homedir(), ".starreckon", "daemon");
+      mkdirSync(dir, { recursive: true });
+      appendFileSync(join(dir, "scan.log"), line);
+    } catch (e) {
+      // A status line is a convenience, never a reason to fail a completed
+      // scan — but it is not a reason to say nothing either. A bare `catch {}`
+      // here meant that when this block threw, the scan reported success and
+      // left an empty log, which is indistinguishable from the daemon never
+      // having run. stderr goes to daemon/scan.err under the schedule.
+      console.error(`scan status line failed: ${maskText(String(e?.message ?? e))}`);
+    }
+  }
 }
 
 main().catch((e) => {

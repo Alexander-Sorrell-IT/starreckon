@@ -199,15 +199,30 @@ export function readContact(home) {
  */
 export function writeContact(home, obj) {
   const file = contactPath(home);
-  const clean = {};
+  const set = {};
   for (const f of FIELDS) {
     const v = (obj ?? {})[f];
-    if (typeof v === "string" && v.trim()) clean[f] = v.trim();
+    if (typeof v === "string" && v.trim()) set[f] = v.trim();
   }
-  if (Object.keys(clean).length === 0) {
+  // Nothing set means no file. That is the opt-in contract: starreckon never
+  // collects contact info, and an absent file is how "I have not opted in" is
+  // stored. Writing a template of empty strings would look like a half-filled
+  // form nobody asked for.
+  if (Object.keys(set).length === 0) {
     if (existsSync(file)) unlinkSync(file);
     return;
   }
+  // EVERY SLOT IS WRITTEN, in canonical order, empty ones included.
+  //
+  // Only non-empty fields used to be written, so the file showed whichever
+  // fields happened to be filled and the rest did not exist — you could not
+  // learn from the file that five social slots were available, only from the
+  // menu. The file is the source of truth for this data and it should say what
+  // it can hold. An empty string reads the same as absent everywhere that
+  // consumes it (readContact keeps only non-empty values), so this changes what
+  // the file SHOWS, not what anything downstream sees.
+  const clean = {};
+  for (const f of FIELDS) clean[f] = set[f] ?? "";
   mkdirSync(join(home ?? homedir(), ".starreckon"), { recursive: true });
   writeFileSync(file, JSON.stringify(clean, null, 2) + "\n", "utf8");
 }

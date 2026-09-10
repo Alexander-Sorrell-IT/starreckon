@@ -141,7 +141,15 @@ export function launchdPlist({ node = process.execPath, entry = cliEntry(), day 
     <key>Minute</key><integer>0</integer>
   </dict>
   <key>RunAtLoad</key><false/>
-  <key>StandardOutPath</key><string>${esc(join(logDir, "scan.log"))}</string>
+  <!-- STDOUT IS NOT CAPTURED. This pointed at scan.log, so every scheduled run
+       appended its whole rendered output — the star card, the level lines, the
+       session and token totals, and the top-project names AS WRITTEN. --no-projects
+       could not strip those, because this is raw stdout and not a report: the
+       flag rewrites what the report files carry, not what the terminal printed.
+       The file grew without bound, nothing rotated or managed it, and verify's
+       own leak scan flagged it on this machine. Errors still land in scan.err,
+       and the run appends one status line to scan.log itself (see cli.mjs). -->
+  <key>StandardOutPath</key><string>/dev/null</string>
   <key>StandardErrorPath</key><string>${esc(join(logDir, "scan.err"))}</string>
 </dict>
 </plist>
@@ -237,7 +245,8 @@ WantedBy=timers.target
  */
 export function windowsTaskXml({ node = process.execPath, entry = cliEntry(), day = 1, hour = 9 } = {}) {
   const logDir = join(HOME(), ".starreckon", "daemon");
-  const scanLog = join(logDir, "scan.log");
+  // scanLog is gone with the redirect: stdout goes to NUL and the run appends
+  // its own status line. Left out rather than left unused.
   const scanErr = join(logDir, "scan.err");
   const startHour = String(hour).padStart(2, "0");
   return `<?xml version="1.0" encoding="UTF-16"?>
@@ -281,7 +290,7 @@ export function windowsTaskXml({ node = process.execPath, entry = cliEntry(), da
   <Actions Context="Author">
     <Exec>
       <Command>cmd.exe</Command>
-      <Arguments>/c "set ${TRIGGER_ENV}=${SCAN_TRIGGER} &amp;&amp; \"${esc(node)}\" \"${esc(entry)}\" --yes --no-wrapped --no-pace --ledger &gt;&gt; \"${esc(scanLog)}\" 2&gt;&gt; \"${esc(scanErr)}\""</Arguments>
+      <Arguments>/c "set ${TRIGGER_ENV}=${SCAN_TRIGGER} &amp;&amp; \"${esc(node)}\" \"${esc(entry)}\" --yes --no-wrapped --no-pace --ledger &gt; NUL 2&gt;&gt; \"${esc(scanErr)}\""</Arguments>
     </Exec>
   </Actions>
 </Task>

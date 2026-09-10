@@ -978,8 +978,24 @@ if (subcommand === "serve") {
   // ── render HTML (now we have both local scan + any discovered fleet) ────────
   if (_serveAgg) {
     let serveFleetStars = null;
+    // THE SERVED PAGE GETS THE FLOOR TOO. This path held fleetAggregates only,
+    // so the page it serves over the LAN carried this machine's on-disk total
+    // while a --fleet run of the same data carried the floor — the same split
+    // that made the report page say 59.1B next to a terminal QR saying 109.4B.
+    // readFleet is what produces fleetTotals.floor, and the discovered peers are
+    // already collected in a directory it can read.
+    let serveFloorData = null;
     if (serveDiscoverFleet) {
       try { serveFleetStars = fleetAggregates(serveDiscoverFleet); } catch {}
+      try {
+        const fv = readFleet(serveDiscoverFleet);
+        if (fv?.fleetTotals?.floor && fv.fleetTotals.floor > (fv.fleetTotals.onDisk || 0)) {
+          serveFloorData = { onDisk: fv.fleetTotals.onDisk, floor: fv.fleetTotals.floor };
+        }
+      } catch {
+        // A peer folder this build cannot parse must not take the server down.
+        // No floor is the honest outcome; a wrong floor is not.
+      }
     }
     const serveCardSvg = renderCard(_serveLevels, _serveAgg, _serveVel, { name: opt("name") ?? "SKILL SCREEN" });
     serveHtml = renderStatsPage({
@@ -994,13 +1010,7 @@ if (subcommand === "serve") {
       name: opt("name") ?? null,
       showAccounts: false,
       noProjects: flag("--no-projects"),
-      // NO FLOOR ON THIS PATH, and that is a limitation rather than an
-      // oversight: `serve` discovers peers over the LAN and holds
-      // fleetAggregates, not the fleetTotals.floor that readFleet produces from
-      // a --fleet directory. So the served page's total is this machine's
-      // on-disk figure. Passing a floor here needs readFleet over the discovered
-      // dir first; until then, do not paper over it with a wrong number.
-      shareUrl: buildShareUrl(_serveLevels, _serveAgg, shareContact()),
+      shareUrl: buildShareUrl(_serveLevels, _serveAgg, shareContact(), QR_BUDGET_BYTES, serveFloorData),
     });
     process.stdout.write(`${DIM}page ready — starting server${RESET}\n`);
   }

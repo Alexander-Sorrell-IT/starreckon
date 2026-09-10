@@ -385,3 +385,47 @@ test("a full contact — every field populated — travels with nothing dropped"
   assert.deepEqual(missing, [], `the budget must carry a full contact; dropped: ${missing.join(", ")}`);
   assert.ok(Buffer.byteLength(url, "utf8") <= QR_BUDGET_BYTES, "and still respect the cap");
 });
+
+// ── a dropped field is NAMED, never silent ────────────────────────────────────
+// The budget carries a realistic full contact (the test above), but the field
+// caps allow 40-character handles and 48-byte social paths, and that payload
+// runs past 512. Four fields came off the end with nothing said: the card
+// printed, the code scanned, and the phone number simply was not in it.
+test("onSkip names every contact field the budget drops", async () => {
+  const { buildShareUrl, QR_BUDGET_BYTES } = await import("../src/shareurl.mjs");
+  const { FIELDS, SOCIAL_FIELDS, URL_KEYS } = await import("../src/contact.mjs");
+  const contact = {};
+  for (const f of FIELDS) {
+    contact[f] = SOCIAL_FIELDS.includes(f) || f === "website"
+      ? `https://${"w".repeat(40)}.example/${"u".repeat(40)}`
+      : "X".repeat(40);
+  }
+  const agg = { total_sessions: 153, total_duration_hours: 344, active_days: 29 };
+  const skipped = [];
+  const url = buildShareUrl([5, 5, 5, 5, 5], agg, contact, QR_BUDGET_BYTES, null, {
+    onSkip: (f) => skipped.push(f),
+  });
+  assert.ok(skipped.length > 0, "this payload must overflow, or the test proves nothing");
+  const p = new URLSearchParams(url.split("#")[1]);
+  // Every field absent from the URL was reported, and every field reported is
+  // genuinely absent — the report matches the output exactly, both directions.
+  const absent = FIELDS.filter((f) => contact[f] && p.get(URL_KEYS[f]) == null);
+  assert.deepEqual(skipped.slice().sort(), absent.slice().sort(),
+    "the skipped list must match what the URL actually lost");
+});
+
+test("onSkip is not called when the whole contact fits", async () => {
+  const { buildShareUrl, QR_BUDGET_BYTES } = await import("../src/shareurl.mjs");
+  const contact = { name: "A Name", github: "a-handle", email: "someone@a.example" };
+  const skipped = [];
+  buildShareUrl([5, 5, 5, 5, 5], { total_sessions: 1 }, contact, QR_BUDGET_BYTES, null, {
+    onSkip: (f) => skipped.push(f),
+  });
+  assert.deepEqual(skipped, []);
+});
+
+test("buildShareUrl works with no opts argument at all", async () => {
+  const { buildShareUrl } = await import("../src/shareurl.mjs");
+  const url = buildShareUrl([5, 5, 5, 5, 5], { total_sessions: 1 }, { name: "A Name" });
+  assert.ok(typeof url === "string" && url.includes("n=A+Name"));
+});

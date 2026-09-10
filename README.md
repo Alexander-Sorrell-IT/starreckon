@@ -271,9 +271,19 @@ The encoder is in this tree (`src/qr.mjs`, no dependency — a dependency is cod
 `verify` never scans and you never read). It prefers EC level M and drops to L
 only when the payload will not otherwise fit, and it **refuses** rather than
 truncating: a QR encoding half a URL scans perfectly and sends you somewhere
-wrong. The block prints below the card rather than inside it, because a
-version-10 symbol with its quiet zone is 61 columns against a 60-column card,
-and a QR with a clipped quiet zone looks fine and does not scan.
+wrong. The block prints below the card rather than inside it, because even a
+small symbol with its quiet zone outgrows the 60-column card — version 10 alone
+is 61 columns — and a QR with a clipped quiet zone looks fine and does not scan.
+
+The encoder reaches **version 40** (2,953 bytes), but the card does not spend
+that: the budget is 512 bytes, which is a scannability number, not a capacity
+one. A 177x177 grid printed in the square a resume gives a QR puts each module
+near 0.14mm, and no phone camera resolves it — a perfect code nobody can read is
+the same outcome as no code. 512 bytes carries a full contact and lands near
+version 17, where a module stays above the ~0.33mm a camera needs. If a field
+is still too long to fit, it is **named under the QR** rather than dropped in
+silence, because the only other way to discover your phone number is missing is
+to scan the code and read the page.
 
 Two differences from a hosted wrapped, and they are the point. **There is no
 "top 17% of users" anywhere in it** — this tool has never seen anyone else's
@@ -388,6 +398,13 @@ starreckon --name=NAME      # OVERRIDE the display name for this run only.
                                # Your name normally lives in ~/.starreckon/contact.json
                                # with the rest of your details — press [R] in the menu to
                                # set it, see what is shared, and clear any field.
+                               # The file holds name, github, linkedin, email, phone,
+                               # website, twitter and five free social URLs. Each social
+                               # is labelled from its own host, so pasting a twitter.com
+                               # link prints "Twitter" above it — you name nothing.
+                               # Everything set there travels inside the QR. Nothing is
+                               # editable on the shared page: the card shows the contact
+                               # the code carries, or no contact at all.
 starreckon --roots=/Volumes/other-mac/Users/me   # merge another machine's logs
 starreckon --join-fleet=DIR [--machine=NAME] [--label=LABEL]   # write this machine's folder into a
                                # fleet dir (--machine/--label default to this machine's hostname)

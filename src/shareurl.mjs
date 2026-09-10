@@ -83,8 +83,9 @@ if (QR_BUDGET_BYTES > QR_MAX_BYTES) throw new Error("qr budget exceeds encoder c
  *           accepted and treated as the name). Only fields that are set
  *           are added, in priority order, within the byte budget.
  * budget  — max URL bytes. Defaults to the QR cap.
+ * opts    — { onSkip(field) } called once per contact field dropped for budget.
  */
-export function buildShareUrl(levels, agg, contact, budget = QR_BUDGET_BYTES, floorData = null) {
+export function buildShareUrl(levels, agg, contact, budget = QR_BUDGET_BYTES, floorData = null, opts = {}) {
   if (!levels || !levels.length) return null;
   const lv = levels.map((v) => Math.min(MAX_LEVEL, Math.max(0, +v || 0)));
   const total = +lv.reduce((a, b) => a + b, 0).toFixed(1);
@@ -169,6 +170,15 @@ export function buildShareUrl(levels, agg, contact, budget = QR_BUDGET_BYTES, fl
     params.set(key, val);
     if (Buffer.byteLength(PAGES_BASE + "#" + params.toString(), "utf8") > budget) {
       params.delete(key);
+      // A SKIP IS REPORTED, NOT SWALLOWED. The budget comment above claims a
+      // full contact travels with nothing dropped, and at realistic field
+      // lengths it does — but the caps allow 40-character handles and two
+      // 48-byte URL fields per social, and that payload runs 669 bytes. Four
+      // fields then came off the end and NOTHING SAID SO: the card printed, the
+      // code scanned, and the phone number simply was not in it. A field the
+      // user put in the contact file and cannot find in the QR has to be named
+      // at the point it is dropped, so the caller can say which ones and why.
+      if (typeof opts.onSkip === "function") opts.onSkip(f);
       // continue, not break: this matches contactLines() in contact.mjs, which
       // also skips an over-budget field and keeps going. A short later field
       // still fits where a long earlier one did not, so the QR carries more.

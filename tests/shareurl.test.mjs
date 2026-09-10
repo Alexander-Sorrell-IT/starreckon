@@ -429,3 +429,36 @@ test("buildShareUrl works with no opts argument at all", async () => {
   const url = buildShareUrl([5, 5, 5, 5, 5], { total_sessions: 1 }, { name: "A Name" });
   assert.ok(typeof url === "string" && url.includes("n=A+Name"));
 });
+
+// ── the floor must reach the URL, or the page understates the total ──────────
+// The HTML page's share URL was built three arguments wide — no floorData — so
+// buildShareUrl fell back to (work + cache). On a --fleet run printing a 109.4B
+// floor, the page's QR carried tok=59.1B while the terminal QR beside it carried
+// 109.4B. Same run, same command, and the number that travels to other people
+// was the low one.
+test("floorData raises tok to the floor when on-disk is lower", async () => {
+  const { buildShareUrl, QR_BUDGET_BYTES } = await import("../src/shareurl.mjs");
+  const agg = {
+    total_sessions: 14265, total_duration_hours: 1287, active_days: 75,
+    total_input_tokens: 2_833_733_206, total_output_tokens: 0,
+    total_cache_read_tokens: 56_000_000_000, total_cache_write_tokens: 300_000_000,
+  };
+  const levels = [7, 6.6, 6.1, 5.1, 5.3];
+  const tok = (u) => new URLSearchParams(u.split("#")[1]).get("tok");
+  const floorData = { onDisk: 23_177_513_548, floor: 109_394_493_211 };
+
+  const without = tok(buildShareUrl(levels, agg, { name: "A" }, QR_BUDGET_BYTES));
+  const withFloor = tok(buildShareUrl(levels, agg, { name: "A" }, QR_BUDGET_BYTES, floorData));
+
+  assert.equal(without, "59.1B", "on-disk only, the value the defect produced");
+  assert.equal(withFloor, "109.4B", "the floor must win when it is higher");
+});
+
+test("a floor LOWER than on-disk never shrinks the total", async () => {
+  const { buildShareUrl, QR_BUDGET_BYTES } = await import("../src/shareurl.mjs");
+  const agg = { total_sessions: 1, total_input_tokens: 90_000_000_000, total_output_tokens: 0 };
+  const tok = (u) => new URLSearchParams(u.split("#")[1]).get("tok");
+  const u = buildShareUrl([5, 5, 5, 5, 5], agg, { name: "A" }, QR_BUDGET_BYTES,
+    { onDisk: 1, floor: 2_000_000_000 });
+  assert.equal(tok(u), "90.0B", "Math.max, not replacement");
+});

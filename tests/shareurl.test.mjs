@@ -202,17 +202,20 @@ test("a full contact still fits the QR byte cap", () => {
 
 test("over budget: whole fields are dropped, lowest priority first — never truncated", () => {
   const long = (n) => "x".repeat(n);
-  // The fixture must actually EXCEED the cap or it proves nothing. It was sized
-  // against a 271-byte budget; the budget is 512 now, so every slot is filled
-  // to overflow it rather than the test quietly passing on a payload that fits.
+  // AN EXPLICIT BUDGET, NOT THE SHIPPING ONE. This test asserts the DROP
+  // MECHANISM, and it was written against whatever QR_BUDGET_BYTES happened to
+  // be — so it had to be resized when the budget went 271 -> 512, and it broke
+  // again at 512 -> 704 because the fixture then fit and nothing dropped. A test
+  // for what happens when the budget is exceeded should name a budget it exceeds.
+  const TIGHT = 300;
   const contact = {
     name: "Alexander Sorrell", github: long(30), email: `${long(20)}@${long(10)}.com`,
     phone: long(30), website: long(30), linkedin: long(30), twitter: long(30),
   };
   for (let i = 1; i <= 5; i++) contact[`social${i}`] = `${long(30)}.example/${long(14)}`;
-  const url = buildShareUrl(levels, agg, contact);
+  const url = buildShareUrl(levels, agg, contact, TIGHT);
   const p = new URLSearchParams(url.split("#")[1]);
-  assert.ok(Buffer.byteLength(url, "utf8") <= QR_BUDGET_BYTES, "must respect the cap");
+  assert.ok(Buffer.byteLength(url, "utf8") <= TIGHT, "must respect the cap it was given");
   // name is first in CONTACT_FIELDS, so it is the last thing to go.
   assert.equal(p.get("n"), "Alexander Sorrell", "name must survive a tight budget");
   // and nothing that DID make it may be a fragment: every value is whole.
@@ -280,9 +283,38 @@ test("the card's budget is a printable size, and never past what the encoder can
   // decisions.
   assert.ok(QR_BUDGET_BYTES <= MAX_BYTES, "the budget must be encodable");
   assert.ok(QR_BUDGET_BYTES < MAX_BYTES, "the budget must be a deliberate choice, not the ceiling");
+
+  // ASSERT THE PHYSICAL RULE, NOT A MODULE COUNT. This read `size <= 89`, which
+  // is version 18 written as a magic number — so the check said nothing about
+  // why 18 was the limit, and it failed the moment the budget moved for a good
+  // reason. The real constraint is the printed module size.
+  const PRINT_MM = 36.7;   // the 104pt box the resume templates give the code
+  const MIN_MM   = 0.33;   // what a phone camera resolves
   const atBudget = encodeQR("x".repeat(QR_BUDGET_BYTES));
-  assert.ok(atBudget.size <= 89,
-    `a full card must stay inside a printable symbol, got ${atBudget.size}x${atBudget.size}`);
+  const mmPerModule = PRINT_MM / (atBudget.size + 4);   // +4 = quiet zone
+  assert.ok(mmPerModule >= MIN_MM,
+    `a full card must still print: ${atBudget.size}x${atBudget.size} at ${PRINT_MM}mm ` +
+    `is ${mmPerModule.toFixed(3)}mm a module, under the ${MIN_MM}mm floor`);
+
+  // And the budget must not be pointlessly small either: the whole reason the EC
+  // tables were extended past version 10 was to fit a full contact. A contact
+  // with every field at its cap must fit with nothing dropped.
+  const { buildShareUrl } = await import("../src/shareurl.mjs");
+  const { FIELDS, SOCIAL_FIELDS } = await import("../src/contact.mjs");
+  const maxed = {};
+  for (const f of FIELDS) {
+    maxed[f] = SOCIAL_FIELDS.includes(f) || f === "website"
+      ? `https://${"w".repeat(40)}.example/${"u".repeat(40)}`
+      : "X".repeat(40);
+  }
+  const skipped = [];
+  buildShareUrl([7, 6.6, 6.1, 5.1, 5.3],
+    { total_sessions: 14265, total_duration_hours: 1288, active_days: 75, longest_streak_days: 49,
+      total_input_tokens: 2.8e9, total_cache_read_tokens: 56e9 },
+    maxed, QR_BUDGET_BYTES, { onDisk: 1, floor: 109_394_493_211 },
+    { onSkip: (f) => skipped.push(f) });
+  assert.deepEqual(skipped, [],
+    `the budget must carry a fully maxed contact; dropped: ${skipped.join(", ")}`);
 });
 
 test("a full contact puts the email in the QR, and the payload still encodes", async () => {
@@ -402,7 +434,12 @@ test("onSkip names every contact field the budget drops", async () => {
   }
   const agg = { total_sessions: 153, total_duration_hours: 344, active_days: 29 };
   const skipped = [];
-  const url = buildShareUrl([5, 5, 5, 5, 5], agg, contact, QR_BUDGET_BYTES, null, {
+  // An explicit tight budget, for the same reason the drop test above uses one:
+  // this asserts the REPORTING of a skip, so it must name a budget it exceeds
+  // rather than riding on whatever the shipping budget currently is. At 704 the
+  // maxed contact fits and nothing is skipped, which is the point of that budget.
+  const TIGHT = 300;
+  const url = buildShareUrl([5, 5, 5, 5, 5], agg, contact, TIGHT, null, {
     onSkip: (f) => skipped.push(f),
   });
   assert.ok(skipped.length > 0, "this payload must overflow, or the test proves nothing");

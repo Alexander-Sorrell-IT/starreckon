@@ -47,26 +47,45 @@ export const PAGES_BASE = "https://alexander-sorrell-it.github.io/starreckon/";
 //
 // Imported, not repeated. A cap written down twice is a cap that drifts from
 // what the encoder will actually take.
-export const QR_BUDGET_BYTES = 512;
+export const QR_BUDGET_BYTES = 704;
 
-// 512 bytes is version 18 — an 89x89 symbol — and it is a SCANNABILITY choice,
+// 704 bytes is version 21 — a 101x101 symbol — and it is a SCANNABILITY choice,
 // not a capacity one. The encoder reaches version 40 and 2,953 bytes, but that
 // is a 177x177 grid: printed in the square a resume gives a QR, each module
-// lands near 0.14mm and no phone camera resolves it. The code would be perfect
+// lands near 0.20mm and no phone camera resolves it. The code would be perfect
 // and unreadable, which is the same outcome as no code at all.
+//
+// 704 IS THE MEASURED CEILING, not a guess. The resume templates print the code
+// at 104pt = 36.7mm, and a module needs about 0.33mm to survive a phone camera.
+// Measured against the encoder at that print size:
+//
+//   bytes  version  modules  mm/module  printable
+//     512       18       89      0.395  yes
+//     711       21      101      0.350  yes   <- last version-21 payload
+//     800       23      109      0.325  NO
+//    2953       40      177      0.203  NO
+//
+// So version 21 is the largest symbol this print size supports, 711 bytes is
+// the most that lands on it, and 704 sits just inside with room for the
+// separator bytes. Version 40 was never the useful target — extending the EC
+// tables to 40 is what made 18 through 21 reachable at all, since the encoder
+// used to stop at version 10 and 271 bytes.
+//
+// This was 512, which was NOT enough. A contact with every field at its cap
+// measures 669 bytes, so four fields — social5, phone, website, twitter — came
+// off the end. They were reported rather than dropped silently, but reporting a
+// drop is not the same as not dropping it, and 669 prints at 0.350mm.
+//
+// Raising it costs nothing for a typical card. The version is chosen from the
+// ACTUAL payload, so a normal contact still encodes at version 15 or 18 exactly
+// as before; the larger budget only means a heavy contact fits instead of being
+// cut.
 //
 // So the ceiling the ENCODER can reach and the budget this CARD spends are two
 // different numbers, and tying them together was wrong: it let a resume QR grow
 // to whatever happened to fit.
 //
-// This number is set so a FULL contact — name, github, linkedin, email, five
-// socials, phone and website, alongside the stats — travels with nothing
-// dropped. That payload measures 478 bytes and lands on version 17 (85x85).
-// A module then needs about 0.33mm to stay readable, so the code must be
-// printed at 31mm or more; the resume templates use 104pt (36.7mm), which
-// leaves margin. At the old 74pt it would have been 0.28mm and marginal.
-//
-// Raise it only against a printed test scan, never against the encoder max.
+// Raise it only against the print geometry above, never against the encoder max.
 if (QR_BUDGET_BYTES > QR_MAX_BYTES) throw new Error("qr budget exceeds encoder capacity");
 
 // URL keys come from contact.mjs — the single source shared with the text

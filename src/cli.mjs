@@ -2412,7 +2412,15 @@ async function main() {
         // statspage.mjs because levels/agg live here and the page renders from
         // whatever it is handed. buildShareUrl returns null with no levels;
         // the page drops the section rather than printing a broken code.
-        shareUrl: buildShareUrl(levels, agg, name),
+        //
+        // THE CONTACT, NOT THE NAME. This passed `name` — a bare string, which
+        // buildShareUrl treats as the name and nothing else — so the page's QR
+        // carried n= alone while [X] carried gh, li, em, tel, web and the
+        // socials. The comment directly above claimed the two were the same
+        // destination and they were not, and --page is the output most likely
+        // to be handed to someone. readContact() is the single owner of
+        // identity here exactly as it is at [X].
+        shareUrl: buildShareUrl(levels, agg, readContact()),
       })
     );
     const pagePath = join(outDir, `stats-${stamp}.html`);

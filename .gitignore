@@ -1,4 +1,20 @@
-```
+# This file was rewritten on 2026-09-09. It had been left holding an assistant's
+# own reasoning text ("Wait, let me reconsider this...") wrapped in markdown
+# fences, so line 52 was a literal ``` pattern and the prose lines were patterns
+# that matched nothing. The real patterns below survived that; the gaps did not.
+
+# Scan output. starreckon_corpus.jsonl is a REAL corpus of this machine's
+# sessions — session ids, model names, token counts, dates. It is 4.8 MB of
+# personal telemetry sitting in the repo root of a public repository, and it was
+# not ignored. A single `git add -A` would have published it, which is the exact
+# thing this tool exists to prevent.
+starreckon_corpus.jsonl
+*_corpus.jsonl
+starreckon-*.tgz
+
+# Node
+node_modules/
+
 # Python
 __pycache__/
 *.pyc
@@ -8,8 +24,6 @@ __pycache__/
 env/
 venv/
 .venv/
-.ENV
-.ENV.local
 .python-version
 .pytest_cache/
 .mypy_cache/
@@ -17,7 +31,7 @@ venv/
 coverage/
 htmlcov/
 
-# Build and distribution artifacts  
+# Build and distribution artifacts
 dist/
 build/
 *.egg-info/
@@ -43,10 +57,3 @@ build/
 ehthumbs.db
 Thumbs.db
 Icon?
-```
-
-Wait, let me reconsider this. Looking at the added files, I only see source code files (.py, .mjs, .md) and no build artifacts, dependencies, or temporary files that need ignoring. The current .gitignore is empty and there are no files in the changes that match the ignore patterns I should add.
-
-```
-
-```

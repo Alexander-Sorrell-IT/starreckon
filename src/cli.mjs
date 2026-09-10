@@ -456,6 +456,42 @@ for (const a of args) {
     );
 }
 
+// A LEADING ~ IS EXPANDED HERE, NOT LEFT TO THE SHELL.
+// `--fleet=~/dir` does NOT expand in zsh — tilde expansion after `=` is off by
+// default — so the shell hands over a literal "~/dir", which cannot exist. The
+// path a user is most likely to type is exactly the one that fails.
+export function expandUserPath(pth) {
+  if (typeof pth !== "string" || !pth.startsWith("~")) return pth;
+  return join(homedir(), pth.slice(1).replace(/^[/\\]/, ""));
+}
+
+// AN EXPLICIT --fleet=DIR THAT DOES NOT EXIST IS AN ERROR, NOT A SHRUG.
+// The path was assigned unconditionally and readFleet then threw into a
+// `catch {}`, so the run continued with no fleet, no floor, and nothing said.
+// That silently lowers the number that LEAVES the machine: with no floor the
+// share URL falls back to what is on disk, so a run meant to carry 109.4B
+// carried 59.1B and looked entirely normal.
+//
+// Checked here, beside the other flag errors, because the "nothing to scan"
+// exit happens long before the fleet code and swallowed this whole check when
+// it lived down there.
+{
+  const _fleetArg = args.find((a) => a.startsWith("--fleet="));
+  if (_fleetArg) {
+    const raw = _fleetArg.slice("--fleet=".length);
+    if (raw) {
+      const expanded = expandUserPath(raw);
+      if (!existsSync(expanded)) {
+        console.error(`starreckon: --fleet: no such directory: ${expanded}`);
+        if (raw.startsWith("~"))
+          console.error(`  a leading ~ was expanded to your home directory; the result still does not exist`);
+        console.error(`  refusing to continue: without the fleet there is no floor, and every total would silently be on-disk only.`);
+        process.exit(2);
+      }
+    }
+  }
+}
+
 // printHelp — shared by -h/--help flag and the [H] menu key.
 // Both print the same content so there is one source of truth.
 function printHelp() {
@@ -1731,7 +1767,9 @@ async function main() {
   let fleetDir    = null;
   if (_fleetRaw !== null) {
     if (_fleetRaw) {
-      fleetDir = _fleetRaw;
+      // Validated and ~-expanded at flag-parse time (see expandUserPath /
+      // the --fleet check near flagError). By here the directory exists.
+      fleetDir = expandUserPath(_fleetRaw);
     } else {
       // ORDER IS THE FLOOR, and the floor is the number that leaves the
       // machine — it rides in the QR and onto a resume. These four

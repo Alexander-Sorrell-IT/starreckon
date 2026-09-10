@@ -234,7 +234,7 @@ const shareContact = () => {
 };
 
 import { readExclusions, addExclusion, removeExclusion, EXCLUDE_FILE } from "./exclude.mjs";
-import { buildShareUrl, PAGES_BASE } from "./shareurl.mjs";
+import { buildShareUrl, PAGES_BASE, QR_BUDGET_BYTES } from "./shareurl.mjs";
 import { readFleet, writeMachineFolder } from "./fleet.mjs";
 import { loadOrCreateFleetKey } from "./fleetkey.mjs";
 import { tick as protectTick, needsProtection } from "./protect.mjs";
@@ -994,6 +994,12 @@ if (subcommand === "serve") {
       name: opt("name") ?? null,
       showAccounts: false,
       noProjects: flag("--no-projects"),
+      // NO FLOOR ON THIS PATH, and that is a limitation rather than an
+      // oversight: `serve` discovers peers over the LAN and holds
+      // fleetAggregates, not the fleetTotals.floor that readFleet produces from
+      // a --fleet directory. So the served page's total is this machine's
+      // on-disk figure. Passing a floor here needs readFleet over the discovered
+      // dir first; until then, do not paper over it with a wrong number.
       shareUrl: buildShareUrl(_serveLevels, _serveAgg, shareContact()),
     });
     process.stdout.write(`${DIM}page ready — starting server${RESET}\n`);
@@ -2379,6 +2385,27 @@ async function main() {
     );
   }
 
+  // floorData — the gap between what is on disk and what the stats-cache floor
+  // knows: the tokens that survived deletion. Populated when --accounts ran, or
+  // when --fleet supplied floor totals.
+  //
+  // DEFINED HERE, ABOVE THE PAGE. This lived inside the `!--no-wrapped` block
+  // below, so it existed only for the terminal cards and the terminal QR. The
+  // HTML page's share URL was built before it and therefore without it, and
+  // buildShareUrl falls back to (work + cache) when no floor is passed. On a
+  // --fleet run that printed a 109.4B floor, the page's QR carried tok=59.1B —
+  // this machine's own on-disk total — while the terminal QR beside it carried
+  // the floor. Same run, same command, two different numbers, and the one that
+  // travels to other people was the low one.
+  const floorData = accounts ? (() => {
+    const ft = floorTotals(accounts);
+    const g = (t) => t.input + t.output + t.cacheRead + t.cacheWrite;
+    return { onDisk: g(ft.onDisk), floor: g(ft.floor) };
+  })() : (fleetView?.fleetTotals?.floor && fleetView.fleetTotals.floor > (fleetView.fleetTotals.onDisk || 0) ? {
+    onDisk: fleetView.fleetTotals.onDisk,
+    floor: fleetView.fleetTotals.floor,
+  } : null);
+
   let cardSvg = null;
   if (flag("--card") || flag("--page")) {
     cardSvg = renderCard(levels, agg, vel, { name: name ?? "SKILL SCREEN" });
@@ -2420,7 +2447,9 @@ async function main() {
         // destination and they were not, and --page is the output most likely
         // to be handed to someone. readContact() is the single owner of
         // identity here exactly as it is at [X].
-        shareUrl: buildShareUrl(levels, agg, readContact()),
+        // floorData passed: the page's QR must carry the same total the terminal
+        // QR does. Omitting it silently downgraded the number to on-disk only.
+        shareUrl: buildShareUrl(levels, agg, readContact(), QR_BUDGET_BYTES, floorData),
       })
     );
     const pagePath = join(outDir, `stats-${stamp}.html`);
@@ -2440,16 +2469,9 @@ async function main() {
   // prints where you sit in YOUR OWN history — the only comparison a machine
   // that has never seen anyone else's data can honestly make.
   if (!flag("--no-wrapped")) {
-    // floorData: passed to cardFloor — the gap between on-disk tokens and
-    // what the stats-cache floor knows. Populated when --accounts ran or --fleet provided floorTotals.
-    const floorData = accounts ? (() => {
-      const ft = floorTotals(accounts);
-      const g = (t) => t.input + t.output + t.cacheRead + t.cacheWrite;
-      return { onDisk: g(ft.onDisk), floor: g(ft.floor) };
-    })() : (fleetView?.fleetTotals?.floor && fleetView.fleetTotals.floor > (fleetView.fleetTotals.onDisk || 0) ? {
-      onDisk: fleetView.fleetTotals.onDisk,
-      floor: fleetView.fleetTotals.floor,
-    } : null);
+    // floorData is computed ONCE above, before the page is written — see the
+    // definition near the report outputs. It used to be declared here, inside
+    // the wrapped block, which is why the page's QR could not see it.
     const cards = buildCardsSafe({
       levels,
       agg,
@@ -3116,7 +3138,7 @@ ${BOLD}${CYAN}── reach out (shown in QR) ───────────�
         // The contact FILE, not a flag. `--name` was retyped every run, never
         // appeared on the [R] screen that claims to list what is shared, and
         // bypassed contact.json's opt-in contract. One place owns identity.
-        const shareUrl = buildShareUrl(levels, agg, readContact());
+        const shareUrl = buildShareUrl(levels, agg, readContact(), QR_BUDGET_BYTES, floorData);
         if (!shareUrl) {
           console.log(`  ${DIM}could not build share URL — run with --name=NAME to include a label${RESET}`);
         } else {

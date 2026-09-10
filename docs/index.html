@@ -442,71 +442,8 @@
   .chip svg { width: 14px; height: 14px; fill: currentColor; flex-shrink: 0; }
 
   /* Interactive Customize Form */
-  .form-container {
-    background: rgba(15,23,42,0.7);
-    border: 1px solid #1e293b;
-    border-radius: 12px;
-    padding: 1.2rem;
-    margin-top: 1rem;
-    text-align: left;
-  }
-  .form-title {
-    font-size: 0.78rem;
-    font-weight: 700;
-    letter-spacing: 0.12em;
-    color: #f8fafc;
-    text-transform: uppercase;
-    margin-bottom: 0.3rem;
-  }
-  .form-subtitle {
-    font-size: 0.74rem;
-    color: #64748b;
-    margin-bottom: 1rem;
-    line-height: 1.4;
-  }
-  .form-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 0.7rem;
-  }
   @media (max-width: 520px) {
-    .form-grid { grid-template-columns: 1fr; }
     .axes-grid { grid-template-columns: 1fr; }
-  }
-  .field-group {
-    display: flex;
-    flex-direction: column;
-    gap: 0.3rem;
-  }
-  .field-group.full-width {
-    grid-column: 1 / -1;
-  }
-  .field-label {
-    font-size: 0.7rem;
-    color: #94a3b8;
-    letter-spacing: 0.05em;
-    text-transform: uppercase;
-  }
-  .field-input {
-    background: #020617;
-    border: 1px solid #334155;
-    border-radius: 6px;
-    padding: 0.45rem 0.7rem;
-    color: #f8fafc;
-    font-family: inherit;
-    font-size: 0.78rem;
-    transition: border-color 0.15s;
-    width: 100%;
-  }
-  .field-input:focus {
-    outline: none;
-    border-color: #38bdf8;
-    box-shadow: 0 0 0 2px rgba(56,189,248,0.15);
-  }
-  .form-tip {
-    font-size: 0.7rem;
-    color: #64748b;
-    margin-top: 0.8rem;
   }
 
   /* Creator / Anchor Footer */
@@ -587,9 +524,9 @@
 
       <!-- Alex's GitHub Link directly under the QR code -->
       <div class="gh-cta-wrap">
-        <a id="gh-under-qr-btn" class="btn-github" href="https://github.com/Alexander-Sorrell-IT" target="_blank" rel="noopener noreferrer">
+        <a id="gh-under-qr-btn" class="btn-github" href="#" target="_blank" rel="noopener noreferrer" hidden>
           <svg viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
-          <span id="gh-under-qr-text">View Alexander Sorrell on GitHub (@Alexander-Sorrell-IT)</span>
+          <span id="gh-under-qr-text"></span>
         </a>
       </div>
 
@@ -726,55 +663,24 @@
     <!-- Active Contact Chips (only shown if specified in hash or entered) -->
     <div id="chips-grid" class="chips-grid"></div>
 
-    <!-- Interactive Customizer — hidden while VIEWING someone's card -->
-    <div class="form-container" id="card-editor">
-      <div class="form-title">Customize Your Card / Share Your Star</div>
-      <div class="form-subtitle">
-        StarReckon is open source. Any developer can enter their details below. Changes immediately update your share URL and regenerate the scannable QR code live. Zero data leaves your machine.
-      </div>
+    <!-- NO EDITOR HERE, DELIBERATELY.
+         This page is where a card is READ. Contact details are written in
+         ~/.starreckon/contact.json, or through [R] reach out in the terminal,
+         and they arrive here inside the link — they are never typed in.
 
-      <div class="form-grid">
-        <div class="field-group">
-          <label class="field-label" for="inp-name">Full Name</label>
-          <input type="text" id="inp-name" class="field-input" placeholder="Alexander Sorrell" maxlength="40">
-        </div>
-        <div class="field-group">
-          <label class="field-label" for="inp-github">GitHub Handle</label>
-          <input type="text" id="inp-github" class="field-input" placeholder="Alexander-Sorrell-IT" maxlength="39">
-        </div>
-        <div class="field-group">
-          <label class="field-label" for="inp-email">Email Address</label>
-          <input type="email" id="inp-email" class="field-input" placeholder="alexander.sorrell.it@gmail.com" maxlength="60">
-        </div>
-        <div class="field-group">
-          <label class="field-label" for="inp-phone">Phone Number</label>
-          <input type="tel" id="inp-phone" class="field-input" placeholder="(817) 996-6123" maxlength="25">
-        </div>
-        <div class="field-group">
-          <label class="field-label" for="inp-linkedin">LinkedIn Username / URL</label>
-          <input type="text" id="inp-linkedin" class="field-input" placeholder="alex-sorrell-computers" maxlength="60">
-        </div>
-        <div class="field-group">
-          <label class="field-label" for="inp-twitter">Twitter / X Handle</label>
-          <input type="text" id="inp-twitter" class="field-input" placeholder="@handle" maxlength="30">
-        </div>
-        <div class="field-group full-width">
-          <label class="field-label" for="inp-website">Website / Portfolio</label>
-          <input type="text" id="inp-website" class="field-input" placeholder="https://github.com/Alexander-Sorrell-IT" maxlength="80">
-        </div>
-      </div>
-      <div class="form-tip">
-        ⚡ All edits stay in your browser hash fragment. You can copy the generated URL or share the QR code directly.
-      </div>
-    </div>
+         What was here was a form bound to every contact field, rewriting the
+         hash and regenerating the QR on each keystroke, with the author's own
+         name, email, phone and handles sitting in it as placeholders for every
+         visitor. Anyone who scanned a card landed on it one edit away from
+         re-sharing somebody else's numbers as their own. -->
   </div>
 
   <!-- 4. FOOTER: At the very bottom: Alex's GitHub & Repository Anchors -->
   <div class="footer-panel">
     <div class="gh-cta-wrap" style="margin-bottom: 1.2rem;">
-      <a id="gh-bottom-btn" class="btn-github" href="https://github.com/Alexander-Sorrell-IT" target="_blank" rel="noopener noreferrer">
+      <a id="gh-bottom-btn" class="btn-github" href="#" target="_blank" rel="noopener noreferrer" hidden>
         <svg viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
-        <span id="gh-bottom-text">View Alexander Sorrell on GitHub (@Alexander-Sorrell-IT)</span>
+        <span id="gh-bottom-text"></span>
       </a>
     </div>
     <div class="footer-brand">
@@ -1267,24 +1173,16 @@ function render() {
   // making your own is the only thing this page is for.
   const resultPanel = document.getElementById("result-panel");
   const storyPanel  = document.querySelector(".story-deck-panel");
-  const editor      = document.getElementById("card-editor");
   const empty       = document.getElementById("no-card");
   if (!d.hasCard) {
     if (resultPanel) resultPanel.hidden = true;
     if (storyPanel)  storyPanel.hidden  = true;
     if (empty)       empty.hidden       = false;
-    if (editor)      editor.hidden      = false;
     return;
   }
   if (resultPanel) resultPanel.hidden = false;
   if (storyPanel)  storyPanel.hidden  = false;
   if (empty)       empty.hidden       = true;
-  // SOMEONE ELSE'S CARD IS NOT A DRAFT OF YOURS. The customizer rewrote the
-  // hash and the QR on every keystroke, so anyone who scanned a card landed on
-  // a form pre-filled with that person's name, contact details and token
-  // totals, one edit away from re-sharing them as their own. A supplied card
-  // renders read-only; build your own from the bare page.
-  if (editor) editor.hidden = true;
 
 
   const tierColors = {
@@ -1445,18 +1343,24 @@ function render() {
     qrWrap.innerHTML = renderQrSvg(fallbackUrl, 210);
   }
 
-  // 6. Direct GitHub links (under QR code and at bottom)
-  const ghUnderQr = document.getElementById("gh-under-qr-btn");
-  if (ghUnderQr) {
-    ghUnderQr.href = "https://github.com/Alexander-Sorrell-IT";
-    const txt = document.getElementById("gh-under-qr-text");
-    if (txt) txt.textContent = "View Alexander Sorrell on GitHub (@Alexander-Sorrell-IT)";
-  }
-  const ghBottom = document.getElementById("gh-bottom-btn");
-  if (ghBottom) {
-    ghBottom.href = "https://github.com/Alexander-Sorrell-IT";
-    const txt = document.getElementById("gh-bottom-text");
-    if (txt) txt.textContent = "View Alexander Sorrell on GitHub (@Alexander-Sorrell-IT)";
+  // 6. Direct GitHub links — THE CARDHOLDER'S, or none.
+  //
+  // These were not a fallback, they were UNCONDITIONAL: both buttons were set
+  // to the author's profile on every render, ignoring the gh the link carried.
+  // Whoever's card you opened, the page invited you to go and look at
+  // Alexander Sorrell. It comes from the card or the button does not appear.
+  // (The footer credit is separate: that one is authorship of the TOOL, which
+  // is a different claim from "this is the person you are looking at".)
+  const ghHandle = typeof d.github === "string" && d.github.trim() ? d.github.trim() : "";
+  const ghName = d.name && d.name.trim() ? d.name.trim() : ghHandle;
+  for (const [btnId, txtId] of [["gh-under-qr-btn", "gh-under-qr-text"], ["gh-bottom-btn", "gh-bottom-text"]]) {
+    const btn = document.getElementById(btnId);
+    if (!btn) continue;
+    if (!ghHandle) { btn.hidden = true; continue; }
+    btn.hidden = false;
+    btn.href = "https://github.com/" + encodeURIComponent(ghHandle);
+    const txt = document.getElementById(txtId);
+    if (txt) txt.textContent = `View ${ghName} on GitHub (@${ghHandle})`;
   }
 
   // 7. Contact Chips
@@ -1498,51 +1402,17 @@ function render() {
     addChip("@" + twHandle, "https://x.com/" + twHandle, twSvg);
   }
 
-  // 8. Update Form Inputs (without replacing if user is focused)
-  syncInputIfNotFocused("inp-name", d.name);
-  syncInputIfNotFocused("inp-github", d.github);
-  syncInputIfNotFocused("inp-email", d.email || "");
-  syncInputIfNotFocused("inp-phone", d.phone || "");
-  syncInputIfNotFocused("inp-website", d.website || "");
-  syncInputIfNotFocused("inp-linkedin", d.linkedin || "");
-  syncInputIfNotFocused("inp-twitter", d.twitter || "");
+  // There are no form inputs to sync any more — this page reads a card, it
+  // does not author one.
 
-  // Dynamic Browser Title
-  document.title = `${d.name} — StarReckon ${d.total.toFixed(1)}/35 (${d.tier})`;
+  // Dynamic Browser Title. Built from what the link carried, so a link with no
+  // name gets the plain title rather than "undefined — StarReckon NaN/35".
+  document.title = d.name
+    ? `${d.name} — StarReckon ${(d.total ?? 0).toFixed(1)}/35${d.tier ? ` (${d.tier})` : ""}`
+    : "StarReckon";
 }
 
-function syncInputIfNotFocused(id, val) {
-  const el = document.getElementById(id);
-  if (el && document.activeElement !== el) {
-    el.value = val;
-  }
-}
 
-// Bind interactive user input events to live-update state, URL hash, and QR code
-function setupFormListeners() {
-  const fields = [
-    { id: "inp-name",     key: "name" },
-    { id: "inp-github",   key: "github" },
-    { id: "inp-email",    key: "email" },
-    { id: "inp-phone",    key: "phone" },
-    { id: "inp-website",  key: "website" },
-    { id: "inp-linkedin", key: "linkedin" },
-    { id: "inp-twitter",  key: "twitter" },
-  ];
-
-  fields.forEach(({ id, key }) => {
-    const el = document.getElementById(id);
-    if (!el) return;
-    el.addEventListener("input", (e) => {
-      currentState[key] = e.target.value.trim();
-      const newUrl = buildUrl(currentState, false);
-      try {
-        history.replaceState(null, "", newUrl);
-      } catch {}
-      render();
-    });
-  });
-}
 
 // Clipboard copy helper
 function setupCopyButtons() {
@@ -1595,7 +1465,6 @@ window.addEventListener("hashchange", () => {
 // Initialization
 currentState = parseState();
 render();
-setupFormListeners();
 setupCopyButtons();
 </script>
 </body>

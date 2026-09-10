@@ -1069,7 +1069,10 @@ let currentState = null;
 function parseState() {
   const hash = location.hash.replace(/^#/, "");
   const p = new URLSearchParams(hash);
-  const DATA_KEYS = ["s", "v", "g", "a", "ss", "h", "d", "k", "tok", "n", "gh", "em", "tel", "web", "li", "tw"];
+  // s1..s5 belong here. They were absent, so a link carrying nothing but five
+  // socials counted as "no card" and rendered the empty state.
+  const DATA_KEYS = ["s", "v", "g", "a", "ss", "h", "d", "k", "tok", "n", "gh", "em", "tel", "web", "li", "tw",
+                     "s1", "s2", "s3", "s4", "s5"];
   const hasCard = DATA_KEYS.some((k) => {
     const val = p.get(k);
     return typeof val === "string" && val.trim() !== "";
@@ -1108,7 +1111,55 @@ function parseState() {
     website:   str("web"),
     linkedin:  str("li"),
     twitter:   str("tw"),
+    // The five free social slots. buildShareUrl writes them as s1..s5 and this
+    // page never read them, so every social a user entered travelled inside the
+    // QR and was thrown away on arrival.
+    socials:   ["s1", "s2", "s3", "s4", "s5"].map(str).filter(Boolean),
   };
+}
+
+// LABEL A SOCIAL BY ITS HOST, so the user names nothing: paste a twitter.com
+// link and the chip reads Twitter. Copied verbatim from SOCIAL_HOSTS in
+// src/contact.mjs — this page cannot import it, and a test asserts the two
+// tables stay identical rather than trusting that they do.
+const PAGE_SOCIAL_HOSTS = [
+    [/(^|\.)x\.com$/, "X"],
+    [/(^|\.)twitter\.com$/, "Twitter"],
+    [/(^|\.)github\.com$/, "GitHub"],
+    [/(^|\.)gitlab\.com$/, "GitLab"],
+    [/(^|\.)linkedin\.com$/, "LinkedIn"],
+    [/(^|\.)youtube\.com$/, "YouTube"],
+    [/(^|\.)youtu\.be$/, "YouTube"],
+    [/(^|\.)instagram\.com$/, "Instagram"],
+    [/(^|\.)facebook\.com$/, "Facebook"],
+    [/(^|\.)tiktok\.com$/, "TikTok"],
+    [/(^|\.)reddit\.com$/, "Reddit"],
+    [/(^|\.)twitch\.tv$/, "Twitch"],
+    [/(^|\.)bsky\.app$/, "Bluesky"],
+    [/(^|\.)threads\.net$/, "Threads"],
+    [/(^|\.)mastodon\.(social|online|world)$/, "Mastodon"],
+    [/(^|\.)t\.me$/, "Telegram"],
+    [/(^|\.)discord\.(gg|com)$/, "Discord"],
+    [/(^|\.)medium\.com$/, "Medium"],
+    [/(^|\.)substack\.com$/, "Substack"],
+    [/(^|\.)dev\.to$/, "DEV"],
+    [/(^|\.)hashnode\.(dev|com)$/, "Hashnode"],
+    [/(^|\.)stackoverflow\.com$/, "Stack Overflow"],
+    [/(^|\.)huggingface\.co$/, "Hugging Face"],
+    [/(^|\.)kaggle\.com$/, "Kaggle"],
+    [/(^|\.)npmjs\.com$/, "npm"],
+    [/(^|\.)pypi\.org$/, "PyPI"],
+    [/(^|\.)crates\.io$/, "crates.io"],
+    [/(^|\.)news\.ycombinator\.com$/, "Hacker News"],
+];
+function socialLabel(url) {
+  if (typeof url !== "string" || !url.trim()) return "";
+  let host = url.trim().toLowerCase().replace(/^[a-z][a-z0-9+.-]*:\/\//, "").split(/[/?#]/)[0];
+  host = host.replace(/^www\./, "").split("@").pop().split(":")[0];
+  if (!host) return "";
+  for (const [re, label] of PAGE_SOCIAL_HOSTS) if (re.test(host)) return label;
+  const parts = host.split(".").filter(Boolean);
+  return parts.length >= 2 ? parts.slice(-2).join(".") : host;
 }
 
 // Build URL string for sharing & QR code (with budget prioritization)
@@ -1417,6 +1468,17 @@ function render() {
     const twHandle = d.twitter.replace(/^@/, "");
     addChip("@" + twHandle, "https://x.com/" + twHandle, twSvg);
   }
+
+  // THE FIVE FREE SOCIAL SLOTS. Each chip is labelled from its own host, so the
+  // user types a URL and nothing else: a twitter.com link reads Twitter, an
+  // unknown host falls back to its registrable domain. Rendered in slot order,
+  // and only for slots the link actually carries.
+  const linkSvg = `<svg viewBox="0 0 24 24"><path d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76 0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71 0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71 0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76 0 5-2.24 5-5s-2.24-5-5-5z"/></svg>`;
+  (d.socials || []).forEach((raw) => {
+    const label = socialLabel(raw);
+    const href = /^[a-z][a-z0-9+.-]*:\/\//i.test(raw) ? raw : "https://" + raw;
+    addChip(label || raw.replace(/^https?:\/\//, ""), href, linkSvg);
+  });
 
   // There are no form inputs to sync any more — this page reads a card, it
   // does not author one.

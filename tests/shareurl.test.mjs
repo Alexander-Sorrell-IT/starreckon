@@ -462,3 +462,34 @@ test("a floor LOWER than on-disk never shrinks the total", async () => {
     { onDisk: 1, floor: 2_000_000_000 });
   assert.equal(tok(u), "90.0B", "Math.max, not replacement");
 });
+
+// ── the page must read the socials the QR carries ────────────────────────────
+// buildShareUrl writes the five slots as s1..s5. docs/index.html never read
+// them, so every social a user entered rode inside the QR and was discarded on
+// arrival — the one feature that was asked for by name.
+test("docs/index.html parses s1..s5 and renders them", async () => {
+  const { readFileSync } = await import("node:fs");
+  const html = readFileSync(new URL("../docs/index.html", import.meta.url), "utf8");
+  for (const k of ["s1", "s2", "s3", "s4", "s5"]) {
+    assert.ok(html.includes(`"${k}"`), `the page must know about ${k}`);
+  }
+  assert.ok(/socials:\s*\[/.test(html), "parseState must expose a socials array");
+  assert.ok(html.includes("d.socials"), "render must actually use it");
+  assert.ok(html.includes("socialLabel"), "each social must be labelled from its host");
+});
+
+// The page cannot import contact.mjs, so the host table is copied into it. A
+// copy that drifts is worse than no copy: a link would label correctly in the
+// terminal and wrongly on the page it opens.
+test("the page's social host table matches SOCIAL_HOSTS exactly", async () => {
+  const { readFileSync } = await import("node:fs");
+  const { SOCIAL_HOSTS } = await import("../src/contact.mjs");
+  const html = readFileSync(new URL("../docs/index.html", import.meta.url), "utf8");
+  const block = html.match(/const PAGE_SOCIAL_HOSTS = \[([\s\S]*?)\n\];/);
+  assert.ok(block, "the page must carry a PAGE_SOCIAL_HOSTS table");
+  const pageRows = [...block[1].matchAll(/\[(\/.*?\/[a-z]*),\s*"(.*?)"\]/g)]
+    .map((m) => [m[1], m[2]]);
+  const srcRows = SOCIAL_HOSTS.map(([re, label]) => [re.toString(), label]);
+  assert.deepEqual(pageRows, srcRows,
+    "docs/index.html's host table has drifted from src/contact.mjs");
+});

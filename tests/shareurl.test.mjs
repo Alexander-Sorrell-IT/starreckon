@@ -530,3 +530,37 @@ test("the page's social host table matches SOCIAL_HOSTS exactly", async () => {
   assert.deepEqual(pageRows, srcRows,
     "docs/index.html's host table has drifted from src/contact.mjs");
 });
+
+// ── the page tile and the QR beside it must read the same ────────────────────
+// renderStatsPage never received floorData, so the headline tokens tile showed
+// what the scan could read off disk while the QR printed on the same page
+// carried the fleet floor: 21.4B in the tile, 109.4B in the code.
+test("the stats page token tile matches the tok= its own QR carries", async () => {
+  const { renderStatsPage } = await import("../src/statspage.mjs");
+  const { buildShareUrl, QR_BUDGET_BYTES } = await import("../src/shareurl.mjs");
+  const agg = {
+    total_sessions: 14265, total_duration_hours: 1288, active_days: 75,
+    total_input_tokens: 2.8e9, total_output_tokens: 1e8,
+    total_cache_read_tokens: 18e9, total_cache_write_tokens: 5e8,
+  };
+  const floorData = { onDisk: 23_177_513_548, floor: 109_394_493_211 };
+  const shareUrl = buildShareUrl([7, 6.6, 6.1, 5.1, 5.3], agg, { name: "A" },
+    QR_BUDGET_BYTES, floorData);
+  const html = renderStatsPage({ profile: {}, agg, starSvg: "", name: "A", shareUrl, floorData });
+
+  const tok = shareUrl.match(/tok=([0-9.]+B)/)?.[1];
+  assert.equal(tok, "109.4B", "the URL must carry the floor");
+  // Not merely the same number — the same STRING. human() rounded this to 109B
+  // while the URL wrote 109.4B, which reads as two different figures.
+  assert.ok(html.includes(tok),
+    `the page must print the same string as tok=${tok}; it did not`);
+  assert.ok(/floor/.test(html), "and must say it is a floor, not a total");
+});
+
+test("with no floor the tile falls back to on-disk and claims nothing", async () => {
+  const { renderStatsPage } = await import("../src/statspage.mjs");
+  const agg = { total_sessions: 1, total_input_tokens: 1e9, total_output_tokens: 0 };
+  const html = renderStatsPage({ profile: {}, agg, starSvg: "", name: "A" });
+  assert.ok(!/<span class="dim">floor<\/span>/.test(html),
+    "without floorData the tile must not label itself a floor");
+});

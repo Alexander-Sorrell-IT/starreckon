@@ -287,6 +287,12 @@ function genericTable(data) {
 
 export function renderStatsPage(input = {}) {
   const { profile, agg, accounts, fleet, providers, starSvg, velocity, name, shareUrl } = input;
+  // floorData: the same {onDisk, floor} the terminal cards and the QR receive.
+  // Without it this page's headline token tile read on-disk only while the QR
+  // printed beside it carried the fleet floor — 21.4B in the tile, 109.4B in the
+  // code, on one screen. The QR is the thing people scan and the tile is the
+  // thing they read; they cannot disagree.
+  const floorData = input.floorData ?? null;
   SHOW_ACCOUNTS = input.showAccounts === true;
   const p = profile ?? {};
   const a = agg ?? {};
@@ -323,7 +329,26 @@ export function renderStatsPage(input = {}) {
     tile("active hours", val(cad.total_duration_hours ?? a.total_duration_hours)),
     tile("active days", val(cad.active_days ?? a.active_days)),
     tile("streak", `${val(cad.current_streak_days)}d <span class="dim">now</span> · ${val(cad.longest_streak_days ?? a.longest_streak_days)}d <span class="dim">best</span>`, "current streak walks back from today (zY9); a gap zeroes it"),
-    tile("tokens", hval(tok.total ?? ((a.total_input_tokens ?? 0) + (a.total_output_tokens ?? 0) + (a.total_cache_read_tokens ?? 0) + (a.total_cache_write_tokens ?? 0) || null))),
+    // THE SAME TOTAL THE QR CARRIES. On-disk is what this scan could read; the
+    // floor is what the fleet's counters attest to, including sessions whose log
+    // files aged off. buildShareUrl takes Math.max of the two, so this does too
+    // — and says which it is showing, because a floor and a total are different
+    // claims and the difference is the point.
+    (() => {
+      const onDisk = tok.total ?? ((a.total_input_tokens ?? 0) + (a.total_output_tokens ?? 0)
+        + (a.total_cache_read_tokens ?? 0) + (a.total_cache_write_tokens ?? 0) || null);
+      const floor = Number(floorData?.floor);
+      if (Number.isFinite(floor) && floor > (Number(onDisk) || 0)) {
+        // THE SAME STRING THE QR CARRIES, not merely the same number. human()
+        // rounded 109,394,493,211 to "109B" while buildShareUrl wrote "109.4B",
+        // so the tile and the code under it read differently for one value —
+        // which is the exact confusion this change exists to remove.
+        const same = (floor / 1e9).toFixed(1) + "B";
+        return tile("tokens", `${same} <span class="dim">floor</span>`,
+          `fleet floor across every machine that reported: what the counters attest to, including sessions whose logs have aged off. This scan could read ${hval(onDisk)} on disk. The QR carries this same number.`);
+      }
+      return tile("tokens", hval(onDisk));
+    })(),
     tile("velocity", velocity?.hours_trend_per_month != null ? `${velocity.hours_trend_per_month > 0 ? "+" : ""}${esc(velocity.hours_trend_per_month)}h/mo` : DASH, "hours trend per month"),
   ].join("");
   const hero = `<section class="hero">${starSvg ? `<div class="star">${starSvg}</div>` : ""}<div class="tiles hero-tiles">${heroTiles}</div></section>`;

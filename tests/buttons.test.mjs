@@ -300,7 +300,12 @@ test("[R] writes the field you typed into contact.json, and only that field", ()
   assert.ok(existsSync(path), "[R] did not write contact.json");
   const doc = JSON.parse(readFileSync(path, "utf8"));
   assert.equal(doc.github, "octocat");
-  assert.deepEqual(Object.keys(doc), ["github"], `[R] wrote fields nobody typed: ${JSON.stringify(doc)}`);
+  // Every slot is written now, empty ones included, so the file can tell you
+  // what it holds — five social slots are not discoverable from a file that
+  // only lists what happens to be filled. So the invariant is about VALUES,
+  // not keys: exactly one field may carry one.
+  const withValues = Object.entries(doc).filter(([, v]) => v !== "").map(([k]) => k);
+  assert.deepEqual(withValues, ["github"], `[R] wrote fields nobody typed: ${JSON.stringify(doc)}`);
   // And the menu shows the new value back, so the reader can see what was kept.
   assert.match(r.stdout, /GitHub\s+octocat/);
 });
@@ -313,7 +318,7 @@ test("[R] with an empty value saves nothing rather than writing a blank field", 
   const path = join(home, ".starreckon", "contact.json");
   if (existsSync(path)) {
     const doc = JSON.parse(readFileSync(path, "utf8"));
-    assert.ok(!("email" in doc), `a blank answer wrote an empty email: ${JSON.stringify(doc)}`);
+    assert.equal(doc.email ?? "", "", `a blank answer saved an email value: ${JSON.stringify(doc)}`);
   }
 });
 
@@ -340,7 +345,9 @@ test("[R] field-level [X] clears one field and leaves the rest", () => {
   const r = run(home, [...SCAN, "--no-snapshot"], { input: "R\nG\nX\n\nQ\n", interactive: true });
   assert.equal(r.status, 0, `${r.stdout}${r.stderr}`);
   const doc = JSON.parse(readFileSync(path, "utf8"));
-  assert.ok(!("github" in doc), "the field-level clear did not remove github");
+  // The key stays, the value goes. An empty string and an absent key read the
+  // same everywhere downstream (readContact keeps only non-empty values).
+  assert.equal(doc.github ?? "", "", "the field-level clear did not clear github");
   assert.equal(doc.email, "a@b.c", "the field-level clear took a field it was not asked for");
 });
 

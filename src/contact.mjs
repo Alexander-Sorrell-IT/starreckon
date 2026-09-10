@@ -157,7 +157,11 @@ export const KEYS = {
   W: "website",
   L: "linkedin",
   T: "twitter",
-  ...Object.fromEntries(SOCIAL_FIELDS.map((f, i) => [String(i + 1), f])),
+  // S1..S5, not 1..5. A JavaScript object orders integer-like keys FIRST
+  // whatever the insertion order, so numeric keys put five empty social slots
+  // above the user's own name in the menu. A letter prefix keeps the block
+  // where it was written.
+  ...Object.fromEntries(SOCIAL_FIELDS.map((f, i) => [`S${i + 1}`, f])),
 };
 
 export function contactPath(home) {

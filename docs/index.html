@@ -554,15 +554,15 @@
       <div class="story-card">
         <div class="story-card-title">★ THE WEIGHT OF IT — LIFETIME TOKENS</div>
         <div class="story-card-hero"><span id="card-tokens-hero">—</span> Tokens</div>
+        <!-- The work/cache split and the per-CLI ledger are NOT carried in the
+             share link. They were written here as literals — 186.1M work, 20.6B
+             cache, 2.57B across Gemini/Antigravity/Copilot/Grok/Bob — which are
+             the AUTHOR'S numbers from one run of his own machine, shown to every
+             visitor as though they were the visitor's. A number this page cannot
+             derive from the link is a number it does not print. -->
         <div class="story-card-body">
-          <b>186.1M</b> generated work tokens · <b>20.6B</b> cache read/write (99.1% cached).
-          <br>
-          <span style="color:#38bdf8;">Multi-Agent Ledger:</span> <b>2.57B</b> lifetime tokens across Gemini (995M), Antigravity (827M), Copilot (647M), Grok (101M), and Bob (2.55M).
-        </div>
-        <div class="story-card-breakdown">
-          <div class="substat"><span class="substat-val" id="card-cache-val">20.6B</span><span class="substat-label">Cache Read/Write</span></div>
-          <div class="substat"><span class="substat-val" id="card-work-val">186.1M</span><span class="substat-label">Generated Work</span></div>
-          <div class="substat"><span class="substat-val">2.57B</span><span class="substat-label">Multi-CLI Ledger</span></div>
+          The total this card carries is the one in the link, and nothing here is
+          filled in around it.
         </div>
       </div>
 
@@ -573,43 +573,42 @@
         <div class="story-card-body">
           <b id="card-score-body">— / 35</b> Skill Points (<span id="card-tier-body">—</span> Tier). Deep engine architecture, AST parsers, and test-enforced zero-LLM verdicts.
         </div>
+        <!-- These were literals: Lv 6.7 / 6.6 / 6.1 / 5.3, with Outside The Box
+             missing entirely. The link carries all five levels in v=, and the
+             radar above this card was already drawing them — so the same run
+             rendered 7.0 in the star and 6.7 here, on one screen. Driven from
+             the link now, all five axes, in the same order the radar uses. -->
         <div class="story-card-breakdown">
-          <div class="substat"><span class="substat-val">Lv 6.7</span><span class="substat-label">First Principles</span></div>
-          <div class="substat"><span class="substat-val">Lv 6.6</span><span class="substat-label">Engineering</span></div>
-          <div class="substat"><span class="substat-val">Lv 6.1</span><span class="substat-label">Raw Coding</span></div>
-          <div class="substat"><span class="substat-val">Lv 5.3</span><span class="substat-label">Tenacity</span></div>
+          <div class="substat"><span class="substat-val" id="card-lv-0">—</span><span class="substat-label">First Principles</span></div>
+          <div class="substat"><span class="substat-val" id="card-lv-1">—</span><span class="substat-label">Engineering</span></div>
+          <div class="substat"><span class="substat-val" id="card-lv-2">—</span><span class="substat-label">Raw Coding</span></div>
+          <div class="substat"><span class="substat-val" id="card-lv-3">—</span><span class="substat-label">Outside The Box</span></div>
+          <div class="substat"><span class="substat-val" id="card-lv-4">—</span><span class="substat-label">Tenacity</span></div>
         </div>
       </div>
 
       <!-- Card 3: MOMENTUM & VELOCITY -->
       <div class="story-card">
         <div class="story-card-title">★ MOMENTUM & RHYTHM</div>
-        <div class="story-card-hero"><span id="card-streak-hero">49-Day</span> Streak</div>
+        <div class="story-card-hero"><span id="card-streak-hero">&#8212;</span> Streak</div>
         <div class="story-card-body">
-          <b id="card-hours-body">1,015</b> active hours logged across <b id="card-sessions-body">210</b> deep-work sessions (<span id="card-days-body">68</span> active days). Longitudinal velocity tracked month over month.
+          <b id="card-hours-body">&#8212;</b> active hours logged across <b id="card-sessions-body">&#8212;</b> deep-work sessions (<span id="card-days-body">&#8212;</span> active days). Longitudinal velocity tracked month over month.
         </div>
         <div class="story-card-breakdown">
-          <div class="substat"><span class="substat-val" id="card-hours-val">1,015h</span><span class="substat-label">Active Time</span></div>
-          <div class="substat"><span class="substat-val" id="card-sessions-val">210</span><span class="substat-label">Sessions</span></div>
-          <div class="substat"><span class="substat-val" id="card-days-val">68</span><span class="substat-label">Active Days</span></div>
-          <div class="substat"><span class="substat-val" id="card-streak-val">49d</span><span class="substat-label">Max Streak</span></div>
+          <div class="substat"><span class="substat-val" id="card-hours-val">&#8212;</span><span class="substat-label">Active Time</span></div>
+          <div class="substat"><span class="substat-val" id="card-sessions-val">&#8212;</span><span class="substat-label">Sessions</span></div>
+          <div class="substat"><span class="substat-val" id="card-days-val">&#8212;</span><span class="substat-label">Active Days</span></div>
+          <div class="substat"><span class="substat-val" id="card-streak-val">&#8212;</span><span class="substat-label">Max Streak</span></div>
         </div>
       </div>
 
-      <!-- Card 4: MULTI-AGENT WORKSPACE AUDIT -->
-      <div class="story-card">
-        <div class="story-card-title">★ WORKSPACE & MULTI-AGENT STACK</div>
-        <div class="story-card-hero">6,953 Sessions Audited</div>
-        <div class="story-card-body">
-          Discovered and audited across Claude Code (6,824 files), Codex (125 files), Cowork (4 files), Gemini CLI, Antigravity, and Grok.
-        </div>
-        <div class="story-card-breakdown">
-          <div class="substat"><span class="substat-val">15,332</span><span class="substat-label">Python Files</span></div>
-          <div class="substat"><span class="substat-val">13,088</span><span class="substat-label">Markdown Docs</span></div>
-          <div class="substat"><span class="substat-val">3,116</span><span class="substat-label">JavaScript</span></div>
-          <div class="substat"><span class="substat-val">1,824</span><span class="substat-label">Shell Scripts</span></div>
-        </div>
-      </div>
+      <!-- Card 4 (WORKSPACE & MULTI-AGENT STACK) REMOVED. Every figure in it was
+           a literal from the author's own machine — 6,953 sessions audited, Claude
+           Code 6,824 files, Codex 125, Cowork 4, and 15,332/13,088/3,116/1,824
+           files by language. None of it is carried in the share link, so for any
+           other person opening this page it was simply someone else's disk
+           described as theirs. There is no version of this card the link can fill
+           in, so it does not exist rather than existing full of a stranger's data. -->
 
       <!-- Card 5: DETERMINISTIC PROOF -->
       <div class="story-card">
@@ -1246,22 +1245,39 @@ function render() {
   if (cardScoreBody) cardScoreBody.textContent = d.total.toFixed(1) + " / 35";
   const cardTierBody = document.getElementById("card-tier-body");
   if (cardTierBody) cardTierBody.textContent = d.tier;
-  const cardStreakHero = document.getElementById("card-streak-hero");
-  if (cardStreakHero) cardStreakHero.textContent = (d.streak || 49) + "-Day";
-  const cardHoursBody = document.getElementById("card-hours-body");
-  if (cardHoursBody) cardHoursBody.textContent = fmt(d.hours || 1015);
-  const cardSessionsBody = document.getElementById("card-sessions-body");
-  if (cardSessionsBody) cardSessionsBody.textContent = fmt(d.sessions || 210);
-  const cardDaysBody = document.getElementById("card-days-body");
-  if (cardDaysBody) cardDaysBody.textContent = fmt(d.days || 68);
-  const cardHoursVal = document.getElementById("card-hours-val");
-  if (cardHoursVal) cardHoursVal.textContent = fmt(d.hours || 1015) + "h";
-  const cardSessionsVal = document.getElementById("card-sessions-val");
-  if (cardSessionsVal) cardSessionsVal.textContent = fmt(d.sessions || 210);
-  const cardDaysVal = document.getElementById("card-days-val");
-  if (cardDaysVal) cardDaysVal.textContent = fmt(d.days || 68);
-  const cardStreakVal = document.getElementById("card-streak-val");
-  if (cardStreakVal) cardStreakVal.textContent = (d.streak || 49) + "d";
+  // NO FALLBACK NUMBERS. These read `d.streak || 49`, `d.hours || 1015`,
+  // `d.sessions || 210`, `d.days || 68` — the author's own figures, printed to
+  // any visitor whose link happened not to carry that field. An absent value is
+  // an em dash. Zero is a real value and must survive, so the test is for a
+  // finite number, not for truthiness.
+  const num = (v) => (typeof v === "number" && isFinite(v) ? v : null);
+  const setTxt = (id, val, suffix = "") => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.textContent = val === null ? "\u2014" : fmt(val) + suffix;
+  };
+  const streak = num(d.streak), hours = num(d.hours);
+  const sessions = num(d.sessions), days = num(d.days);
+  const streakEl = document.getElementById("card-streak-hero");
+  if (streakEl) streakEl.textContent = streak === null ? "\u2014" : streak + "-Day";
+  setTxt("card-hours-body", hours);
+  setTxt("card-sessions-body", sessions);
+  setTxt("card-days-body", days);
+  setTxt("card-hours-val", hours, "h");
+  setTxt("card-sessions-val", sessions);
+  setTxt("card-days-val", days);
+  const streakVal = document.getElementById("card-streak-val");
+  if (streakVal) streakVal.textContent = streak === null ? "\u2014" : streak + "d";
+
+  // The five level cards, driven by the SAME array the radar draws, so the two
+  // cannot disagree. They were literals — 6.7 / 6.6 / 6.1 / 5.3 with Outside The
+  // Box absent — which is how one screen showed 7.0 in the star and 6.7 beneath it.
+  for (let i = 0; i < 5; i += 1) {
+    const el = document.getElementById("card-lv-" + i);
+    if (!el) continue;
+    const lv = Array.isArray(d.levels) ? num(d.levels[i]) : null;
+    el.textContent = lv === null ? "\u2014" : "Lv " + lv.toFixed(1);
+  }
 
   // 4. Render SVG Skill Star
   const R = 85, cx = 100, cy = 100;

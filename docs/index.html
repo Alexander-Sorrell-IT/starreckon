@@ -555,11 +555,11 @@
         <div class="story-card-title">★ THE WEIGHT OF IT — LIFETIME TOKENS</div>
         <div class="story-card-hero"><span id="card-tokens-hero">—</span> Tokens</div>
         <!-- The work/cache split and the per-CLI ledger are NOT carried in the
-             share link. They were written here as literals — 186.1M work, 20.6B
-             cache, 2.57B across Gemini/Antigravity/Copilot/Grok/Bob — which are
-             the AUTHOR'S numbers from one run of his own machine, shown to every
-             visitor as though they were the visitor's. A number this page cannot
-             derive from the link is a number it does not print. -->
+             share link. They used to sit here as fixed values from one run of the
+             author's own machine, shown to every visitor as though they were the
+             visitor's. A number this page cannot derive from the link is a number
+             it does not print — and the removed values are not repeated here,
+             because a comment ships to every reader too. -->
         <div class="story-card-body">
           The total this card carries is the one in the link, and nothing here is
           filled in around it.
@@ -573,11 +573,10 @@
         <div class="story-card-body">
           <b id="card-score-body">— / 35</b> Skill Points (<span id="card-tier-body">—</span> Tier). Deep engine architecture, AST parsers, and test-enforced zero-LLM verdicts.
         </div>
-        <!-- These were literals: Lv 6.7 / 6.6 / 6.1 / 5.3, with Outside The Box
-             missing entirely. The link carries all five levels in v=, and the
-             radar above this card was already drawing them — so the same run
-             rendered 7.0 in the star and 6.7 here, on one screen. Driven from
-             the link now, all five axes, in the same order the radar uses. -->
+        <!-- These were fixed values with one axis missing entirely, computed
+             from nothing, which is how a single screen could show one number in
+             the radar and a different one in the card beneath it. Driven from the
+             link now, all five axes, in the same order the radar uses. -->
         <div class="story-card-breakdown">
           <div class="substat"><span class="substat-val" id="card-lv-0">—</span><span class="substat-label">First Principles</span></div>
           <div class="substat"><span class="substat-val" id="card-lv-1">—</span><span class="substat-label">Engineering</span></div>
@@ -603,12 +602,12 @@
       </div>
 
       <!-- Card 4 (WORKSPACE & MULTI-AGENT STACK) REMOVED. Every figure in it was
-           a literal from the author's own machine — 6,953 sessions audited, Claude
-           Code 6,824 files, Codex 125, Cowork 4, and 15,332/13,088/3,116/1,824
-           files by language. None of it is carried in the share link, so for any
-           other person opening this page it was simply someone else's disk
-           described as theirs. There is no version of this card the link can fill
-           in, so it does not exist rather than existing full of a stranger's data. -->
+           a fixed value from the author's own machine: a session count, per-tool
+           file counts, and a file-count-by-language breakdown. None of it is
+           carried in the share link, so for anyone else opening this page it was
+           simply someone else's disk described as theirs. There is no version of
+           this card the link can fill in, so it does not exist rather than
+           existing full of a stranger's data. -->
 
       <!-- Card 5: DETERMINISTIC PROOF -->
       <div class="story-card">
@@ -1245,9 +1244,9 @@ function render() {
   if (cardScoreBody) cardScoreBody.textContent = d.total.toFixed(1) + " / 35";
   const cardTierBody = document.getElementById("card-tier-body");
   if (cardTierBody) cardTierBody.textContent = d.tier;
-  // NO FALLBACK NUMBERS. These read `d.streak || 49`, `d.hours || 1015`,
-  // `d.sessions || 210`, `d.days || 68` — the author's own figures, printed to
-  // any visitor whose link happened not to carry that field. An absent value is
+  // NO FALLBACK NUMBERS. Each of these used to fall back to the author's own
+  // figure, printed to any visitor whose link happened not to carry that
+  // field. Those values are not repeated here. An absent value is
   // an em dash. Zero is a real value and must survive, so the test is for a
   // finite number, not for truthiness.
   const num = (v) => (typeof v === "number" && isFinite(v) ? v : null);

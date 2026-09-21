@@ -91,7 +91,7 @@
    "runs_after": [
     "claude"
    ],
-   "note": "NOT a tool. Recovers per-project lastTotal* counters in .claude.json for sessions whose transcripts were deleted, minus everything the claude reader already emitted. 4,172,332,033 tokens across 78 sessions on hp-laptop-linux. Ordering is load-bearing.",
+   "note": "NOT a tool. Recovers per-project lastTotal* counters in .claude.json for sessions whose transcripts were deleted, minus everything the claude reader already emitted. Recovered billions of tokens across dozens of sessions in testing. Ordering is load-bearing.",
    "stores": [
     {
      "base": "home",

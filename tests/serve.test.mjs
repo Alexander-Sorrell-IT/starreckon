@@ -463,22 +463,22 @@ test("writeMachineFolder refuses to overwrite an existing machine folder", () =>
     cache_read_input_tokens: 0, output_tokens: 0,
   });
   const doc = (who, n) => ({
-    label: "hp-laptop-linux",
+    label: "machine-a",
     accounts: [{ account: who, totals: tok(n), by_model: { "claude-opus-5": tok(n) } }],
   });
 
-  writeMachineFolder(dir, "hp-laptop-linux", doc("real.person@example.com", 14_000_000_000));
+  writeMachineFolder(dir, "machine-a", doc("real.person@example.com", 14_000_000_000));
   const before = readFileSync(
-    join(dir, "hp-laptop-linux", "machine-readable", "totals.json"), "utf8");
+    join(dir, "machine-a", "machine-readable", "totals.json"), "utf8");
 
   assert.throws(
-    () => writeMachineFolder(dir, "hp-laptop-linux", doc("attacker@example.com", 1)),
+    () => writeMachineFolder(dir, "machine-a", doc("attacker@example.com", 1)),
     /exists|refus/i,
     "a second write to the same folder was accepted — the first machine's numbers are gone"
   );
 
   const after = readFileSync(
-    join(dir, "hp-laptop-linux", "machine-readable", "totals.json"), "utf8");
+    join(dir, "machine-a", "machine-readable", "totals.json"), "utf8");
   assert.equal(after, before, "the refusal still changed the file on disk");
   rmSync(dir, { recursive: true, force: true });
 });
@@ -492,13 +492,13 @@ test("and the same machine CAN be updated when the caller says so", () => {
     cache_read_input_tokens: 0, output_tokens: 0,
   });
   const doc = (n) => ({
-    label: "hp-laptop-linux",
+    label: "machine-a",
     accounts: [{ account: "real.person@example.com", totals: tok(n), by_model: { "claude-opus-5": tok(n) } }],
   });
-  writeMachineFolder(dir, "hp-laptop-linux", doc(1000));
-  writeMachineFolder(dir, "hp-laptop-linux", doc(2000), { replace: true });
+  writeMachineFolder(dir, "machine-a", doc(1000));
+  writeMachineFolder(dir, "machine-a", doc(2000), { replace: true });
   const doc2 = JSON.parse(readFileSync(
-    join(dir, "hp-laptop-linux", "machine-readable", "totals.json"), "utf8"));
+    join(dir, "machine-a", "machine-readable", "totals.json"), "utf8"));
   assert.equal(doc2.grand_total_tokens, 2000, "an explicit replace did not take effect");
   rmSync(dir, { recursive: true, force: true });
 });

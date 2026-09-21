@@ -61,3 +61,6 @@ Icon?
 # Private program data — star READS deadreckon at runtime, never vendors its records.
 deadreckon-count/
 deadreckon-record/
+
+# Real machine records are NEVER fixtures. Synthesize them.
+tests/fixtures/machines/

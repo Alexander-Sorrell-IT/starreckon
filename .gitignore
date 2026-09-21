@@ -57,3 +57,7 @@ build/
 ehthumbs.db
 Thumbs.db
 Icon?
+
+# Private program data — star READS deadreckon at runtime, never vendors its records.
+deadreckon-count/
+deadreckon-record/

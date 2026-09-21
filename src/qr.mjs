@@ -1,4 +1,4 @@
-// QR encoder — byte mode, versions 1..10, EC level M. Zero dependencies.
+// QR encoder — byte mode, versions 1..40, EC level M. Zero dependencies.
 //
 // Written rather than installed on purpose. This package ships with no
 // dependencies at all, and that is not a vanity metric here: the whole pitch is

@@ -351,7 +351,7 @@ spokes are drawn at full extent, not at the current levels — the backdrop has 
 hold still for the silhouette to be readable against it. Plus a letter RATING
 (C / B / A / S / S+, off the skill total), a
 SKILL OVERVIEW panel (total skill points, sessions, active hours) and an
-ATTRIBUTES panel (tokens in+out, cache share, longest streak, active days,
+ATTRIBUTES panel (tokens in+out+cache, cache share, longest streak, active days,
 velocity), footed `STARFORGE • LOCAL-ONLY SCAN • SECRETS REDACTED • PATHS
 MASKED`. One file: system font names only, no webfonts, no scripts, and
 nothing fetched when it renders — the only URL in the whole file is the SVG
@@ -468,7 +468,7 @@ your control — [PROVE-IT.md](PROVE-IT.md) §6.
 
 | Area | What starreckon does |
 |---|---|
-| **Credential redaction** | 24 secret regexes (SSH keys, PEM blocks, provider tokens, JWTs, connection-string passwords, 32-byte hex keys, RFC1918 addresses) **plus** labeled-assignment and `ENV_VAR=value` detection — 26 matchers in all, applied *before* anything is stored or written |
+| **Credential redaction** | 26 secret regexes (SSH keys, PEM blocks, provider tokens, JWTs, connection-string passwords, 32-byte hex keys, RFC1918 addresses) **plus** labeled-assignment and `ENV_VAR=value` detection — 28 matchers in all, applied *before* anything is stored or written |
 | **Path masking** | Home directory, username, and deep local paths masked everywhere — including the mangled `-Users-you-Projects-…` form Claude Code writes; projects reduced to two-segment labels |
 | **Identity pseudonymisation** | Your Claude OAuth **email address** never reaches a file: reports, the stats page and a `--join-fleet` folder carry a stable `acct-<hash>` label instead (the terminal still shows the address). `--show-accounts` opts into raw addresses — see "What a report actually contains" below for the honest limit |
 | **Interactive exclusion** | Asks before scanning which folders/topics to exclude entirely. `--yes` skips the prompt; so does a non-TTY stdin (a pipe, CI) — and in that case the run prints that it was skipped and that nothing was excluded, rather than letting you believe you were asked |

@@ -13,6 +13,7 @@ const SECRET_PATTERNS = [
   /ssh-(?:rsa|ed25519|dss|ecdsa)\s+[A-Za-z0-9+/=]{40,}/g,
   /sk-ant-[A-Za-z0-9_-]{20,}/g,
   /sk-(?:proj-|live-|test-)?[A-Za-z0-9_-]{20,}/g,
+  /xai-[A-Za-z0-9_-]{20,}/g, // xAI (this tool scans grok logs; its keys must not survive)
   /npm_[A-Za-z0-9]{36}/g,
   /gh[pousr]_[A-Za-z0-9]{36,}/g,
   /github_pat_[A-Za-z0-9_]{60,}/g,
@@ -31,6 +32,11 @@ const SECRET_PATTERNS = [
   /mysql:\/\/[^:\s]+:[^@\s]+@/g,
   /mongodb(?:\+srv)?:\/\/[^:\s]+:[^@\s]+@/g,
   /redis:\/\/[^:\s]*:[^@\s]+@/g,
+  // Any other scheme carrying a password: amqp://, clickhouse://, and the next
+  // tool's scheme that is not enumerated above. Requires user:pass (a colon AND
+  // an @), so passwordless URLs (https://host/path, https://user@host) pass
+  // through untouched.
+  /[A-Za-z][A-Za-z0-9+.-]*:\/\/[^/\s:]+:[^@\s]+@/g,
   /0x[a-fA-F0-9]{64}\b/g, // 32-byte hex (eth private keys etc.)
   // RFC1918 addresses. Not a credential, but an internal host is infrastructure
   // detail about someone's network, and a wrapped is a thing people post. Found
@@ -42,8 +48,27 @@ const SECRET_PATTERNS = [
 ];
 
 // KEY=value / key: value / "key": "value" style assignments.
+//
+// The label already disambiguates, so the value floor is 6, not 16: a labeled
+// `password: hunter2abc` (11 chars) is a secret by declaration, and the old
+// floor let it through into reports. But the label only disambiguates when it
+// is actually key-value SYNTAX — the separator must contain a `:`, `=`, or
+// `=>` (Ruby/JS-hash style). A bare space is English, not a label: with the
+// floor at 6, `TOKEN ECONOMICS` — the stats page's own section heading —
+// matched `token` + space + a 9-letter word, and the scrub then flagged our
+// own output. `password hunter2` with no punctuation is the price: it reads
+// as prose and is left alone.
 const LABELED_SECRET =
-  /\b(api[_-]?key|apikey|secret|secret[_-]?key|access[_-]?key|private[_-]?key|token|auth[_-]?token|password|passwd|pwd|authorization|bearer|credentials?|client[_-]?secret)\b(["'\s:=]{1,4})([A-Za-z0-9_\-./+]{16,})/gi;
+  /\b(api[_-]?key|apikey|secret|secret[_-]?key|access[_-]?key|private[_-]?key|token|auth[_-]?token|password|passwd|pwd|authorization|bearer|credentials?|client[_-]?secret)\b((?:["'\s]*[:=>]+["'\s:=>]*))([A-Za-z0-9_\-./+]{6,})/gi;
+
+// `Authorization: Bearer <token>` — the scheme word sits between the label and
+// the credential, so LABELED_SECRET alone would eat "Bearer" as the value and
+// leave the token standing. Runs first and consumes the scheme word with the
+// credential: leaving "Bearer" behind would let the labeled pass eat it as a
+// value on its own ("Authorization: [redacted] [redacted]") instead of the
+// single marker this produces.
+const BEARER_AUTH =
+  /(\bauthorization\s*:\s*)bearer\s+([A-Za-z0-9_\-./+]{6,})/gi;
 
 // ENV-style: SOMETHING_KEY=longvalue, SOMETHING_TOKEN=..., SOMETHING_SECRET=...
 const ENV_SECRET =
@@ -67,6 +92,7 @@ export function redactSecrets(text) {
   if (!text || typeof text !== "string") return text;
   let out = text;
   for (const re of SECRET_PATTERNS) out = out.replace(re, REDACTED);
+  out = out.replace(BEARER_AUTH, (_m, pre) => `${pre}${REDACTED}`);
   out = out.replace(LABELED_SECRET, (_m, label, sep) => `${label}${sep}${REDACTED}`);
   out = out.replace(ENV_SECRET, (_m, name) => `${name}=${REDACTED}`);
   return out;
@@ -112,6 +138,14 @@ export function maskPath(p) {
   if (USER) {
     out = out.replace(
       new RegExp(`/(?:Users|home)/${escapeRe(USER)}(?=/|$)`, "g"),
+      "~"
+    );
+    // The same home, Windows-shaped: `C:\Users\<name>\...` never matched the
+    // forward-slash rule above, so the drive layout and the Users structure
+    // survived while only the bare username was masked. Collapsed to ~ whole,
+    // drive letter included.
+    out = out.replace(
+      new RegExp(`(?:[A-Za-z]:)?\\\\(?:Users|home)\\\\${escapeRe(USER)}(?=\\\\|$)`, "g"),
       "~"
     );
     out = out.split(`/${USER}/`).join("/[user]/");
@@ -288,18 +322,64 @@ export function emailRe(flags = "g") {
   return new RegExp(EMAIL_SRC, flags);
 }
 
+// A bare `user@host` with no dotted TLD: an internal-only identity
+// (`bob@mailserver`) that the dotted rule above never sees. Matched only when
+// LABELED (an email-ish word before it) or when the local part is the OS
+// username — an unlabeled `word@word` in prose is not an identity anyone can
+// act on, and matching it would pseudonymise text like "meet me@home".
+// The tail guard keeps this off the head of a dotted address: `bob@mail` in
+// `bob@mail.com` is not a second identity.
+const NAKED_LOCAL = "[A-Za-z0-9._%+-]+";
+const NAKED_HOST = "[A-Za-z0-9](?:[A-Za-z0-9-]*[A-Za-z0-9])?";
+const NAKED_TAIL = "(?![A-Za-z0-9-]*\\.[A-Za-z0-9])";
+
+function nakedRes() {
+  const out = [
+    new RegExp(
+      `\\b(email|e-mail|mail|contact|user)\\b(\\s*[:=]\\s*)(${NAKED_LOCAL}@${NAKED_HOST})${NAKED_TAIL}`,
+      "gi"
+    ),
+  ];
+  if (USER && USER.length >= MIN_MASKABLE_USER_LEN)
+    out.push(
+      new RegExp(`\\b${escapeRe(USER)}@${NAKED_HOST}${NAKED_TAIL}`, "gi")
+    );
+  return out;
+}
+
 // First email-shaped string in `text`, with its offset — used by the verify
-// output-scrub check to point at the exact line.
+// output-scrub check to point at the exact line. Covers dotted and bare-host
+// forms; the earliest wins, so the pointer lands on the first leak.
 export function findEmail(text) {
   if (!text || typeof text !== "string") return null;
+  const cands = [];
   const m = emailRe().exec(text);
-  return m ? { value: m[0], index: m.index } : null;
+  if (m) cands.push({ value: m[0], index: m.index });
+  for (const re of nakedRes()) {
+    const n = re.exec(text);
+    if (!n) continue;
+    const addr = n[3] ?? n[0];
+    cands.push({ value: addr, index: n.index + n[0].lastIndexOf(addr) });
+  }
+  if (!cands.length) return null;
+  cands.sort((a, b) => a.index - b.index);
+  return cands[0];
 }
 
 // Replace every email address in free text with its stable pseudonym.
 export function maskIdentities(text) {
   if (!text || typeof text !== "string") return text;
-  return text.replace(emailRe(), (m) => accountPseudonym(m));
+  let out = text.replace(emailRe(), (m) => accountPseudonym(m));
+  for (const re of nakedRes()) {
+    out = out.replace(re, (...args) => {
+      // The labeled rule preserves its label; the username rule replaces whole.
+      const groups = args.slice(1, -2);
+      if (groups.length === 3)
+        return `${groups[0]}${groups[1]}${accountPseudonym(groups[2])}`;
+      return accountPseudonym(args[0]);
+    });
+  }
+  return out;
 }
 
 function escapeRe(s) {

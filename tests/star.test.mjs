@@ -501,8 +501,8 @@ test("renderStar with progress=0 for all arms still shows labels at full target 
 
 
 // ---------------------------------------------------------------------------
-// The ceiling hides magnitude. FIRST PRINCIPLES saturates at ~245M in+out
-// tokens, so a heavy corpus pins every big month to the same 7.0 and the arm
+// The ceiling hides magnitude. FIRST PRINCIPLES saturates at ~245M tokens,
+// so a heavy corpus pins every big month to the same 7.0 and the arm
 // stops telling months apart. computeLevelsRaw is the same arithmetic with the
 // clamp off, so "maxed" can say by how much.
 // ---------------------------------------------------------------------------
@@ -529,7 +529,7 @@ test("computeLevelsRaw equals computeLevels for every arm below the ceiling", ()
 });
 
 test("a saturated arm reports a raw level above the ceiling, and the clamp still holds", () => {
-  // 3.01B in+out — the real lifetime scale that pinned this axis in April.
+  // 3.01B tokens — the real lifetime scale that pinned this axis in April.
   const agg = { total_input_tokens: 3_000_000_000, total_output_tokens: 13_045_378 };
   const lv = computeLevels(agg);
   const raw = computeLevelsRaw(agg);

@@ -24,14 +24,21 @@
 // times in four disguises, and a caller that sees only the number cannot tell
 // "you have never used this tool" from "I could not open your data".
 
-import { existsSync, readdirSync, readFileSync, statSync } from "node:fs";
-import { join, basename, dirname } from "node:path";
+import { existsSync, lstatSync, readdirSync, readFileSync, statSync } from "node:fs";
+import { join, basename, dirname, relative } from "node:path";
 import { freemem } from "node:os";
 import { constants as BUFFER_CONSTANTS } from "node:buffer";
 import { vscodeRoots } from "./scanners.mjs";
 import { probe, stateOf, loadSources } from "./sources.mjs";
 import { addSourceEvidence } from "./evidence.mjs";
 import { readDeadreckonCorpus } from "./deadreckon-reader.mjs";
+import { tokenCount, tokenOr0 } from "./tokens.mjs";
+
+// Re-exported: tokenCount used to live here, and tests import it from here.
+// The rule itself is defined once, in tokens.mjs, and shared with scan.mjs
+// (creditUsage) and scanners.mjs (intOr0) so one malformed value cannot count
+// in one reader and vanish in another.
+export { tokenCount };
 
 // Node cannot hold a string longer than this, so readFileSync throws rather
 // than returning a short read. Checked before opening anything, because the
@@ -197,10 +204,10 @@ export function readClaudeOrphans(home, known, pr) {
 
       // THE FOUR FIELDS, AND ONLY THESE FOUR.
       const t = {
-        input: Number(pr.lastTotalInputTokens) || 0,
-        cacheWrite: Number(pr.lastTotalCacheCreationInputTokens) || 0,
-        cacheRead: Number(pr.lastTotalCacheReadInputTokens) || 0,
-        output: Number(pr.lastTotalOutputTokens) || 0,
+        input: tokenOr0(pr.lastTotalInputTokens),
+        cacheWrite: tokenOr0(pr.lastTotalCacheCreationInputTokens),
+        cacheRead: tokenOr0(pr.lastTotalCacheReadInputTokens),
+        output: tokenOr0(pr.lastTotalOutputTokens),
       };
       const held = best.get(sid);
       if (!held) {
@@ -247,34 +254,6 @@ export function readClaudeOrphans(home, known, pr) {
  * they are absent from the data, not zero in it. Only two keys are summed, and
  * a file lacking `total_input_tokens` is not a session rollup and is skipped.
  */
-/**
- * A token count, or null if the value is not one.
- *
- * `Number(v) || 0` was the coercion here and it is the loosest in the program:
- * it rejects NaN and nothing else. jazzer.js reached it in seconds with
- * `total_input_tokens: 1e400` — a number JSON accepts and JS parses as
- * Infinity, which `Number()` passes straight through, which then leaves the
- * machine and becomes `null` in the written file. Absent looking exactly like
- * zero, one more time.
- *
- * The same value CRASHES deadreckon (`int(inf)` raises OverflowError), and the
- * two programs disagreed on six of nine malformed shapes. This is the rule
- * both now apply: finite, non-negative, integral, and not a boolean. Numeric
- * strings are accepted because both programs already accepted them and real
- * rollups have used them.
- *
- * SAFE integer, not merely integer. Above 2**53 JavaScript cannot hold the
- * value exactly and Python can, so the two programs are guaranteed to disagree
- * on anything larger — 1e308 reads as 1e+308 here and as a 309-digit integer
- * there. A number no one can agree on is not a count.
- */
-export function tokenCount(v) {
-  if (typeof v === "boolean" || v === null || v === undefined) return null;
-  const n = typeof v === "string" ? (v.trim() === "" ? NaN : Number(v)) : v;
-  if (typeof n !== "number" || !Number.isSafeInteger(n) || n < 0) return null;
-  return n;
-}
-
 export function readClawspring(home, pr) {
   pr = look("clawspring", home, pr);
   if (!pr.present) return result(pr.state, [], { probe: pr });
@@ -373,8 +352,8 @@ export function readLmstudio(home, pr) {
         for (const st of v?.steps ?? []) {
           const stats = st?.genInfo?.stats;
           if (!stats || typeof stats !== "object") continue;
-          t.input += Number(stats.promptTokensCount) || 0;
-          t.output += Number(stats.predictedTokensCount) || 0;
+          t.input += tokenOr0(stats.promptTokensCount);
+          t.output += tokenOr0(stats.predictedTokensCount);
         }
       }
     }
@@ -473,14 +452,14 @@ export async function readBob(home, pr) {
       // — so bob's gross figure has its cache subtracted to fit. Floored at 0:
       // a negative would mean the format moved, and going quietly negative is
       // how a reader lies about that.
-      const cacheRead = Number(c?.cacheRead) || 0;
-      const cacheWrite = Number(c?.cacheWrite) || 0;
-      const grossInput = Number(c?.input) || 0;
+      const cacheRead = tokenOr0(c?.cacheRead);
+      const cacheWrite = tokenOr0(c?.cacheWrite);
+      const grossInput = tokenOr0(c?.input);
       const t = {
         input: Math.max(0, grossInput - cacheRead - cacheWrite),
         cacheWrite,
         cacheRead,
-        output: Number(c?.output) || 0,
+        output: tokenOr0(c?.output),
       };
       if (t.input + t.cacheWrite + t.cacheRead + t.output === 0) continue;
       const id = String(r.id);
@@ -503,6 +482,324 @@ export async function readBob(home, pr) {
     return result("unreadable", [], { probe: pr, why: unreadable.join("; ") });
   return result(stateOf(pr, sessions.length), sessions,
                 { rows: rowCount, databases: dbs.length, unreadable, probe: pr });
+}
+
+// ── aider ───────────────────────────────────────────────────────────────────────
+
+/**
+ * Aider's token reports, parsed out of its markdown chat histories.
+ *
+ * WHERE THE FILE LIVES (two places, and the dotdir is the rare one). Aider's
+ * default --chat-history-file is <git_root>/.aider.chat.history.md — the
+ * history sits IN THE REPO, not in ~/.aider (args.py: the default is
+ * git-root-relative). ~/.aider/.aider.chat.history.md exists only for users
+ * who point --chat-history-file there explicitly. So the spec-declared files
+ * are read first and then home is walked to depth 6 for the same filename,
+ * skipping the archive and the usual heavy trees. Files dedupe by
+ * (device, inode): the protect tick hard-links these histories into
+ * ~/.ai-logs-archive, and counting both copies is a clean 2x.
+ *
+ * WHAT IS COUNTED (read out of the installed aider source, not remembered).
+ * After every exchange aider prints
+ * `Tokens: {sent} sent[, {cw} cache write][, {ch} cache hit], {recv} received.`
+ * via tool_output, which blockquotes it into the history file — so a report
+ * line ALWAYS starts with `>`, and anything saying "Tokens:" that does not is
+ * user or assistant prose and is ignored. The counters reset after every
+ * report (show_usage_report), so each line is PER-EXCHANGE and lines SUM —
+ * taking the max would keep one exchange out of dozens. Sessions split on
+ * `# aider chat started at YYYY-MM-DD HH:MM:SS` headers.
+ *
+ * THREE HONEST LIMITS, all marked on the result:
+ * 1. The counts are ROUNDED (`format_tokens`: 999, 1.2k, 12k — 12k spans
+ *    11,500–12,499). `approximate: true` says so.
+ * 2. Bucket split follows aider's OWN accounting: on Anthropic-style usage it
+ *    adds prompt_tokens AND cache_write to sent while cache hit sits outside
+ *    sent, so input = sent − cache_write. On OpenAI-style usage prompt_tokens
+ *    already include the hit and this double-counts the hit — the line
+ *    records no provider, so no reader can do better from this file.
+ * 3. `.aider.input.history` carries no counters and is never read; `Cost: $`
+ *    lines are never parsed (this program prices nothing — see no-cost.test).
+ */
+const AIDER_HISTORY_NAME = ".aider.chat.history.md";
+const AIDER_WALK_DEPTH = 6;
+const AIDER_SKIP_DIRS = new Set([
+  "node_modules", ".git", ".cache", "snap", "venv", ".venv", "__pycache__",
+  "site-packages", ".Trash", "Trash", ".ai-logs-archive", "corpus", "merged",
+  "token-corpus", "archive",
+]);
+const AIDER_START_RE = /^# aider chat started at (\d{4}-\d{2}-\d{2}) (\d{2}:\d{2}:\d{2})\s*$/;
+// The \b is load-bearing: without it "0.02 session" in an appended
+// `Cost: $0.01 message, $0.02 session.` matches as "0.02 sent" and overwrites
+// the line's real sent figure with 0. (Single-line cost appends happen
+// whenever fewer than two cache figures print — the " " separator branch.)
+const AIDER_FRAG_RE = /(\d+(?:\.\d+)?k?)\s+(cache write|cache hit|sent|received)\b/g;
+const AIDER_REPORT_RE = /^>\s*Tokens:/;
+
+function parseAiderCount(s) {
+  const m = /^(\d+(?:\.\d+)?)(k)?$/.exec(s);
+  if (!m) return null;
+  const n = m[2] ? Math.round(parseFloat(m[1]) * 1000) : parseInt(m[1], 10);
+  return tokenOr0(n);
+}
+
+function aiderHistoryFiles(home, pr) {
+  const found = [];
+  const seenInode = new Set();
+  const push = (p) => {
+    let st;
+    try { st = statSync(p); } catch { return; }
+    if (!st.isFile()) return;
+    const key = st.ino !== 0 ? `${st.dev}:${st.ino}` : p;
+    if (seenInode.has(key)) return;
+    seenInode.add(key);
+    found.push(p);
+  };
+  // The spec-declared files first (explicit --chat-history-file users).
+  for (const f of pr.found) push(f);
+  // Then the per-project default, wherever the repos are. Descends into REAL
+  // directories only — never through a symlink (wine's dosdevices/ links the
+  // filesystem root back under home; following it loops the walk out of the
+  // home it was given and counts strangers' histories as this user's).
+  const walk = (dir, depth) => {
+    if (depth > AIDER_WALK_DEPTH) return;
+    for (const e of ls(dir) ?? []) {
+      if (AIDER_SKIP_DIRS.has(e)) continue;
+      const p = join(dir, e);
+      let lst;
+      try { lst = lstatSync(p); } catch { continue; }
+      if (lst.isSymbolicLink()) continue;
+      let st;
+      try { st = statSync(p); } catch { continue; }
+      if (st.isDirectory()) walk(p, depth + 1);
+      else if (e === AIDER_HISTORY_NAME) push(p);
+    }
+  };
+  walk(home, 0);
+  return found.sort();
+}
+
+export function readAider(home, pr) {
+  pr = look("aider", home, pr);
+  const files = aiderHistoryFiles(home, pr);
+  // pr.state is a PROBE state ("present" is not a reader state): no chat
+  // history with the input history present is "empty", not "present".
+  if (!files.length)
+    return result(pr.present ? "empty" : pr.state, [], { files: 0, probe: pr });
+
+  const sessions = [];
+  const unreadable = [];
+  files.forEach((f) => {
+    let bytes = 0;
+    try { bytes = statSync(f).size; } catch { return; }
+    if (bytes > MAX_STRING) {
+      unreadable.push({ path: f, bytes, why: "larger than this Node build can hold as a string" });
+      return;
+    }
+    if (bytes * 5 > freemem()) {
+      unreadable.push({ path: f, bytes, why: "not enough free memory to parse it safely" });
+      return;
+    }
+    let text;
+    try { text = readFileSync(f, "utf-8"); } catch {
+      unreadable.push({ path: f, bytes, why: "could not be read" });
+      return;
+    }
+    const project = relative(home, dirname(f)) || ".";
+    const base = relative(home, f);
+    // Split on session headers; a file with none is one undated session
+    // rather than zero sessions.
+    const chunks = [{ start: null, lines: [] }];
+    for (const line of text.split("\n")) {
+      const m = AIDER_START_RE.exec(line.trim());
+      if (m) chunks.push({ start: `${m[1]}T${m[2]}`, lines: [] });
+      else chunks[chunks.length - 1].lines.push(line);
+    }
+    chunks.forEach((ch, ci) => {
+      let sent = 0, recv = 0, cw = 0, chit = 0, turns = 0;
+      for (const line of ch.lines) {
+        // Blockquoted reports ONLY: tool_output prefixes every report line
+        // with `> Tokens:`, while user (`####`) and assistant text never
+        // carry that shape. A pasted "Tokens: ..." anywhere else is prose,
+        // not a measurement.
+        if (!AIDER_REPORT_RE.test(line)) continue;
+        let s = null, r = null, w = 0, h = 0;
+        AIDER_FRAG_RE.lastIndex = 0;
+        let m;
+        while ((m = AIDER_FRAG_RE.exec(line)) !== null) {
+          const n = parseAiderCount(m[1]);
+          if (n === null) continue;
+          if (m[2] === "sent") s = n;
+          else if (m[2] === "received") r = n;
+          else if (m[2] === "cache write") w = n;
+          else if (m[2] === "cache hit") h = n;
+        }
+        // sent AND received, or it is not a report (truncated paste, /tokens
+        // context readout, a model musing about tokens). A half-line that
+        // counted would invent the missing half as zero.
+        if (s === null || r === null) continue;
+        sent += s; recv += r; cw += w; chit += h; turns += 1;
+      }
+      if (sent + recv + cw + chit === 0) return;
+      sessions.push({
+        id: `${base}#${ci}`,
+        cli: "aider",
+        project,
+        start: ch.start,
+        end: null,      // the file dates a session's start, never its end
+        turns,
+        tokens: {
+          input: Math.max(0, sent - cw),
+          cacheWrite: cw,
+          cacheRead: chit,
+          output: recv,
+        },
+      });
+    });
+  });
+
+  // A file this reader could not open is unreadable EVEN IF other files
+  // counted: the number is then a floor (see readCopilotChat). Presence
+  // includes walk-found files: a repo history with an absent dotdir probe is
+  // "empty"/"counted", never "absent".
+  const here = { present: pr.present || files.length > 0, unreadable: pr.unreadable };
+  const state = unreadable.length ? "unreadable" : stateOf(here, sessions.length);
+  return result(state, sessions, {
+    files: files.length, unreadable, probe: pr,
+    approximate: true,   // format_tokens rounds: 12k spans 11,500–12,499
+  });
+}
+
+// ── opencode ──────────────────────────────────────────────────────────────────
+
+/**
+ * opencode's per-session rollups: session_v2 in the SQLite database at
+ * $XDG_DATA_HOME/opencode/opencode.db, else ~/.local/share/opencode/opencode.db
+ * (the data-dir rule is quoted from the shipped binary's own path code).
+ *
+ * THE ROLLUP, NOT THE MESSAGES. session_v2 carries tokens_input,
+ * tokens_output, tokens_reasoning, tokens_cache_read, tokens_cache_write per
+ * session, and session_message assistant rows carry the same five fields per
+ * message. Verified on the live database: session 1's message sum EQUALS its
+ * rollup exactly, session 2 drifts by 534 input tokens (a message row without
+ * counters the rollup still holds). Reading both is a 2x; the rollup is
+ * authoritative because it is what opencode itself reports per session.
+ *
+ * BUCKETS, both verified against live rows rather than assumed:
+ * - tokens_input EXCLUDES cache (session 2: cache_read 42,619,904 against
+ *   input 572,803 — a gross figure cannot be smaller than its part).
+ * - tokens_reasoning sits ALONGSIDE tokens_output (session 1's single
+ *   message: output 12, reasoning 24 — a subset cannot exceed its whole), so
+ *   both land in output. Reasoning tokens are generated and billed as output.
+ *
+ * NEVER TOUCHED: the `cost` column (this program prices nothing), the
+ * `account`/`control_account` tables (access_token + refresh_token columns)
+ * and the `credential` table (a `value` column). The SELECT below names its
+ * columns so a schema drift cannot silently widen it.
+ *
+ * NAMED GAP: forks. session_v2 has parent_id/fork_session_id columns and no
+ * forked session exists locally, so whether a fork's rollup restates its
+ * parent's prefix (the Codex trap) is unverified — every row counts whole.
+ * Legacy pre-SQLite project-dir JSON storage is not read either.
+ */
+export async function readOpencode(home, pr) {
+  pr = look("opencode", home, pr);
+  const dirs = [...pr.found];
+  let xdgFound = false;
+  const xdg = process.env.XDG_DATA_HOME;
+  if (xdg) {
+    const cand = join(xdg, "opencode");
+    if (existsSync(cand) && !dirs.includes(cand)) {
+      dirs.push(cand);
+      xdgFound = true;
+    }
+  }
+  const dbs = dirs.map((d) => join(d, "opencode.db")).filter((f) => existsSync(f));
+  if (!dbs.length) {
+    if (!pr.present && !xdgFound) return result(pr.state, [], { probe: pr });
+    return result("empty", [], { probe: pr, why: "the store is there and holds no opencode.db" });
+  }
+
+  let DatabaseSync;
+  try {
+    ({ DatabaseSync } = await import("node:sqlite"));
+  } catch {
+    return result("unreadable", [], {
+      why: "node:sqlite is unavailable in this Node (it arrived in 22.5). The "
+         + "store is present and holds sessions this build cannot read — this "
+         + "is not zero usage.",
+    });
+  }
+
+  // Merged by per-field MAXIMUM on the session id (the multi_base rule all
+  // SQLite readers here follow): a database that is a COPY contributes
+  // nothing, one holding its own rows contributes them.
+  const byId = new Map();
+  const unreadable = [];
+  let rowCount = 0;
+
+  for (const db of dbs) {
+    let handle;
+    try {
+      handle = new DatabaseSync(db, { readOnly: true });
+    } catch (e) {
+      unreadable.push(`${db}: ${e.message}`);
+      continue;
+    }
+    try {
+      const rows = handle.prepare(
+        "SELECT id, tokens_input, tokens_output, tokens_reasoning, "
+        + "tokens_cache_read, tokens_cache_write, model, directory, "
+        + "time_created, time_updated FROM session_v2").all();
+      rowCount += rows.length;
+      for (const r of rows) {
+        const t = {
+          input: tokenOr0(r.tokens_input),
+          cacheWrite: tokenOr0(r.tokens_cache_write),
+          cacheRead: tokenOr0(r.tokens_cache_read),
+          output: tokenOr0(r.tokens_output) + tokenOr0(r.tokens_reasoning),
+        };
+        if (t.input + t.cacheWrite + t.cacheRead + t.output === 0) continue;
+        let model = "unknown";
+        if (typeof r.model === "string" && r.model) {
+          try {
+            const m = JSON.parse(r.model);
+            if (m && typeof m.id === "string" && m.id) model = m.id;
+            else model = r.model;
+          } catch {
+            model = r.model;
+          }
+        }
+        const iso = (ms) => {
+          if (typeof ms !== "number" || !Number.isFinite(ms) || ms <= 0) return null;
+          const d = new Date(ms);
+          return Number.isNaN(d.getTime()) ? null : d.toISOString();
+        };
+        const id = String(r.id);
+        const sess = {
+          id, cli: "opencode", project: r.directory ?? null, model, tokens: t,
+          start: iso(r.time_created), end: iso(r.time_updated),
+        };
+        const held = byId.get(id);
+        if (!held) byId.set(id, sess);
+        else for (const k of ["input", "cacheWrite", "cacheRead", "output"])
+          if (t[k] > held.tokens[k]) held.tokens[k] = t[k];
+      }
+    } catch (e) {
+      unreadable.push(`${db}: ${e.message}`);
+    } finally {
+      try { handle.close(); } catch { /* best-effort */ }
+    }
+  }
+
+  const sessions = [...byId.values()];
+  if (unreadable.length === dbs.length)
+    return result("unreadable", [], { probe: pr, why: unreadable.join("; ") });
+  const present = pr.present || xdgFound;
+  return result(
+    unreadable.length ? "unreadable"
+      : stateOf({ present, unreadable: pr.unreadable }, sessions.length),
+    sessions,
+    { rows: rowCount, databases: dbs.length, unreadable, probe: pr });
 }
 
 // ── copilot chat ──────────────────────────────────────────────────────────────
@@ -632,11 +929,13 @@ export function readCopilotChat(home, pr) {
       });
     } else {
       // Same session in a second workspace: keep the max output (same rule as
-      // the ledger), earliest start, latest end, and sum turns across files.
+      // the ledger), earliest start, latest end, and the max turns. Turns were
+      // SUMMED here while tokens were maxed, so one session opened in two
+      // workspaces inflated exactly the count the dedup was written to hold.
       existing.tokens.output = Math.max(existing.tokens.output, out);
       if (start && (!existing.start || start < existing.start)) existing.start = start;
       if (end   && (!existing.end   || end   > existing.end))   existing.end   = end;
-      existing.turns += turns;
+      existing.turns = Math.max(existing.turns, turns);
     }
   }
   const sessions = [...perSession.values()];

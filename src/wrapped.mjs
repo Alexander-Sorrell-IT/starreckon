@@ -22,6 +22,7 @@ import { FLEET_MEASURES, FLEET_MEASURES_MONTH } from "./fleetstar.mjs";
 import { qrToTerminal } from "./qr.mjs";
 import { readContact, contactLines } from "./contact.mjs";
 import { buildShareUrl, PAGES_BASE, QR_BUDGET_BYTES } from "./shareurl.mjs";
+import { redactSecrets, maskPath } from "./redact.mjs";
 
 const R = "\x1b[0m";
 const B = "\x1b[1m";
@@ -607,7 +608,11 @@ export function sharePayload(rawLevels, agg, url, contact) {
     }
     text = out + "...";
   }
-  return text;
+  // Redacted here, not by the caller: this string is encoded into a QR as-is,
+  // and a secret in a contact field or the URL would otherwise be one scan
+  // away from whoever holds the phone. Redaction runs after the cap above, so
+  // a redacted payload is only ever shorter than the capped one.
+  return redactSecrets(text);
 }
 
 export function cardShare(rawLevels, agg, url, contact, floorData = null) {
@@ -668,10 +673,23 @@ export function shareQrLines(rawLevels, agg, url, contact, floorData = null) {
   const shareUrl = buildShareUrl(lv5(rawLevels), agg, contact, QR_BUDGET_BYTES, floorData, {
     onSkip: (f) => skipped.push(f),
   });
-  const payload = shareUrl ?? sharePayload(lv5(rawLevels), agg, url ?? PAGES_BASE, contact);
+  // ONE string, masked once, encoded and displayed from the same variable: the
+  // QR and the clickable link below it cannot disagree about where they go.
+  // Redaction runs BEFORE the encode, not after — a secret must never reach
+  // the matrix, and testing the printed link tests the encoded bytes.
+  const payload = maskPath(redactSecrets(
+    shareUrl ?? sharePayload(lv5(rawLevels), agg, url ?? PAGES_BASE, contact)
+  ));
+  const link = shareUrl ? maskPath(redactSecrets(shareUrl)) : null;
   try {
-    const qr = qrToTerminal(payload, { color: !plain(), href: shareUrl }).split("\n").map((r) => "  " + r);
-    if (!shareUrl) return qr;
+    // Level M (the strongest this encoder implements) and the print budget:
+    // a share code must survive a phone camera, not merely fit the encoder.
+    // Over budget or past M, this throws into the message below — the card
+    // loses its QR, never the run.
+    const qr = qrToTerminal(payload, {
+      color: !plain(), href: link, level: "M", maxBytes: QR_BUDGET_BYTES,
+    }).split("\n").map((r) => "  " + r);
+    if (!link) return qr;
     // NO FALLBACK. This read `|| "Alexander-Sorrell-IT"`, so a user who had
     // never filled in "reach out" got the AUTHOR's GitHub profile printed
     // under their own QR, as though it were theirs. Personal identity comes
@@ -679,12 +697,12 @@ export function shareQrLines(rawLevels, agg, url, contact, floorData = null) {
     // never someone else's value. (The starreckon repo URL elsewhere in this
     // file is the TOOL's source link, which is a different claim.)
     const gh = typeof contact === "object" && typeof contact?.github === "string"
-      ? contact.github.trim()
+      ? redactSecrets(contact.github.trim())
       : "";
     const ghUrl = gh ? `https://github.com/${gh}` : "";
     const clickShare = plain()
-      ? `  ${shareUrl}`
-      : `  \x1b]8;;${shareUrl}\x1b\\${CY}${shareUrl}${R}\x1b]8;;\x1b\\`;
+      ? `  ${link}`
+      : `  \x1b]8;;${link}\x1b\\${CY}${link}${R}\x1b]8;;\x1b\\`;
     const clickGh = !ghUrl
       ? ""
       : plain()

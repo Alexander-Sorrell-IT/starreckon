@@ -1,5 +1,5 @@
 // Multi-CLI session scanners: Gemini CLI, GitHub Copilot CLI, Antigravity,
-// Kilo Code, Grok CLI. Port of token-usage/sessions.py (the authoritative
+// Kilo Code, Grok CLI, Qwen Code, Cline. Port of token-usage/sessions.py (the authoritative
 // spec) — the LOGIC is faithful, including every documented counting trap:
 // cache-subset splits, rollup-vs-per-turn exclusions, double-emission drops,
 // exact-consume protobuf parsing, and copied-profile dedupe by session id.
@@ -19,6 +19,7 @@ import { probe, loadSources, stateOf } from "./sources.mjs";
 import { basename, dirname, join, relative, sep } from "node:path";
 import { fileURLToPath } from "node:url";
 import { maskPath, maskText, redactSecrets } from "./redact.mjs";
+import { tokenOr0 } from "./tokens.mjs";
 
 // ---- canonical token record ------------------------------------------------
 
@@ -85,6 +86,10 @@ export function providerOf(model) {
 // from this list, changes the answer too.
 const COUNTING_SOURCES = [
   "accounts.mjs", "readers.mjs", "scan.mjs", "scanners.mjs", "sources.mjs",
+  // tokens.mjs holds the one token-count rule every reader above applies; a
+  // change to what counts as a count moves every number without touching a
+  // line of arithmetic anywhere else.
+  "tokens.mjs",
   // fleet.mjs does not merely re-present numbers: it computes the published
   // machine floor (max of counter+after against measured sessions, plus the
   // non-claude totals). A change to that arithmetic changes a reported total,
@@ -138,7 +143,11 @@ function blank() {
   };
 }
 
-const intOr0 = (v) => (Number.isInteger(v) ? v : 0);
+// One rule for what counts, shared with scan.mjs and readers.mjs (tokens.mjs).
+// This used to take only what already IS an integer — so "500" vanished here
+// while creditUsage counted it, and -5 and 1e308 counted here while tokenCount
+// refused them. Same value, same answer, whichever reader sees it.
+const intOr0 = tokenOr0;
 
 function isoToMs(s) {
   if (!s || typeof s !== "string") return NaN;
@@ -547,6 +556,77 @@ function readGrok(home, base) {
   return out;
 }
 
+// ---- qwen — ~/.qwen/usage/token-usage-YYYY-MM.jsonl ------------------------
+
+function readQwen(home, base) {
+  // ONE of qwen's THREE token-bearing stores — and the only one this reads.
+  //
+  //   usage/token-usage-*.jsonl   per-API-request rows (THIS READER)
+  //   usage_record.jsonl          per-session rollups RESTATING those rows
+  //   projects/*/chats/*.jsonl    transcripts with per-message usageMetadata
+  //
+  // Verified on the live store: session 5ef77052 holds ONE model message with
+  // usageMetadata (4095 in / 6 out) but TWO token-usage rows (the main call
+  // plus a managed-auto-memory-extractor call, 4095/131), and the usage_record
+  // rollup is their exact sum (8190/137). So the transcripts are a SUBSET and
+  // the rollup is a RESTATEMENT: reading any two of the three double-counts.
+  //
+  // Row shape (from the installed @qwen-code/qwen-code bundle, the
+  // TOKEN_USAGE writer): {id, timestamp, sessionId, model, inputTokens,
+  // outputTokens, cachedTokens, thoughtsTokens, totalTokens}. Semantics from
+  // calculateInputTokens/calculateTotalTokens in that same bundle:
+  // inputTokens INCLUDES cached (input_token_count, else the cached count
+  // alone); cachedTokens is the cached SUBSET; thoughts are separate from
+  // output; totalTokens restates input+output(+thoughts) and is ignored here
+  // (the same `total` trap as the gemini reader). Thinking tokens are
+  // generated and billed as output.
+  //
+  // Rows dedupe on `id` (a rotation or copied profile re-emits the same
+  // request); sessions group by sessionId ACROSS monthly files. A row with no
+  // sessionId is not attributable and is skipped. A session whose rows sum to
+  // zero recorded no usage (failed calls log 0/0 rows) and is not emitted —
+  // the transcripts still prove it existed.
+  const sessions = new Map();
+  const seenIds = new Set();
+  let names;
+  try { names = readdirSync(base).sort(); } catch { return []; }
+  for (const name of names) {
+    if (!name.startsWith("token-usage-") || !name.endsWith(".jsonl")) continue;
+    const text = readTextSafe(join(base, name));
+    if (text === null) continue;
+    for (const line of text.split("\n")) {
+      if (!line.trim()) continue;
+      let o;
+      try { o = JSON.parse(line); } catch { continue; }
+      if (!o || typeof o !== "object") continue;
+      const rid = typeof o.id === "string" && o.id;
+      if (rid) {
+        if (seenIds.has(rid)) continue;
+        seenIds.add(rid);
+      }
+      const sid = (typeof o.sessionId === "string" && o.sessionId) || null;
+      if (!sid) continue;
+      const inp = intOr0(o.inputTokens);
+      const cached = intOr0(o.cachedTokens);
+      const out = intOr0(o.outputTokens);
+      const th = intOr0(o.thoughtsTokens);
+      let rec = sessions.get(sid);
+      if (!rec) {
+        rec = mkRec("qwen", sid, "qwen (local)", "-");
+        sessions.set(sid, rec);
+      }
+      if (typeof o.timestamp === "string" && o.timestamp) noteTs(rec, o.timestamp);
+      if (inp + out + cached + th <= 0) continue; // a call that used nothing
+      rec.turns += 1;
+      if (typeof o.model === "string" && o.model) vote(rec, o.model, 1);
+      rec.tokens.input_tokens += Math.max(0, inp - cached);
+      rec.tokens.cache_read_input_tokens += Math.min(cached, inp);
+      rec.tokens.output_tokens += out + th;
+    }
+  }
+  return [...sessions.values()].filter((r) => r.turns > 0).map(finish);
+}
+
 // ---- kilo — VS Code extension kilocode.kilo-code ---------------------------
 
 export function vscodeRoots(home) {
@@ -566,7 +646,7 @@ export function vscodeRoots(home) {
   return out;
 }
 
-function kiloModel(tdir, provider) {
+function taskModel(tdir, provider) {
   const f = join(tdir, "api_conversation_history.json");
   const text = readTextSafe(f);
   if (text !== null) {
@@ -576,21 +656,21 @@ function kiloModel(tdir, provider) {
   return provider || "unknown";
 }
 
-function readKilo(home) {
+function readVscodeTasks(home, extId, cli) {
   // Traps: tokensIn ALREADY INCLUDES cacheReads+cacheWrites (subtract both,
-  // adding on top inflates 64%); state.vscdb taskHistory is a rollup restating
-  // these same rows — per-request records ONLY. Every VS Code channel is
-  // scanned: Insiders held the only Grok usage on the reference machine.
+  // adding on top inflates 64%); the state/taskHistory rollup restates these
+  // same rows — per-request records ONLY. Every VS Code channel is scanned:
+  // Insiders held the only Grok usage on the reference machine.
   const out = [];
   for (const [label, root] of vscodeRoots(home)) {
-    const tasks = join(root, "User", "globalStorage", "kilocode.kilo-code", "tasks");
+    const tasks = join(root, "User", "globalStorage", extId, "tasks");
     if (!isDir(tasks)) continue;
     for (const tdir of listDirs(tasks)) {
       const f = join(tdir, "ui_messages.json");
       if (!isFile(f)) continue;
       let msgs;
       try { msgs = JSON.parse(readFileSync(f, "utf-8")); } catch { continue; }
-      const rec = mkRec("kilocode", basename(tdir), `kilocode (${label})`, "-");
+      const rec = mkRec(cli, basename(tdir), `${cli} (${label})`, "-");
       let provider = null;
       for (const m of Array.isArray(msgs) ? msgs : []) {
         if (!m || typeof m !== "object") continue;
@@ -615,13 +695,37 @@ function readKilo(home) {
         }
       }
       if (!rec.turns) continue;
-      vote(rec, kiloModel(tdir, provider), 1);
+      vote(rec, taskModel(tdir, provider), 1);
       const fin = finish(rec);
       fin.models = { [fin.model]: fin.turns };
       out.push(fin);
     }
   }
   return out;
+}
+
+function readKilo(home) {
+  return readVscodeTasks(home, "kilocode.kilo-code", "kilocode");
+}
+
+// ---- muse — VS Code extension saoudrizwan.claude-dev (Cline) -----------------
+function readMuse(home) {
+  // Cline's task directories are byte-shape-identical to Kilo Code's (a fork
+  // lineage): per-task ui_messages.json, one api_req_started record per API
+  // request with tokensIn/tokensOut/cacheReads/cacheWrites, ts in epoch ms,
+  // model from the <model> tag in api_conversation_history.json. Corroborated
+  // by every independent Cline parser found (all name these exact keys) and by
+  // the kilo reader's verified behaviour on the live kilo store; no Cline
+  // store exists on this machine, so this is held to fixtures, not live data.
+  //
+  // NOT read: state/taskHistory.json (a rollup restating the per-request rows
+  // — the same exclusion as kilo's). NAMED GAP: `deleted_api_reqs` and
+  // `subagent_usage` say-records also carry token fields in newer Cline, but
+  // without a live store it is unverifiable whether they restate rows already
+  // counted here, so they are ignored exactly like the kilo reader ignores
+  // everything that is not api_req_started. The standalone Cline CLI store
+  // (~/.cline) is not declared either — outside this reader's scope.
+  return readVscodeTasks(home, "saoudrizwan.claude-dev", "muse");
 }
 
 // ---- antigravity — protobuf in SQLite + AES-256-GCM encrypted .pb ----------
@@ -1054,6 +1158,12 @@ const READERS = {
   // never reach the reader it names.
   kilocode: { vscode: true, read: readKilo },
   grok: { rels: [".grok/sessions", ".grok/archived_sessions"], read: readGrok },
+  // The token-usage logs, not the whole dotdir: usage_record.jsonl and the
+  // chat transcripts restate or subset these rows (see readQwen).
+  qwen: { rels: [".qwen/usage"], read: readQwen },
+  // Cline, the VS Code extension (formerly Claude Dev): same per-request
+  // record shape as kilocode, one directory over in globalStorage.
+  muse: { vscode: true, read: readMuse },
 };
 
 ALL_LEADS = new Set(
@@ -1089,9 +1199,10 @@ function detectInstalled(name, roots, probes) {
     return false;
   }
   for (const home of roots) {
-    if (name === "kilocode") {
+    if (name === "kilocode" || name === "muse") {
+      const ext = name === "kilocode" ? "kilocode.kilo-code" : "saoudrizwan.claude-dev";
       for (const [, root] of vscodeRoots(home)) {
-        if (isDir(join(root, "User", "globalStorage", "kilocode.kilo-code"))) return true;
+        if (isDir(join(root, "User", "globalStorage", ext))) return true;
       }
     } else {
       for (const rel of READERS[name].rels ?? []) {
@@ -1136,9 +1247,10 @@ export function scanProvider(name, roots = [homedir()]) {
       }
     }
     for (const rec of recs) {
-      // Kilo keys on account+id so distinct VS Code channels stay distinct
-      // while a copied home merges.
-      const key = name === "kilocode" ? `${rec.account}:${rec.session_id}` : rec.session_id;
+      // Kilo and muse key on account+id so distinct VS Code channels stay
+      // distinct while a copied home merges.
+      const key = (name === "kilocode" || name === "muse")
+        ? `${rec.account}:${rec.session_id}` : rec.session_id;
       if (key != null) {
         if (seen.has(key)) continue;
         seen.add(key);
@@ -1225,12 +1337,13 @@ export function scanAllProviders(roots = [homedir()]) {
 // ── the ported readers ────────────────────────────────────────────────────────
 
 /**
- * The four readers ported from deadreckon, aggregated into the same row shape
+ * The readers ported from deadreckon, aggregated into the same row shape
  * scanProvider produces so every downstream consumer — the star, the card, the
  * stats page, the JSON report, the ledger — sees them without being taught
  * anything new.
  *
- * SEPARATE FROM scanAllProviders BECAUSE ONE OF THEM IS ASYNC. `bob` is SQLite,
+ * SEPARATE FROM scanAllProviders BECAUSE TWO OF THEM ARE ASYNC. `bob` and
+ * `opencode` are SQLite,
  * and node:sqlite has to be imported lazily (it is a builtin, so this still
  * costs no dependency, but it arrived in Node 22.5 and must degrade rather than
  * throw). Making scanAllProviders async would have rippled through its callers
@@ -1256,7 +1369,7 @@ export async function scanPortedReaders(roots = [homedir()], { knownClaudeIds } 
       + "every live session.");
   }
   const { readClaudeOrphans, readClawspring, readLmstudio, readBob,
-          readCopilotChat, readHistory } = await import("./readers.mjs");
+          readCopilotChat, readHistory, readAider, readOpencode } = await import("./readers.mjs");
 
   const providers = {};
   const perSession = [];
@@ -1336,6 +1449,8 @@ export async function scanPortedReaders(roots = [homedir()], { knownClaudeIds } 
     add("lmstudio", readLmstudio(home));
     add("bob", await readBob(home));
     add("copilot-chat", readCopilotChat(home));
+    add("aider", readAider(home));
+    add("opencode", await readOpencode(home));
 
     // HISTORY IS NOT A TOKEN READER AND IS NOT GIVEN TOKEN FIELDS.
     //

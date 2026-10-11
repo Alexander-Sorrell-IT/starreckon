@@ -132,7 +132,9 @@ test("writeConfig refuses an unrecognised write and does NOT destroy the file", 
 // ── KNOWN_CLI_NAMES ───────────────────────────────────────────────────────────
 
 test("KNOWN_CLI_NAMES includes all supported CLIs", () => {
-  for (const cli of ["claude", "gemini", "copilot", "codex", "grok", "kilocode", "lmstudio", "antigravity"]) {
+  for (const cli of ["claude", "gemini", "copilot", "codex", "grok", "kilocode", "lmstudio", "antigravity",
+                     "bob", "copilot-chat", "clawspring", "cowork",
+                     "qwen", "muse", "aider", "opencode"]) {
     assert.ok(KNOWN_CLI_NAMES.has(cli), `expected ${cli} in KNOWN_CLI_NAMES`);
   }
 });
@@ -201,7 +203,13 @@ test("effectiveRoots order: home first, then config roots, then CLI roots", () =
 // promise in reverse: it must report itself as unreadable and never as zero.
 test("KNOWN_CLI_NAMES and the reader registry describe the same tools", async () => {
   const { PROVIDERS } = await import("../src/scanners.mjs");
-  const READ_ELSEWHERE = new Set(["claude", "codex"]);   // scan.mjs sources
+  // claude/codex/cowork live in scan.mjs; bob/copilot-chat/clawspring and
+  // aider/opencode live in readers.mjs, invoked from the scanners.mjs
+  // ported-reader flow. All eight are read — just not from the READERS
+  // registry this compares against.
+  const READ_ELSEWHERE = new Set(["claude", "codex", "cowork",
+                                  "bob", "copilot-chat", "clawspring",
+                                  "aider", "opencode"]);
   const NO_READER = new Set(["lmstudio"]);               // declared, uncounted
 
   const registry = new Set(PROVIDERS);

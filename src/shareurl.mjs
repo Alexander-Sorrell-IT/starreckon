@@ -28,6 +28,7 @@ import { AXES, ARMS, MAX_LEVEL } from "./starsvg.mjs";
 import { archetype, rating } from "./archetype.mjs";
 import { FIELDS as CONTACT_FIELDS, URL_KEYS, SOCIAL_FIELDS, compactSocial } from "./contact.mjs";
 import { MAX_BYTES as QR_MAX_BYTES } from "./qr.mjs";
+import { redactSecrets } from "./redact.mjs";
 
 export const PAGES_BASE = "https://alexander-sorrell-it.github.io/starreckon/";
 
@@ -156,6 +157,14 @@ export function buildShareUrl(levels, agg, contact, budget = QR_BUDGET_BYTES, fl
     if (!raw || typeof raw !== "string" || !raw.trim()) continue;
     const key = URL_KEYS[f];
     if (!key) continue;
+    // Redacted BEFORE packing: a key pasted into the contact file by accident
+    // must not travel in a URL that is printed, copied, and encoded into a QR.
+    // Redaction runs before the slice below, so a long secret cannot eat the
+    // budget either — what is packed is the redacted value, not the secret.
+    const clean = redactSecrets(raw.trim());
+    // A value that was NOTHING BUT a secret would pack as a bare "[redacted]"
+    // marker — noise, not identity. Skip the field rather than publish it.
+    if (!clean.replace(/\[redacted\]/g, "").trim()) continue;
     // 32, matching the name cap this file already had and shareurl.test.mjs
     // asserts. Uniform across fields: one number is easier to reason about
     // against the byte budget than a per-field table.
@@ -176,7 +185,7 @@ export function buildShareUrl(levels, agg, contact, budget = QR_BUDGET_BYTES, fl
     // for bytes, a cap that fits a real profile path, and if it still does not
     // fit it is skipped WHOLE by the budget check below.
     const isUrlField = SOCIAL_FIELDS.includes(f) || f === "website";
-    const val = isUrlField ? compactSocial(raw).slice(0, 48) : raw.trim().slice(0, 32);
+    const val = isUrlField ? compactSocial(clean).slice(0, 48) : clean.slice(0, 32);
     if (!val) continue;
     // MEASURE WHAT IS ACTUALLY WRITTEN. This estimated the cost with
     // encodeURIComponent and then wrote with params.set(), and the two do not

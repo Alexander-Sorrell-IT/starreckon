@@ -184,7 +184,8 @@ test("every error-correction row fits its version's codeword budget", async () =
     1156,1258,1364,1474,1588,1706,1828,1921,2051,2185,2323,2465,2611,2761,2876,3034,3196,3362,3532,3706];
   const fs = await import("node:fs");
   const path = await import("node:path");
-  const here = path.dirname(new (globalThis.URL)(import.meta.url).pathname);
+  const { fileURLToPath } = await import("node:url");
+  const here = path.dirname(fileURLToPath(import.meta.url));
   const src = fs.readFileSync(path.join(here, "..", "src", "qr.mjs"), "utf8");
 
   const grab = (name) => {

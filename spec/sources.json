@@ -305,6 +305,24 @@
     },
     {
      "base": "vscode",
+     "channel": "VSCodium",
+     "segments": [
+      "User",
+      "workspaceStorage"
+     ],
+     "label": "copilot-chat-vscodium"
+    },
+    {
+     "base": "vscode",
+     "channel": "Code - OSS",
+     "segments": [
+      "User",
+      "workspaceStorage"
+     ],
+     "label": "copilot-chat-code-oss"
+    },
+    {
+     "base": "vscode",
      "channel": "Code",
      "segments": [
       "User",
@@ -322,6 +340,26 @@
       "emptyWindowChatSessions"
      ],
      "label": "copilot-chat-empty-insiders"
+    },
+    {
+     "base": "vscode",
+     "channel": "VSCodium",
+     "segments": [
+      "User",
+      "globalStorage",
+      "emptyWindowChatSessions"
+     ],
+     "label": "copilot-chat-empty-vscodium"
+    },
+    {
+     "base": "vscode",
+     "channel": "Code - OSS",
+     "segments": [
+      "User",
+      "globalStorage",
+      "emptyWindowChatSessions"
+     ],
+     "label": "copilot-chat-empty-code-oss"
     }
    ]
   },
@@ -358,6 +396,28 @@
       "tasks"
      ],
      "label": "kilocode-insiders"
+    },
+    {
+     "base": "vscode",
+     "channel": "VSCodium",
+     "segments": [
+      "User",
+      "globalStorage",
+      "kilocode.kilo-code",
+      "tasks"
+     ],
+     "label": "kilocode-vscodium"
+    },
+    {
+     "base": "vscode",
+     "channel": "Code - OSS",
+     "segments": [
+      "User",
+      "globalStorage",
+      "kilocode.kilo-code",
+      "tasks"
+     ],
+     "label": "kilocode-code-oss"
     }
    ]
   },
@@ -439,6 +499,161 @@
      ]
     }
    ]
+  },
+  {
+   "name": "deepseek",
+   "kind": "cli",
+   "label": "DeepSeek CLI",
+   "billed": true,
+   "counted_by": [],
+   "note": "STILL NO READER, AFTER LOOKING. The local deepseek runtime keeps ~/.deepseek-code/sessions/ but nothing writes there — its engine persists session data under ~/.clawspring/sessions, which the clawspring reader already counts, so a deepseek reader over that store would double-count. No tool writing ~/.deepseek/sessions was found anywhere. A reader here would be guessing keys, and a guessed key returns 0 — the fake-reader failure. Declared to report no_reader by name.",
+   "stores": [
+    {
+     "base": "home",
+     "segments": [
+      ".deepseek",
+      "sessions"
+     ]
+    },
+    {
+     "base": "home",
+     "segments": [
+      ".deepseek-code",
+      "sessions"
+     ]
+    }
+   ]
+  },
+  {
+   "name": "qwen",
+   "kind": "cli",
+   "label": "Qwen Code",
+   "billed": true,
+   "counted_by": [
+    "starreckon"
+   ],
+   "note": "reads usage/token-usage-*.jsonl ONLY: per-request rows (input INCLUDES cached; thoughts separate from output; total restates and is ignored). usage_record.jsonl restates these rows per session and the chat transcripts subset them — all three verified against the live store — so neither is declared. tmp/ holds logs, not usage.",
+   "stores": [
+    {
+     "base": "home",
+     "segments": [
+      ".qwen",
+      "usage"
+     ]
+    }
+   ]
+  },
+  {
+   "name": "aider",
+   "kind": "cli",
+   "label": "Aider",
+   "billed": true,
+   "counted_by": [
+    "starreckon"
+   ],
+   "note": "parses the per-exchange `Tokens:` reports out of .aider.chat.history.md files. Aider's DEFAULT history path is per-project (<git_root>/.aider.chat.history.md), so the reader walks home for that filename in addition to the declared dotdir files — the walk is behaviour, documented in readers.mjs. Counts are ROUNDED by aider itself (approximate: true). The input history carries no counters. Session history only — never the whole dotdir, which holds credential material the archive must not duplicate.",
+   "stores": [
+    {
+     "base": "home",
+     "segments": [
+      ".aider",
+      ".aider.chat.history.md"
+     ]
+    },
+    {
+     "base": "home",
+     "segments": [
+      ".aider",
+      ".aider.input.history"
+     ]
+    }
+   ]
+  },
+  {
+   "name": "opencode",
+   "kind": "cli",
+   "label": "opencode",
+   "billed": true,
+   "counted_by": [
+    "starreckon"
+   ],
+   "note": "reads the session_v2 rollups in opencode.db ONLY — never the per-message rows that restate them, never the cost column, never the account/credential tables (token and secret columns live there). The data dir is $XDG_DATA_HOME/opencode, else ~/.local/share/opencode (quoted from the shipped binary); the reader honours the override. There is no ~/.opencode/sessions store.",
+   "stores": [
+    {
+     "base": "home",
+     "segments": [
+      ".local",
+      "share",
+      "opencode"
+     ]
+    }
+   ]
+  },
+  {
+   "name": "muse",
+   "kind": "extension",
+   "host": "vscode",
+   "label": "Cline (Muse)",
+   "billed": true,
+   "counted_by": [
+    "starreckon"
+   ],
+   "note": "The Cline VS Code extension (saoudrizwan.claude-dev), formerly Claude Dev. Per-request api_req_started records, same shape as kilocode (tokensIn already includes cache; taskHistory.json is a restating rollup and is excluded). Held to fixtures — no Cline store exists on this machine.",
+   "stores": [
+    {
+     "base": "vscode",
+     "channel": "Code",
+     "segments": [
+      "User",
+      "globalStorage",
+      "saoudrizwan.claude-dev",
+      "tasks"
+     ],
+     "label": "muse"
+    },
+    {
+     "base": "vscode",
+     "channel": "Code - Insiders",
+     "segments": [
+      "User",
+      "globalStorage",
+      "saoudrizwan.claude-dev",
+      "tasks"
+     ],
+     "label": "muse-insiders"
+    },
+    {
+     "base": "vscode",
+     "channel": "VSCodium",
+     "segments": [
+      "User",
+      "globalStorage",
+      "saoudrizwan.claude-dev",
+      "tasks"
+     ],
+     "label": "muse-vscodium"
+    },
+    {
+     "base": "vscode",
+     "channel": "Code - OSS",
+     "segments": [
+      "User",
+      "globalStorage",
+      "saoudrizwan.claude-dev",
+      "tasks"
+     ],
+     "label": "muse-code-oss"
+    }
+   ]
+  },
+  {
+   "name": "chatgpt",
+   "kind": "app",
+   "label": "ChatGPT",
+   "billed": true,
+   "counted_by": [],
+   "note": "NO LOCAL SESSION STORE AT ALL. ChatGPT on the web keeps no countable log on this machine, so there is no store to declare and no reader to write — but work done there is still work this program cannot see, and a gap nobody names reads as a tool nobody uses. Codex is a separate product with its own entry and its own reader.",
+   "stores": []
   }
  ],
  "bases": {

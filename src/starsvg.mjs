@@ -21,7 +21,7 @@
 // they drifted once already, describing "long sessions" and "files touched"
 // that no formula ever read.
 export const AXES = [
-  "FIRST PRINCIPLES", // tokens in+out
+  "FIRST PRINCIPLES", // tokens in+out+cache
   "ENGINEERING",      // distinct projects + distinct languages
   "CODING",           // tool calls
   "OUTSIDE THE BOX",  // distinct models + night-hour events (00:00-05:59)

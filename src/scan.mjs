@@ -21,6 +21,7 @@ import { findConfigDirs } from "./accounts.mjs";
 // vscodeRoots from scanners.mjs, which imports this file, so the SPEC is read
 // at call time rather than at module load.
 import { probe, loadSources } from "./sources.mjs";
+import { tokenOr0 } from "./tokens.mjs";
 
 // "Which day was that?" and "what hour was that?" have to be answered on the
 // SAME clock. They were not: hours came from getHours() (local) while day keys
@@ -117,13 +118,13 @@ export function creditUsage(seen, id, usage) {
   // 500, accounts.test.mjs asserted `"9"` is skipped. Resolved toward COERCING
   // AN INTEGER WRITTEN AS A STRING, because a serialiser emitting "9" is a real
   // thing and dropping it loses nine tokens silently — and silent loss is the
-  // failure this whole system is built against. A value that is not a whole
-  // number is still refused: 1.5 tokens is not a count, and a rule that accepts
-  // it would accept "1e9" and " 9 " on the same reasoning.
-  const num = (v) => {
-    const n = typeof v === "string" || typeof v === "number" ? Number(v) : NaN;
-    return Number.isInteger(n) && n >= 0 ? n : 0;
-  };
+  // failure this whole system is built against.
+  //
+  // The guard itself lives in tokens.mjs now, shared with readers.mjs and
+  // scanners.mjs: one malformed value used to count here (Number() takes
+  // " 9 ", "1e9" and "0x10") and vanish in scanners.mjs. Clean digit strings
+  // still coerce; anything else a string can carry is refused.
+  const num = (v) => tokenOr0(v);
   const cur = {
     in: num(usage?.input_tokens),
     out: num(usage?.output_tokens),

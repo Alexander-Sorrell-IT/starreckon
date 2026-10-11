@@ -1,9 +1,23 @@
 // tests/shareurl.test.mjs — unit tests for src/shareurl.mjs
 import { test } from "node:test";
 import assert from "node:assert/strict";
+import { existsSync } from "node:fs";
+import { fileURLToPath } from "node:url";
 import { buildShareUrl, parseShareUrl, PAGES_BASE, QR_BUDGET_BYTES } from "../src/shareurl.mjs";
 
 const ARMS = 5, MAX_LV = 7;
+// docs/ is the GitHub Pages site: it is not in package.json files[], so the
+// shipped tarball (and any checkout without it) has no docs/index.html to
+// check. Skip those two tests honestly instead of failing on ENOENT.
+const docsIndexMissing = (name) => {
+  let present = false;
+  try {
+    present = existsSync(fileURLToPath(new URL("../docs/index.html", import.meta.url)));
+  } catch {
+    present = false;
+  }
+  return present ? undefined : `docs/index.html not shipped in this checkout — ${name} needs it`;
+};
 const levels = [4.8, 4.6, 4.5, 4.7, 4.4];
 const agg = {
   total_sessions: 142,
@@ -504,7 +518,7 @@ test("a floor LOWER than on-disk never shrinks the total", async () => {
 // buildShareUrl writes the five slots as s1..s5. docs/index.html never read
 // them, so every social a user entered rode inside the QR and was discarded on
 // arrival — the one feature that was asked for by name.
-test("docs/index.html parses s1..s5 and renders them", async () => {
+test("docs/index.html parses s1..s5 and renders them", { skip: docsIndexMissing("docs/index.html parses s1..s5") }, async () => {
   const { readFileSync } = await import("node:fs");
   const html = readFileSync(new URL("../docs/index.html", import.meta.url), "utf8");
   for (const k of ["s1", "s2", "s3", "s4", "s5"]) {
@@ -518,7 +532,7 @@ test("docs/index.html parses s1..s5 and renders them", async () => {
 // The page cannot import contact.mjs, so the host table is copied into it. A
 // copy that drifts is worse than no copy: a link would label correctly in the
 // terminal and wrongly on the page it opens.
-test("the page's social host table matches SOCIAL_HOSTS exactly", async () => {
+test("the page's social host table matches SOCIAL_HOSTS exactly", { skip: docsIndexMissing("social host table match") }, async () => {
   const { readFileSync } = await import("node:fs");
   const { SOCIAL_HOSTS } = await import("../src/contact.mjs");
   const html = readFileSync(new URL("../docs/index.html", import.meta.url), "utf8");

@@ -20,7 +20,8 @@
 //                 cannot answer (e.g. which org owns a key-only profile
 //                 with no OAuth email on disk).
 //                 Supported CLI names: claude, gemini, copilot, codex, grok,
-//                 kilocode, lmstudio, antigravity
+//                 kilocode, lmstudio, antigravity, bob, copilot-chat,
+//                 clawspring, cowork, qwen, muse, aider, opencode
 //
 // Example:
 //   {
@@ -36,6 +37,14 @@ import { fileURLToPath } from "node:url";
 export const KNOWN_CLI_NAMES = new Set([
   "claude", "gemini", "copilot", "codex", "grok",
   "kilocode", "lmstudio", "antigravity",
+  // All four have readers — bob, copilot-chat and clawspring in readers.mjs
+  // (invoked from the scanners.mjs ported-reader flow), cowork via the Claude
+  // parser in scan.mjs — so an api_keys entry under any of them must survive
+  // the filter instead of being silently dropped.
+  "bob", "copilot-chat", "clawspring", "cowork",
+  // Same for the four newest readers: qwen and muse in the scanners.mjs
+  // registry, aider and opencode in the ported-reader flow.
+  "qwen", "muse", "aider", "opencode",
 ]);
 
 export function configPath(home) {

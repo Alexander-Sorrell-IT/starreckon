@@ -30,6 +30,7 @@
 import { redactSecrets, maskPath, maskIdentities } from "./redact.mjs";
 import { renderStarSvg, AXES } from "./starsvg.mjs";
 import { qrToSvg } from "./qr.mjs";
+import { QR_BUDGET_BYTES } from "./shareurl.mjs";
 
 // ---- palette ---------------------------------------------------------------
 // Data accent (single-series marks) + a 4-slot categorical set for the token
@@ -555,12 +556,12 @@ export function renderStatsPage(input = {}) {
     const url = SHOW_ACCOUNTS ? masked : maskIdentities(masked);
     let svg;
     try {
-      svg = qrToSvg(url, { size: 200 });
+      // Level M (the strongest the encoder implements) and the print budget:
+      // a page QR must scan off a screen, not merely fit the symbol. Past
+      // either ceiling the QR is dropped — never the page, and never a
+      // truncated payload that scans to the wrong destination.
+      svg = qrToSvg(url, { size: 200, level: "M", maxBytes: QR_BUDGET_BYTES });
     } catch {
-      // encodeQR THROWS past ~271 bytes — a ceiling that already bit once, when
-      // the share card's real payload ran to ~260 and printed "payload too long"
-      // only on real data. A URL this encoder cannot hold costs the QR, never
-      // the page: the same rule every other section here follows.
       return "";
     }
     return panel(

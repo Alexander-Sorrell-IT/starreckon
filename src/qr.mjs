@@ -205,9 +205,13 @@ function dataCodewords(version, level = "M") {
 }
 
 // Prefer M (stronger error correction); fall back to L only when the payload
-// does not otherwise fit, so short codes keep the better recovery.
-function chooseVersion(byteLen) {
-  for (const level of ["M", "L"]) {
+// does not otherwise fit, so short codes keep the better recovery. A caller
+// that must not silently trade recovery for capacity passes level "M" — the
+// strongest this encoder implements — and an over-long payload is refused
+// instead of being downgraded to L.
+function chooseVersion(byteLen, onlyLevel = null) {
+  const levels = onlyLevel ? [onlyLevel] : ["M", "L"];
+  for (const level of levels) {
     for (let v = 1; v <= 40; v++) {
       // mode (4) + char count (8 for v1-9, 16 for v10+) + data + terminator
       const countBits = v < 10 ? 8 : 16;
@@ -219,6 +223,9 @@ function chooseVersion(byteLen) {
 
 /** Largest payload this encoder can carry, in bytes. */
 export const MAX_BYTES = dataCodewords(40, "L") - 3;
+
+/** Largest payload encodable without leaving EC level M, in bytes. */
+export const MAX_BYTES_M = dataCodewords(40, "M") - 3;
 
 // ---- matrix ----------------------------------------------------------------
 function makeMatrix(size) {
@@ -391,18 +398,30 @@ function penalty(m, size) {
 }
 
 /**
- * Encode `text` and return { size, modules } where modules[r][c] is 0 or 1.
- * Throws if the text is too long for version 10 at EC level M (~271 bytes).
+ * Encode `text` and return { size, version, level, modules } where
+ * modules[r][c] is 0 or 1.
+ *
+ * Throws if the text exceeds the encoder (MAX_BYTES). Pass { level: "M" } to
+ * refuse anything that does not fit at EC level M — the strongest this
+ * encoder implements — instead of silently downgrading to L. Pass
+ * { maxBytes } to enforce a caller budget smaller than the encoder ceiling
+ * (a share QR must stay scannable at print size, not merely encodable).
  */
-export function encodeQR(text, { forceMask = null } = {}) {
+export function encodeQR(text, { forceMask = null, level = null, maxBytes = null } = {}) {
   const bytes = [...new TextEncoder().encode(String(text))];
-  const chosen = chooseVersion(bytes.length);
+  if (level != null && level !== "M" && level !== "L")
+    throw new Error(`qr: unknown EC level ${JSON.stringify(level)} (want "M" or "L")`);
+  if (maxBytes != null && bytes.length > maxBytes)
+    throw new Error(`qr: ${bytes.length} bytes exceeds the ${maxBytes}-byte budget`);
+  const chosen = chooseVersion(bytes.length, level);
   if (chosen == null)
-    throw new Error(`qr: ${bytes.length} bytes exceeds this encoder (max ${MAX_BYTES})`);
-  const { version, level } = chosen;
+    throw new Error(level === "M"
+      ? `qr: ${bytes.length} bytes exceeds EC level M (max ${MAX_BYTES_M}); refusing to downgrade`
+      : `qr: ${bytes.length} bytes exceeds this encoder (max ${MAX_BYTES})`);
+  const { version, level: chosenLevel } = chosen;
 
-  const [ecLen, b1, d1, b2, d2] = TABLES[level][version];
-  const totalData = dataCodewords(version, level);
+  const [ecLen, b1, d1, b2, d2] = TABLES[chosenLevel][version];
+  const totalData = dataCodewords(version, chosenLevel);
 
   const bb = new Bits();
   bb.put(0b0100, 4);                       // byte mode
@@ -462,19 +481,19 @@ export function encodeQR(text, { forceMask = null } = {}) {
     for (let r = 0; r < size; r++)
       for (let c = 0; c < size; c++)
         if (!reservedAll[r][c] && MASKS[mask](r, c)) mx.m[r][c] ^= 1;
-    writeFormat(mx, LEVEL_BITS[level], mask);
+    writeFormat(mx, LEVEL_BITS[chosenLevel], mask);
     writeVersion(mx, version);
     void reserved;
     const score = penalty(mx.m, size);
     if (!best || score < best.score) best = { score, modules: mx.m };
   }
 
-  return { size, version, level, modules: best.modules };
+  return { size, version, level: chosenLevel, modules: best.modules };
 }
 
 /** Terminal rendering: two module rows per character cell, via half-blocks. */
-export function qrToTerminal(text, { quiet = 2, color = true, href = null } = {}) {
-  const { size, modules } = encodeQR(text);
+export function qrToTerminal(text, { quiet = 2, color = true, href = null, level = null, maxBytes = null } = {}) {
+  const { size, modules } = encodeQR(text, { level, maxBytes });
   const n = size + quiet * 2;
   const at = (r, c) =>
     r >= quiet && r < quiet + size && c >= quiet && c < quiet + size
@@ -500,8 +519,8 @@ export function qrToTerminal(text, { quiet = 2, color = true, href = null } = {}
 }
 
 /** SVG rendering: one <rect> per dark module run, no external references. */
-export function qrToSvg(text, { size: px = 240, quiet = 2, dark = "#03101a", light = "#eaffff" } = {}) {
-  const { size, modules } = encodeQR(text);
+export function qrToSvg(text, { size: px = 240, quiet = 2, dark = "#03101a", light = "#eaffff", level = null, maxBytes = null } = {}) {
+  const { size, modules } = encodeQR(text, { level, maxBytes });
   const n = size + quiet * 2;
   const s = px / n;
   let rects = "";

@@ -475,8 +475,8 @@ export function velocity(timeline) {
     sessions_mom_pct: prev ? pct(last.sessions, prev.sessions) : null,
     tokens_mom_pct: prev
       ? pct(
-          last.input_tokens + last.output_tokens,
-          prev.input_tokens + prev.output_tokens
+          last.input_tokens + last.output_tokens + (last.cache_tokens ?? 0),
+          prev.input_tokens + prev.output_tokens + (prev.cache_tokens ?? 0)
         )
       : null,
     hours_trend_per_month: slope,

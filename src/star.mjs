@@ -456,7 +456,7 @@ export function buildCompareReport({ mine, fleet, label = null } = {}) {
 // ENGINEERING's language term is written 0.8 rather than the old `0.4 * 2`,
 // which is the same number said once.
 const AXIS_SPEC = [
-  { terms: [{ input: "tokensM", label: "tokens in+out", unit: "M", mid: 5, weight: 1 }] },
+  { terms: [{ input: "tokensM", label: "tokens", unit: "M", mid: 5, weight: 1 }] },
   { terms: [
       { input: "projects", label: "projects", unit: "", mid: 4, weight: 0.6 },
       { input: "langs", label: "languages", unit: "", mid: 2, weight: 0.8 },
@@ -471,6 +471,28 @@ const AXIS_SPEC = [
       { input: "activeDays", label: "active days", unit: "d", mid: 8, weight: 0.5 },
   ] },
 ];
+
+// Every token the work consumed, in one number: input + output + cache.
+//
+// This used to be input + output only, while the session totals on the same
+// run summed all four buckets (scanners.mjs finish()) — so the star priced a
+// fraction of the volume the report printed beside it. Cache is routinely the
+// LARGEST bucket (a cached prompt dwarfs its fresh tail), which made FIRST
+// PRINCIPLES saturate late and read low against the totals. Both aggregate
+// shapes are covered: the whole-history aggregate carries total_* (with
+// separate cache-read/cache-write keys) and a month snapshot carries the
+// pre-reduced input/output/cache_tokens keys. No producer mixes the shapes, so
+// the sum cannot double-count.
+function starTokens(a) {
+  const o = a && typeof a === "object" ? a : {};
+  return (
+    (o.total_input_tokens ?? o.input_tokens ?? 0) +
+    (o.total_output_tokens ?? o.output_tokens ?? 0) +
+    (o.total_cache_read_tokens ?? 0) +
+    (o.total_cache_write_tokens ?? 0) +
+    (o.cache_tokens ?? 0)
+  );
+}
 
 export function computeLevels(agg) {
   // The 5 in lg() is the SCALE, not the ceiling: an axis reads 5.0 at v =
@@ -490,9 +512,7 @@ export function computeLevels(agg) {
   // tool_call_counts{}) or one month's snapshot bucket, which stores the same
   // quantities pre-reduced (input_tokens / projects_count / tool_calls) so a
   // synced snapshot never has to carry a project name to draw its own star.
-  const tokens =
-    (agg.total_input_tokens ?? agg.input_tokens ?? 0) +
-    (agg.total_output_tokens ?? agg.output_tokens ?? 0);
+  const tokens = starTokens(agg);
   const langs = Object.keys(agg.languages ?? {}).length;
   const projects = agg.projects_count ?? (agg.projects ?? []).length;
   const toolCalls =
@@ -551,7 +571,7 @@ export function computeLevels(agg) {
  * The SAME arithmetic as computeLevels with the ceiling taken off.
  *
  * An arm that hits MAX_LEVEL stops carrying information, and on a heavy corpus
- * it stops early: FIRST PRINCIPLES saturates at ~245M in+out tokens, so a month
+ * it stops early: FIRST PRINCIPLES saturates at ~245M tokens, so a month
  * of 415M and a month of 2,039M both render 7.0 and look identical. "maxed"
  * says the axis stopped measuring; this says by how much, which is the part a
  * reader needs to know the difference between clearing the bar and clearing it
@@ -565,9 +585,7 @@ export function computeLevels(agg) {
 export function computeLevelsRaw(agg) {
   const a = agg && typeof agg === "object" ? agg : {};
   const lg = (v, mid) => 5 * (Math.log1p(Math.max(0, v)) / Math.log1p(mid * 10));
-  const tokens =
-    (a.total_input_tokens ?? a.input_tokens ?? 0) +
-    (a.total_output_tokens ?? a.output_tokens ?? 0);
+  const tokens = starTokens(a);
   const inputs = {
     tokensM: tokens / 1e6,
     projects: a.projects_count ?? (a.projects ?? []).length,
@@ -615,8 +633,7 @@ export function explainLevels(agg, opts = {}) {
   const levels = computeLevels(a);
   const raws = computeLevelsRaw(a);
   const lg = (v, mid) => 5 * (Math.log1p(Math.max(0, v)) / Math.log1p(mid * 10));
-  const tokens =
-    (a.total_input_tokens ?? a.input_tokens ?? 0) + (a.total_output_tokens ?? a.output_tokens ?? 0);
+  const tokens = starTokens(a);
   const inputs = {
     tokensM: tokens / 1e6,
     projects: a.projects_count ?? (a.projects ?? []).length,

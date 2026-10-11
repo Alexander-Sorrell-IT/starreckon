@@ -59,8 +59,15 @@ for (const [raw, total, sessions] of TABLE) {
 }
 
 test("tokenCount takes only what a count can be", () => {
+  // NOTE on the deadreckon agreement above: the TABLE is unchanged, but this
+  // list tightened one case — " 7 " used to count as 7. A padded, exponent or
+  // hex string is a malformed row, not a count, and crediting it invents
+  // tokens. deadreckon must adopt the digits-only rule before the two agree
+  // on these shapes again.
   const cases = [
-    [5, 5], [0, 0], ["12345", 12345], [" 7 ", 7], [5.0, 5],
+    [5, 5], [0, 0], ["12345", 12345], [5.0, 5],
+    [" 7 ", null], [" 9 ", null], ["1e3", null], ["0x10", null],
+    ["+5", null], [" 456 ", null],
     [Infinity, null], [-Infinity, null], [NaN, null],
     [-5, null], [1.5, null], [true, null], [false, null],
     [null, null], [undefined, null], ["abc", null], ["", null],

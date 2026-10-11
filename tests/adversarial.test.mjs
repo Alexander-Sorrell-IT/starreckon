@@ -66,18 +66,20 @@ test("adversarial: tokenCount rejects everything that is not a clean integer", (
     "abc", "12abc34", "1e3", "1.5",
     "Infinity", "-Infinity", "NaN",
     "true", "false", "null",
-    // Leading/trailing whitespace with non-digits
-    " 5a ",
+    // Leading/trailing whitespace, padded digits, hex, signs: a count is a
+    // string of digits and nothing else. "1e3" is valid scientific notation
+    // for 1000 — and a serialiser emitting notation where a count belongs is
+    // a malformed row, not a count.
+    " 5a ", " 456 ", " 9 ", "5 ", " 5",
+    "0x10", "+5", "-5",
     // Unicode tricks
     "①", "五", "٥",
-    // Overflow attempts - NOTE: "1e3" is valid scientific notation for 1000
+    // Overflow attempts
     "9".repeat(100),
     "1".repeat(1000),
   ];
 
   for (const v of rejects) {
-    // Skip values that are actually valid (scientific notation, trimmed numbers)
-    if (v === "1e3" || v === "5 " || v === " 5") continue;
     assert.strictEqual(
       tokenCount(v),
       null,
@@ -93,7 +95,6 @@ test("adversarial: tokenCount accepts only safe integers", () => {
     [Number.MAX_SAFE_INTEGER, Number.MAX_SAFE_INTEGER],
     ["0", 0],
     ["123", 123],
-    [" 456 ", 456],
     [7.0, 7],
   ];
 

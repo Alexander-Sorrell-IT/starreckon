@@ -229,3 +229,28 @@ test("KNOWN_CLI_NAMES and the reader registry describe the same tools", async ()
       `${n} is exempted above but is no longer a known name - delete the exemption`);
   }
 });
+
+// ── disabled_sources ─────────────────────────────────────────────────────────
+
+test("readConfig reads disabled_sources, dedupes and trims", () => {
+  const home = tmp();
+  writeFileSync(configPath(home), JSON.stringify({
+    disabled_sources: ["bob", " bob ", "qwen", "", 42, null],
+  }));
+  assert.deepEqual(readConfig(home).disabled_sources, ["bob", "qwen"]);
+  rmSync(home, { recursive: true, force: true });
+});
+
+test("readConfig omits disabled_sources when empty or absent", () => {
+  const home = tmp();
+  writeFileSync(configPath(home), JSON.stringify({ disabled_sources: [] }));
+  assert.ok(!("disabled_sources" in readConfig(home)));
+  rmSync(home, { recursive: true, force: true });
+});
+
+test("writeConfig round-trips disabled_sources", () => {
+  const home = tmp();
+  writeConfig(home, { disabled_sources: ["muse-code", "history"] });
+  assert.deepEqual(readConfig(home).disabled_sources, ["muse-code", "history"]);
+  rmSync(home, { recursive: true, force: true });
+});

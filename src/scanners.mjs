@@ -20,6 +20,7 @@ import { basename, dirname, join, relative, sep } from "node:path";
 import { fileURLToPath } from "node:url";
 import { maskPath, maskText, redactSecrets } from "./redact.mjs";
 import { tokenOr0 } from "./tokens.mjs";
+import { readConfig } from "./config.mjs";
 
 // ---- canonical token record ------------------------------------------------
 
@@ -728,6 +729,78 @@ function readMuse(home) {
   return readVscodeTasks(home, "saoudrizwan.claude-dev", "muse");
 }
 
+// ---- muse-code — $XDG_DATA_HOME/muse/sessions/YYYY/MM/DD/<id>/session.jsonl --
+
+function readMuseCode(home, base) {
+  // Muse (muse.dev CLI), NOT the Cline extension (see readMuse above).
+  //
+  //   <base>/YYYY/MM/DD/<session-id>/session.jsonl   usage attribution events
+  //
+  // Line shape (verified on the live store): outer {recorded_at (µs),
+  // payload.event{kind, record{usage_id, quantity}}}. ONLY kind ==
+  // "goal_usage_attribution" rows carry quantity{input_tokens, output_tokens,
+  // reasoning_tokens, cached_tokens, main_llm_steps, reported, unit}; every
+  // other payload_type in the log is session machinery, not usage.
+  //
+  // Bucket mapping: input_tokens is taken EXCLUSIVE of cache (Anthropic API
+  // convention — cached_tokens rides alongside as the cached part);
+  // reasoning_tokens are generated and billed as output (same rule as the
+  // bob and qwen readers). If a future Muse build folds cache into input,
+  // input will over-read — the fixture pins the exclusive reading.
+  //
+  // Rows dedupe on record.usage_id (743/743 unique on the live store);
+  // sessions group by the session directory name. recorded_at is
+  // microseconds (> 1e14) and is normalized to ISO Z.
+  const sessions = new Map();
+  const seenIds = new Set();
+  const sdirs = [];
+  for (const y of listDirs(base)) for (const m of listDirs(y))
+    for (const d of listDirs(m)) for (const s of listDirs(d)) sdirs.push(s);
+  sdirs.sort();
+  for (const sdir of sdirs) {
+    const f = join(sdir, "session.jsonl");
+    if (!isFile(f)) continue;
+    const sid = basename(sdir);
+    const text = readTextSafe(f);
+    if (text === null) continue;
+    for (const line of text.split("\n")) {
+      if (!line.trim()) continue;
+      let o;
+      try { o = JSON.parse(line); } catch { continue; }
+      if (!o || typeof o !== "object") continue;
+      const ev = o?.payload?.event;
+      if (!ev || ev.kind !== "goal_usage_attribution") continue;
+      const rec0 = ev.record ?? {};
+      const q = rec0.quantity ?? {};
+      const rid = typeof rec0.usage_id === "string" && rec0.usage_id;
+      if (rid) {
+        if (seenIds.has(rid)) continue;
+        seenIds.add(rid);
+      }
+      const inp = tokenOr0(q.input_tokens);
+      const cached = tokenOr0(q.cached_tokens);
+      const out = tokenOr0(q.output_tokens);
+      const rsn = tokenOr0(q.reasoning_tokens);
+      let rec = sessions.get(sid);
+      if (!rec) {
+        rec = mkRec("muse-code", sid, "muse (local)", "-");
+        sessions.set(sid, rec);
+      }
+      const ts = o.recorded_at;
+      if (typeof ts === "number" && Number.isFinite(ts) && ts > 0) {
+        try { noteTs(rec, new Date(ts > 1e14 ? ts / 1000 : ts).toISOString()); }
+        catch { /* keep session without stamps */ }
+      }
+      if (inp + out + cached + rsn <= 0) continue;
+      rec.turns += 1;
+      rec.tokens.input_tokens += inp;
+      rec.tokens.cache_read_input_tokens += cached;
+      rec.tokens.output_tokens += out + rsn;
+    }
+  }
+  return [...sessions.values()].filter((r) => r.turns > 0).map(finish);
+}
+
 // ---- antigravity — protobuf in SQLite + AES-256-GCM encrypted .pb ----------
 
 // A string constant compiled into the `agy` binary — the same fixed key
@@ -1164,6 +1237,9 @@ const READERS = {
   // Cline, the VS Code extension (formerly Claude Dev): same per-request
   // record shape as kilocode, one directory over in globalStorage.
   muse: { vscode: true, read: readMuse },
+  // Muse, the muse.dev CLI (NOT Cline): XDG session logs with
+  // goal_usage_attribution usage rows (see readMuseCode).
+  "muse-code": { rels: [".local/share/muse/sessions"], read: readMuseCode },
 };
 
 ALL_LEADS = new Set(
@@ -1323,15 +1399,51 @@ export function scanProvider(name, roots = [homedir()]) {
   return { providers: { [name]: row }, perSession };
 }
 
-export function scanAllProviders(roots = [homedir()]) {
+export function scanAllProviders(roots = [homedir()], { disabled } = {}) {
+  const dis = disabledSet(disabled);
   const providers = {};
   const perSession = [];
   for (const name of PROVIDERS) {
+    if (dis.has(name)) {
+      providers[name] = disabledRow(name, roots);
+      continue;
+    }
     const r = scanProvider(name, roots);
     providers[name] = r.providers[name];
     perSession.push(...r.perSession);
   }
   return { providers, perSession, scanner_version: scannerVersion() };
+}
+
+// Names the ported-reader path can skip (scanPortedReaders dispatch list).
+const PORTED_NAMES = ["claude-orphans", "clawspring", "lmstudio", "bob",
+  "copilot-chat", "aider", "opencode", "history"];
+
+// Disabled-set resolution: explicit option wins, else the user's config file,
+// else nothing. readConfig never throws; the try is belt-and-suspenders.
+function disabledSet(explicit) {
+  if (explicit !== undefined && explicit !== null) return new Set(explicit);
+  try {
+    return new Set(readConfig().disabled_sources ?? []);
+  } catch {
+    return new Set();
+  }
+}
+
+// A disabled source renders zeros with state "disabled" — never "absent",
+// never by opening its files. Presence still probes (existence, not content).
+function disabledRow(name, roots) {
+  const probes = new Map();
+  for (const home of roots) {
+    const pr = specProbe(name, home);
+    if (pr) probes.set(`${name}\0${home}`, pr);
+  }
+  return {
+    sessions: 0, input: 0, output: 0, cacheRead: 0, cacheWrite: 0,
+    models: {}, firstTs: null, lastTs: null,
+    installed: detectInstalled(name, roots, probes.size ? probes : null),
+    state: "disabled",
+  };
 }
 
 // ── the ported readers ────────────────────────────────────────────────────────
@@ -1361,13 +1473,14 @@ export function scanAllProviders(roots = [homedir()]) {
  * last one matters most — a store that is present and could not be read must
  * never render as a tool nobody uses.
  */
-export async function scanPortedReaders(roots = [homedir()], { knownClaudeIds } = {}) {
+export async function scanPortedReaders(roots = [homedir()], { knownClaudeIds, disabled } = {}) {
   if (!(knownClaudeIds instanceof Set)) {
     throw new TypeError(
       "scanPortedReaders: knownClaudeIds must be the Set of Claude session ids "
       + "found on disk by this scan. Without it the orphan reader re-counts "
       + "every live session.");
   }
+  const dis = disabledSet(disabled);
   const { readClaudeOrphans, readClawspring, readLmstudio, readBob,
           readCopilotChat, readHistory, readAider, readOpencode } = await import("./readers.mjs");
 
@@ -1443,14 +1556,16 @@ export async function scanPortedReaders(roots = [homedir()], { knownClaudeIds } 
   };
 
   // One home at a time: these readers take a home directory, not a root list.
+  // Disabled sources are skipped BEFORE their readers run — their files are
+  // never opened. Their rows are stamped below the rebuild loop.
   for (const home of roots) {
-    add("claude-orphans", readClaudeOrphans(home, knownClaudeIds));
-    add("clawspring", readClawspring(home));
-    add("lmstudio", readLmstudio(home));
-    add("bob", await readBob(home));
-    add("copilot-chat", readCopilotChat(home));
-    add("aider", readAider(home));
-    add("opencode", await readOpencode(home));
+    if (!dis.has("claude-orphans")) add("claude-orphans", readClaudeOrphans(home, knownClaudeIds));
+    if (!dis.has("clawspring")) add("clawspring", readClawspring(home));
+    if (!dis.has("lmstudio")) add("lmstudio", readLmstudio(home));
+    if (!dis.has("bob")) add("bob", await readBob(home));
+    if (!dis.has("copilot-chat")) add("copilot-chat", readCopilotChat(home));
+    if (!dis.has("aider")) add("aider", readAider(home));
+    if (!dis.has("opencode")) add("opencode", await readOpencode(home));
 
     // HISTORY IS NOT A TOKEN READER AND IS NOT GIVEN TOKEN FIELDS.
     //
@@ -1469,30 +1584,41 @@ export async function scanPortedReaders(roots = [homedir()], { knownClaudeIds } 
     // per-home: each root has its own, and assigning here once per root meant
     // the final root's file replaced every earlier one. Session ids dedup the
     // same way the token readers do; the date range widens to cover them all.
-    const h = readHistory(home);
-    for (const hs of h.sessions ?? []) {
-      const id = hs?.id ?? hs?.session_id ?? JSON.stringify(hs);
-      if (!historySeen.has(id)) historySeen.set(id, hs);
+    if (!dis.has("history")) {
+      const h = readHistory(home);
+      for (const hs of h.sessions ?? []) {
+        const id = hs?.id ?? hs?.session_id ?? JSON.stringify(hs);
+        if (!historySeen.has(id)) historySeen.set(id, hs);
+      }
+      historyPrompts += h.prompts ?? 0;
+      if (h.earliest && (!historyEarliest || h.earliest < historyEarliest)) historyEarliest = h.earliest;
+      if (h.latest && (!historyLatest || h.latest > historyLatest)) historyLatest = h.latest;
+      if ((STATE_RANK[h.state] ?? 0) > (STATE_RANK[historyState] ?? 0)) historyState = h.state;
     }
-    historyPrompts += h.prompts ?? 0;
-    if (h.earliest && (!historyEarliest || h.earliest < historyEarliest)) historyEarliest = h.earliest;
-    if (h.latest && (!historyLatest || h.latest > historyLatest)) historyLatest = h.latest;
-    if ((STATE_RANK[h.state] ?? 0) > (STATE_RANK[historyState] ?? 0)) historyState = h.state;
   }
 
-  providers["history"] = {
-    sessions: historySeen.size,
-    prompts: historyPrompts,
-    earliest: historyEarliest,
-    latest: historyLatest,
-    installed: historyState !== "absent",
-    state: historyState,
-    counts_tokens: false,
-  };
+  providers["history"] = dis.has("history")
+    ? { ...disabledRow("history", roots), counts_tokens: false }
+    : {
+        sessions: historySeen.size,
+        prompts: historyPrompts,
+        earliest: historyEarliest,
+        latest: historyLatest,
+        installed: historyState !== "absent",
+        state: historyState,
+        counts_tokens: false,
+      };
 
   // Rebuild each provider row from the sessions that survived the dedup, so the
   // published row and the per-session list can never disagree about what was
   // counted — they are two views of one map rather than two accumulations.
+  // Disabled rows: stamped after the rebuild so a skipped source still has
+  // a row (zeros, state "disabled") instead of vanishing from the report.
+  for (const name of PORTED_NAMES) {
+    // history has its own assignment above (carries counts_tokens: false).
+    if (name !== "history" && dis.has(name)) providers[name] = disabledRow(name, roots);
+  }
+
   for (const [name, bucket] of perProvider) {
     const meta = providerMeta.get(name) ?? { state: "absent", installed: false, unreadable: [] };
     const sum = { input: 0, output: 0, cacheRead: 0, cacheWrite: 0 };

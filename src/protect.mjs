@@ -60,6 +60,14 @@ const SECRET_NAMES = new Set([
 // (~/.ollama/history) are archived too — see isArchivable.
 const ARCHIVE_EXTS = new Set([".jsonl", ".json", ".db", ".db-wal", ".ndjson"]);
 
+// Databases that mix session records with credential tables. NEVER archived
+// whole, whatever path reaches them: a name/shape guard cannot see inside a
+// SQLite file, and hard-linking one duplicates its credential tables into a
+// tree meant to be safe to sync. opencode.db holds account + credential
+// tables beside session_v2 (see the opencode reader, which selects ONLY the
+// rollup columns). bob.db holds only tasks/messages and stays archivable.
+const CREDENTIAL_DBS = new Set(["opencode.db"]);
+
 // ---- filesystem helpers ----------------------------------------------------
 
 function isDir(p) {
@@ -128,6 +136,7 @@ function isArchivable(fullPath, relToStore) {
   const name = basename(fullPath).toLowerCase();
   if (isSecretName(name)) return false;
   if (hasSecretAncestor(relToStore)) return false;
+  if (CREDENTIAL_DBS.has(name)) return false;
   // An extensionless record is still a record. `"history".lastIndexOf(".")` is
   // -1 and slice(-1) returned "y", so ~/.ollama/history (4,422 bytes) failed
   // the ARCHIVE_EXTS test and was never linked. Names with no dot are
@@ -402,13 +411,29 @@ export function allStores(home) {
   add("aider", ".aider/.aider.chat.history.md");
   add("aider-input", ".aider/.aider.input.history");
   add("continue", ".continue/sessions");
-  add("opencode", ".opencode/sessions");
+  // opencode has NO ~/.opencode/sessions store — its sessions live in
+  // $XDG_DATA_HOME/opencode/opencode.db, which ALSO holds account and
+  // credential tables. Archiving it whole would duplicate credential
+  // material into the archive tree, so it is deliberately NOT listed here
+  // (see CREDENTIAL_DBS below, which refuses it even if reached by another
+  // path). Privacy beats deletion-protection for a mixed-credential DB.
   add("goose", ".config/goose/sessions");
   add("openhands", ".openhands/sessions");
-  add("qwen", ".qwen/tmp");
+  // qwen's token records, not its scratch dir: .qwen/tmp holds transient
+  // files, usage/token-usage-*.jsonl holds the per-request rows the reader
+  // counts. Archiving tmp would preserve noise and miss the records.
+  add("qwen", ".qwen/usage");
   add("amp", ".amp/threads");
   stores.push({ label: "ollama", path: join(home, ".ollama", "history") });
   stores.push({ label: "bob", path: join(home, ".bob", "db") });
+  // Muse (muse.dev CLI) session logs. XDG-aware like the reader.
+  stores.push({ label: "muse-code", path: join(home, ".local", "share", "muse", "sessions") });
+  if (process.env.XDG_DATA_HOME) {
+    const xdg = join(process.env.XDG_DATA_HOME, "muse", "sessions");
+    if (xdg !== join(home, ".local", "share", "muse", "sessions")) {
+      stores.push({ label: "muse-code-xdg", path: xdg });
+    }
+  }
 
   for (const [ch, vsRoot] of vscodeBase(home)) {
     const gs = join(vsRoot, "User", "globalStorage");

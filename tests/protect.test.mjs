@@ -442,3 +442,32 @@ test("linkTree refuses credential-shaped names it has never seen, and archives r
   assert.equal(r.linked, 4);
   rmSync(home, { recursive: true, force: true });
 });
+
+// ── credential-aware archiving ───────────────────────────────────────────────
+
+test("linkTree refuses opencode.db (mixed credential tables), links bob.db", () => {
+  const home = tmp();
+  const src = join(home, "mix");
+  mkdirSync(src, { recursive: true });
+  writeFileSync(join(src, "opencode.db"), "fake-sqlite");
+  writeFileSync(join(src, "bob.db"), "fake-sqlite");
+  const result = linkTree(src, "mix", { home });
+  assert.equal(result.linked, 1);
+  assert.ok(existsSync(join(home, ".ai-logs-archive", "mix", "bob.db")));
+  assert.ok(!existsSync(join(home, ".ai-logs-archive", "mix", "opencode.db")));
+  rmSync(home, { recursive: true, force: true });
+});
+
+test("allStores points qwen at usage, lists muse-code, drops opencode dir", async () => {
+  const { allStores } = await import("../src/protect.mjs");
+  const home = tmp();
+  mkdirSync(join(home, ".qwen", "usage"), { recursive: true });
+  mkdirSync(join(home, ".local", "share", "muse", "sessions"), { recursive: true });
+  const labels = allStores(home).map((s) => s.label);
+  assert.ok(labels.includes("qwen"));
+  assert.ok(labels.includes("muse-code"));
+  assert.ok(!labels.includes("opencode"));
+  const qwen = allStores(home).find((s) => s.label === "qwen");
+  assert.ok(qwen.path.endsWith(join(".qwen", "usage")));
+  rmSync(home, { recursive: true, force: true });
+});

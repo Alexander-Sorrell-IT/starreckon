@@ -21,12 +21,24 @@
 //                 with no OAuth email on disk).
 //                 Supported CLI names: claude, gemini, copilot, codex, grok,
 //                 kilocode, lmstudio, antigravity, bob, copilot-chat,
-//                 clawspring, cowork, qwen, muse, aider, opencode
+//                 clawspring, cowork, qwen, muse, aider, opencode, muse-code
+//
+//   disabled_sources
+//                 array of strings — provider names to skip WITHOUT OPENING
+//                 THEIR FILES. A disabled source renders state "disabled"
+//                 with zeros (never "absent": the store may be installed).
+//                 Names are provider keys: gemini, copilot, antigravity,
+//                 kilocode, grok, qwen, muse, muse-code (registry readers)
+//                 plus claude-orphans, clawspring, lmstudio, bob,
+//                 copilot-chat, aider, opencode, history (ported readers).
+//                 An explicit scanProvider(name) call overrides this —
+//                 explicit beats config. Unknown names match nothing.
 //
 // Example:
 //   {
 //     "extra_roots": ["/Volumes/OldDrive/Users/me"],
-//     "api_keys": { "claude": "sk-ant-..." }
+//     "api_keys": { "claude": "sk-ant-..." },
+//     "disabled_sources": ["copilot-chat"]
 //   }
 
 import { existsSync, mkdirSync, readFileSync, writeFileSync, unlinkSync } from "node:fs";
@@ -45,6 +57,9 @@ export const KNOWN_CLI_NAMES = new Set([
   // Same for the four newest readers: qwen and muse in the scanners.mjs
   // registry, aider and opencode in the ported-reader flow.
   "qwen", "muse", "aider", "opencode",
+  // Muse, the muse.dev CLI (scanners.mjs readMuseCode) — distinct from
+  // the Cline extension above.
+  "muse-code",
 ]);
 
 export function configPath(home) {
@@ -86,6 +101,14 @@ export function readConfig(home) {
       }
     }
     if (Object.keys(keys).length > 0) out.api_keys = keys;
+  }
+
+  // disabled_sources — array of non-empty strings (unknown names match nothing)
+  if (Array.isArray(raw.disabled_sources)) {
+    const names = [...new Set(raw.disabled_sources
+      .filter(s => typeof s === "string" && s.trim())
+      .map(s => s.trim()))];
+    if (names.length > 0) out.disabled_sources = names;
   }
 
   return out;
@@ -135,6 +158,13 @@ export function writeConfig(home, obj) {
       }
     }
     if (Object.keys(keys).length > 0) clean.api_keys = keys;
+  }
+
+  if (Array.isArray(obj?.disabled_sources)) {
+    const names = [...new Set(obj.disabled_sources
+      .filter(s => typeof s === "string" && s.trim())
+      .map(s => s.trim()))];
+    if (names.length > 0) clean.disabled_sources = names;
   }
 
   if (Object.keys(clean).length === 0) {

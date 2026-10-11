@@ -726,3 +726,9 @@ test("discoverAccounts applies config aliases end to end", async () => {
     rmSync(home, { recursive: true, force: true });
   }
 });
+
+test("displayAccount fails closed on new handle shapes", () => {
+  assert.equal(displayAccount("github.com:octo"), accountPseudonym("github.com:octo"));
+  assert.equal(displayAccount("local (bob)"), "local (bob)");
+  assert.equal(displayAccount("unknown (.claude-x)"), "unknown (.claude-x)");
+});

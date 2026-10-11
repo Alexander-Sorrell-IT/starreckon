@@ -367,10 +367,12 @@ export function accountFor(configDir, home) {
 // reports / the stats page / a --join-fleet folder all get synced or shared and
 // an OAuth email address is the user's real-world name. Raw is opt-in.
 //
-// Only the two tiers that identify a PERSON or an account are pseudonymised —
-// the email tier and the "user:<uid>" tier. The "unknown (<dirname>)" fallback
-// is a local directory name that the row already carries verbatim in its masked
-// configDir field, so hashing it would hide nothing and cost readability.
+// Fail-closed pseudonymisation: ONLY the "unknown (<dirname>)" and
+// "local (<cli>)" fallbacks pass through — a local directory name the row
+// already carries verbatim in a masked field, so hashing it would hide
+// nothing and cost readability. EVERYTHING else (emails, user:uids,
+// github:logins, future handle shapes) pseudonymises, because an allowlist
+// of "identifying patterns" leaks the next shape nobody predicted.
 // The mapping is deterministic, so grouping, the floor metric, and cross-machine
 // merges behave exactly as they do with raw identities.
 export function displayAccount(identity, showAccounts = false, aliases = null, lookupId = null) {
@@ -385,8 +387,12 @@ export function displayAccount(identity, showAccounts = false, aliases = null, l
     return aliases[key].trim();
   }
   if (showAccounts) return id;
-  if (id.includes("@") || id.startsWith("user:")) return accountPseudonym(id);
-  return id;
+  // Fail closed: ONLY the two non-identifying fallbacks pass through.
+  // Everything else (OAuth emails, user:uids, github:logins, …) is an
+  // account handle and pseudonymises. An allowlist here would leak the
+  // next handle shape nobody predicted (github:login did exactly that).
+  if (/^(local|unknown) \(.*\)$/.test(id)) return id;
+  return accountPseudonym(id);
 }
 
 // ---- transcript scan (analyze_tokens.scan / iter_usage) --------------------

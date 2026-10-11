@@ -83,6 +83,9 @@
 //                                 share link (GitHub Pages URL) to clipboard
 //                                 (github, email, phone, website, linkedin, twitter)
 //                                 omit FILE to use ~/.starreckon/contact.json
+//   starreckon accounts          every identity on this machine in one table,
+//                                 every CLI (file: aliases/pseudonyms only;
+//                                 terminal shows raw with --show-accounts)
 //   starreckon scoreboard        sign your skill summary and show the submission
 //                                 URL; paste the signed payload into the GitHub
 //                                 Issue template to appear on the leaderboard.
@@ -320,7 +323,7 @@ import { clipboardCmds } from "./clipboard.mjs";
 // Subcommands are explicit. An unknown positional argument EXITS NON-ZERO
 // rather than falling through to a scan — a proof command that silently runs
 // something else and prints success would be worse than having none.
-const KNOWN_SUBCOMMANDS = new Set(["scan", "verify", "prove", "daemon", "protect", "receipt", "serve", "search", "addons", "sources", "series", "scoreboard", "broadcast"]);
+const KNOWN_SUBCOMMANDS = new Set(["scan", "verify", "prove", "daemon", "protect", "receipt", "serve", "search", "addons", "sources", "series", "scoreboard", "broadcast", "accounts"]);
 const positional = args.filter((a) => !a.startsWith("-"));
 const subcommand = positional[0] ?? "scan";
 if (!KNOWN_SUBCOMMANDS.has(subcommand)) {
@@ -553,6 +556,7 @@ console.log(`\n${B}OPTIONAL LAYERS${R} ${D}(consent screen first — every one o
   console.log(`  search --search-setup   download models (~600 MB, one-time)`);
   console.log(`  addons          companion tools and the licence that unlocks them`);
   console.log(`  sources         every place work can happen, and what this machine has`);
+  console.log(`  accounts        every identity on this machine, every CLI (file: no raw)`);
   console.log(`  series          how many months of history each sequence holds, and how`);
   console.log(`                  many more before a band over it would mean anything`);
   console.log(`\n${B}BEFORE-YOU-GO MENU${R} ${D}(shown after a scan on an interactive terminal)${R}`);
@@ -1111,6 +1115,31 @@ if (subcommand === "search") {
 const audit = startAudit(args);
 armTripwire(audit.recorder);
 armAuditExitHook(audit);
+
+// `starreckon accounts` — every identity on this machine in one table, every
+// CLI, not just Claude. Writes accounts.json into the archive root AND prints
+// the terminal table. THE FILE NEVER HOLDS RAW: it is rendered with
+// showAccounts=false regardless of the flag — aliases or pseudonyms only.
+// --show-accounts unlocks raw in the TERMINAL, which is not a file.
+// Placed after startAudit: unlike sources/series, this command writes.
+if (subcommand === "accounts") {
+  const { discoverIdentities, renderIdentities } = await import("./identity.mjs");
+  const { readConfig } = await import("./config.mjs");
+  const { writeFileSync, mkdirSync } = await import("node:fs");
+  const show = flag("--show-accounts");
+  const aliases = readConfig().account_aliases ?? null;
+  const termRows = await discoverIdentities({ showAccounts: show, aliases });
+  console.log(renderIdentities(termRows, { color: !process.env.NO_COLOR }));
+  const fileRows = show
+    ? await discoverIdentities({ showAccounts: false, aliases })
+    : termRows;
+  const outDir = join(homedir(), ".ai-logs-archive");
+  mkdirSync(outDir, { recursive: true });
+  writeFileSync(join(outDir, "accounts.json"),
+    JSON.stringify({ generated: new Date().toISOString(), accounts: fileRows }, null, 1) + "\n");
+  console.log(`\nwrote ${join(outDir, "accounts.json")} (aliases/pseudonyms only — never raw)`);
+  process.exit(0);
+}
 
 // One star, as data: levels per axis, the total, and — when the source cannot
 // measure everything — which axes are a floor and which were not measured at

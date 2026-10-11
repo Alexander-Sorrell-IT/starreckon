@@ -254,3 +254,27 @@ test("writeConfig round-trips disabled_sources", () => {
   assert.deepEqual(readConfig(home).disabled_sources, ["muse-code", "history"]);
   rmSync(home, { recursive: true, force: true });
 });
+
+// ── account_aliases ──────────────────────────────────────────────────────────
+
+test("readConfig reads account_aliases, drops empties and non-strings", () => {
+  const home = tmp();
+  writeFileSync(configPath(home), JSON.stringify({
+    account_aliases: {
+      "a@example.com": "Work",
+      "user:abc": " Personal ",
+      "b@example.com": "",
+      "c@example.com": 42,
+    },
+  }));
+  assert.deepEqual(readConfig(home).account_aliases,
+    { "a@example.com": "Work", "user:abc": "Personal" });
+  rmSync(home, { recursive: true, force: true });
+});
+
+test("writeConfig round-trips account_aliases", () => {
+  const home = tmp();
+  writeConfig(home, { account_aliases: { "a@example.com": "Work" } });
+  assert.deepEqual(readConfig(home).account_aliases, { "a@example.com": "Work" });
+  rmSync(home, { recursive: true, force: true });
+});

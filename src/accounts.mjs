@@ -38,6 +38,7 @@ import { createInterface } from "node:readline";
 import { homedir } from "node:os";
 import { basename, join, resolve, sep } from "node:path";
 import { maskPath, redactSecrets, accountPseudonym } from "./redact.mjs";
+import { readConfig } from "./config.mjs";
 
 // The four billed usage counters: JSONL key -> output key. usage.iterations
 // restates these for multi-step turns and is deliberately never summed.
@@ -372,8 +373,17 @@ export function accountFor(configDir, home) {
 // configDir field, so hashing it would hide nothing and cost readability.
 // The mapping is deterministic, so grouping, the floor metric, and cross-machine
 // merges behave exactly as they do with raw identities.
-export function displayAccount(identity, showAccounts = false) {
+export function displayAccount(identity, showAccounts = false, aliases = null, lookupId = null) {
   const id = String(identity ?? "");
+  // User aliases (config account_aliases, keyed by RAW identity) win in the
+  // default view: the user chose that label to be seen. --show-accounts is
+  // the explicit raw opt-in, so raw wins there. lookupId carries the
+  // pre-redaction identity because `identity` may already be mangled.
+  const key = lookupId ?? id;
+  if (!showAccounts && aliases && typeof aliases === "object" &&
+      typeof aliases[key] === "string" && aliases[key].trim()) {
+    return aliases[key].trim();
+  }
   if (showAccounts) return id;
   if (id.includes("@") || id.startsWith("user:")) return accountPseudonym(id);
   return id;
@@ -624,6 +634,9 @@ export function readStatsCache(home) {
     out.push({
       profile: name,
       account: redactSecrets(accountFor(dir, home)),
+      // Pre-redaction identity for alias lookup. In-memory only: no record
+      // shape built from readStatsCache entries includes this field.
+      rawAccount: accountFor(dir, home),
       tok,
       total: grand(tok),
       byModel,
@@ -656,6 +669,9 @@ export function readStatsCache(home) {
 export async function discoverAccounts(opts = {}) {
   const home = opts.home ?? homedir();
   const showAccounts = opts.showAccounts === true;
+  // Account aliases: explicit option wins, else the user's config file.
+  // Read once here, not per row.
+  const aliases = opts.aliases ?? readConfig(home).account_aliases ?? null;
   const dirs = findConfigDirs(home);
   // ONE seen-map for the whole machine — a Map now, not a Set, because
   // creditUsage keeps the running maximum PER FIELD per message.id and needs
@@ -677,8 +693,9 @@ export async function discoverAccounts(opts = {}) {
   const identities = new Map();
 
   for (const dir of dirs) {
-    const raw = redactSecrets(accountFor(dir, home));
-    const account = displayAccount(raw, showAccounts);
+    const identity = accountFor(dir, home);
+    const raw = redactSecrets(identity);
+    const account = displayAccount(raw, showAccounts, aliases, identity);
     identities.set(account, raw);
     const { totals, byDay, byModel, sessions, sessionRows } =
       await scanProfile(dir, seen, seenSessions);
@@ -722,7 +739,7 @@ export async function discoverAccounts(opts = {}) {
   // (the mapping is deterministic, so this is the same partition either way).
   const counterByAcct = new Map();
   for (const e of readStatsCache(home))
-    counterByAcct.set(displayAccount(e.account, showAccounts), e);
+    counterByAcct.set(displayAccount(e.account, showAccounts, aliases, e.rawAccount), e);
 
   // Per-account floor: "the counter owns everything up to its end date, the
   // transcripts own the days strictly after it, and no token is in both."
@@ -803,7 +820,7 @@ export async function discoverAccounts(opts = {}) {
   // stats_page.machine_floor can concatenate counter + post-counter days.
   const fleetStatsCache = readStatsCache(home).map((e) => ({
     profile: e.profile,
-    account: displayAccount(e.account, showAccounts),
+    account: displayAccount(e.account, showAccounts, aliases, e.rawAccount),
     total: e.total,
     input_output_only: e.inputOutputOnly,
     by_model: e.byModel,

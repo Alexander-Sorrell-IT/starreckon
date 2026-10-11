@@ -34,11 +34,17 @@
 //                 An explicit scanProvider(name) call overrides this —
 //                 explicit beats config. Unknown names match nothing.
 //
+//   account_aliases object — RAW account identity -> display label, e.g.
+//                 { "you@work.com": "Work", "user:abc123": "Personal" }.
+//                 Shown in the default view instead of the acct-xxxxxxxx
+//                 pseudonym; --show-accounts still shows raw.
+//
 // Example:
 //   {
 //     "extra_roots": ["/Volumes/OldDrive/Users/me"],
 //     "api_keys": { "claude": "sk-ant-..." },
-//     "disabled_sources": ["copilot-chat"]
+//     "disabled_sources": ["copilot-chat"],
+//     "account_aliases": { "you@work.com": "Work" }
 //   }
 
 import { existsSync, mkdirSync, readFileSync, writeFileSync, unlinkSync } from "node:fs";
@@ -111,6 +117,21 @@ export function readConfig(home) {
     if (names.length > 0) out.disabled_sources = names;
   }
 
+  // account_aliases — object mapping a RAW account identity (OAuth email or
+  // "user:<uid>" exactly as it appears on disk) to the display label. Shown
+  // in the default view; --show-accounts still shows raw. Empty labels and
+  // non-string keys/values are dropped.
+  if (raw.account_aliases && typeof raw.account_aliases === "object" && !Array.isArray(raw.account_aliases)) {
+    const aliases = {};
+    for (const [rawId, label] of Object.entries(raw.account_aliases)) {
+      if (typeof rawId === "string" && rawId.trim() &&
+          typeof label === "string" && label.trim()) {
+        aliases[rawId.trim()] = label.trim();
+      }
+    }
+    if (Object.keys(aliases).length > 0) out.account_aliases = aliases;
+  }
+
   return out;
 }
 
@@ -165,6 +186,17 @@ export function writeConfig(home, obj) {
       .filter(s => typeof s === "string" && s.trim())
       .map(s => s.trim()))];
     if (names.length > 0) clean.disabled_sources = names;
+  }
+
+  if (obj?.account_aliases && typeof obj.account_aliases === "object" && !Array.isArray(obj.account_aliases)) {
+    const aliases = {};
+    for (const [rawId, label] of Object.entries(obj.account_aliases)) {
+      if (typeof rawId === "string" && rawId.trim() &&
+          typeof label === "string" && label.trim()) {
+        aliases[rawId.trim()] = label.trim();
+      }
+    }
+    if (Object.keys(aliases).length > 0) clean.account_aliases = aliases;
   }
 
   if (Object.keys(clean).length === 0) {

@@ -700,3 +700,29 @@ test("scanProfile and parseClaudeFile agree, token for token, on the same files"
     "measured: uuid dedup gives 907/1814/2721/3628 — the 2.71x, in miniature");
   rmSync(home, { recursive: true, force: true });
 });
+
+// ── account aliases ──────────────────────────────────────────────────────────
+
+test("displayAccount resolves aliases, raw wins with showAccounts", () => {
+  const aliases = { "a@example.com": "Work", "user:abc": "Personal" };
+  assert.equal(displayAccount("a@example.com", false, aliases, "a@example.com"), "Work");
+  assert.equal(displayAccount("mangled", false, aliases, "user:abc"), "Personal");
+  assert.equal(displayAccount("a@example.com", true, aliases, "a@example.com"), "a@example.com");
+  assert.equal(displayAccount("b@example.com", false, aliases, "b@example.com"),
+    displayAccount("b@example.com", false, null, null)); // unaliased unchanged
+});
+
+test("discoverAccounts applies config aliases end to end", async () => {
+  const home = buildFixtureHome();
+  try {
+    mkdirSync(join(home, ".starreckon"), { recursive: true });
+    writeFileSync(join(home, ".starreckon", "config.json"),
+      JSON.stringify({ account_aliases: { "a@example.com": "Work" } }));
+    const rows = await discoverAccounts({ home });
+    const accts = rows.map((r) => r.account);
+    assert.ok(accts.includes("Work"));
+    assert.ok(!accts.some((a) => a.includes("a@example.com")));
+  } finally {
+    rmSync(home, { recursive: true, force: true });
+  }
+});

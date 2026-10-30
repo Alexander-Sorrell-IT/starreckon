@@ -64,7 +64,7 @@
    "label": "Claude Code",
    "billed": true,
    "counted_by": [
-    "deadreckon",
+    "twin",
     "starreckon"
    ],
    "note": "the only CLI that writes its account email to disk, and the only one that deletes transcripts on a timer",
@@ -85,7 +85,7 @@
    "label": "Claude Code \u2014 recovered counters",
    "billed": true,
    "counted_by": [
-    "deadreckon",
+    "twin",
     "starreckon"
    ],
    "runs_after": [
@@ -125,7 +125,7 @@
    "label": "OpenAI Codex CLI",
    "billed": true,
    "counted_by": [
-    "deadreckon",
+    "twin",
     "starreckon"
    ],
    "note": "total_token_usage is cumulative over the session LINEAGE, not the file. A fork inherits its parent's total; counting it whole double-counts the prefix once per fork.",
@@ -146,7 +146,7 @@
    "label": "Google Gemini CLI",
    "billed": true,
    "counted_by": [
-    "deadreckon",
+    "twin",
     "starreckon"
    ],
    "stores": [
@@ -166,7 +166,7 @@
    "label": "GitHub Copilot CLI",
    "billed": true,
    "counted_by": [
-    "deadreckon",
+    "twin",
     "starreckon"
    ],
    "stores": [
@@ -186,7 +186,7 @@
    "label": "xAI Grok CLI",
    "billed": true,
    "counted_by": [
-    "deadreckon",
+    "twin",
     "starreckon"
    ],
    "stores": [
@@ -214,7 +214,7 @@
    "label": "Antigravity CLI",
    "billed": true,
    "counted_by": [
-    "deadreckon",
+    "twin",
     "starreckon"
    ],
    "stores": [
@@ -235,7 +235,7 @@
    "label": "Bob",
    "billed": true,
    "counted_by": [
-    "deadreckon",
+    "twin",
     "starreckon"
    ],
    "note": "SQLite, not JSONL. node:sqlite is a Node builtin so this costs no dependency, but it arrived in 22.5 \u2014 on an older runtime the store is present and UNREADABLE, which is not zero usage.",
@@ -248,7 +248,7 @@
      ],
      "label": "bob",
      "copies_max_depth": 4,
-     "note": "COPIES ARE REAL FOR THIS STORE. bob runs as numbered instances, each with its own home and its own database: ~/.bob-instances/<n>/.bob/db. On the machine this was written on two of them held 11 tasks with row ids found nowhere else, 116,711,574 tokens \u2014 half of bob's real total. deadreckon reaches them through tool_roots, which walks home to depth 4 for any store's directory; this is the declared equivalent."
+     "note": "COPIES ARE REAL FOR THIS STORE. bob runs as numbered instances, each with its own home and its own database: ~/.bob-instances/<n>/.bob/db. On the machine this was written on two of them held 11 tasks with row ids found nowhere else, 116,711,574 tokens \u2014 half of bob's real total. twin reaches them through tool_roots, which walks home to depth 4 for any store's directory; this is the declared equivalent."
     }
    ]
   },
@@ -258,7 +258,7 @@
    "label": "Clawspring",
    "billed": true,
    "counted_by": [
-    "deadreckon",
+    "twin",
     "starreckon"
    ],
    "note": "the format has no cache counters at all; those buckets are absent, not zero. A rollup recording 0 and 0 is not a session and is not emitted.",
@@ -280,7 +280,7 @@
    "label": "GitHub Copilot Chat",
    "billed": true,
    "counted_by": [
-    "deadreckon",
+    "twin",
     "starreckon"
    ],
    "note": "sums exactly one field \u2014 toolCallRounds[].thinking.tokens \u2014 into output. There is no input or prompt counter anywhere in the store, so the figure is a LOWER BOUND ON WHAT IS COUNTABLE and should be shown as one.",
@@ -370,7 +370,7 @@
    "label": "Kilo Code",
    "billed": true,
    "counted_by": [
-    "deadreckon",
+    "twin",
     "starreckon"
    ],
    "note": "spelled `kilocode` everywhere. The registry key was `kilo` on the starreckon side, so scanProvider('kilocode') threw and an api key under that name could never reach its reader.",
@@ -427,10 +427,10 @@
    "label": "LM Studio",
    "billed": false,
    "counted_by": [
-    "deadreckon",
+    "twin",
     "starreckon"
    ],
-   "note": "local models: the work ran on this machine and never went through a provider account. Counters live at the exact path messages[].versions[].steps[].genInfo.stats \u2014 searching the document for any genInfo is more permissive than deadreckon and diverges on the first malformed file.",
+   "note": "local models: the work ran on this machine and never went through a provider account. Counters live at the exact path messages[].versions[].steps[].genInfo.stats \u2014 searching the document for any genInfo is more permissive than twin and diverges on the first malformed file.",
    "stores": [
     {
      "base": "home",
@@ -450,7 +450,7 @@
    "counted_by": [
     "starreckon"
    ],
-   "note": "an ordinary Mac app storing ordinary Claude Code profiles seven levels down, so the Claude parser reads them unchanged. deadreckon has no reader \u2014 it must report no_reader, not 0. The store is macOS-only and nobody has read the number in either direction yet.",
+   "note": "an ordinary Mac app storing ordinary Claude Code profiles seven levels down, so the Claude parser reads them unchanged. twin has no reader \u2014 it must report no_reader, not 0. The store is macOS-only and nobody has read the number in either direction yet.",
    "stores": [
     {
      "base": "appsupport",
@@ -469,7 +469,7 @@
    "billed": false,
    "counts_tokens": false,
    "counted_by": [
-    "deadreckon",
+    "twin",
     "starreckon"
    ],
    "note": "CARRIES NO TOKEN COUNTS AT ALL. It proves a session existed, when, and in which project, and reaches months further back than the transcripts do. Giving it token fields would describe a file that does not have them.",

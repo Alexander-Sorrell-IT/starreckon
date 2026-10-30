@@ -20,10 +20,10 @@
 // must distinguish "absent" from "zero" can. tokenOr0 folds that to 0 for
 // callers accumulating into a total.
 //
-// NOTE on the deadreckon agreement: tests/token-count.test.mjs documents a
-// cross-program table shared with deadreckon's test_token_count.py. The TABLE
+// NOTE on the twin agreement: tests/token-count.test.mjs documents a
+// cross-program table shared with twin's test_token_count.py. The TABLE
 // there is unchanged by this rule; the padded-string case (" 7 " counted as 7)
-// is the one behaviour this tightens, and deadreckon must adopt the same rule
+// is the one behaviour this tightens, and twin must adopt the same rule
 // before the two agree on it again.
 
 /**

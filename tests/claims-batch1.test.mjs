@@ -111,7 +111,7 @@ test("an absent identity does not throw and does not become a shared label", () 
 //
 // writeMachineFolder writes a REPORT.md stub only if nothing is there, because
 // combine.py links every machine row to <folder>/human-readable/REPORT.md and a
-// real report written by deadreckon must survive a starreckon fleet write.
+// real report written by twin must survive a starreckon fleet write.
 
 function machineFolder() {
   const dir = mkdtempSync(join(tmpdir(), "fleet-"));
@@ -143,7 +143,7 @@ test("a REPORT.md that is already there is left alone", () => {
   const report = join(dir, "m1", "human-readable", "REPORT.md");
   assert.ok(existsSync(report), "the stub is written when nothing is there");
 
-  writeFileSync(report, "# THE REAL REPORT\nwritten by deadreckon\n");
+  writeFileSync(report, "# THE REAL REPORT\nwritten by twin\n");
   writeMachineFolder(dir, "m1", DATA, { replace: true });
   assert.match(readFileSync(report, "utf8"), /THE REAL REPORT/,
     "a fleet write replaced a real report with its own stub");

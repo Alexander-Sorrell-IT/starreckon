@@ -507,14 +507,14 @@ test("readStatsCache sums only the four billed counters", () => {
 // ── the streaming rewrite: one message, many rows ───────────────────────────
 //
 // THE SUITE COULD NOT FAIL ON THIS. accounts.mjs deduped on the row `uuid` and
-// SUMMED, while scan.mjs and deadreckon dedup on `message.id` keeping a running
+// SUMMED, while scan.mjs and twin dedup on `message.id` keeping a running
 // maximum. A streaming write emits a NEW uuid per chunk and keeps the SAME
 // message.id, so the uuid set removed almost nothing and every partial write of
 // one assistant message was counted again.
 //
 // Measured on one profile copied to a scratch home — no .claude.json, no
 // deleted sessions, floor 0, so nothing lifetime about it:
-//     accounts.mjs  1,409,787,623     scan.mjs / deadreckon  520,497,793
+//     accounts.mjs  1,409,787,623     scan.mjs / twin  520,497,793
 // 2.71x, on every per-account figure, the ledger, --join-fleet and the machine
 // floor. The fixture above has no repeated message.id at all, so reverting the
 // fix left it green — which is why this case exists separately.

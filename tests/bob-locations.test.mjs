@@ -8,7 +8,7 @@
 // On the machine this was written on: ~/.bob/db plus nine homes under
 // ~/.bob-instances/<n>/, two of which held 11 tasks with row ids and inodes
 // found nowhere else — 116,711,574 tokens, half of bob's real total.
-// deadreckon reaches them through tool_roots, which has walked home for copies
+// twin reaches them through tool_roots, which has walked home for copies
 // since its readers were fixed one at a time. starreckon did not, so the two
 // programs gave two totals for one machine.
 //

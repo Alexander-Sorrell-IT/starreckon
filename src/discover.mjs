@@ -47,6 +47,7 @@ import { readdirSync, readFileSync, statSync, openSync, readSync, closeSync } fr
 import { join, basename, relative, sep } from "node:path";
 import { homedir } from "node:os";
 import { pathToFileURL } from "node:url";
+import { LOCAL } from "./local-names.mjs";
 
 // Depth 4 from home. Deep enough for ~/.config/<tool>/<profile>/sessions and
 // Library/Application Support/<tool>/<x>, shallow enough not to walk a source
@@ -61,7 +62,9 @@ export const SKIP = new Set([
   "snap", ".steam", "Steam", ".wine", "go", ".gradle", ".m2",
   // ours: an archive is a COPY of stores, and rediscovering it would report
   // every tool twice — once real, once as its own backup
-  ".ai-logs-archive", ".starreckon", "deadreckon-count", "deadreckon-record",
+  ".ai-logs-archive", ".starreckon",
+  // and any private program's trees named in ~/.starreckon/local-dirs.json
+  ...LOCAL.skipDirs,
 ]);
 
 // A row carrying one of these is an accounting of model usage. Deliberately

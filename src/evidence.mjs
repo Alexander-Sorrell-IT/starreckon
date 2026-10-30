@@ -1,4 +1,4 @@
-// Source evidence for a counted session — ported from deadreckon-count:
+// Source evidence for a counted session — ported from twin-count:
 // sessions.source_evidence / sessions.add_source_evidence, and the three
 // consumers in token_ledger.py (_sources, _merge_sources, _evidence_matches).
 //

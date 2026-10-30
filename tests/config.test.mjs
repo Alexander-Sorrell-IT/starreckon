@@ -193,7 +193,7 @@ test("effectiveRoots order: home first, then config roots, then CLI roots", () =
 //   lmstudio          in the name list and in the billing set, with NO reader
 //                     anywhere in this program - it reported 0, which is the
 //                     same thing it reports when a real store holds nothing.
-//                     deadreckon counts 172,933 tokens across 10 sessions there
+//                     twin counts 172,933 tokens across 10 sessions there
 //   claude / codex     read on a different path entirely (scan.mjs sources)
 //
 // The first two are defects and are fixed. The third is deliberate, so it is

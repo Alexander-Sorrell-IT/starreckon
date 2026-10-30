@@ -25,11 +25,11 @@
       "were spent before that file existed.",
       "",
       "Both readings are legitimate and must agree:",
-      "  sum the deduped deltas   (deadreckon)",
+      "  sum the deduped deltas   (twin)",
       "  final total minus the inherited base, plus banked resets (starreckon)",
       "",
       "input is counted NET OF CACHE: input_tokens - cached_input_tokens, floored",
-      "at 0. cache_read is min(cached, input). That is deadreckon's rule at",
+      "at 0. cache_read is min(cached, input). That is twin's rule at",
       "sessions.py:991-993 and it is the one both sides are held to."
     ],
     "codex-simple": {
@@ -45,7 +45,7 @@
       "cache_read_input_tokens": 50,
       "output_tokens": 30,
       "total": 280,
-      "_id_deadreckon": "...-aaaaaaaa   (derived from the FILENAME)",
+      "_id_twin": "...-aaaaaaaa   (derived from the FILENAME)",
       "_id_starreckon": "codex-simple   (payload.id from session_meta)",
       "_file_marker": "aaaaaaaa"
     },
@@ -64,7 +64,7 @@
       "cache_read_input_tokens": 15,
       "output_tokens": 5,
       "total": 55,
-      "_id_deadreckon": "...-bbbbbbbb   (derived from the FILENAME)",
+      "_id_twin": "...-bbbbbbbb   (derived from the FILENAME)",
       "_id_starreckon": "codex-fork   (payload.id from session_meta)",
       "_file_marker": "bbbbbbbb"
     },
@@ -82,7 +82,7 @@
       "cache_read_input_tokens": 20,
       "output_tokens": 11,
       "total": 121,
-      "_id_deadreckon": "...-cccccccc   (derived from the FILENAME)",
+      "_id_twin": "...-cccccccc   (derived from the FILENAME)",
       "_id_starreckon": "codex-reset   (payload.id from session_meta)",
       "_file_marker": "cccccccc"
     },
@@ -96,7 +96,7 @@
     },
     "_identity_note": [
       "THE TWO PROGRAMS NAME A CODEX SESSION DIFFERENTLY, and the fixture records",
-      "it rather than hiding it. deadreckon derives the id from the rollout",
+      "it rather than hiding it. twin derives the id from the rollout",
       "FILENAME; starreckon takes payload.id out of session_meta. Totals are",
       "unaffected here because each file carries one session, but a set",
       "comparison of session ids across the two programs cannot succeed, and two",
@@ -236,7 +236,7 @@
       "is zero. cs-empty records 0 and 0: a rollup with no tokens is not a",
       "session and is not emitted. That distinction moves the session COUNT and",
       "not the sum, so no sum-based check can see it — which is exactly how the",
-      "first port of this reader read 20 sessions against deadreckon's 18 while",
+      "first port of this reader read 20 sessions against twin's 18 while",
       "both totalled 258,502,806."
     ],
     "cs-1": {
@@ -270,7 +270,7 @@
       "messages[].versions[].steps[].genInfo.stats.{promptTokensCount,",
       "predictedTokensCount}. The first JS port searched the whole document for",
       "any genInfo instead of walking that path — more permissive than",
-      "deadreckon, identical on every real file, and divergent on the first",
+      "twin, identical on every real file, and divergent on the first",
       "malformed one. The fixture uses the real nesting so the exact path is",
       "what gets exercised."
     ],

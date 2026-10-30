@@ -1,6 +1,6 @@
 // The Cisco model layers — all four, in one registry.
 //
-// Ported from deadreckon-count/install.py, which keeps one venv per model
+// Ported from twin-count/install.py, which keeps one venv per model
 // because their dependency sets genuinely conflict: the forecaster wants torch
 // from the CPU wheel index plus cisco-tsm, search wants sentence-transformers,
 // and Antares wants transformers + torch. One environment holding all three is
@@ -137,7 +137,7 @@ async function run(cmd, args, timeoutMs) {
 /**
  * Create one layer's environment and pre-pull its weights.
  *
- * WHY PRE-PULL RATHER THAN LAZY-LOAD, from deadreckon _download_model: the
+ * WHY PRE-PULL RATHER THAN LAZY-LOAD, from twin _download_model: the
  * consumers set HF_HUB_OFFLINE=1 before importing the model library, which is
  * right for a running system — no network on every inference — but means the
  * FIRST run after install fails with a missing-model error even though the venv

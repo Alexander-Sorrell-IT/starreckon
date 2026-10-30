@@ -7,7 +7,7 @@ import assert from 'node:assert';
 import { writeFileSync, mkdirSync, rmSync, existsSync } from 'fs';
 import { tmpdir } from 'os';
 import { join } from 'path';
-import { readDeadreckonCorpus, compareCorpora, genericTokenCount, hasModelConfig } from '../src/deadreckon-reader.mjs';
+import { readCorpusFile, compareCorpora, genericTokenCount, hasModelConfig } from '../src/corpus-reader.mjs';
 
 const TEST_DIR = join(tmpdir(), 'corpus-adversarial-test-' + Date.now());
 
@@ -29,7 +29,7 @@ not valid json at all
 {"id":"3","source_path":"/c.txt","counts":{"raw_tokens_est":300}}`;
             writeFileSync(corpusFile, content);
             
-            const entries = readDeadreckonCorpus(corpusFile);
+            const entries = readCorpusFile(corpusFile);
             assert.strictEqual(entries.length, 3, 'Should parse 3 valid entries');
             assert.strictEqual(entries[0].id, '1');
             assert.strictEqual(entries[1].id, '2');
@@ -45,7 +45,7 @@ not valid json at all
 `;
             writeFileSync(corpusFile, content);
             
-            const entries = readDeadreckonCorpus(corpusFile);
+            const entries = readCorpusFile(corpusFile);
             assert.strictEqual(entries.length, 2);
         });
 
@@ -57,7 +57,7 @@ not valid json at all
 {"id":"3","source_path":"/c.txt","counts":{"raw_tokens_est":300}}`;
             writeFileSync(corpusFile, content);
             
-            const entries = readDeadreckonCorpus(corpusFile);
+            const entries = readCorpusFile(corpusFile);
             assert.strictEqual(entries.length, 2, 'Should skip entries missing id or source_path');
         });
     });
@@ -68,8 +68,8 @@ not valid json at all
             const content = `{"id":"1","source_path":"/a.txt","counts":{"raw_tokens_est":100}}`;
             writeFileSync(corpusFile, content);
             
-            const entries = readDeadreckonCorpus(corpusFile);
-            assert.strictEqual(entries[0].tool_origin, 'deadreckon');
+            const entries = readCorpusFile(corpusFile);
+            assert.strictEqual(entries[0].tool_origin, 'twin');
         });
 
         it('should provide default counts object if missing', () => {
@@ -77,7 +77,7 @@ not valid json at all
             const content = `{"id":"1","source_path":"/a.txt"}`;
             writeFileSync(corpusFile, content);
             
-            const entries = readDeadreckonCorpus(corpusFile);
+            const entries = readCorpusFile(corpusFile);
             assert.ok(entries[0].counts);
             assert.strictEqual(entries[0].counts.raw_tokens_est, 0);
         });
@@ -87,7 +87,7 @@ not valid json at all
             const content = `{"id":"1","source_path":"/a.txt","counts":{"raw_tokens_est":null,"raw_chars":null}}`;
             writeFileSync(corpusFile, content);
             
-            const entries = readDeadreckonCorpus(corpusFile);
+            const entries = readCorpusFile(corpusFile);
             // Should not crash, null is acceptable
             assert.ok(entries.length === 1);
         });
@@ -156,7 +156,7 @@ not valid json at all
             assert.strictEqual(report.missingInSR, 1);
         });
 
-        it('should detect missing entries in Deadreckon', () => {
+        it('should detect missing entries in Twin', () => {
             const srEntries = [
                 { id: '1', source_path: '/a.txt', counts: { raw_tokens_est: 100 } },
                 { id: '2', source_path: '/b.txt', counts: { raw_tokens_est: 200 } }
@@ -177,7 +177,7 @@ not valid json at all
             const content = `{"id":"1","source_path":"${longPath}","counts":{"raw_tokens_est":100}}`;
             writeFileSync(corpusFile, content);
             
-            const entries = readDeadreckonCorpus(corpusFile);
+            const entries = readCorpusFile(corpusFile);
             assert.strictEqual(entries.length, 1);
             assert.ok(entries[0].source_path.length > 10000);
         });
@@ -187,7 +187,7 @@ not valid json at all
             const content = `{"id":"🔥测试","source_path":"/路径/文件.txt","counts":{"raw_tokens_est":100}}`;
             writeFileSync(corpusFile, content);
             
-            const entries = readDeadreckonCorpus(corpusFile);
+            const entries = readCorpusFile(corpusFile);
             assert.strictEqual(entries.length, 1);
             assert.strictEqual(entries[0].id, '🔥测试');
         });
@@ -198,7 +198,7 @@ not valid json at all
 {"id":"1","source_path":"/b.txt","counts":{"raw_tokens_est":200}}`;
             writeFileSync(corpusFile, content);
             
-            const entries = readDeadreckonCorpus(corpusFile);
+            const entries = readCorpusFile(corpusFile);
             // Both entries are parsed, comparison logic handles duplicates
             assert.strictEqual(entries.length, 2);
         });
@@ -208,7 +208,7 @@ not valid json at all
             const content = `{"id":"1","source_path":"/a.txt","counts":{"raw_tokens_est":-100}}`;
             writeFileSync(corpusFile, content);
             
-            const entries = readDeadreckonCorpus(corpusFile);
+            const entries = readCorpusFile(corpusFile);
             assert.strictEqual(entries.length, 1);
             // Negative values are preserved (validation happens elsewhere)
             assert.strictEqual(entries[0].counts.raw_tokens_est, -100);
@@ -219,7 +219,7 @@ not valid json at all
             const content = `{"id":"1","source_path":"/a.txt","counts":{"raw_tokens_est":100.5}}`;
             writeFileSync(corpusFile, content);
             
-            const entries = readDeadreckonCorpus(corpusFile);
+            const entries = readCorpusFile(corpusFile);
             assert.strictEqual(entries.length, 1);
             assert.strictEqual(entries[0].counts.raw_tokens_est, 100.5);
         });
@@ -227,7 +227,7 @@ not valid json at all
 
     describe('File System Attacks', () => {
         it('should handle non-existent file gracefully', () => {
-            const entries = readDeadreckonCorpus('/nonexistent/path/corpus.jsonl');
+            const entries = readCorpusFile('/nonexistent/path/corpus.jsonl');
             assert.strictEqual(entries.length, 0);
         });
 
@@ -235,7 +235,7 @@ not valid json at all
             const corpusFile = join(TEST_DIR, 'empty.jsonl');
             writeFileSync(corpusFile, '');
             
-            const entries = readDeadreckonCorpus(corpusFile);
+            const entries = readCorpusFile(corpusFile);
             assert.strictEqual(entries.length, 0);
         });
 
@@ -243,7 +243,7 @@ not valid json at all
             const corpusFile = join(TEST_DIR, 'whitespace.jsonl');
             writeFileSync(corpusFile, '   \n\n   \t   \n');
             
-            const entries = readDeadreckonCorpus(corpusFile);
+            const entries = readCorpusFile(corpusFile);
             assert.strictEqual(entries.length, 0);
         });
     });

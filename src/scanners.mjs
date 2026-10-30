@@ -1222,7 +1222,7 @@ const READERS = {
   copilot: { rels: [".copilot/session-state"], read: readCopilot },
   antigravity: { rels: [".gemini/antigravity-cli/conversations"], read: readAntigravity },
   // `kilocode`, NOT `kilo`. This registry key was the only place in either
-  // program that said `kilo`: deadreckon names the reader, the DETECT key and
+  // program that said `kilo`: twin names the reader, the DETECT key and
   // the record value `kilocode`, this file already STAMPS `kilocode` on every
   // record it emits (readKilo, mkRec), the VS Code extension is
   // kilocode.kilo-code, and KNOWN_CLI_NAMES lists `kilocode`. The consequence
@@ -1449,7 +1449,7 @@ function disabledRow(name, roots) {
 // ── the ported readers ────────────────────────────────────────────────────────
 
 /**
- * The readers ported from deadreckon, aggregated into the same row shape
+ * The readers ported from twin, aggregated into the same row shape
  * scanProvider produces so every downstream consumer — the star, the card, the
  * stats page, the JSON report, the ledger — sees them without being taught
  * anything new.

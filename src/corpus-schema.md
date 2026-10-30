@@ -9,7 +9,7 @@ Each line is a valid JSON object:
   "source_path": "/absolute/path/to/transcript.txt",
   "relative_path": "repo/subdir/transcript.txt",
   "timestamp": "ISO8601_string",
-  "tool_origin": "deadreckon" | "starreckon",
+  "tool_origin": "twin" | "starreckon",
   "counts": {
     "raw_chars": 12345,
     "raw_tokens_est": 1500,

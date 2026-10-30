@@ -1,4 +1,4 @@
-// One rule for what counts as a token count, held to the same table as deadreckon.
+// One rule for what counts as a token count, held to the same table as twin.
 //
 // readClawspring coerced with `Number(v) || 0`, the loosest coercion in the
 // program: it rejects NaN and nothing else. jazzer.js — the first coverage-
@@ -8,10 +8,10 @@
 // machine's total silently became absent, which in this codebase is the same
 // shape as zero.
 //
-// The same value CRASHES deadreckon (int(inf) raises OverflowError). Across
+// The same value CRASHES twin (int(inf) raises OverflowError). Across
 // nine malformed shapes the two programs disagreed on SIX.
 //
-// THE TABLE BELOW IS DUPLICATED VERBATIM IN deadreckon's test_token_count.py.
+// THE TABLE BELOW IS DUPLICATED VERBATIM IN twin's test_token_count.py.
 // That is deliberate: the rule is a cross-program agreement, and an agreement
 // written down once on one side is a rule only one program is holding.
 import { test } from "node:test";
@@ -25,7 +25,7 @@ import { readClawspring, tokenCount } from "../src/readers.mjs";
 const TABLE = [
   ["1e400",            0, 0],   // Infinity — passed Number(), crashed int()
   ["-1e400",           0, 0],
-  ["-5000",            0, 0],   // deadreckon banked this as a real count
+  ["-5000",            0, 0],   // twin banked this as a real count
   ["1.5",              0, 0],   // a token is not divisible
   ['"12345"',      12345, 1],   // both programs have always taken this
   ["true",             0, 0],   // a flag is not a quantity
@@ -59,10 +59,10 @@ for (const [raw, total, sessions] of TABLE) {
 }
 
 test("tokenCount takes only what a count can be", () => {
-  // NOTE on the deadreckon agreement above: the TABLE is unchanged, but this
+  // NOTE on the twin agreement above: the TABLE is unchanged, but this
   // list tightened one case — " 7 " used to count as 7. A padded, exponent or
   // hex string is a malformed row, not a count, and crediting it invents
-  // tokens. deadreckon must adopt the digits-only rule before the two agree
+  // tokens. twin must adopt the digits-only rule before the two agree
   // on these shapes again.
   const cases = [
     [5, 5], [0, 0], ["12345", 12345], [5.0, 5],

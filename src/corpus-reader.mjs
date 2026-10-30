@@ -1,5 +1,5 @@
 /**
- * Deadreckon Reader Module - Reads Deadreckon corpus files for Starreckon.
+ * Twin Reader Module - Reads Twin corpus files for Starreckon.
  * Handles malformed lines, missing fields, and schema validation.
  * Falls back to generic mode if models/daemons config is missing.
  */
@@ -7,11 +7,11 @@ import { readFileSync, writeFileSync, existsSync } from 'fs';
 import { resolve, dirname } from 'path';
 
 /**
- * Read a Deadreckon corpus file (JSONL format)
+ * Read a Twin corpus file (JSONL format)
  * @param {string} filepath - Path to corpus file
  * @returns {Array} Array of parsed entries
  */
-export function readDeadreckonCorpus(filepath) {
+export function readCorpusFile(filepath) {
     const absPath = resolve(filepath);
     
     if (!existsSync(absPath)) {
@@ -30,11 +30,11 @@ export function readDeadreckonCorpus(filepath) {
         
         try {
             const entry = JSON.parse(line);
-            // Support raw deadreckon token_ledger rows as well as standardized corpus rows
+            // Support raw twin token_ledger rows as well as standardized corpus rows
             if (!entry.id && entry.session_id) {
                 entry.id = entry.session_id;
                 if (!entry.source_path) {
-                    entry.source_path = `${entry.machine || 'deadreckon'}/${entry.cli || 'cli'}/${entry.id}`;
+                    entry.source_path = `${entry.machine || 'twin'}/${entry.cli || 'cli'}/${entry.id}`;
                 }
             }
             
@@ -47,7 +47,7 @@ export function readDeadreckonCorpus(filepath) {
             
             // Normalize tool_origin if missing
             if (!entry.tool_origin) {
-                entry.tool_origin = entry.cli || 'deadreckon';
+                entry.tool_origin = entry.cli || 'twin';
             }
             
             // Ensure counts object exists with defaults
@@ -74,9 +74,9 @@ export function readDeadreckonCorpus(filepath) {
 }
 
 /**
- * Compare Starreckon results against Deadreckon corpus
+ * Compare Starreckon results against Twin corpus
  * @param {Array} srEntries - Starreckon entries
- * @param {Array} drEntries - Deadreckon entries
+ * @param {Array} drEntries - Twin entries
  * @returns {Object} Comparison report
  */
 export function compareCorpora(srEntries, drEntries) {
@@ -108,7 +108,7 @@ export function compareCorpora(srEntries, drEntries) {
             report.mismatches++;
             report.discrepancies.push({
                 id,
-                deadreckon: drTokens,
+                external: drTokens,
                 starreckon: srTokens,
                 diff: Math.abs(drTokens - srTokens)
             });
@@ -179,7 +179,7 @@ export function writeStarreckonCorpus(entries, filepath) {
 
 /**
  * Ingest parsed corpus entries into a Starreckon stats object
- * @param {Array} entries - Parsed corpus entries from readDeadreckonCorpus
+ * @param {Array} entries - Parsed corpus entries from readCorpusFile
  * @param {Object} stats - Target stats object (from emptyStats)
  * @returns {number} Count of entries ingested
  */
@@ -343,12 +343,12 @@ export function exportCorpusFromScan(stats, providers, filepath, opts = {}) {
 if (import.meta.url === `file://${process.argv[1]}`) {
     const args = process.argv.slice(2);
     if (args.length < 1) {
-        console.log('Usage: node deadreckon-reader.mjs <corpus.jsonl> [compare_with.jsonl]');
+        console.log('Usage: node corpus-reader.mjs <corpus.jsonl> [compare_with.jsonl]');
         process.exit(1);
     }
     
     const drFile = args[0];
-    const entries = readDeadreckonCorpus(drFile);
+    const entries = readCorpusFile(drFile);
     console.log(`Successfully parsed ${entries.length} entries`);
     
     if (args.length > 1) {

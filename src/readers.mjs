@@ -1,4 +1,4 @@
-// Readers starreckon did not have. Ported from deadreckon's Python against a
+// Readers starreckon did not have. Ported from twin's Python against a
 // written spec, not from memory — every field name below was read out of the
 // source it came from, because a guessed key returns 0 and 0 is exactly what a
 // store that is genuinely empty returns.
@@ -31,7 +31,7 @@ import { constants as BUFFER_CONSTANTS } from "node:buffer";
 import { vscodeRoots } from "./scanners.mjs";
 import { probe, stateOf, loadSources } from "./sources.mjs";
 import { addSourceEvidence } from "./evidence.mjs";
-import { readDeadreckonCorpus } from "./deadreckon-reader.mjs";
+import { readCorpusFile } from "./corpus-reader.mjs";
 import { tokenCount, tokenOr0 } from "./tokens.mjs";
 
 // Re-exported: tokenCount used to live here, and tests import it from here.
@@ -290,14 +290,14 @@ export function readClawspring(home, pr) {
     if (!held) bySession.set(sid, { id: sid, cli: "clawspring", tokens: t });
     else {
       // Merged by per-field MAXIMUM across copies of one session, matching
-      // deadreckon's multi_base(key="session_id") rule.
+      // twin's multi_base(key="session_id") rule.
       for (const k of ["input", "cacheWrite", "cacheRead", "output"]) {
         if (t[k] > held.tokens[k]) held.tokens[k] = t[k];
       }
     }
   }
 
-  // A ROLLUP THAT RECORDS NO TOKENS IS NOT A SESSION. deadreckon does not
+  // A ROLLUP THAT RECORDS NO TOKENS IS NOT A SESSION. twin does not
   // emit one, and the first draft of this port did: totals agreed to the token
   // (258,502,806) while the session COUNT read 20 against its 18. Two files —
   // session_110942_a1d15969 and session_114329_223b858c — carry
@@ -321,7 +321,7 @@ export function readClawspring(home, pr) {
  * went through a provider account. It is a fact about where the computation
  * happened, not a claim about money: nothing in this program attaches a price
  * to a token, and tests/no-cost.test.mjs enforces that no source file here
- * ever does. The field exists for parity with deadreckon's record shape, which
+ * ever does. The field exists for parity with twin's record shape, which
  * draws the same local-versus-provider line.
  *
  * Per-step counters live at `genInfo.stats.promptTokensCount` and
@@ -341,7 +341,7 @@ export function readLmstudio(home, pr) {
     if (!d) continue;
     // THE EXACT PATH, NOT A SEARCH. The first draft walked the whole document
     // looking for any `genInfo.stats`, which is MORE permissive than
-    // deadreckon's messages[].versions[].steps[].genInfo.stats. The two agreed
+    // twin's messages[].versions[].steps[].genInfo.stats. The two agreed
     // on the real store — every live file has the proper nesting — so the
     // divergence was invisible there and would have appeared only on a
     // malformed or future-shaped file, as one program counting what the other
@@ -410,7 +410,7 @@ export async function readBob(home, pr) {
     });
   }
 
-  // Merged by per-field MAXIMUM on the task id, which is deadreckon's
+  // Merged by per-field MAXIMUM on the task id, which is twin's
   // multi_base rule. A database that is a COPY contributes nothing; one holding
   // its own rows contributes them; and a copy whose tail was truncated loses
   // field by field to the fuller one rather than winning by being read first.
@@ -819,7 +819,7 @@ export async function readOpencode(home, pr) {
  * this was ported against: 7,210 thinking blocks carry a `tokens` key, 3,523
  * of them are 0 while still carrying an encrypted blob, 3,687 are positive, and
  * there are exactly 3,687 distinct ids — none reused. A block with no id is
- * counted every time it appears, matching deadreckon, and no such block exists
+ * counted every time it appears, matching twin, and no such block exists
  * today.
  *
  * THE WALK MUST NOT READ THE STORE. It is 2.29 GB. Only
@@ -851,7 +851,7 @@ export function readCopilotChat(home, pr) {
   const seenThinking = new Set();
   // Per-session accumulator: keyed on session_id (or filename fallback), keeping
   // the running max output across every file that carries the same session.
-  // deadreckon deduplicates copilot-chat on session_id across every workspace and
+  // twin deduplicates copilot-chat on session_id across every workspace and
   // base; starreckon was pushing one session object per FILE, so one session
   // opened in two VS Code workspaces counted twice. Zero impact today (all 75
   // real files on this machine have 75 distinct session IDs) but structurally
@@ -876,7 +876,7 @@ export function readCopilotChat(home, pr) {
     const d = readJson(f);
     if (!d || typeof d !== "object") {
       // One real file in this store (54,231,040 bytes) is truncated on disk.
-      // deadreckon swallows it; it is recorded here so the gap has a name.
+      // twin swallows it; it is recorded here so the gap has a name.
       unreadable.push({ path: f, bytes, why: "not valid JSON — truncated on disk" });
       continue;
     }
@@ -992,7 +992,7 @@ export function readHistory(home, pr) {
       const sid = o?.sessionId;
       if (!sid) continue;
       // Seconds or milliseconds, decided by magnitude — the same 1e11 boundary
-      // deadreckon uses, because both forms appear in real files.
+      // twin uses, because both forms appear in real files.
       let day = null;
       const ts = o.timestamp;
       if (typeof ts === "number") {
@@ -1105,16 +1105,16 @@ export function coworkProfileDirs(home) {
 }
 
 /**
- * Reader for Deadreckon-Count machine-readable corpus files.
- * Allows Starreckon to import and verify totals from existing Deadreckon outputs
+ * Reader for Twin-Count machine-readable corpus files.
+ * Allows Starreckon to import and verify totals from existing Twin outputs
  * when raw session logs are unavailable or archived.
  *
  * This reader is used when a folder contains machine-readable/sessions.json
  * but no raw .claude or other session folders - typical for archived data.
  */
-export async function readDeadreckonArchive(corpusPath, pr) {
+export async function readCorpusArchive(corpusPath, pr) {
   try {
-    const result = await readDeadreckonCorpus(corpusPath);
+    const result = await readCorpusFile(corpusPath);
     const sessions = Array.isArray(result) ? result : (result.sessions || []);
 
     if (sessions.length === 0) {
@@ -1124,7 +1124,7 @@ export async function readDeadreckonArchive(corpusPath, pr) {
     // Add evidence for the imported source
     if (pr && (result.sourceFile || corpusPath)) {
       addSourceEvidence(pr, {
-        source: 'deadreckon-archive',
+        source: 'corpus-archive',
         path: result.sourceFile || corpusPath,
         sessionCount: sessions.length
       });
@@ -1139,7 +1139,7 @@ export async function readDeadreckonArchive(corpusPath, pr) {
       state: "counted",
       sessions,
       totals: result.totals || { total_tokens: totalTokens },
-      source: result.source || 'deadreckon-archive',
+      source: result.source || 'corpus-archive',
       importedAt: result.importedAt || new Date().toISOString()
     };
   } catch (error) {

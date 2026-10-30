@@ -269,7 +269,7 @@ const CLAIMS = [
 // is the same trap that made Stryker unusable on suites reading outside the
 // tree, and it is why probe() runs a BASELINE before mutating anything.
 const COPY = ["src", "tests", "spec", "bin", "docs", "package.json", "knip.json",
-              "README.md", "PROVE-IT.md", "MAPS.md", "PLAN.md", "ROADMAP.md",
+              "README.md", "PROVE-IT.md", "ROADMAP.md",
               "LICENSE", "sonar-project.properties"];
 
 function sandbox() {

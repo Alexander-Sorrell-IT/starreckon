@@ -1,6 +1,6 @@
 # Shared Corpus Schema (JSONL)
 
-Both Starreckon and Deadreckon read/write this format.
+Starreckon and its Python counterpart both read/write this format.
 
 ## Line Format
 Each line is a valid JSON object:

@@ -33,44 +33,6 @@ rows elided — the whole 78×26 frame, verbatim, is under
                      SKILL POINTS 23.0/35  scan complete
 ```
 
-## Why this is not `npx standout`
-
-`npx standout` reads the same local logs — and then **uploads** what it pulled
-out of them to a remote service that scores you server-side. starreckon computes
-the same class of signals **in this process, on your machine**, stores no
-transcript text at all, pseudonymises your account identity in every file it
-writes, and hands you an OS-level way to check all of that yourself.
-
-Stated in two registers, because they have different kinds of backing:
-
-**Checkable in this tree, right now.** `src/profile.mjs` computes the
-judgment-signal metrics (correction rate, question ratio, prompt depth,
-delegation, tool mix, concurrency) by reading prompt text *in-stream to
-increment counters* and never storing it — no `exchanges`, no `prompt_samples`,
-no `prompt_frequency`, no `conversation_samples`. Grep it; the privacy contract
-is written at the top of the file, and `starreckon verify` re-reads the
-output files afterwards looking for transcript-sized strings.
-
-**Read from the standout CLI bundle (August 2026), so re-read it yourself
-before quoting it — a vendor can change this at any release:** its payload caps
-out around **4 MB**, and carries project paths, prompt samples, and up to
-**500 full user/assistant exchange pairs**. Those field names are where
-`src/profile.mjs` gets its metric lineage — the formulas were ported from that
-bundle deliberately, so the comparison is like-for-like.
-
-| | `npx standout` | starreckon |
-|---|---|---|
-| Where scoring happens | on their server, after an upload | in this process, on your machine |
-| What travels | up to ~4 MB: project paths, prompt samples, up to 500 exchange pairs (per their bundle, Aug 2026) | nothing on the scan path; outputs are files under `~/.starreckon` until *you* move them |
-| Transcript text | uploaded as samples/exchanges | never stored — counted in-stream, then dropped |
-| Your identity in files | — (not a claim we make about their service) | `acct-<hash>` pseudonym in every file; the address stays on your terminal |
-| How you check it | read their client; the scoring happens somewhere you can't watch | run it under a deny-network sandbox and read the kernel's answer |
-
-A dash means we do not claim to know. This is a comparison of mechanisms, not
-a swipe: standout's design is a reasonable one for a hosted product, and this
-project ports its formulas on purpose. The difference is where the computation
-happens and what you are able to verify.
-
 ## Prove it: the kernel refuses, and you can watch it happen
 
 A no-egress claim that never *tries* to cross the wall proves nothing. So
@@ -600,7 +562,7 @@ separately, and more harshly than a test suite alone can:
 - **1,000+ tests**, every one of which follows the house rule that a test is
   only believed after its fault has been planted and the failure watched.
 - **A second, independent implementation.** The same counting rules exist in
-  Python (`deadreckon`), and the two are run against each other. On the machine
+  a separate Python program, and the two are run against each other. On the machine
   this was written on, the two programs scanned the same home and agreed **to
   the token** on every CLI — the one delta was the live session writing between
   the two scans.

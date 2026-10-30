@@ -143,24 +143,6 @@ the package contents, publish to npm.
 
 ---
 
-## Phase 4 — deadreckon-count remaining work
-
-### 4a. Fleet run on 5 unscanned machines
-The 5 machines (dell-inspiron, hp-laptop, dell-latitude ×2, asus) have never
-been scanned. Their contribution to the fleet floor is currently 0.
-
-Each machine needs: `install.py --apply` + `run.py update` run once on it.
-Requires physical access or SSH.
-
-**After this:** the fleet floor (currently 49.1B from macbook-air-m1 alone)
-grows to include all 6 machines.
-
-### 4b. Definition of done
-`retire_archive.py --yes` + `run.py rebuild` from zero = identical numbers.
-This means the rebuild is deterministic and the gate is the authority.
-
----
-
 ## Summary — what to build in what order
 
 ```

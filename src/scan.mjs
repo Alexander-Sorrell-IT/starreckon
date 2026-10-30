@@ -627,11 +627,11 @@ export async function parseClaudeFile(filePath, stats, opts = {}) {
       //
       // Found by the differential fuzzer: 20 of 60 generated corpora
       // disagreed, starreckon exactly DOUBLE on every session whose rows
-      // carry no message.id, against both deadreckon and the corpus's own
+      // carry no message.id, against both twin and the corpus's own
       // constructed truth (43,669 true, 71,263 counted).
       //
       // Two other implementations already did this and this one did not —
-      // accounts.mjs:468 credits `msg.id ?? rec.uuid`, and deadreckon's
+      // accounts.mjs:468 credits `msg.id ?? rec.uuid`, and twin's
       // MessageMax.key falls back to ("uuid", row_uuid). So this line also
       // settles starreckon's own internal disagreement, where the two
       // counters reported 50 and 100 for the same record.
@@ -763,7 +763,7 @@ export async function parseCodexFile(filePath, stats, opts = {}) {
       // total_token_usage IS CUMULATIVE OVER THE LINEAGE, NOT OVER THE FILE.
       //
       // Assigning it whole counted a resumed or forked session's INHERITED
-      // prefix again in every child file. Measured against deadreckon over the
+      // prefix again in every child file. Measured against twin over the
       // 156 Codex files on this fleet: 3,340,774,041 here against 2,319,394,230
       // there, and the 1,021,379,811 gap closes exactly — 17 files open with an
       // inherited running total summing to 1,021,393,809, one file resets
@@ -771,7 +771,7 @@ export async function parseCodexFile(filePath, stats, opts = {}) {
       // the token. Ten sibling forks share one identical 69,322,178 base, so
       // that prefix alone was counted ten times: 623,899,602 tokens.
       //
-      // The field is not wrong and neither is deadreckon's read of
+      // The field is not wrong and neither is twin's read of
       // last_token_usage: on the live store (~/.codex/sessions, 4 files) both
       // programs return 1,453,618, bucket-for-bucket. total[n] equals the sum
       // of the DEDUPED last[0..n] exactly, 0 mismatches over 117 records. So
@@ -1099,14 +1099,14 @@ export function finalize(stats) {
 // already passed a differential built on grand totals — swap two sessions'
 // tokens, move a session's tokens into its neighbour, move input into output,
 // and every total still reconciles. A differential against the sibling program
-// (deadreckon, which exports per-session records of its own) can only catch
+// (twin, which exports per-session records of its own) can only catch
 // those if BOTH sides can be joined session by session, so this hands over the
 // Map before it is thrown away.
 //
 // PER FIELD, NOT PER TOTAL. A single `total` per session hides a swap between
 // two of the four counters — which is the one corruption class a token counter
 // is most likely to actually have. The four field names are ledger.mjs's FIELDS,
-// which were ported from deadreckon, so the two programs' records already agree
+// which were ported from twin, so the two programs' records already agree
 // on spelling and the join needs no translation table.
 //
 // MASKING. Every other file this program writes goes out masked, so this one
@@ -1252,7 +1252,7 @@ function inferLanguages(filePaths) {
 //   worked YESTERDAY, not today     lenient 2, zY9 0
 //   three days ending yesterday     lenient 3, zY9 0
 //
-// zY9 is the rule: deadreckon's stats.py mirrors it, profile.test.mjs asserts
+// zY9 is the rule: twin's stats.py mirrors it, profile.test.mjs asserts
 // it, and statspage.mjs renders it to the reader — "current streak walks back
 // from today (zY9); a gap zeroes it". The lenient copy published a different
 // number from current_streak_days and nothing compared them, because mutation

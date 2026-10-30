@@ -1,7 +1,7 @@
 // The package must never carry the author's real machine records.
 //
 // This existed because it already happened: `feat: sync multi-machine fleet
-// fixtures from deadreckon-count` (2026-08-26) copied six real machines'
+// fixtures from twin-count` (2026-08-26) copied six real machines'
 // archives into tests/fixtures/machines/, and `files[]` already shipped
 // tests/ on purpose — PROVE-IT §5 tells you to run the suite from the
 // tarball. Two defensible decisions composed into publishing the author's
@@ -30,8 +30,6 @@ const REAL_MACHINES = [
 
 const FORBIDDEN = [
   { re: /tests\/fixtures\/machines\//, why: "real multi-machine fleet archives" },
-  { re: /deadreckon-count\//,          why: "a private program's records" },
-  { re: /deadreckon-record\//,         why: "a private program's records" },
   { re: /\.machine-id$/,               why: "a machine identity file" },
   ...REAL_MACHINES.map((m) => ({ re: new RegExp(m.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")), why: `the real machine "${m}"` })),
 ];

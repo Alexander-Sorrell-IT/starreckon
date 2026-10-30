@@ -1,6 +1,6 @@
 // Append-only token ledger for starreckon.
 //
-// Ported from deadreckon-count/token_ledger.py — same rules, same guarantees:
+// Ported from twin-count/token_ledger.py — same rules, same guarantees:
 //
 //   - One JSONL file: ~/.starreckon/token_ledger.jsonl
 //   - One record per session observed, keyed by (cli, session_id)

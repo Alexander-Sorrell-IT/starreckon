@@ -1,6 +1,6 @@
 // Protection layer for AI-coding session files.
 //
-// Two layers, neither destructive — ported from deadreckon-count/retention_guard.py:
+// Two layers, neither destructive — ported from twin-count/retention_guard.py:
 //
 // LAYER 1 — raise cleanupPeriodDays (Claude only)
 //   Claude Code deletes transcripts older than cleanupPeriodDays AT STARTUP.
@@ -114,7 +114,7 @@ function readJsonSafe(p) {
 //
 // It is NOT a bare-word match on "token". The first draft was, and it refused
 // `token_ledger.jsonl` and `token-usage.json` — this program's own record and
-// deadreckon's — which are exactly the files the archive exists to keep. A
+// twin's — which are exactly the files the archive exists to keep. A
 // credential file says what KIND of secret it is: `oauth-keys`, `api_key`,
 // `refresh_token`, `access_token`, `id_rsa`. A record file uses the word as a
 // unit of measure. The pattern names the credential compounds, and leaves the
@@ -361,7 +361,7 @@ export function linkTree(src, label, { home = null, dry = false } = {}) {
 }
 
 // ---- CLI store map ---------------------------------------------------------
-// Where every CLI keeps its sessions. Ported from deadreckon stores.py.
+// Where every CLI keeps its sessions. Ported from twin stores.py.
 // Used by the archive tick to know what to protect.
 
 function vscodeBase(home) {

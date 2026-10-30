@@ -1,5 +1,5 @@
 /**
- * Tests for bidirectional JSONL corpus exchange between Starreckon and Deadreckon
+ * Tests for bidirectional JSONL corpus exchange between Starreckon and Twin
  */
 import { describe, it, beforeEach } from 'node:test';
 import assert from 'node:assert';
@@ -8,12 +8,12 @@ import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { execFileSync } from 'node:child_process';
 import {
-    readDeadreckonCorpus,
+    readCorpusFile,
     writeStarreckonCorpus,
     exportCorpusFromScan,
     ingestCorpusEntries,
     compareCorpora
-} from '../src/deadreckon-reader.mjs';
+} from '../src/corpus-reader.mjs';
 import { emptyStats, finalize } from '../src/scan.mjs';
 
 const TEST_DIR = join(tmpdir(), 'sr-dr-corpus-test-' + Date.now());
@@ -77,7 +77,7 @@ describe('Bidirectional Corpus Exchange', () => {
 
         // Re-import back into a fresh stats
         const freshStats = emptyStats();
-        const entries = readDeadreckonCorpus(corpusFile);
+        const entries = readCorpusFile(corpusFile);
         assert.strictEqual(entries.length, 2);
 
         ingestCorpusEntries(entries, freshStats);
@@ -87,15 +87,15 @@ describe('Bidirectional Corpus Exchange', () => {
         assert.strictEqual(agg.total_input_tokens, 6000);
     });
 
-    it('ingests deadreckon-generated corpus JSONL with graceful fallback', () => {
-        const drCorpus = join(TEST_DIR, 'deadreckon_sample.jsonl');
+    it('ingests twin-generated corpus JSONL with graceful fallback', () => {
+        const drCorpus = join(TEST_DIR, 'twin_sample.jsonl');
         const content = [
             JSON.stringify({
                 id: "dr-001",
                 source_path: "/data/log1.txt",
                 relative_path: "repo1/log1.txt",
                 timestamp: "2024-08-01T10:00:00Z",
-                tool_origin: "deadreckon",
+                tool_origin: "twin",
                 counts: { raw_chars: 4000, raw_tokens_est: 1000, model_specific_tokens: 1000, model_name: "claude-3" },
                 status: "ok",
                 error_msg: null
@@ -105,7 +105,7 @@ describe('Bidirectional Corpus Exchange', () => {
                 source_path: "/data/log2.txt",
                 relative_path: "repo2/log2.txt",
                 timestamp: "2024-08-02T11:00:00Z",
-                tool_origin: "deadreckon",
+                tool_origin: "twin",
                 counts: { raw_chars: 8000, raw_tokens_est: 2000, model_specific_tokens: null, model_name: "generic" },
                 status: "ok",
                 error_msg: null
@@ -114,7 +114,7 @@ describe('Bidirectional Corpus Exchange', () => {
         writeFileSync(drCorpus, content);
 
         const stats = emptyStats();
-        const entries = readDeadreckonCorpus(drCorpus);
+        const entries = readCorpusFile(drCorpus);
         ingestCorpusEntries(entries, stats);
         const agg = finalize(stats);
 
@@ -124,7 +124,7 @@ describe('Bidirectional Corpus Exchange', () => {
         assert.strictEqual(agg.models['generic'], 2000);
     });
 
-    it('Deadreckon python corpus_reader.py verifies Starreckon exported corpus', () => {
+    it('Twin python corpus_reader.py verifies Starreckon exported corpus', () => {
         const stats = emptyStats();
         stats.sessions.set('parity-1', {
             firstTs: 1722500000000,
@@ -140,8 +140,8 @@ describe('Bidirectional Corpus Exchange', () => {
         const srCorpus = join(TEST_DIR, 'sr_export.jsonl');
         exportCorpusFromScan(stats, null, srCorpus);
 
-        // Run deadreckon-count/corpus_reader.py against the exported corpus
-        const pyScript = join(process.cwd(), 'deadreckon-count', 'corpus_reader.py');
+        // Run twin-count/corpus_reader.py against the exported corpus
+        const pyScript = join(process.cwd(), 'twin-count', 'corpus_reader.py');
         if (existsSync(pyScript)) {
             const out = execFileSync('python3', [pyScript, srCorpus], { encoding: 'utf-8' });
             assert.ok(out.includes('Successfully parsed 1 entries'), `Expected successful parse, got: ${out}`);

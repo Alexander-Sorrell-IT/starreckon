@@ -98,7 +98,7 @@ export function storePaths(store, home, spec) {
 
   // COPIES, WHEN THE STORE DECLARES THEY EXIST. A declared path is one guess at
   // where a tool keeps its data, and silence when the guess is incomplete.
-  // deadreckon's tool_roots has walked home for exactly this since the readers
+  // twin's tool_roots has walked home for exactly this since the readers
   // were fixed one at a time; starreckon read only the declared path, so bob's
   // per-instance homes were invisible here and visible there — two programs
   // giving two totals for one machine, which is the one thing a two-program

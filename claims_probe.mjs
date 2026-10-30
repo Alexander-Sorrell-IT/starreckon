@@ -3,7 +3,7 @@
 //
 // ~/reckon-exchange/CLAIMS.md lists 111 sentences these two programs state
 // about themselves in the absolute — NEVER, ALWAYS, CANNOT, MUST. SIXTY-SEVEN
-// OF THEM ARE IN THIS PROGRAM AND UNTIL NOW NOTHING COULD EVEN ASK. deadreckon
+// OF THEM ARE IN THIS PROGRAM AND UNTIL NOW NOTHING COULD EVEN ASK. twin
 // has had claims_probe.py since 2026-08-20; this is its other half, and the
 // first ten claims it asked about over there came back five unguarded.
 //
@@ -21,7 +21,7 @@
 //
 // PARALLEL BY DEFAULT. Each claim already works in its own directory, so they
 // are independent; running them one at a time was the single largest cost in
-// the deadreckon census and it was all waiting, not thinking.
+// the twin census and it was all waiting, not thinking.
 import { cpSync, mkdtempSync, readFileSync, writeFileSync, rmSync, symlinkSync, existsSync } from "node:fs";
 import { tmpdir, cpus } from "node:os";
 import { join } from "node:path";

@@ -1,6 +1,6 @@
 // Coverage-guided fuzzing of the readers, which have never had it.
 //
-// Atheris found SEVEN crashes in deadreckon's Python readers, every one the
+// Atheris found SEVEN crashes in twin's Python readers, every one the
 // same shape: a JSON value that is not the type the reader assumed. Atheris is
 // Python-only, so this half of the fleet has never been fuzzed at all — the
 // 958 tests all feed it transcripts someone thought of.

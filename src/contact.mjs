@@ -29,7 +29,7 @@ export const FIELDS = [
 
 // Short key for each field. ONE map, used by both outputs: the share URL
 // (shareurl.mjs imports this) and the text payload (TAGS below derives from it).
-// Two hand-maintained copies is how PROVIDER_PREFIXES drifted in deadreckon —
+// Two hand-maintained copies is how PROVIDER_PREFIXES drifted in twin —
 // add an eighth field to FIELDS and there is now exactly one place to update.
 export const URL_KEYS = {
   name: "n", github: "gh", email: "em", phone: "tel",

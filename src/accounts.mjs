@@ -35,6 +35,7 @@ import {
   createReadStream,
 } from "node:fs";
 import { createInterface } from "node:readline";
+import { LOCAL } from "./local-names.mjs";
 import { homedir } from "node:os";
 import { basename, join, resolve, sep } from "node:path";
 import { maskPath, redactSecrets, accountPseudonym } from "./redact.mjs";
@@ -69,11 +70,11 @@ const TOK_KEYS = ["input", "output", "cacheRead", "cacheWrite"];
 // Trees that hold COPIES of transcripts rather than live ones. Walking into
 // them attributes archived work — often another computer's — to this machine.
 //
-// THIS LIST AND deadreckon's analyze_tokens.COPY_DIRS ARE DOCUMENTED AS THE
+// THIS LIST AND twin's analyze_tokens.COPY_DIRS ARE DOCUMENTED AS THE
 // SAME LIST AND WERE NOT. They differed by exactly one name: this side had
-// `token-corpus`, the other had `deadreckon-record`, and nothing compared them.
+// `token-corpus`, the other had `twin-record`, and nothing compared them.
 // Measured on the machine where it was found, the missing name let this scan
-// walk 59,131 transcript files out of ~/deadreckon-record — the preservation
+// walk 59,131 transcript files out of ~/twin-record — the preservation
 // tree holding FIVE machines' archives — against 1,855 files in the live
 // profiles. Every one of those sessions was being counted as this computer's.
 //
@@ -83,24 +84,26 @@ const TOK_KEYS = ["input", "output", "cacheRead", "cacheWrite"];
 // history landing in your total.
 //
 // THEN THE PROGRAMS WERE RENAMED AND A THIRD REPOSITORY APPEARED, and the hole
-// reopened the same way. There are now three: deadreckon-count (the numbers),
-// deadreckon-record (the redacted corpus, formerly token-corpus — the old name
-// stays because checkouts on disk still carry it), and deadreckon-transcripts,
+// reopened the same way. There are now three: twin-count (the numbers),
+// twin-record (the redacted corpus, formerly token-corpus — the old name
+// stays because checkouts on disk still carry it), and twin-transcripts,
 // whose README says it holds "Raw AI CLI transcripts from every machine in the
-// fleet" over git LFS. deadreckon-transcripts was in NEITHER list. This time it
+// fleet" over git LFS. twin-transcripts was in NEITHER list. This time it
 // had cost nothing yet, and only because its LFS pointers have not been pulled
 // here — 0 .jsonl beneath it on this machine, against the 59,131 the last
 // missing name was worth. It is added now, before it fills.
 //
 // tests/copydirs.test.mjs is the test that did not exist for either round: it
-// pins this list, and compares it to analyze_tokens.py's whenever a deadreckon
+// pins this list, and compares it to analyze_tokens.py's whenever a twin
 // checkout is reachable. Adding a name here without adding it there now fails.
 // EXPORTED for that test and nothing else — no other module reads it.
-export const COPY_DIRS = new Set([
-  "corpus", "merged", "token-corpus", "deadreckon-record",
-  "deadreckon-transcripts",
+// The private programs' own tree names are not in this list: they come from
+// ~/.starreckon/local-dirs.json (see local-names.mjs) so they never ship.
+export const PUBLIC_COPY_DIRS = new Set([
+  "corpus", "merged", "token-corpus",
   "node_modules", ".git", "archive", "snap", ".cache", ".local", "venv", ".venv",
 ]);
+export const COPY_DIRS = new Set([...PUBLIC_COPY_DIRS, ...LOCAL.copyDirs]);
 
 function zeroTok() {
   return { input: 0, output: 0, cacheRead: 0, cacheWrite: 0 };
@@ -465,7 +468,7 @@ async function scanProfile(configDir, seen, seenSessions) {
         const usage = msg && typeof msg === "object" ? msg.usage : null;
         if (!usage || typeof usage !== "object" || Array.isArray(usage)) return;
         // THE DEDUP KEY IS message.id, NOT rec.uuid, AND THE RULE IS A RUNNING
-        // MAXIMUM — the same rule scan.mjs and deadreckon already use.
+        // MAXIMUM — the same rule scan.mjs and twin already use.
         //
         // This kept a Set of row uuids and SUMMED every row that survived. A
         // streaming write emits a NEW uuid each time and keeps the SAME
@@ -477,7 +480,7 @@ async function scanProfile(configDir, seen, seenSessions) {
         // no deleted sessions, floor 0, so nothing lifetime about it:
         //     accounts.mjs   1,409,787,623
         //     scan.mjs         520,497,793
-        //     deadreckon       520,497,793
+        //     twin       520,497,793
         // 2.71x, and the two readers that dedup correctly agree to the token.
         //
         // It matters because THIS path — not scan.mjs — feeds the ledger, the
@@ -567,7 +570,7 @@ async function scanProfile(configDir, seen, seenSessions) {
         // lifetime total, and it cannot do that job while 89% of files are
         // filed under the wrong identity.
         //
-        // Falls back to the basename, which is deadreckon's rule verbatim
+        // Falls back to the basename, which is twin's rule verbatim
         // (`sid = o.get("sessionId") or f.stem`): a transcript with no
         // sessionId in it still has to be filed somewhere, and its name is the
         // only handle left.

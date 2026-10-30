@@ -8,7 +8,7 @@
 // arithmetic beside every figure so it can be re-checked without running
 // anything.
 //
-// The identical fixture and the identical EXPECTED.json live in deadreckon's
+// The identical fixture and the identical EXPECTED.json live in twin's
 // repository, where its Python readers are held to the same numbers. That is
 // the point of it: two programs, two languages, one set of literals that
 // neither of them produced. Two ports can drift into agreeing with each other
@@ -35,13 +35,13 @@ const FIX = join(HERE, "conformance");
 const HOME = join(FIX, "home");
 const EXPECTED = JSON.parse(readFileSync(join(FIX, "EXPECTED.json"), "utf-8"));
 
-// The same bytes as deadreckon's copy. Two repositories cannot see each
+// The same bytes as twin's copy. Two repositories cannot see each
 // other's checkouts, so each pins the digest it was built against: an edit to
 // either copy breaks its own repo's test and the divergence is caught where it
 // happened, instead of surfacing later as two programs that quietly stopped
 // being held to the same numbers.
 const EXPECTED_SHA256 =
-  "d05b874ee52d494edb262275dcb45e7c125ec39927d472c25d64abacc2d8dbbc";
+  "ca4b5a2ac3c7534b0e608136148576d9f1152785a0af8dd8857992f73e58857e";
 
 function walk(dir, out = []) {
   for (const e of readdirSync(dir)) {
@@ -61,13 +61,13 @@ async function scanCodex() {
   return stats;
 }
 
-test("the fixture is the same one deadreckon is held to", () => {
+test("the fixture is the same one twin is held to", () => {
   const sha = createHash("sha256")
     .update(readFileSync(join(FIX, "EXPECTED.json")))
     .digest("hex");
   assert.equal(sha, EXPECTED_SHA256,
     "tests/conformance/EXPECTED.json has changed. If that was deliberate, "
-    + "update deadreckon's copy in the same change and re-pin both — the whole "
+    + "update twin's copy in the same change and re-pin both — the whole "
     + "value of this fixture is that both programs answer to one set of "
     + "hand-derived numbers.");
 });
@@ -172,7 +172,7 @@ test("presence: an empty store exists and is not the same fact as an absent one"
 });
 
 test("the codex session identity difference is recorded, not silently tolerated", () => {
-  // deadreckon names a codex session after the rollout FILENAME; starreckon
+  // twin names a codex session after the rollout FILENAME; starreckon
   // reads payload.id from session_meta. Totals agree, session NAMES do not, so
   // a cross-program comparison keyed on ids cannot succeed. Written down in
   // the fixture so it is a known difference rather than a future afternoon.
@@ -183,9 +183,9 @@ test("the codex session identity difference is recorded, not silently tolerated"
 
 // ── the readers starreckon was missing ────────────────────────────────────────
 //
-// Ported from deadreckon against a written spec. They are held to the literals
+// Ported from twin against a written spec. They are held to the literals
 // in EXPECTED.json AND, separately, they were run against the real store on the
-// machine they were ported on and matched deadreckon session-for-session and
+// machine they were ported on and matched twin session-for-session and
 // bucket-for-bucket: orphans 78/4,172,332,033 · clawspring 18/258,502,806 ·
 // lmstudio 7/119,774 · bob 2/38,783,298. The fixture is what keeps that true.
 
@@ -240,7 +240,7 @@ test("orphans: a vanished session is never given a date", () => {
 });
 
 // This one moves the session COUNT and not the sum, so no sum-based check can
-// see it — it is how the first port read 20 sessions against deadreckon's 18
+// see it — it is how the first port read 20 sessions against twin's 18
 // while both totalled 258,502,806.
 test("clawspring: a rollup recording nothing is not a session", () => {
   const e = EXPECTED.clawspring._all;

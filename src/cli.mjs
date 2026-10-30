@@ -38,7 +38,7 @@
 //                                 transcript deletion cannot lower the lifetime
 //                                 total. the daemon scan passes this by default.
 //   starreckon --roots=a,b     extra home roots (other accounts/machines)
-//   starreckon --corpus[=FILE] read a JSONL corpus (Deadreckon or Starreckon format)
+//   starreckon --corpus[=FILE] read a JSONL corpus (shared corpus format)
 //   starreckon --export-corpus[=FILE] export sessions to a standardized JSONL corpus
 //   starreckon --no-local      skip local filesystem scan (use with --corpus)
 //   starreckon --json          write baseline + expanded JSON reports
@@ -246,7 +246,8 @@ import { effectiveRoots } from "./config.mjs";
 import { startServe, sanitizeFolderName } from "./serve.mjs";
 import { modelLayers, installLayer, layerState, modelsStatus } from "./models.mjs";
 import { fleetAggregates, FLEET_MEASURES, FLEET_MEASURES_MONTH } from "./fleetstar.mjs";
-import { readDeadreckonCorpus, ingestCorpusEntries, exportCorpusFromScan } from "./deadreckon-reader.mjs";
+import { LOCAL } from "./local-names.mjs";
+import { readCorpusFile, ingestCorpusEntries, exportCorpusFromScan } from "./corpus-reader.mjs";
 import { ARMS, MAX_LEVEL } from "./starsvg.mjs";
 const ARMS_TOTAL = ARMS * MAX_LEVEL;
 import { collectProfileSignals, computeProfile } from "./profile.mjs";
@@ -536,7 +537,7 @@ console.log(`\n${B}OPTIONAL LAYERS${R} ${D}(consent screen first — every one o
   console.log(`  --machine=NAME           machine name for --join-fleet`);
   console.log(`  --label=LABEL            display label for --join-fleet`);
   console.log(`\n${B}CORPUS${R}`);
-  console.log(`  --corpus[=FILE]          read a JSONL corpus (Deadreckon or Starreckon format)`);
+  console.log(`  --corpus[=FILE]          read a JSONL corpus (shared corpus format)`);
   console.log(`  --export-corpus[=FILE]   export scanned sessions to a standardized JSONL corpus`);
   console.log(`  --no-local               skip local filesystem scan (use with --corpus)`);
   console.log(`\n${B}LAN BEACON${R}`);
@@ -569,7 +570,7 @@ console.log(`\n${B}OPTIONAL LAYERS${R} ${D}(consent screen first — every one o
   console.log(`  STARRECKON_FORCE_INTERACTIVE=1 force the menu in non-TTY (testing only)`);
   console.log(`  ${TRIGGER_ENV}=daemon:scan   set by the schedule files, not by you: it is`);
   console.log(`                                what makes a scheduled run write its log`);
-  console.log(`  DEADRECKON_MODEL_CACHE=<dir>  shared HuggingFace model cache`);
+  console.log(`  STARRECKON_MODEL_CACHE=<dir>  shared HuggingFace model cache`);
   console.log(`\n${D}zero dependencies · zero network calls on the scan path · source: github.com/Alexander-Sorrell-IT/starreckon${R}\n`);
 }
 
@@ -745,7 +746,7 @@ if (subcommand === "sources") {
 // `starreckon series` — how much ordered history the snapshots hold, and what
 // stands between it and a forecast band that would mean anything.
 //
-// IT IS A COUNT, NOT A WITNESS. deadreckon holds the time-series model; this
+// IT IS A COUNT, NOT A WITNESS. twin holds the time-series model; this
 // program holds none, so nothing here predicts, scores or gates and it exits 0
 // whatever the counts are. It exists because "8 months is not enough history
 // yet", "the model ran and recorded nothing" and "there is no model on this
@@ -1473,14 +1474,14 @@ async function main() {
     if (_corpusRaw) {
       corpusPath = _corpusRaw;
     } else {
-      const candidates = ["deadreckon_corpus.jsonl", "corpus.jsonl", "starreckon_corpus.jsonl"];
+      const candidates = ["corpus.jsonl", "starreckon_corpus.jsonl"];
       corpusPath = candidates.find((c) => existsSync(c)) ?? null;
       if (!corpusPath && !starOnly) {
-        console.log(`Corpus: no default corpus file found (looked for deadreckon_corpus.jsonl, corpus.jsonl, starreckon_corpus.jsonl). Pass --corpus=FILE.jsonl to specify.`);
+        console.log(`Corpus: no default corpus file found (looked for corpus.jsonl, starreckon_corpus.jsonl). Pass --corpus=FILE.jsonl to specify.`);
       }
     }
     if (corpusPath && existsSync(corpusPath)) {
-      corpusEntries = readDeadreckonCorpus(corpusPath);
+      corpusEntries = readCorpusFile(corpusPath);
       if (!starOnly) {
         console.log(`Corpus: read ${corpusEntries.length} entries from ${maskPath(corpusPath)}`);
       }
@@ -1645,7 +1646,7 @@ async function main() {
     try {
       providers = scanAllProviders(roots);
     } catch {}
-    // The readers ported from deadreckon, merged into the same map so every
+    // The readers ported from twin, merged into the same map so every
     // consumer downstream sees them without change. Kept in its own try: a
     // failure here must not lose the providers that already scanned.
     try {
@@ -1655,12 +1656,12 @@ async function main() {
       // is wrong for the nested ones: a subagent transcript lives at
       // projects/<proj>/<session>/subagents/workflows/<wf>/agent.jsonl and is
       // named `agent`, which is not a session id at all. It produced 1,780
-      // "live ids" against deadreckon's 132 and still MISSED 11 real ones, so
+      // "live ids" against twin's 132 and still MISSED 11 real ones, so
       // eleven sessions whose transcripts are on disk were reported as
       // recovered-from-a-deleted-transcript.
       //
       // stats.sessions is keyed by the sessionId parseClaudeFile read out of
-      // the file, which is the same identity deadreckon keys on. Codex ids ride
+      // the file, which is the same identity twin keys on. Codex ids ride
       // along in that map; they are UUIDs from a different tool and cannot
       // collide with a Claude session, and over-inclusion here is the safe
       // direction anyway — it can only ever suppress a row, never double-count
@@ -1804,7 +1805,7 @@ async function main() {
       // ORDER IS THE FLOOR, and the floor is the number that leaves the
       // machine — it rides in the QR and onto a resume. These four
       // directories do NOT agree: the 5-machine snapshot reads a
-      // 109,394,493,211 floor, ~/deadreckon-count reads 56,558,631,007 and
+      // 109,394,493,211 floor, the private program's own directory reads 56,558,631,007 and
       // ~/token-usage 52,377,343,279. Falling from the first to the second
       // silently would halve a published number, so an auto-pick below the
       // top preference SAYS SO on stderr rather than quietly scoring a
@@ -1812,8 +1813,7 @@ async function main() {
       // this entirely.
       const candidates = [
         DESKTOP_FLEET_DIR,
-        join(process.env.HOME || "", "deadreckon-count/testing-archive/2026-08-11T15-37-56"),
-        join(process.env.HOME || "", "deadreckon-count"),
+        ...LOCAL.fleetDirs.map((d) => join(process.env.HOME || "", d)),
         join(process.env.HOME || "", "token-usage"),
       ];
       const _hit = candidates.findIndex((c) => existsSync(c));

@@ -3,7 +3,7 @@
 //
 // WHAT THESE TESTS ARE DEFENDING
 //
-//   1. THE BAR IS NOT NEGOTIABLE HERE. 10 is deadreckon's, a property of the
+//   1. THE BAR IS NOT NEGOTIABLE HERE. 10 is twin's, a property of the
 //      model rather than a preference, and it is pinned LITERALLY below instead
 //      of imported from the module under test. A test that takes its expected
 //      value from the code it checks cannot notice the bar being softened, and
@@ -33,9 +33,9 @@ import {
   witnessState, witnessPaths, calendarGaps,
 } from "../src/series.mjs";
 
-// deadreckon forecast_check.py — `MIN_POINTS = 10`. Written out by hand on
+// twin forecast_check.py — `MIN_POINTS = 10`. Written out by hand on
 // purpose; see note 1 in the header.
-const DEADRECKON_MIN_POINTS = 10;
+const TWIN_MIN_POINTS = 10;
 
 const tmp = (tag) => mkdtempSync(join(tmpdir(), `series-${tag}-`));
 
@@ -84,21 +84,21 @@ function installWitness(home, { record: recordLines = null } = {}) {
 
 // ── 1 · the bar ──────────────────────────────────────────────────────────────
 
-test("the threshold is deadreckon's MIN_POINTS, unsoftened", () => {
-  assert.equal(MIN_POINTS, DEADRECKON_MIN_POINTS,
+test("the threshold is twin's MIN_POINTS, unsoftened", () => {
+  assert.equal(MIN_POINTS, TWIN_MIN_POINTS,
     "10 is a property of the Cisco model (its short contexts are trained down to "
     + "10) and forecast_check.py refuses less. Lowering it here would draw a band "
     + "over nothing, which is the one thing this view exists not to do.");
 });
 
 test("the bar is >= , so exactly 10 points is ready and 9 is not", () => {
-  const at = surveySeries(store(monthsEnding(DEADRECKON_MIN_POINTS), null, "at"));
+  const at = surveySeries(store(monthsEnding(TWIN_MIN_POINTS), null, "at"));
   for (const s of at.series) {
-    assert.equal(s.points, DEADRECKON_MIN_POINTS, s.name);
+    assert.equal(s.points, TWIN_MIN_POINTS, s.name);
     assert.equal(s.state, "ready", `${s.name} must be ready at exactly the bar`);
     assert.equal(s.needed, 0, s.name);
   }
-  const under = surveySeries(store(monthsEnding(DEADRECKON_MIN_POINTS - 1), null, "under"));
+  const under = surveySeries(store(monthsEnding(TWIN_MIN_POINTS - 1), null, "under"));
   for (const s of under.series) {
     assert.equal(s.state, "not enough yet", `${s.name} must not be ready at 9`);
     assert.equal(s.needed, 1, s.name);

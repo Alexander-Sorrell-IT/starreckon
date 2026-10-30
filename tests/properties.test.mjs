@@ -4,7 +4,7 @@
 // dependents, more than any other module: nothing reaches disk without passing
 // it, so its guarantees are the ones worth generating thousands of inputs for.
 // The cpu-prof trace says creditUsage is the counting rule, so it gets the same
-// treatment deadreckon's max_into got — deliberately the SAME properties, so
+// treatment twin's max_into got — deliberately the SAME properties, so
 // the two implementations are held to one standard rather than two.
 //
 // Every check here is a sentence this program states about itself somewhere.
@@ -59,7 +59,7 @@ test("redactSecrets is idempotent, and maskText composes with it", () => {
   }), { numRuns: 500 });
 });
 
-// ── creditUsage — the counting rule, same properties as deadreckon's ────────
+// ── creditUsage — the counting rule, same properties as twin's ────────
 
 const count = fc.integer({ min: 0, max: 1_000_000_000 });
 const usage = fc.record({
@@ -117,7 +117,7 @@ test("creditUsage is order-independent for one message", () => {
 
 test("a malformed reading never moves a total", () => {
   // The clamp exists so a file another program wrote cannot corrupt a count.
-  // deadreckon's equivalent property found that bools are ints in Python and
+  // twin's equivalent property found that bools are ints in Python and
   // `true` banked one token; this asks the same question of the JS side.
   const garbage = fc.oneof(
     fc.integer({ min: -1_000_000, max: -1 }),

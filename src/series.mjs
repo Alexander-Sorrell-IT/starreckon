@@ -3,7 +3,7 @@
 //
 // IT DRAWS NO BAND, AND THAT IS THE FEATURE.
 //
-// deadreckon carries the time-series witness (forecast_check.py, the Cisco
+// twin carries the time-series witness (forecast_check.py, the Cisco
 // model): a second opinion that commits to a band BEFORE anyone knows the
 // outcome, so it cannot be shaped by the result the way a test written after
 // the fact can. starreckon has no witness at all. This command is not a
@@ -70,7 +70,7 @@ import { maskPath } from "./redact.mjs";
 // checkout of that file and :115 in another, and a line number that drifts is a
 // citation a reader cannot follow.
 export const MIN_POINTS = 10;
-export const MIN_POINTS_SOURCE = "deadreckon forecast_check.py (MIN_POINTS)";
+export const MIN_POINTS_SOURCE = "twin forecast_check.py (MIN_POINTS)";
 
 /**
  * The sequences starreckon actually has: one snapshot per calendar month, so a
@@ -169,7 +169,7 @@ export function readSnapshots(dir = SNAP_DIR) {
 // Calendar months between the first and last snapshot with no file of their own.
 //
 // REPORTED, NEVER IMPUTED AND NEVER COUNTED. forecast_check.py settles this one:
-// indexing deadreckon's data by wall clock made it 95% zeros because the gaps
+// indexing twin's data by wall clock made it 95% zeros because the gaps
 // were nights and weekends, so its sequences are ordered BY POSITION — "a
 // session that did not happen has no slot". Same rule one unit up. The gap is
 // printed so nobody reads "8 points" as a claim that the calendar is unbroken.
@@ -188,7 +188,7 @@ export function calendarGaps(months) {
 // ── the witness layer, which this machine does not have ──────────────────────
 //
 // WHERE THESE PATHS COME FROM, AND THE ONE ASSUMPTION IN THIS FILE. They mirror
-// deadreckon exactly — `.venv-forecast` beside the program's own state, and a
+// twin exactly — `.venv-forecast` beside the program's own state, and a
 // JSONL of bands — and they sit beside `~/.starreckon/.venv-search`, the venv
 // consent.mjs:MODELS_DEST already names for the search models. They are
 // EXPORTED so that the installer, when it lands, binds to these constants
@@ -208,7 +208,7 @@ export function witnessPaths(home) {
  * Whether a band could be produced here at all, and whether one ever was.
  *
  * `not installed` and `ran, nothing recorded` ARE NOT THE SAME ANSWER and are
- * never folded together. deadreckon's own grade step already draws this line —
+ * never folded together. twin's own grade step already draws this line —
  * "no forecast_record.jsonl" and "forecast_record.jsonl is empty" are two
  * different sentences there — and it draws it because a layer that was never
  * present cannot have found nothing. Nothing was looked for.

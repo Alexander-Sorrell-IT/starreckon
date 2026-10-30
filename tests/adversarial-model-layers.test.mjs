@@ -16,16 +16,16 @@
 //    CPU index has nothing to serve it. Every Apple silicon install failed with
 //    "no matching distribution", which in a captured-output installer is
 //    indistinguishable from a network error. The intent — prefer CPU wheels —
-//    is `--extra-index-url`. The same line existed in deadreckon's install.py
+//    is `--extra-index-url`. The same line existed in twin's install.py
 //    and was fixed there first; this copy was missed, which is the whole
 //    argument for testing the property rather than the line.
 //
-// 2. A LAYER THAT STOPS INSTALLING WHAT IT IMPORTS. deadreckon's forecaster
+// 2. A LAYER THAT STOPS INSTALLING WHAT IT IMPORTS. twin's forecaster
 //    venv lost `cisco-tsm` when two pip calls were collapsed into one. The
 //    venv built green and died at import. starreckon declares the same layer in
 //    spec/models.json, so the same class of edit is one keystroke away here.
 //
-// PRINCIPLE, borrowed from deadreckon's adv_suite_integrity.py: every question
+// PRINCIPLE, borrowed from twin's adv_suite_integrity.py: every question
 // is asked twice — once against the real tree, where the answer must be clean,
 // and once with the defect planted, where it must be FOUND. A checker that
 // found nothing and a checker that looked at nothing print the same clean
@@ -113,7 +113,7 @@ test("PLANTED: a layer that installs nothing is detected", () => {
     "the detector cannot see a layer stripped of its packages");
 });
 
-// The forecast layer is the one shared with deadreckon, and the one whose
+// The forecast layer is the one shared with twin, and the one whose
 // package set was actually lost there. Naming it explicitly means a silent
 // drop here fails on the name rather than on a count that could be padded by
 // an unrelated layer gaining a package.
@@ -121,7 +121,7 @@ test("the forecast layer still declares cisco-tsm", () => {
   const forecast = spec.layers.find((l) => l.name === "forecast");
   assert.ok(forecast, "no layer named 'forecast' in spec/models.json");
   assert.ok(forecast.pip.includes("cisco-tsm"),
-    "cisco-tsm is what the forecaster IS. deadreckon's copy of this layer lost "
+    "cisco-tsm is what the forecaster IS. twin's copy of this layer lost "
     + "it when two pip calls were collapsed into one; the venv reported DONE "
     + "and the forecaster died at import.");
   assert.equal(forecast.pipTorch, true,

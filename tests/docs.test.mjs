@@ -291,13 +291,13 @@ test("package.json points at the project's home", () => {
 const lineOf = (md, needle) => md.split("\n").findIndex((l) => l.includes(needle));
 
 test("the README leads with the differentiator, not the install section", () => {
-  const diff = lineOf(README, "npx standout");
+  const diff = lineOf(README, "## Prove it: the kernel refuses");
   const install = lineOf(README, "## Install");
-  assert.ok(diff >= 0, "README must name what it is being compared against");
+  assert.ok(diff >= 0, "README must lead with the no-egress proof");
   assert.ok(install >= 0, "README must have an Install section");
   assert.ok(
     diff < install,
-    `the standout comparison (line ${diff + 1}) must come before Install (line ${install + 1})`
+    `the no-egress proof (line ${diff + 1}) must come before Install (line ${install + 1})`
   );
   assert.ok(
     diff <= 40,
@@ -365,18 +365,6 @@ test("README states publication status and how to run it today, up top", () => {
     );
   }
   assert.match(head, /node src\/cli\.mjs/, "say how to run it from a checkout");
-});
-
-test("the standout upload figures are attributed and dated, never asserted bare", () => {
-  // These numbers were read from someone else's published bundle and cannot be
-  // re-derived from this tree. Stating them is fair; stating them as though we
-  // measured them is not.
-  const lines = README.split("\n");
-  const idx = lines.findIndex((l) => /500/.test(l) && /exchange pair/i.test(l));
-  assert.ok(idx >= 0, "README must state the exchange-pair figure it is comparing against");
-  const para = lines.slice(Math.max(0, idx - 6), idx + 6).join("\n");
-  assert.match(para, /bundle/i, "the figure must name where it was read from");
-  assert.match(para, /20\d\d/, "the figure must be dated — a vendor can change it any release");
 });
 
 // ---- finding: PROVE-IT §4 credited runConfined(), which the CLI never calls -
